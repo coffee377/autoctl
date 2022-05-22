@@ -8,7 +8,7 @@ import (
 func TestHeaderFromTitle(t *testing.T) {
 
 	t.Run("仅含类型和描述", func(t *testing.T) {
-		title := HeaderFromTitle(":bug: 仅含类型和描述")
+		title := CommitMessageHeaderFromTitle(":bug: 仅含类型和描述")
 		assert.Equal(t, ":bug:", title.Type)
 		assert.Equal(t, "", title.Scope)
 		assert.Equal(t, "仅含类型和描述", title.Description)
@@ -16,7 +16,7 @@ func TestHeaderFromTitle(t *testing.T) {
 	})
 
 	t.Run("含类型、范围和描述", func(t *testing.T) {
-		title := HeaderFromTitle(":bug:(test): 含类型、范围和描述")
+		title := CommitMessageHeaderFromTitle(":bug:(test): 含类型、范围和描述")
 		assert.Equal(t, ":bug:", title.Type)
 		assert.Equal(t, "test", title.Scope)
 		assert.Equal(t, "含类型、范围和描述", title.Description)
@@ -24,7 +24,7 @@ func TestHeaderFromTitle(t *testing.T) {
 	})
 
 	t.Run("含类型、范围、描述和破坏性变更标识", func(t *testing.T) {
-		title := HeaderFromTitle(":bug:(test)!: 含类型、范围、描述和破坏性变更标识")
+		title := CommitMessageHeaderFromTitle(":bug:(test)!: 含类型、范围、描述和破坏性变更标识")
 		assert.Equal(t, ":bug:", title.Type)
 		assert.Equal(t, "test", title.Scope)
 		assert.Equal(t, "含类型、范围、描述和破坏性变更标识", title.Description)

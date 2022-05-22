@@ -5,16 +5,18 @@ import (
 	"strings"
 )
 
-// Header <type>[(scope)][!]: <description>
-type Header struct {
+// MessageHeader <type>[(scope)][!]: <description>
+type MessageHeader struct {
 	Type        string `json:"type"`        // 类型
 	Scope       string `json:"scope"`       // 范围（可选）
 	Broken      bool   `json:"broken"`      // 标记为破坏性变更（可选）
 	Description string `json:"description"` // 简要描述
+	Semver      string `json:"semver"`      // 语义化版本
 }
 
-func HeaderFromTitle(title string) *Header {
-	h := new(Header)
+func CommitMessageHeaderFromTitle(title string) *MessageHeader {
+	h := new(MessageHeader)
+	//MessageHeader{}
 	reg := regexp.MustCompile("^(:?\\w+:?)(\\((\\w*)\\))?(!)?:? (.+)$")
 	match := reg.FindStringSubmatch(strings.Trim(title, " "))
 
@@ -33,8 +35,8 @@ func HeaderFromTitle(title string) *Header {
 	return h
 }
 
-func NewHeader(msgType string, description string) *Header {
-	h := &Header{
+func NewCommitMessageHeader(msgType string, description string) *MessageHeader {
+	h := &MessageHeader{
 		Type:        msgType,
 		Scope:       "",
 		Broken:      false,
@@ -43,22 +45,22 @@ func NewHeader(msgType string, description string) *Header {
 	return h
 }
 
-func (h *Header) setType(msgType string) *Header {
+func (h *MessageHeader) setType(msgType string) *MessageHeader {
 	h.Type = msgType
 	return h
 }
 
-func (h *Header) setScope(scope string) *Header {
+func (h *MessageHeader) setScope(scope string) *MessageHeader {
 	h.Scope = scope
 	return h
 }
 
-func (h *Header) setBroken(broken bool) *Header {
+func (h *MessageHeader) setBroken(broken bool) *MessageHeader {
 	h.Broken = broken
 	return h
 }
 
-func (h *Header) setDescription(description string) *Header {
+func (h *MessageHeader) setDescription(description string) *MessageHeader {
 	h.Description = description
 	return h
 }
