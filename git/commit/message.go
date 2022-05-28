@@ -7,7 +7,7 @@ import (
 
 // CommitMessage git 提交信息
 type CommitMessage struct {
-	Raw    []byte         `json:"raw,omitempty"`    //
+	Raw    *string        `json:"raw,omitempty"`    //
 	Header *MessageHeader `json:"header,omitempty"` // 头部信息
 	Body   *MessageBody   `json:"body,omitempty"`   // 长描述
 	Footer *MessageFooter `json:"footer,omitempty"` // 脚注信息
@@ -17,13 +17,13 @@ type CommitMessage struct {
 var BlankLine = "[\r\n]\n"
 
 // NewCommitMessage creates an instance of CommitMessage.
-func NewCommitMessage(raw []byte) *CommitMessage {
+func NewCommitMessage(raw *string) *CommitMessage {
 	msg := &CommitMessage{}
 	// raw,omitempty
 	return msg.FromRaw(raw)
 }
 
-func (message *CommitMessage) FromRaw(raw []byte) *CommitMessage {
+func (message *CommitMessage) FromRaw(raw *string) *CommitMessage {
 	message.Raw = raw
 	var (
 		title           string
@@ -31,11 +31,8 @@ func (message *CommitMessage) FromRaw(raw []byte) *CommitMessage {
 		footers         []string
 	)
 
-	//reflect.ValueOf(message).Field(0).String()
-	//reflect.ValueOf(message).Elem().
-
 	// 按空行进行分割
-	splits := regexp.MustCompile(BlankLine).Split(string(raw), -1)
+	splits := regexp.MustCompile(BlankLine).Split(*raw, -1)
 	pos := len(splits) - 1
 	// 获取标题
 	title = splits[:1][0]
@@ -61,11 +58,15 @@ func (message *CommitMessage) dealHeader(title string) {
 }
 
 func (message *CommitMessage) dealBody(longDescription []string) {
-	body := CommitMessageBodyFromLongDescription(longDescription)
-	message.Body = body
+	if longDescription != nil {
+		body := CommitMessageBodyFromLongDescription(longDescription)
+		message.Body = body
+	}
 }
 
 func (message *CommitMessage) dealFooter(footers []string) {
-	footer := CommitMessageFooterFromNotes(footers)
-	message.Footer = footer
+	if footers != nil {
+		footer := CommitMessageFooterFromNotes(footers)
+		message.Footer = footer
+	}
 }

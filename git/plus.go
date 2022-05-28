@@ -1,14 +1,12 @@
 package git
 
 import (
-	"bufio"
 	"bytes"
 	"encoding/json"
 	"fmt"
 	git "github.com/coffee377/autoctl/git/commit"
 	"github.com/coffee377/autoctl/log"
 	"github.com/spf13/cobra"
-	"io"
 	"os/exec"
 	"strings"
 )
@@ -80,33 +78,28 @@ func (plus *Plus) FetchLogs(commit1, commit2 string) []byte {
 	//} else if len(tag2) > 0 {
 	//	notation = tag2
 	//}
-	var args []string
+	var (
+		args    []string
+		records []*git.CommitRecord
+	)
 
 	format := fmt.Sprintf("--pretty=%s", git.RecordFormat)
 	args = append(args, "log", "--no-merges", "--date=format:%Y/%m/%d %H:%M:%S", format)
 
 	args = append(args, "-i")
-	args = append(args, "-E", "--grep", "fix")
-	//append(args, )
+	args = append(args, "-E", "--grep", "fix|zap")
 
-	//notation := ""
-	//stdout := bytes.Buffer
 	result := plus.Exec(args...)
-	reader := bufio.NewReader(bytes.NewReader(result))
-	//line, prefix, err := reader.ReadLine()
-	var records []*git.CommitRecord
-	for {
-		line, prefix, err := reader.ReadLine() //以'\n'为结束符读入一行
-		record := git.NewCommitRecord(string(line))
-		records = append(records, record)
-		if err != nil || io.EOF == err {
-			break
+	logs := bytes.Split(result, []byte(git.LogSep))
+
+	for _, v := range logs {
+		if len(v) == 0 {
+			continue
 		}
-		fmt.Println(line)
-		fmt.Println(prefix)
-		fmt.Println(line)
+		record := git.NewCommitRecord(v)
+		records = append(records, record)
 	}
+
 	marshal, _ := json.Marshal(records)
-	//bytes.
 	return marshal
 }
