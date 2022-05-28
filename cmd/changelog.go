@@ -35,9 +35,10 @@ var changelogCmd = &cobra.Command{
 			gitPlus.FetchAll()
 		}
 		// 获取 log
-		c, e := gitPlus.FetchLogs("", "")
-		_, _ = cmd.OutOrStdout().Write(c)
-		_, _ = cmd.OutOrStderr().Write(e)
+		logs := gitPlus.FetchLogs("v2.7.2", "v2.8.0")
+		//tag := gitPlus.FetchTags(true, "v2.7*", "*2.8*")
+		//tags := gitPlus.FetchTags("", true)
+		_, _ = cmd.OutOrStdout().Write(logs)
 	},
 }
 

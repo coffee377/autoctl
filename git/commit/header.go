@@ -7,16 +7,15 @@ import (
 
 // MessageHeader <type>[(scope)][!]: <description>
 type MessageHeader struct {
-	Type        string `json:"type"`        // 类型
-	Scope       string `json:"scope"`       // 范围（可选）
-	Broken      bool   `json:"broken"`      // 标记为破坏性变更（可选）
-	Description string `json:"description"` // 简要描述
-	Semver      string `json:"semver"`      // 语义化版本
+	Type        string `json:"type,omitempty"`        // 类型
+	Scope       string `json:"scope,omitempty"`       // 范围（可选）
+	Broken      bool   `json:"broken,omitempty"`      // 标记为破坏性变更（可选）
+	Description string `json:"description,omitempty"` // 简要描述
+	Semver      string `json:"semver,omitempty"`      // 语义化版本
 }
 
 func CommitMessageHeaderFromTitle(title string) *MessageHeader {
 	h := new(MessageHeader)
-	//MessageHeader{}
 	reg := regexp.MustCompile("^(:?\\w+:?)(\\((\\w*)\\))?(!)?:? (.+)$")
 	match := reg.FindStringSubmatch(strings.Trim(title, " "))
 

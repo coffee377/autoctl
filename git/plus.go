@@ -1,11 +1,16 @@
 package git
 
 import (
+	"bufio"
 	"bytes"
+	"encoding/json"
 	"fmt"
 	git "github.com/coffee377/autoctl/git/commit"
+	"github.com/coffee377/autoctl/log"
 	"github.com/spf13/cobra"
+	"io"
 	"os/exec"
+	"strings"
 )
 
 type Plus struct {
@@ -16,60 +21,57 @@ type Plus struct {
 }
 
 // Exec 执行 git 命令
-func (plus *Plus) Exec(args ...string) ([]byte, []byte) {
+func (plus *Plus) Exec(args ...string) []byte {
 	command := exec.Command("git", args...)
-	var (
-		stdout bytes.Buffer
-		stderr bytes.Buffer
-	)
-	command.Stdout = &stdout
-	command.Stderr = &stderr
 	command.Dir = plus.Cwd
 	if plus.Verbose {
-		fmt.Println(command.String())
+		n := strings.SplitN(command.String(), " ", 2)
+		log.Debug("git %s", n[1])
 	}
-	if err := command.Run(); err != nil {
-		stderr.Write([]byte(err.Error()))
+	output, err := command.Output()
+	if err != nil {
+		log.Fatal("%s", err)
 	}
-	return stdout.Bytes(), stderr.Bytes()
+	return output
 }
 
 // FetchAll 拉取所有远程仓库的最新内容到本地
 func (plus *Plus) FetchAll() {
-	_, _ = plus.Exec("fetch", "--all")
+	_ = plus.Exec("fetch", "--all")
 }
 
-func (plus *Plus) FetchTags(releasePattern string, sort bool) []string {
-	//t := plus.Exec("log", "--tags", "--simplify-by-decoration", "--pretty=\"%ai @%d\"")
-	//log.Warn("%v", string(t))
-	//if err != nil {
-	//	return nil
-	//}
-	//
-	////out, _ := exec.Command("git", "log", "--tags", "--simplify-by-decoration", "--pretty=\"%ai @%d\"").Output()
-	//uncuratedTags := strings.Split(out, "\n")
+// FetchLatestTag 获取最近一次的标签
+func (plus *Plus) FetchLatestTag() []byte {
+	return plus.Exec("describe", "--tags", "--abbrev=0")
+}
 
-	//var tags []string
-	//validTag := regexp.MustCompile(fmt.Sprintf(`(.*\s)@\s.*tag:\s(%v)`, releasePattern))
-	//
-	//var match [][]string
-	//for _, tag := range uncuratedTags {
-	//	match = validTag.FindAllStringSubmatch(tag, -1)
-	//	if len(match) > 0 && len(match[0]) > 2 {
-	//		// fmt.Printf("%v => %v \n", match[0][1], match[0][2])
-	//		tags = append(tags, strings.Replace(match[0][2], ",", "", -1))
-	//	}
-	//}
-	//if sort {
-	//	tags = utils.OnlyStable(tags)
-	//	sort.Sort(utils.ByVersion(tags))
-	//}
-	var tags []string
-	return tags
+// https://zhuanlan.zhihu.com/p/87725726 打标签
+//https://blog.csdn.net/qq_21746331/article/details/120776710
+
+func (plus *Plus) FetchTags(desc bool, patterns ...string) []byte {
+	var args []string
+	var min = ""
+	if desc {
+		min = "-"
+	}
+
+	var sort = fmt.Sprintf("--sort=%screatordate", min)
+
+	args = append(args, "tag", "-l", sort, "--format=%(objecttype);%(objectname);%(creatordate:short);%(refname:short);%(subject)")
+	// pattern 参数需要放在最后
+	for _, value := range patterns {
+		args = append(args, value)
+	}
+	// git tag -l --sort=-creatordate --format='%(objectname);%(creatordate:short);%(refname:short);%(subject)'
+	bytes := plus.Exec(args...)
+	s := string(bytes)
+	log.Info(s)
+
+	return nil
 }
 
 // FetchLogs will query commit records between two tags
-func (plus *Plus) FetchLogs(commit1, commit2 string) ([]byte, []byte) {
+func (plus *Plus) FetchLogs(commit1, commit2 string) []byte {
 	//var notation string
 	//if len(tag1) > 0 && len(tag2) > 0 {
 	//	notation = fmt.Sprintf("%s..%s", tag1, tag2)
@@ -80,15 +82,31 @@ func (plus *Plus) FetchLogs(commit1, commit2 string) ([]byte, []byte) {
 	//}
 	var args []string
 
-	format := fmt.Sprintf("--pretty=format:%s", git.GitRecordFormat)
+	format := fmt.Sprintf("--pretty=%s", git.RecordFormat)
 	args = append(args, "log", "--no-merges", "--date=format:%Y/%m/%d %H:%M:%S", format)
 
+	args = append(args, "-i")
+	args = append(args, "-E", "--grep", "fix")
 	//append(args, )
 
-	//format := "--pretty=format:{\"hash\":\"%H\",\"abbrevHash\":\"%h\",\"author\":\"%an\",\"email\":\"%ae\",\"date\":\"%ad\",\"timestamp\":%at,\"message\":\"%f\"}"
-	//format := "--pretty=format:{\"timestamp\":%at,\"subject\":\"%s\",\"body\":\"%b\",\"message\":\"%B\"}"
-	//format := "--pretty=format:%B%n%n"
-	//format := "--pretty=format:%<(30,mtrunc)%s %ai" // 下一个占位符最多占用 30 个字符,超过将进行截断处理（ltrunc|mtrunc|trunc）
 	//notation := ""
-	return plus.Exec(args...)
+	//stdout := bytes.Buffer
+	result := plus.Exec(args...)
+	reader := bufio.NewReader(bytes.NewReader(result))
+	//line, prefix, err := reader.ReadLine()
+	var records []*git.CommitRecord
+	for {
+		line, prefix, err := reader.ReadLine() //以'\n'为结束符读入一行
+		record := git.NewCommitRecord(string(line))
+		records = append(records, record)
+		if err != nil || io.EOF == err {
+			break
+		}
+		fmt.Println(line)
+		fmt.Println(prefix)
+		fmt.Println(line)
+	}
+	marshal, _ := json.Marshal(records)
+	//bytes.
+	return marshal
 }

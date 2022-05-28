@@ -31,10 +31,10 @@ func NewFootnote(raw string) Footnote {
 // Closes #123,234,456
 // BREAKING CHANGE: use JavaScript features not available in Node 6.
 type MessageFooter struct {
-	Items          []Footnote `json:"items"`          // 其他相关的脚注信息
-	Closes         []string   `json:"closes"`         // 关闭相关 issues 或 bugs
-	Refs           []string   `json:"refs"`           // 相关需求引用
-	BreakingChange string     `json:"breakingChange"` // 破坏性变更信息
+	Items          []Footnote `json:"items,omitempty"`          // 其他相关的脚注信息
+	Closes         []string   `json:"closes,omitempty"`         // 关闭相关 issues 或 bugs
+	Refs           []string   `json:"refs,omitempty"`           // 相关需求引用
+	BreakingChange string     `json:"breakingChange,omitempty"` // 破坏性变更信息
 }
 
 func CommitMessageFooterFromNotes(notes []string) *MessageFooter {
