@@ -39,12 +39,20 @@ func (plus *Plus) FetchAll() {
 }
 
 // FetchLatestTag 获取最近一次的标签
-func (plus *Plus) FetchLatestTag() []byte {
-	return plus.Exec("describe", "--tags", "--abbrev=0")
+func (plus *Plus) FetchLatestTag() string {
+	return string(plus.Exec("describe", "--tags", "--abbrev=0"))
 }
 
 // https://zhuanlan.zhihu.com/p/87725726 打标签
-//https://blog.csdn.net/qq_21746331/article/details/120776710
+// https://blog.csdn.net/qq_21746331/article/details/120776710
+
+type Tag struct {
+	objecttype  string // The type of the object (blob, tree, commit, tag)
+	objectname  string // The object name (aka SHA-1)
+	creatordate string //
+	refname     string // short tag name
+	subject     string // tag des
+}
 
 func (plus *Plus) FetchTags(desc bool, patterns ...string) []byte {
 	var args []string
@@ -60,7 +68,7 @@ func (plus *Plus) FetchTags(desc bool, patterns ...string) []byte {
 	for _, value := range patterns {
 		args = append(args, value)
 	}
-	// git tag -l --sort=-creatordate --format='%(objectname);%(creatordate:short);%(refname:short);%(subject)'
+	// git tag -l --sort=-creatordate --format='%(objecttype);%(objectname);%(creatordate:short);%(refname:short);%(subject)'
 	bytes := plus.Exec(args...)
 	s := string(bytes)
 	log.Info(s)
@@ -101,5 +109,7 @@ func (plus *Plus) FetchLogs(commit1, commit2 string) []byte {
 	}
 
 	marshal, _ := json.Marshal(records)
+	// 追加换行符
+	marshal = append(marshal, []byte("\n")...)
 	return marshal
 }

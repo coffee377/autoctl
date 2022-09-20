@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"github.com/coffee377/autoctl/git"
+	"github.com/coffee377/autoctl/log"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 const (
@@ -15,6 +17,7 @@ type changeLogOptions struct {
 	fetch  bool
 	format string
 	output bool
+	commit []string
 }
 
 var logOpts = changeLogOptions{
@@ -38,7 +41,16 @@ var changelogCmd = &cobra.Command{
 		logs := gitPlus.FetchLogs("v2.7.2", "v2.8.0")
 		//tag := gitPlus.FetchTags(true, "v2.7*", "*2.8*")
 		//tags := gitPlus.FetchTags("", true)
-		_, _ = cmd.OutOrStdout().Write(logs)
+		// 是否输出日志文件
+		if !logOpts.output {
+			_, err := cmd.OutOrStdout().Write(logs)
+			if err != nil {
+				log.Fatal("%s", err)
+			}
+			os.Exit(0)
+		}
+
+		//logOpts.format
 	},
 }
 
@@ -48,9 +60,10 @@ func init() {
 	// 是否获取所有远程参考最新代码
 	changelogCmd.Flags().BoolVar(&logOpts.fetch, "fetch", false, "fetch the latest commits and tags for all branches")
 	// 输出格式 json markdown html
-	changelogCmd.Flags().StringVarP(&logOpts.format, "format", "f", "json", "output file format json, markdown or html")
+	changelogCmd.Flags().StringVarP(&logOpts.format, "format", "f", "json", "output file format json, markdown or html(default json)")
 	// 是否输出到文件，默认 false ,输出到控制台
 	changelogCmd.Flags().BoolVarP(&logOpts.output, "output", "o", false, "whether to output logs as file")
+	//changelogCmd.Flags().StringArrayVarP(&logOpts.commit, "commit", "c", nil, "日志范围")
 }
 
 //type ChangeLog struct {

@@ -1,9 +1,9 @@
 package dingtalk
 
 import (
-	"fmt"
 	openapi "github.com/alibabacloud-go/darabonba-openapi/client"
 	oauth21 "github.com/alibabacloud-go/dingtalk/oauth2_1_0"
+	"github.com/coffee377/autoctl/log"
 )
 
 // GetAccessToken 获取企业内部应用的accessToken
@@ -27,7 +27,7 @@ func GetAccessToken() {
 	token, err := client.GetAccessToken(request)
 	var result *string
 	result = token.Body.AccessToken
-	fmt.Printf("%p", &result)
+	log.Debug("AccessToken: %s", *result)
 	if err != nil {
 		return
 	}
