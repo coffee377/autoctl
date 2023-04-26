@@ -38,7 +38,7 @@ var changelogCmd = &cobra.Command{
 			gitPlus.FetchAll()
 		}
 		// 获取 log
-		logs := gitPlus.FetchLogs("v2.7.2", "v2.8.0")
+		logs := gitPlus.FetchLogs("2.0.4", "v2.0.6")
 		//tag := gitPlus.FetchTags(true, "v2.7*", "*2.8*")
 		//tags := gitPlus.FetchTags("", true)
 		// 是否输出日志文件
