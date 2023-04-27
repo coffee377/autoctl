@@ -1,2 +1,2 @@
-# automation-cli
+# autoctl
 自动化命令行工具

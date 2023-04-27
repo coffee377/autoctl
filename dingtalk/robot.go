@@ -1,7 +1,7 @@
 package dingtalk
 
 import (
-	openapi "github.com/alibabacloud-go/darabonba-openapi/client"
+	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
 	dingtalkim10 "github.com/alibabacloud-go/dingtalk/im_1_0"
 	oauth21 "github.com/alibabacloud-go/dingtalk/oauth2_1_0"
 	"github.com/alibabacloud-go/tea/tea"
@@ -11,13 +11,13 @@ import (
 // GetAccessToken 获取企业内部应用的accessToken
 // https://open.dingtalk.com/document/orgapp-server/obtain-the-access_token-of-an-internal-app
 func GetAccessToken() {
-	c := new(openapi.Config)
+	config := new(openapi.Config)
 	//config := &openapi.Config{}
 	//config.SetProtocol()
-	c.SetProtocol("https")
-	c.SetRegionId("central")
+	config.SetProtocol("https")
+	config.SetRegionId("central")
 	//c.SetEndpoint("https://oapi.dingtalk.com/gettoken")
-	client, _ := oauth21.NewClient(c)
+	client, _ := oauth21.NewClient(config)
 
 	//config := &openapi.Config{}
 	//config.Protocol = tea.String("https")
@@ -36,7 +36,7 @@ func GetAccessToken() {
 		return
 	}
 
-	imClient, _ := dingtalkim10.NewClient(c)
+	imClient, _ := dingtalkim10.NewClient(config)
 
 	interactiveCardCreateInstanceHeaders := &dingtalkim10.InteractiveCardCreateInstanceHeaders{}
 	interactiveCardCreateInstanceHeaders.SetXAcsDingtalkAccessToken(*accessToken)
