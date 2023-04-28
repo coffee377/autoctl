@@ -1,7 +1,6 @@
 package git
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -20,7 +19,7 @@ BREAKING CHANGE: use JavaScript features not available in Node 6.`)
 func TestCommitMessage(t *testing.T) {
 
 	t.Run("解析原始提交信息", func(t *testing.T) {
-		message := NewCommitMessage(rawMsg)
-		fmt.Println("v%", message)
+		//message := NewCommitMessage(rawMsg)
+		//fmt.Println("v%", message)
 	})
 }

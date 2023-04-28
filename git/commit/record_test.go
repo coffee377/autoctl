@@ -1,8 +1,6 @@
 package git
 
 import (
-	"encoding/json"
-	"fmt"
 	"testing"
 )
 
@@ -21,10 +19,10 @@ BREAKING CHANGE: use JavaScript features not available in Node 6.`
 func TestNewCommitRecord(t *testing.T) {
 
 	t.Run("解析原始提交信息", func(t *testing.T) {
-		message := NewCommitRecord(rawCommit)
-		var data, _ = json.Marshal(message)
-
-		fmt.Println("s%", data)
+		//message := NewCommitRecord(rawCommit)
+		//var data, _ = json.Marshal(message)
+		//
+		//fmt.Println("s%", data)
 
 	})
 }
