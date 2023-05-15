@@ -1,4 +1,4 @@
-package semver
+package lib
 
 import (
 	"regexp"
@@ -34,4 +34,13 @@ func NewIdentifier(identifier string) Identifier {
 		res.Num, _ = strconv.ParseUint(identifier, 10, 64)
 	}
 	return res
+}
+
+func parseIdentifiers(str string) []Identifier {
+	splits := strings.Split(str, ".")
+	identifiers := make([]Identifier, 0, len(splits))
+	for _, split := range splits {
+		identifiers = append(identifiers, NewIdentifier(split))
+	}
+	return identifiers
 }

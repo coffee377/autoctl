@@ -1,4 +1,4 @@
-package semver
+package lib
 
 // ReleaseType 发布类型
 type ReleaseType int

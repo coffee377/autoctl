@@ -1,4 +1,4 @@
-package semver
+package lib
 
 import (
 	"math/rand"
@@ -31,11 +31,11 @@ func TestVersionsSortAsc(t *testing.T) {
 	Shuffle(c)
 
 	// 排序
-	v := make([]Version, 0, len(c))
+	v := make(SemVerSlice, 0, len(c))
 	for _, version := range versions {
 		v = append(v, NewVersion(version))
 	}
-	Sort(v, false)
+	v.Sort()
 
 	// 实际结果
 	var actual strings.Builder
@@ -62,11 +62,11 @@ func TestVersionsSortDesc(t *testing.T) {
 	Shuffle(c)
 
 	// 排序
-	v := make([]Version, 0, len(c))
+	v := make(SemVerSlice, 0, len(c))
 	for _, version := range versions {
 		v = append(v, NewVersion(version))
 	}
-	Sort(v, true)
+	v.SortDesc()
 
 	// 实际结果
 	var actual strings.Builder
