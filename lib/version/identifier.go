@@ -18,7 +18,13 @@ func (identifier Identifier) Compare(other Identifier) int {
 	} else if !identifier.IsNumeric && other.IsNumeric {
 		return 1
 	} else if identifier.IsNumeric && other.IsNumeric {
-		return int(identifier.Num - other.Num)
+		if identifier.Num < other.Num {
+			return -1
+		} else if identifier.Num > other.Num {
+			return 1
+		} else {
+			return 0
+		}
 	} else {
 		return strings.Compare(identifier.Raw, other.Raw)
 	}

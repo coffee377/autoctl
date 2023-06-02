@@ -15,6 +15,7 @@ func TestComparatorIdentifier(t *testing.T) {
 		{[]string{"a", "b"}, "<"},
 		{[]string{"a", "A"}, ">"},
 		{[]string{"a", "B"}, ">"},
+		{[]string{"1", "11"}, "<"},
 	}
 	for _, test := range tests {
 		i1 := NewIdentifier(test.c[0])
