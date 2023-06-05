@@ -87,26 +87,26 @@ func (v *version) Increment(release ReleaseType, identifier string, identifierBa
 		v.patch = 0
 		v.minor = 0
 		v.major++
-		v.Increment(Pre, identifier, identifierBase)
+		v.Increment(pre, identifier, identifierBase)
 		break
 	case PreMinor:
 		v.resetPreRelease()
 		v.patch = 0
 		v.minor++
-		v.Increment(Pre, identifier, identifierBase)
+		v.Increment(pre, identifier, identifierBase)
 		break
 	case PrePatch:
 		// 如果这已经是一个预发行版，它将会在下一个版本中删除任何可能已经存在的预发行版，因为它们在这一点上是不相关的
 		v.resetPreRelease()
 		v.Increment(Patch, identifier, identifierBase)
-		v.Increment(Pre, identifier, identifierBase)
+		v.Increment(pre, identifier, identifierBase)
 		break
 	case PreRelease:
 		// 如果输入是一个非预发布版本，其作用与 PrePatch 相同
 		if !v.isPreRelease() {
 			v.Increment(Patch, identifier, identifierBase)
 		}
-		v.Increment(Pre, identifier, identifierBase)
+		v.Increment(pre, identifier, identifierBase)
 		break
 	case Major:
 		// 如果这是一个 pre-major 版本，升级到相同的 major 版本，否则递增 major
@@ -135,7 +135,7 @@ func (v *version) Increment(release ReleaseType, identifier string, identifierBa
 			v.patch++
 		}
 		v.resetPreRelease()
-	case Pre:
+	case pre:
 		base := "0"
 		if identifierBase {
 			base = "1"
@@ -187,12 +187,7 @@ func (v *version) Increment(release ReleaseType, identifier string, identifierBa
 }
 
 func (v *version) String() string {
-	buffer := make([]byte, 0, 5)
-	buffer = strconv.AppendUint(buffer, v.major, 10)
-	buffer = append(buffer, '.')
-	buffer = strconv.AppendUint(buffer, v.minor, 10)
-	buffer = append(buffer, '.')
-	buffer = strconv.AppendUint(buffer, v.patch, 10)
+	buffer := v.versionBase()
 
 	if len(v.preRelease) > 0 {
 		buffer = append(buffer, '-')
@@ -219,13 +214,18 @@ func (v *version) String() string {
 
 // FinalizeVersion discards prerelease and build number and only returns major, minor and patch number.
 func (v *version) FinalizeVersion() string {
-	b := make([]byte, 0, 5)
-	b = strconv.AppendUint(b, v.major, 10)
-	b = append(b, '.')
-	b = strconv.AppendUint(b, v.minor, 10)
-	b = append(b, '.')
-	b = strconv.AppendUint(b, v.patch, 10)
+	b := v.versionBase()
 	return string(b)
+}
+
+func (v *version) versionBase() []byte {
+	buffer := make([]byte, 0, 5)
+	buffer = strconv.AppendUint(buffer, v.major, 10)
+	buffer = append(buffer, '.')
+	buffer = strconv.AppendUint(buffer, v.minor, 10)
+	buffer = append(buffer, '.')
+	buffer = strconv.AppendUint(buffer, v.patch, 10)
+	return buffer
 }
 
 func (v *version) Compare(other SemVer) int {

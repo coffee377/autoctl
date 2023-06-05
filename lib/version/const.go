@@ -4,13 +4,13 @@ package lib
 type ReleaseType int
 
 const (
-	Pre        ReleaseType = 1 << 0
+	pre        ReleaseType = 1 << 0
 	Major      ReleaseType = 1 << 1
-	PreMajor               = Pre | Major
+	PreMajor               = pre | Major
 	Minor      ReleaseType = 1 << 2
-	PreMinor               = Pre | Minor
+	PreMinor               = pre | Minor
 	Patch      ReleaseType = 1 << 3
-	PrePatch               = Pre | Patch
+	PrePatch               = pre | Patch
 	PreRelease ReleaseType = 1 << 4
 )
 
