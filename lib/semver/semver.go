@@ -1,24 +1,39 @@
-package lib
+package semver
 
 import (
 	"errors"
-	"github.com/coffee377/autoctl/log"
 	"regexp"
 	"strconv"
 )
 
-type SemVer interface {
+type options struct {
+	changed        VersionChanged
+	identifier     PreReleaseIdentifier
+	identifierBase bool
+}
+
+type Option func(options *options) error
+
+type Semver interface {
 	Major() uint64
 	Minor() uint64
 	Patch() uint64
 	PreRelease() []Identifier
 	Build() []Identifier
 
-	Increment(release ReleaseType, identifier string, identifierBase bool) SemVer
+	//IncrementMajor()
+	//IncrementMinor()
+	//IncrementPatch()
+	//
+	//IncrementPreMajor(identifier PreReleaseIdentifier)
+	//IncrementPreMinor(identifier PreReleaseIdentifier)
+	//IncrementPrePatch(identifier PreReleaseIdentifier)
+
+	Increment(opts ...Option) Semver
 	String() string
 	FinalizeVersion() string
-	Compare(other SemVer) int
-	CompareWithBuildMeta(other SemVer) int
+	Compare(other Semver) int
+	CompareWithBuildMeta(other Semver) int
 }
 
 type version struct {
@@ -27,16 +42,17 @@ type version struct {
 	patch      uint64       // 修订号：向下兼容的问题修正
 	preRelease []Identifier // 先行版本号
 	build      []Identifier // 版本编译信息
+	options    *options     // 配置选项
 }
 
-// parse parses version string and returns a validated Version or error
+// parse parses version string and returns a validated Semver or error
 func parse(ver string) (version, error) {
-	reg := regexp.MustCompile(VerReg)
+	reg := regexp.MustCompile(VersionReg)
 	if !reg.MatchString(ver) {
 		return version{}, errors.New("the version number does not match the semantic version number, please refer to https://semver.org/lang/zh-CN/")
 	}
 	match := reg.FindStringSubmatch(ver)
-	v := version{}
+	v := version{options: &options{}}
 	v.major, _ = strconv.ParseUint(match[1], 10, 64)
 	v.minor, _ = strconv.ParseUint(match[2], 10, 64)
 	v.patch, _ = strconv.ParseUint(match[3], 10, 64)
@@ -50,11 +66,12 @@ func parse(ver string) (version, error) {
 	return v, nil
 }
 
-// NewVersion is an alias for Parse and returns a pointer, parses version string and returns a validated Version or error
-func NewVersion(version string) SemVer {
+// Version is an alias for Parse and returns a pointer, parses version string and returns a validated Semver or error
+func Version(version string) Semver {
 	v, err := parse(version)
 	if err != nil {
-		log.Error("the %s number does not match the semantic version number, please refer to https://semver.org/lang/zh-CN/", version)
+		//log.Error("the %s number does not match the semantic version number, please refer to https://semver.org/lang/zh-CN/", version)
+		return nil
 	}
 	return &v
 }
@@ -80,33 +97,40 @@ func (v *version) Build() []Identifier {
 }
 
 // Increment increments the version
-func (v *version) Increment(release ReleaseType, identifier string, identifierBase bool) SemVer {
-	switch release {
+func (v *version) Increment(opts ...Option) Semver {
+	for _, opt := range opts {
+		_ = opt(v.options)
+	}
+
+	switch v.options.changed {
 	case PreMajor:
 		v.resetPreRelease()
 		v.patch = 0
 		v.minor = 0
 		v.major++
-		v.Increment(pre, identifier, identifierBase)
+
+		v.Increment(withPre())
 		break
 	case PreMinor:
 		v.resetPreRelease()
 		v.patch = 0
 		v.minor++
-		v.Increment(pre, identifier, identifierBase)
+
+		v.Increment(withPre())
 		break
 	case PrePatch:
 		// 如果这已经是一个预发行版，它将会在下一个版本中删除任何可能已经存在的预发行版，因为它们在这一点上是不相关的
 		v.resetPreRelease()
-		v.Increment(Patch, identifier, identifierBase)
-		v.Increment(pre, identifier, identifierBase)
+
+		v.Increment(WithPatch())
+		v.Increment(withPre())
 		break
 	case PreRelease:
 		// 如果输入是一个非预发布版本，其作用与 PrePatch 相同
 		if !v.isPreRelease() {
-			v.Increment(Patch, identifier, identifierBase)
+			v.Increment(WithPatch())
 		}
-		v.Increment(pre, identifier, identifierBase)
+		v.Increment(withPre())
 		break
 	case Major:
 		// 如果这是一个 pre-major 版本，升级到相同的 major 版本，否则递增 major
@@ -121,8 +145,8 @@ func (v *version) Increment(release ReleaseType, identifier string, identifierBa
 		break
 	case Minor:
 		// 如果这是一个 pre-minor 版本，则升级到相同的 minor 版本，否则递增 minor
-		// 1.2.0-5 => 1.2.0
 		// 1.2.1 => 1.3.0
+		// 1.2.0-5 => 1.2.0
 		if v.patch != 0 || !v.isPreRelease() {
 			v.minor++
 		}
@@ -130,48 +154,53 @@ func (v *version) Increment(release ReleaseType, identifier string, identifierBa
 		v.resetPreRelease()
 	case Patch:
 		// 如果这不是预发布版本，它将增加补丁号 1.2.0 => to 1.2.1
-		// 如果它是一个预发布，它将上升到相同的补丁版本 1.2.0-5 => 1.2.0
 		if !v.isPreRelease() {
 			v.patch++
 		}
+		// 如果它是一个预发布，它将上升到相同的补丁版本 1.2.0-5 => 1.2.0
 		v.resetPreRelease()
 	case pre:
-		base := "0"
-		if identifierBase {
-			base = "1"
-		}
-		preReleaseIdentifiers := []Identifier{NewIdentifier(base)}
+		identifier := v.options.identifier
 
+		// 不是预发版本
 		if !v.isPreRelease() {
-			v.preRelease = preReleaseIdentifiers
+			if identifier == "" {
+				v.preRelease = []Identifier{NewIdentifier("0")}
+			} else {
+				v.preRelease = []Identifier{NewIdentifier(string(identifier))}
+			}
 		} else {
-			// 从后往前解析到第一个是数字类型的 Identifier
-			i := len(v.preRelease)
-			for ; i >= 0; i-- {
-				identifier := v.preRelease[i]
+			// 版本号递增，从后往前解析到第一个是数字类型的 Identifier
+			found := false
+			l := len(v.preRelease)
+			for i := 0; i < l; i++ {
+				identifier := v.preRelease[l-i-1]
 				if identifier.IsNumeric {
-					v.preRelease[i] = NewIdentifier(strconv.FormatUint(identifier.Num+1, 10))
+					found = true
+					v.preRelease[l-i-1] = NewIdentifier(strconv.FormatUint(identifier.Num+1, 10))
 					break
 				}
 			}
 			// 未找到含有数字的 Identifier
-			if i == -1 {
+			// 如果PreRelease数组中未找到数字类型，则在数组后追加 base
+			if !found {
 				// didn't increment anything
 				//if (identifier === this.prerelease.join('.') && identifierBase === false) {
 				//	throw new Error('invalid increment argument: identifier already exists')
 				//}
-				v.preRelease = append(v.preRelease, NewIdentifier(base))
+				v.preRelease = append(v.preRelease, NewIdentifier("1"))
 			}
-			// 如果PreRelease数组中未找到数字类型，则在数组后追加 base
+
+			// 根据 identifier
 			if identifier != "" {
 				// alpha
 				// 1.2.0-alpha => 1.2.0-alpha.1
 				// 1.2.0-beta.1 bumps to 1.2.0-beta.2,
 				// 1.2.0-beta.foo.bar 1.2.0-beta.foo or 1.2.0-beta bumps to 1.2.0-beta.0
-				prerelease := []Identifier{NewIdentifier(identifier)}
-				if identifierBase {
-					prerelease = append(prerelease, NewIdentifier(base))
-				}
+				prerelease := parseIdentifiers(string(identifier))
+				//if identifierBase {
+				//	prerelease = append(prerelease, NewIdentifier(base))
+				//}
 				if v.preRelease[0].Compare(prerelease[0]) == 0 {
 					if len(prerelease) == 1 {
 						v.preRelease = prerelease
@@ -181,7 +210,6 @@ func (v *version) Increment(release ReleaseType, identifier string, identifierBa
 				}
 			}
 		}
-		break
 	}
 	return v
 }
@@ -228,11 +256,11 @@ func (v *version) versionBase() []byte {
 	return buffer
 }
 
-func (v *version) Compare(other SemVer) int {
+func (v *version) Compare(other Semver) int {
 	return compareVersion(v, other, true)
 }
 
-func (v *version) CompareWithBuildMeta(other SemVer) int {
+func (v *version) CompareWithBuildMeta(other Semver) int {
 	return compareVersion(v, other, false)
 }
 

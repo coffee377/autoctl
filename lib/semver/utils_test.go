@@ -1,7 +1,7 @@
-package lib
+package semver
 
 import "testing"
 
 func TestListModules(t *testing.T) {
-	listModules()
+	//listModules()
 }

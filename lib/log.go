@@ -32,8 +32,13 @@ func NewStdLog(level logrus.Level) Log {
 	log := logrus.New()
 	// 以Stdout为输出，代替默认的stderr
 	log.SetOutput(os.Stdout)
-	// 设置日志等级
-	log.SetLevel(level)
+	// 设置日志等级,环境变量配置优先
+	parseLevel, err := logrus.ParseLevel(os.Getenv("LOGGER_LEVEL"))
+	if err == nil {
+		log.SetLevel(parseLevel)
+	} else {
+		log.SetLevel(level)
+	}
 	std.log = log
 	return &std
 }

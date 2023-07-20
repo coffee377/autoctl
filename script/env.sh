@@ -1,0 +1,5 @@
+ROOT=${ROOT-"$(cd "$(dirname "$0")/.." && echo "${PWD}")"}
+VENDOR_PATH=${VENDOR_PATH-"${ROOT}/vendor"}
+LIBGIT2_PATH="${VENDOR_PATH}/libgit2"
+LIBGIT2_VERSION="${LIBGIT2_VERSION:-"v1.6.4"}"
+BUILD_LIBGIT_REF="${BUILD_LIBGIT_REF:-"${LIBGIT2_VERSION}"}"

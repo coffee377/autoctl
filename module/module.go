@@ -1,12 +1,12 @@
 package module
 
 import (
-	lib "github.com/coffee377/autoctl/lib/version"
+	"github.com/coffee377/autoctl/lib/semver"
 )
 
 type Graph interface {
 	Raw() *string
 	Path() *string
 	Name() *string
-	Version() lib.SemVer
+	Version() semver.Semver
 }

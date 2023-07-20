@@ -1,0 +1,4 @@
+{{- if gt (.Args | ValidArgs | len) 0 -}}# 构建参数（注：FROM 指令之前的 ARG，只能用于 FROM 指令中）{{- end }}
+{{ range (.Args | ValidArgs) -}}
+    ARG {{ .Name }}={{ .Value.ToString }}
+{{ end -}}

@@ -7,6 +7,8 @@ interface EmojiInfo {
      * 编码
      */
     code: string,
+    codePrefix?: string
+    codeSuffix?: string
     /**
      * 名称
      */

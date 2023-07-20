@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package proto;
+
+
+message Image {
+    string registry = 1;
+    string namespace = 2;
+    string name = 3;
+    string tag = 4;
+    string digest = 5;
+}
+
+option go_package = "github.com/coffee377/lic/proto";
+
+message Stage {
+    string image = 1;
+}

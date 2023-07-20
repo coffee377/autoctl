@@ -14,6 +14,9 @@ import (
 type Plus struct {
 	Cwd     string
 	Verbose bool
+	name    string // 模块名称
+	path    string // 模块路径
+	version string // 版本
 	args    *[]string
 	cmd     *cobra.Command
 }

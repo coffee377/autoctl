@@ -4,6 +4,14 @@ import "path"
 
 // Package https://github.com/lerna/lerna/blob/main/libs/core/src/lib/package.ts
 
+type PackageManager string
+
+const (
+	NPM  PackageManager = "npm"
+	YARN PackageManager = "yarn"
+	PNPM PackageManager = "pnpm"
+)
+
 type PublishConfig struct {
 	Access    string `json:"access"`
 	Tag       string `json:"tag"`
@@ -29,7 +37,7 @@ type RawManifest struct {
 	OptionalDependencies map[string]string `json:"optionalDependencies"`
 	PeerDependencies     map[string]string `json:"peerDependencies"`
 	PublishConfig        PublishConfig     `json:"publishConfig"`
-	PackageManager       string            `json:"packageManager"`
+	PackageManager       PackageManager    `json:"packageManager"`
 	Workspaces           []string          `json:"workspaces"`
 }
 
