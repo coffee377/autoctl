@@ -1,4 +1,4 @@
-package lib
+package log
 
 import (
 	"bytes"
@@ -33,7 +33,7 @@ func NewStdLog(level logrus.Level) Log {
 	// 以Stdout为输出，代替默认的stderr
 	log.SetOutput(os.Stdout)
 	// 设置日志等级,环境变量配置优先
-	parseLevel, err := logrus.ParseLevel(os.Getenv("LOGGER_LEVEL"))
+	parseLevel, err := logrus.ParseLevel(os.Getenv("LOG_LEVEL"))
 	if err == nil {
 		log.SetLevel(parseLevel)
 	} else {

@@ -1,11 +1,10 @@
 package log
 
 import (
-	"github.com/coffee377/autoctl/lib"
 	"github.com/sirupsen/logrus"
 )
 
-var logger = lib.NewStdLog(logrus.TraceLevel)
+var logger = NewStdLog(logrus.InfoLevel)
 
 func Trace(format string, v ...interface{}) {
 	logger.TraceF(format, v...)
