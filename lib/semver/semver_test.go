@@ -52,7 +52,8 @@ func TestVersion_Increment(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := Version(test.version).Increment(test.opts...)
+		semver, _ := Version(test.version)
+		result := semver.Increment(test.opts...)
 		if result.String() != test.expected {
 			t.Errorf("version number '%s' increment, expected '%s', but '%s' got", test.version, test.expected, result.String())
 		}
@@ -61,7 +62,7 @@ func TestVersion_Increment(t *testing.T) {
 }
 
 func TestVersion_IncrementMajor(t *testing.T) {
-	v1 := Version("0.1.0")
+	v1, _ := Version("0.1.0")
 	v2 := v1.IncrementMajor()
 	if v2.String() != "1.0.0" {
 		t.Errorf("IncrementMajor 错误")

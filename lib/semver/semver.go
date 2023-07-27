@@ -72,88 +72,88 @@ func parse(ver string) (version, error) {
 }
 
 // Version is an alias for Parse and returns a pointer, parses version string and returns a validated Semver or error
-func Version(version string) Semver {
+func Version(version string) (Semver, error) {
 	v, err := parse(version)
 	if err != nil {
 		//log.Error("the %s number does not match the semantic version number, please refer to https://semver.org/lang/zh-CN/", version)
-		return nil
+		return nil, err
 	}
-	return &v
+	return &v, nil
 }
 
-func (ver *version) Major() uint64 {
-	return ver.major
+func (v *version) Major() uint64 {
+	return v.major
 }
 
-func (ver *version) Minor() uint64 {
-	return ver.minor
+func (v *version) Minor() uint64 {
+	return v.minor
 }
 
-func (ver *version) Patch() uint64 {
-	return ver.patch
+func (v *version) Patch() uint64 {
+	return v.patch
 }
 
-func (ver *version) PreRelease() []Identifier {
-	return ver.preRelease
+func (v *version) PreRelease() []Identifier {
+	return v.preRelease
 }
 
-func (ver *version) Build() []Identifier {
-	return ver.build
+func (v *version) Build() []Identifier {
+	return v.build
 }
 
 // Increment increments the version
-func (ver *version) Increment(opts ...Option) Semver {
-	v := *ver
-	increment(&v, opts...)
-	return &v
+func (v *version) Increment(opts ...Option) Semver {
+	ver := *v
+	increment(&ver, opts...)
+	return &ver
 }
 
-func (ver *version) IncrementMajor() Semver {
-	return ver.Increment(WithMajor())
+func (v *version) IncrementMajor() Semver {
+	return v.Increment(WithMajor())
 }
 
-func (ver *version) IncrementMinor() Semver {
-	return ver.Increment(WithMinor())
+func (v *version) IncrementMinor() Semver {
+	return v.Increment(WithMinor())
 }
 
-func (ver *version) IncrementPatch() Semver {
-	return ver.Increment(WithPatch())
+func (v *version) IncrementPatch() Semver {
+	return v.Increment(WithPatch())
 }
 
-func (ver *version) IncrementPreMajor(identifier PreReleaseIdentifier) Semver {
-	return ver.Increment(WithPreMinorIdentifier(identifier))
+func (v *version) IncrementPreMajor(identifier PreReleaseIdentifier) Semver {
+	return v.Increment(WithPreMinorIdentifier(identifier))
 }
 
-func (ver *version) IncrementPreMinor(identifier PreReleaseIdentifier) Semver {
-	return ver.Increment(WithPreMinorIdentifier(identifier))
+func (v *version) IncrementPreMinor(identifier PreReleaseIdentifier) Semver {
+	return v.Increment(WithPreMinorIdentifier(identifier))
 }
 
-func (ver *version) IncrementPrePatch(identifier PreReleaseIdentifier) Semver {
-	return ver.Increment(WithPrePatchIdentifier(identifier))
+func (v *version) IncrementPrePatch(identifier PreReleaseIdentifier) Semver {
+	return v.Increment(WithPrePatchIdentifier(identifier))
 }
 
-func (ver *version) IncrementPreRelease(identifier PreReleaseIdentifier) Semver {
-	return ver.Increment(WithPreReleaseIdentifier(identifier))
+func (v *version) IncrementPreRelease(identifier PreReleaseIdentifier) Semver {
+	return v.Increment(WithPreReleaseIdentifier(identifier))
 }
 
-func (ver *version) String() string {
-	buffer := ver.versionBase()
+func (v *version) String() string {
+	buffer := v.versionBase()
 
-	if len(ver.preRelease) > 0 {
+	if len(v.preRelease) > 0 {
 		buffer = append(buffer, '-')
-		buffer = append(buffer, ver.preRelease[0].Raw...)
+		buffer = append(buffer, v.preRelease[0].Raw...)
 
-		for _, pre := range ver.preRelease[1:] {
+		for _, pre := range v.preRelease[1:] {
 			buffer = append(buffer, '.')
 			buffer = append(buffer, pre.Raw...)
 		}
 	}
 
-	if len(ver.build) > 0 {
+	if len(v.build) > 0 {
 		buffer = append(buffer, '+')
-		buffer = append(buffer, ver.build[0].Raw...)
+		buffer = append(buffer, v.build[0].Raw...)
 
-		for _, build := range ver.build[1:] {
+		for _, build := range v.build[1:] {
 			buffer = append(buffer, '.')
 			buffer = append(buffer, build.Raw...)
 		}
@@ -163,36 +163,36 @@ func (ver *version) String() string {
 }
 
 // FinalizeVersion discards prerelease and build number and only returns major, minor and patch number.
-func (ver *version) FinalizeVersion() string {
-	b := ver.versionBase()
+func (v *version) FinalizeVersion() string {
+	b := v.versionBase()
 	return string(b)
 }
 
-func (ver *version) Compare(other Semver) int {
-	return compareVersion(ver, other, true)
+func (v *version) Compare(other Semver) int {
+	return compareVersion(v, other, true)
 }
 
-func (ver *version) CompareWithBuildMeta(other Semver) int {
-	return compareVersion(ver, other, false)
+func (v *version) CompareWithBuildMeta(other Semver) int {
+	return compareVersion(v, other, false)
 }
 
 // 判断是否是预发版本
-func (ver *version) isPreRelease() bool {
-	return len(ver.preRelease) > 0
+func (v *version) isPreRelease() bool {
+	return len(v.preRelease) > 0
 }
 
 // 预设版本置为空
-func (ver *version) resetPreRelease() {
-	ver.preRelease = []Identifier{}
+func (v *version) resetPreRelease() {
+	v.preRelease = []Identifier{}
 }
 
-func (ver *version) versionBase() []byte {
+func (v *version) versionBase() []byte {
 	buffer := make([]byte, 0, 5)
-	buffer = strconv.AppendUint(buffer, ver.major, 10)
+	buffer = strconv.AppendUint(buffer, v.major, 10)
 	buffer = append(buffer, '.')
-	buffer = strconv.AppendUint(buffer, ver.minor, 10)
+	buffer = strconv.AppendUint(buffer, v.minor, 10)
 	buffer = append(buffer, '.')
-	buffer = strconv.AppendUint(buffer, ver.patch, 10)
+	buffer = strconv.AppendUint(buffer, v.patch, 10)
 	return buffer
 }
 

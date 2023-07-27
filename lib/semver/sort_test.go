@@ -35,7 +35,8 @@ func TestVersionsSortAsc(t *testing.T) {
 	// 排序
 	v := make(Versions, 0, len(c))
 	for _, version := range versions {
-		v = append(v, Version(version))
+		semver, _ := Version(version)
+		v = append(v, semver)
 	}
 	v.Sort()
 
@@ -66,7 +67,8 @@ func TestVersionsSortDesc(t *testing.T) {
 	// 排序
 	v := make(Versions, 0, len(c))
 	for _, version := range versions {
-		v = append(v, Version(version))
+		semver, _ := Version(version)
+		v = append(v, semver)
 	}
 	v.SortDesc()
 
