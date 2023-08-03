@@ -31,33 +31,16 @@ func CreateDelegatingPasswordEncoder() Encoder {
 	encoders[encodingId] = BCryptPasswordEncoder()
 	encoders["ldap"] = ldapShaPasswordEncoder{}
 	encoders["MD4"] = Md4PasswordEncoder()
-	encoders["MD5"] = messageDigestPasswordEncoder{algorithm: "MD5"}
+	encoders["MD5"] = MessageDigestPasswordEncoder("MD5")
 	encoders["noop"] = NoopPasswordEncoder()
 	encoders["pbkdf2"] = Pbkdf2PasswordEncoder()
 	encoders["scrypt"] = scryptPasswordEncoder{}
-	encoders["SHA-1"] = messageDigestPasswordEncoder{algorithm: "SHA-1"}
-	encoders["SHA-256"] = messageDigestPasswordEncoder{algorithm: "SHA-256"}
+	encoders["SHA-1"] = MessageDigestPasswordEncoder("SHA-1")
+	encoders["SHA-256"] = MessageDigestPasswordEncoder("SHA-256")
 	encoders["sha256"] = standardPasswordEncoder{}
 	encoders["argon2"] = argon2PasswordEncoder{}
 	return DelegatingPasswordEncoder(encodingId, encoders, DelegatingWithIdCaseInsensitive())
 }
 
 type EncoderFactories struct {
-}
-
-func (EncoderFactories) CreateDelegatingPasswordEncoder2() Encoder {
-	encodingId := "bcrypt"
-	encoders := make(map[string]Encoder)
-	encoders[encodingId] = BCryptPasswordEncoder()
-	encoders["ldap"] = ldapShaPasswordEncoder{}
-	encoders["MD4"] = Md4PasswordEncoder()
-	encoders["MD5"] = messageDigestPasswordEncoder{algorithm: "MD5"}
-	encoders["noop"] = NoopPasswordEncoder()
-	encoders["pbkdf2"] = Pbkdf2PasswordEncoder()
-	encoders["scrypt"] = scryptPasswordEncoder{}
-	encoders["SHA-1"] = messageDigestPasswordEncoder{algorithm: "SHA-1"}
-	encoders["SHA-256"] = messageDigestPasswordEncoder{algorithm: "SHA-256"}
-	encoders["sha256"] = standardPasswordEncoder{}
-	encoders["argon2"] = argon2PasswordEncoder{}
-	return DelegatingPasswordEncoder(encodingId, encoders)
 }

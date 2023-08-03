@@ -8,10 +8,12 @@ import (
 	"strings"
 )
 
+// Deprecated
 type md4PasswordEncoder struct {
 	md4 hash.Hash
 }
 
+// Deprecated
 func Md4PasswordEncoder() Encoder {
 	return &md4PasswordEncoder{
 		md4: md4.New(),

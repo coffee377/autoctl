@@ -1,25 +1,67 @@
 package password
 
+import (
+	"encoding/base64"
+	"encoding/hex"
+	"fmt"
+	"github.com/coffee377/autoctl/lib/idp/security/keygen"
+	"strings"
+)
+
 // Deprecated
 type messageDigestPasswordEncoder struct {
-	algorithm string
+	saltGenerator      keygen.StringKeyGenerator
+	digester           Digester
+	encodeHashAsBase64 bool
 }
 
 func (e messageDigestPasswordEncoder) Encode(rawPassword string) string {
-	//TODO implement me
-	//md5 := md5.New()
-	//sha1 := sha1.New()
-	//h := sha256.New()
-	//h := sha512.New()
-	panic("implement me")
+	salt := fmt.Sprintf("{%s}", e.saltGenerator.GenerateKey())
+	return e.digest(salt, rawPassword)
 }
 
 func (e messageDigestPasswordEncoder) Matches(rawPassword string, encodedPassword string) bool {
-	//TODO implement me
-	panic("implement me")
+	salt := e.extractSalt(encodedPassword)
+	rawPasswordEncoded := e.digest(salt, rawPassword)
+	b := rawPasswordEncoded == encodedPassword
+	return b
 }
 
 func (e messageDigestPasswordEncoder) UpgradeEncoding(encodedPassword string) bool {
-	//TODO implement me
-	panic("implement me")
+	return false
+}
+
+func (e messageDigestPasswordEncoder) digest(salt string, rawPassword string) string {
+	saltedPassword := strings.Join([]string{rawPassword, salt}, "")
+	digest := e.digester.Digest([]byte(saltedPassword))
+	encoded := e.encode(digest)
+	return salt + encoded
+}
+
+func (e messageDigestPasswordEncoder) encode(digest []byte) string {
+	if e.encodeHashAsBase64 {
+		return base64.StdEncoding.EncodeToString(digest)
+	}
+	return hex.EncodeToString(digest)
+}
+
+func (e messageDigestPasswordEncoder) extractSalt(prefixEncodedPassword string) string {
+	if prefixEncodedPassword != "" {
+		start := strings.Index(prefixEncodedPassword, "{")
+		end := strings.Index(prefixEncodedPassword, "}")
+		if start == 0 && end > 0 {
+			return prefixEncodedPassword[0 : end+1]
+		}
+	}
+	return ""
+}
+
+// Deprecated
+func MessageDigestPasswordEncoder(algorithm string) Encoder {
+	encoder := &messageDigestPasswordEncoder{
+		encodeHashAsBase64: false,
+		saltGenerator:      keygen.Base64StringKeyGenerator(),
+		digester:           NewDigester(algorithm, 1),
+	}
+	return encoder
 }
