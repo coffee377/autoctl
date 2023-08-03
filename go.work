@@ -6,4 +6,5 @@ use (
 	./lib/log
 	./lib/mbt
 	./lib/semver
+	./lib/idp
 )
