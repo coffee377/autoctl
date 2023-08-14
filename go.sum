@@ -43,8 +43,9 @@ github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.4/go.mod h1:sCavSAvdzOj
 github.com/alibabacloud-go/darabonba-openapi/v2 v2.0.2/go.mod h1:5JHVmnHvGzR2wNdgaW1zDLQG8kOC4Uec8ubkMogW7OQ=
 github.com/alibabacloud-go/darabonba-openapi/v2 v2.0.4 h1:7Q2FEyqxeZeIkwYMwRC3uphxV4i7O2eV4ETe21d6lS4=
 github.com/alibabacloud-go/darabonba-openapi/v2 v2.0.4/go.mod h1:5JHVmnHvGzR2wNdgaW1zDLQG8kOC4Uec8ubkMogW7OQ=
-github.com/alibabacloud-go/debug v0.0.0-20190504072949-9472017b5c68 h1:NqugFkGxx1TXSh/pBcU00Y6bljgDPaFdh5MUSeJ7e50=
 github.com/alibabacloud-go/debug v0.0.0-20190504072949-9472017b5c68/go.mod h1:6pb/Qy8c+lqua8cFpEy7g39NRRqOWc3rOwAy8m5Y2BY=
+github.com/alibabacloud-go/debug v1.0.0 h1:3eIEQWfay1fB24PQIEzXAswlVJtdQok8f3EVN5VrBnA=
+github.com/alibabacloud-go/debug v1.0.0/go.mod h1:8gfgZCCAC3+SCzjWtY053FrOcd4/qlH6IHTI4QyICOc=
 github.com/alibabacloud-go/dingtalk v1.5.83 h1:Q2jGURfrQt55ApXz7BuGKcl33S0ePakQ/kypZEE7iBo=
 github.com/alibabacloud-go/dingtalk v1.5.83/go.mod h1:YHcf6sPhVavqMNNP8G2aFm7xD/uGEoWLeg/9IFfO/tw=
 github.com/alibabacloud-go/endpoint-util v1.1.0/go.mod h1:O5FuCALmCKs2Ff7JFJMudHs0I5EBgecXXxZRyswlEjE=
@@ -79,6 +80,12 @@ github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDk
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20200629203442-efcf912fb354/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
+github.com/coffee377/autoctl/pkg/git v0.0.0-20230814021200-7584891b7cda h1:UL7BeRUnpc+oDL7J3QhXIBOA8iMUX4N7hcghLt7vsxQ=
+github.com/coffee377/autoctl/pkg/git v0.0.0-20230814021200-7584891b7cda/go.mod h1:KDXWgvJiC2S067II6NJUPjgo37UHaRm5YphXF95Rfaw=
+github.com/coffee377/autoctl/pkg/log v0.0.0-20230814021200-7584891b7cda h1:1/usaAl65/1n0TeCduVuvo5aZIvHYUKdFXZ7uMXpEsY=
+github.com/coffee377/autoctl/pkg/log v0.0.0-20230814021200-7584891b7cda/go.mod h1:aO9Dgck3ENNw7kiPZ9duQvlKU3aiqkfzX8tJ8FjRAos=
+github.com/coffee377/autoctl/pkg/semver v0.1.0 h1:AycLDNu1qDtz4nIbsnUK1j6eJw9vXrHDcaaNE2oQcDk=
+github.com/coffee377/autoctl/pkg/semver v0.1.0/go.mod h1:xiDdJ19YLaAuqM+xrEjO28pNXUC7P59rJfCgK9lLsRQ=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=

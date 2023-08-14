@@ -6,9 +6,9 @@ require (
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.0.4
 	github.com/alibabacloud-go/dingtalk v1.5.83
 	github.com/alibabacloud-go/tea v1.1.19
-	github.com/coffee377/autoctl/pkg/git v0.0.0-00010101000000-000000000000
-	github.com/coffee377/autoctl/pkg/log v0.0.0-00010101000000-000000000000
-	github.com/coffee377/autoctl/pkg/semver v0.0.0-00010101000000-000000000000
+	github.com/coffee377/autoctl/pkg/git v0.0.0-20230814021200-7584891b7cda
+	github.com/coffee377/autoctl/pkg/log v0.0.0-20230814021200-7584891b7cda
+	github.com/coffee377/autoctl/pkg/semver v0.1.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.16.0
@@ -16,7 +16,7 @@ require (
 
 require (
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.4 // indirect
-	github.com/alibabacloud-go/debug v0.0.0-20190504072949-9472017b5c68 // indirect
+	github.com/alibabacloud-go/debug v1.0.0 // indirect
 	github.com/alibabacloud-go/gateway-dingtalk v1.0.2 // indirect
 	github.com/alibabacloud-go/openapi-util v0.1.0 // indirect
 	github.com/alibabacloud-go/tea-utils v1.3.1 // indirect
@@ -46,9 +46,3 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/coffee377/autoctl/pkg/git => ./pkg/git
-
-replace github.com/coffee377/autoctl/pkg/semver => ./pkg/semver
-
-replace github.com/coffee377/autoctl/pkg/log => ./pkg/log

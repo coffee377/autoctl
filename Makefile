@@ -1,5 +1,11 @@
 TEST_ARGS ?= --count=1
 
+.PHONY: init
+init:
+	@go work init
+	@go work use -r .
+	@go work sync
+
 #.PHONY: build_libgit2
 #build_libgit2:
 #	@./script/build_libgit2.sh
@@ -32,5 +38,5 @@ test-static: static-build/install/lib/libgit2.a
 install-static: static-build/install/lib/libgit2.a
 	go install --tags "static" ./...
 
-init:
-	git submodule add -f https://github.com/libgit2/libgit2.git vendor/libgit2
+#init:
+#	git submodule add -f https://github.com/libgit2/libgit2.git vendor/libgit2
