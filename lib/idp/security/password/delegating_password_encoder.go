@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-const defaultIdPrefix = "{"
-const defaultIdSuffix = "}"
+const defaultDelegatingIdPrefix = "{"
+const defaultDelegatingIdSuffix = "}"
 
 type delegatingPasswordEncoder struct {
 	idPrefix                         string
@@ -98,13 +98,13 @@ type DelegatingPasswordEncoderOption func(d *delegatingPasswordEncoder)
 
 func DelegatingPasswordEncoder(idForEncode string, idToPasswordEncoder map[string]Encoder, opts ...DelegatingPasswordEncoderOption) Encoder {
 	encoder := &delegatingPasswordEncoder{
-		idPrefix:                         defaultIdPrefix,
-		idSuffix:                         defaultIdSuffix,
+		idPrefix:                         defaultDelegatingIdPrefix,
+		idSuffix:                         defaultDelegatingIdSuffix,
 		idForEncode:                      idForEncode,
 		idCaseSensitive:                  true,
 		passwordEncoderForEncode:         idToPasswordEncoder[idForEncode],
 		idToPasswordEncoder:              idToPasswordEncoder,
-		defaultPasswordEncoderForMatches: unmappedIdPasswordEncoder{idPrefix: defaultIdPrefix, idSuffix: defaultIdSuffix},
+		defaultPasswordEncoderForMatches: unmappedIdPasswordEncoder{idPrefix: defaultDelegatingIdPrefix, idSuffix: defaultDelegatingIdSuffix},
 	}
 	for _, opt := range opts {
 		opt(encoder)

@@ -1,7 +1,7 @@
 package module
 
 import (
-	"github.com/coffee377/autoctl/lib/semver"
+	"github.com/coffee377/autoctl/pkg/semver"
 )
 
 type Graph interface {

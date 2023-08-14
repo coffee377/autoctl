@@ -2,7 +2,7 @@ package semver
 
 import (
 	"errors"
-	"github.com/coffee377/autoctl/lib/log"
+	"github.com/coffee377/autoctl/pkg/log"
 	"regexp"
 	"strconv"
 )

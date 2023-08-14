@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/coffee377/autoctl/git"
-	"github.com/coffee377/autoctl/log"
+	"github.com/coffee377/autoctl/pkg/git"
+	"github.com/coffee377/autoctl/pkg/log"
 	"github.com/spf13/cobra"
 	"os"
 )

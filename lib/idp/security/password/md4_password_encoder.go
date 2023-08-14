@@ -20,6 +20,10 @@ func Md4PasswordEncoder() Encoder {
 	}
 }
 
+func (e md4PasswordEncoder) GetEncodingId() string {
+	return "MD4"
+}
+
 func (e md4PasswordEncoder) Encode(rawPassword string) string {
 	e.md4.Reset()
 	_, err := io.WriteString(e.md4, rawPassword)

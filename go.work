@@ -2,9 +2,10 @@ go 1.18
 
 use (
 	.
-	./lib/code
-	./lib/log
-	./lib/mbt
-	./lib/semver
 	./lib/idp
+	./pkg/code
+	./pkg/git
+	./pkg/log
+	./pkg/mbt
+	./pkg/semver
 )

@@ -5,7 +5,7 @@ import (
 	dingtalkim10 "github.com/alibabacloud-go/dingtalk/im_1_0"
 	oauth21 "github.com/alibabacloud-go/dingtalk/oauth2_1_0"
 	"github.com/alibabacloud-go/tea/tea"
-	"github.com/coffee377/autoctl/lib/log"
+	"github.com/coffee377/autoctl/pkg/log"
 )
 
 // GetAccessToken 获取企业内部应用的accessToken

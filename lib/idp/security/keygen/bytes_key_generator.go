@@ -10,7 +10,7 @@ type BytesKeyGenerator interface {
 	// Unique keys are at least 8 bytes in length.
 	GetKeyLength() int
 
-	setKeyLength(length int)
+	SetKeyLength(length int)
 
 	// GenerateKey Generate a new key.
 	GenerateKey() []byte
@@ -25,7 +25,7 @@ func (g *secureRandomBytesKeyGenerator) GetKeyLength() int {
 	return g.keyLength
 }
 
-func (g *secureRandomBytesKeyGenerator) setKeyLength(length int) {
+func (g *secureRandomBytesKeyGenerator) SetKeyLength(length int) {
 	g.keyLength = length
 	if length <= 0 {
 		g.keyLength = 8
@@ -62,7 +62,7 @@ func RandomBytesKeyGenerator(opts ...BytesKeyGeneratorOption) BytesKeyGenerator 
 
 func RandomWithKeyLength(length int) BytesKeyGeneratorOption {
 	return func(g *secureRandomBytesKeyGenerator) {
-		g.setKeyLength(length)
+		g.SetKeyLength(length)
 	}
 }
 

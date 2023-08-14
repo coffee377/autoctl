@@ -48,7 +48,7 @@ func Base64WithURLEncoder() Base64StringKeyGeneratorOption {
 
 func Base64WithKeyLength(length int) Base64StringKeyGeneratorOption {
 	return func(generator *base64StringKeyGenerator) {
-		generator.keyGenerator.setKeyLength(length)
+		generator.keyGenerator.SetKeyLength(length)
 	}
 }
 

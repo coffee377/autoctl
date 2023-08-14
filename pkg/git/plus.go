@@ -4,8 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	git "github.com/coffee377/autoctl/git/commit"
-	"github.com/coffee377/autoctl/log"
+	"github.com/coffee377/autoctl/pkg/git/commit"
+
+	"github.com/coffee377/autoctl/pkg/log"
 	"github.com/spf13/cobra"
 	"os/exec"
 	"strings"

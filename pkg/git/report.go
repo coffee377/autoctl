@@ -1,6 +1,6 @@
 package git
 
-import git "github.com/coffee377/autoctl/git/commit"
+import "github.com/coffee377/autoctl/pkg/git/commit"
 
 type ChangeLog struct {
 	NameTags string

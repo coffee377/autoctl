@@ -38,9 +38,6 @@ func CreateDelegatingPasswordEncoder() Encoder {
 	encoders["SHA-1"] = MessageDigestPasswordEncoder("SHA-1")
 	encoders["SHA-256"] = MessageDigestPasswordEncoder("SHA-256")
 	encoders["sha256"] = standardPasswordEncoder{}
-	encoders["argon2"] = argon2PasswordEncoder{}
+	encoders["argon2"] = Argon2PasswordEncoder()
 	return DelegatingPasswordEncoder(encodingId, encoders, DelegatingWithIdCaseInsensitive())
-}
-
-type EncoderFactories struct {
 }

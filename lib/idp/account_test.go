@@ -1,6 +1,7 @@
 package idp
 
 import (
+	"github.com/coffee377/autoctl/lib/idp/plugin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -21,19 +22,22 @@ func Test_MySql(d *testing.T) {
 	}
 	mysqlDialect := mysql.New(config)
 	db, err := gorm.Open(mysqlDialect, &gorm.Config{
-		DryRun: true,
+		DryRun: false,
 		NamingStrategy: schema.NamingStrategy{
 			TablePrefix:   "idp_",
 			SingularTable: true,
 		},
+
 		Logger: logger.Default.LogMode(logger.Warn),
 	})
 	if err != nil {
 		panic("failed to connect database")
 	}
 
+	db.Use(plugin.NewCryptoPlugin())
+
 	// 迁移 schema
-	err = db.AutoMigrate(&Account{}, &AccountFederation{}, &AccountFederationProvider{})
+	//err = db.AutoMigrate(&Account{}, &AccountFederation{}, &AccountFederationProvider{})
 	if err != nil {
 		panic("failed to auto migrate")
 	}
@@ -48,5 +52,7 @@ func Test_MySql(d *testing.T) {
 	}
 
 	// Update - 将 account 的 password 更新为 123456
-	db.Debug().Model(&account).Where("username = ?", "coffee377").Update("password", "123456")
+	//db.Debug().Model(&account).Where("username = ?", "coffee377").Update("password", "888888")
+	// 更新密码
+	db.Debug().Model(&account).Select("Password", "CryptoType", "CryptoSalt").Updates(&Account{Password: "test"})
 }

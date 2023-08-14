@@ -32,3 +32,5 @@ autoctl is powered by these awesome libraries
 - [cobra](https://github.com/spf13/cobra)
 - [git2go](https://github.com/libgit2/git2go)
 - [logrus](https://github.com/sirupsen/logrus)
+- https://www.jianshu.com/p/7de5ff67af43
+- https://github.com/golang-standards/project-layout/blob/master/README_zh.md
