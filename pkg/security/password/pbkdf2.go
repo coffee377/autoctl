@@ -7,7 +7,7 @@ import (
 	"crypto/sha512"
 	"encoding/base64"
 	"encoding/hex"
-	"github.com/coffee377/autoctl/lib/idp/security/keygen"
+	"github.com/coffee377/autoctl/pkg/security/keygen"
 	"golang.org/x/crypto/pbkdf2"
 	"hash"
 	"strings"

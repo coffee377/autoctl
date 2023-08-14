@@ -1,7 +1,7 @@
 package plugin
 
 import (
-	"github.com/coffee377/autoctl/lib/idp/security/password"
+	"github.com/coffee377/autoctl/pkg/security/password"
 	"github.com/spf13/cast"
 	"gorm.io/gorm"
 	"reflect"

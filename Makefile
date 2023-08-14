@@ -2,6 +2,7 @@ TEST_ARGS ?= --count=1
 
 .PHONY: init
 init:
+	@rm go.work go.work.sum
 	@go work init
 	@go work use -r .
 	@go work sync

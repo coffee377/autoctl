@@ -4,7 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
-	"github.com/coffee377/autoctl/lib/idp/security/keygen"
+	"github.com/coffee377/autoctl/pkg/security/keygen"
 	"strings"
 )
 

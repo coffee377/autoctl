@@ -1,7 +1,7 @@
 package password
 
 import (
-	"github.com/coffee377/autoctl/lib/idp/security/keygen"
+	"github.com/coffee377/autoctl/pkg/security/keygen"
 	"golang.org/x/crypto/argon2"
 )
 
