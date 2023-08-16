@@ -1,6 +1,8 @@
 package idp
 
-import "time"
+import (
+	"time"
+)
 
 type Account struct {
 	Id         uint      `json:"id,omitempty" gorm:"type:int;primaryKey"`
@@ -18,4 +20,7 @@ type Account struct {
 	UpdatedBy  uint      `json:"updated_by,omitempty"`                                                               // 更新人
 	UpdatedAt  time.Time `json:"updated_at,omitempty"`                                                               // 更新时间
 	Flag       bool      `json:"flag,omitempty"`                                                                     // 逻辑删除标识
+}
+
+type Identity struct {
 }

@@ -1,7 +1,6 @@
-package plugin
+package cropto
 
 import (
-	"github.com/coffee377/autoctl/pkg/log"
 	"gorm.io/gorm"
 	"reflect"
 )
@@ -28,33 +27,5 @@ func callMethod(db *gorm.DB, fc func(value interface{}, tx *gorm.DB) bool) {
 				_ = db.AddError(gorm.ErrInvalidValue)
 			}
 		}
-	}
-}
-
-// BeforeCreatePassword before update password hooks
-func BeforeCreatePassword(plugin CryptoPlugin) func(db *gorm.DB) {
-	return func(db *gorm.DB) {
-		//if db.Error == nil && db.Statement.Schema != nil && !db.Statement.SkipHooks {
-		//	fields := db.Statement.Schema.Fields
-		//	for i, field := range fields {
-		//		field.Set
-		//	}
-		//}
-
-	}
-}
-
-// BeforeUpdatePassword before update password hooks
-func BeforeUpdatePassword(db *gorm.DB) func(db *gorm.DB) {
-	return func(db *gorm.DB) {
-		if db.Error == nil && db.Statement.Schema != nil && !db.Statement.SkipHooks {
-			callMethod(db, func(value interface{}, tx *gorm.DB) (called bool) {
-				log.Warn("%v", value)
-
-				//	db.AddError(i.BeforeUpdate(tx))
-				return called
-			})
-		}
-
 	}
 }

@@ -1,4 +1,4 @@
-package cmd
+package changelog
 
 import (
 	"github.com/coffee377/autoctl/pkg/git"
@@ -32,7 +32,7 @@ var changelogCmd = &cobra.Command{
 	Short: "command for git to generate logs",
 	Run: func(cmd *cobra.Command, args []string) {
 		//var err error
-		gitPlus := git.Plus{Cwd: rootOpts.cwd, Verbose: rootOpts.verbose}
+		gitPlus := git.Plus{Cwd: "rootOpts.cwd", Verbose: false}
 		// 1. 拉取最新代码
 		if logOpts.fetch {
 			gitPlus.FetchAll()
@@ -55,7 +55,7 @@ var changelogCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(changelogCmd)
+	//rootCmd.AddCommand(changelogCmd)
 
 	// 是否获取所有远程参考最新代码
 	changelogCmd.Flags().BoolVar(&logOpts.fetch, "fetch", false, "fetch the latest commits and tags for all branches")

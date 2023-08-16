@@ -1,61 +1,11 @@
-package plugin
+package cropto
 
 import (
-	"github.com/coffee377/autoctl/pkg/security/password"
 	"github.com/spf13/cast"
 	"gorm.io/gorm"
 	"reflect"
 	"strings"
 )
-
-const (
-	// Name gorm plugin name
-	Name = "crypto"
-	// CryptoTag struct tag name
-	CryptoTag = "crypto"
-)
-
-type CryptoPlugin struct {
-	passwordEncoder password.Encoder
-}
-
-type Password interface {
-	BeforeUpdate(*gorm.DB)
-	//AfterUpdate(*gorm.DB) error
-}
-
-func NewCryptoPlugin() *CryptoPlugin {
-	return &CryptoPlugin{
-		password.CreateDelegatingPasswordEncoder(),
-	}
-}
-
-func (c CryptoPlugin) Name() string {
-	return Name
-}
-
-func (c CryptoPlugin) Initialize(db *gorm.DB) error {
-	createCallback := db.Callback().Create()
-	_ = createCallback.Before("gorm:create").Register("crypt_plugin:before_create", BeforeCreatePassword(c))
-
-	updateCallback := db.Callback().Update()
-	_ = updateCallback.Before("gorm:update").Register("crypt_plugin:before_update", EncryptPasswordBeforeUpdate(c))
-	return nil
-}
-
-func (c CryptoPlugin) BeforeUpdate(db *gorm.DB) {
-	//TODO implement me
-	panic("implement me")
-}
-
-type CryptoField struct {
-	structField     reflect.StructField
-	Type            string
-	TypeStorageName string
-	Salt            string
-	SaltStorageName string
-	Value           interface{}
-}
 
 func parsingCryptoField(structField reflect.StructField, value interface{}) (*CryptoField, bool) {
 	tag := structField.Tag.Get(CryptoTag)
@@ -121,7 +71,20 @@ func parsingCryptoField(structField reflect.StructField, value interface{}) (*Cr
 	return nil, false
 }
 
-func EncryptPasswordBeforeUpdate(plugin CryptoPlugin) func(db *gorm.DB) {
+func getReflectElem(i interface{}) (reflect.Type, reflect.Value) {
+	destType := reflect.TypeOf(i)
+	destValue := reflect.ValueOf(i)
+
+	for destType.Kind() == reflect.Pointer {
+		destType = destType.Elem()
+		destValue = destValue.Elem()
+	}
+
+	return destType, destValue
+}
+
+// BeforeUpdatePassword before update password hooks
+func BeforeUpdatePassword(plugin CryptoPlugin) func(db *gorm.DB) {
 	return func(db *gorm.DB) {
 		dbSchema := db.Statement.Schema
 		if db.Error == nil && dbSchema != nil {
@@ -187,16 +150,4 @@ func EncryptPasswordBeforeUpdate(plugin CryptoPlugin) func(db *gorm.DB) {
 			}
 		}
 	}
-}
-
-func getReflectElem(i interface{}) (reflect.Type, reflect.Value) {
-	destType := reflect.TypeOf(i)
-	destValue := reflect.ValueOf(i)
-
-	for destType.Kind() == reflect.Pointer {
-		destType = destType.Elem()
-		destValue = destValue.Elem()
-	}
-
-	return destType, destValue
 }

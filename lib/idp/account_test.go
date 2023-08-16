@@ -1,11 +1,12 @@
 package idp
 
 import (
-	"github.com/coffee377/autoctl/lib/idp/plugin"
+	"github.com/coffee377/autoctl/pkg/gorm/cropto"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
+	"math/big"
 	"testing"
 )
 
@@ -34,9 +35,10 @@ func Test_MySql(d *testing.T) {
 		panic("failed to connect database")
 	}
 
-	db.Use(plugin.NewCryptoPlugin())
+	_ = db.Use(cropto.New())
 
 	// 迁移 schema
+	db.Migrator().DropTable("")
 	//err = db.AutoMigrate(&Account{}, &AccountFederation{}, &AccountFederationProvider{})
 	if err != nil {
 		panic("failed to auto migrate")
@@ -55,4 +57,26 @@ func Test_MySql(d *testing.T) {
 	//db.Debug().Model(&account).Where("username = ?", "coffee377").Update("password", "888888")
 	// 更新密码
 	db.Debug().Model(&account).Select("Password", "CryptoType", "CryptoSalt").Updates(&Account{Password: "test"})
+}
+
+func TestBigInt(t *testing.T) {
+	//zero := big.NewInt(0)
+	one := big.NewInt(1)
+	//for i := 0; i < 64; i++ {
+	//	res := zero.Lsh(one, uint(i)) // 1 << 0
+	//	t.Logf("1\t<<\t%v\t=>\t十进制:%s\t16进制:\t%s\t", i, res.Text(2), res.Text(16))
+	//}
+
+	r := new(big.Int)
+	r.Lsh(one, 2)
+	t.Log(r.String())
+	r2 := new(big.Int)
+
+	r2.Or(r2, r)
+	t.Log(r2)
+	//authorities.b.Or(authorities.b, r)
+
+	// 添加权限
+	//zero.Or()
+
 }
