@@ -67,7 +67,7 @@ type Repo interface {
 	// BlobContentsByPath gets the blob contents from a specific git tree.
 	BlobContentsFromTree(commit Commit, path string) ([]byte, error)
 	// EntryID of a git object in path.
-	// ID is resolved from the commit tree of the specified commit.
+	// Id is resolved from the commit tree of the specified commit.
 	EntryID(commit Commit, path string) (string, error)
 	// BranchCommit returns the last commit for the specified branch.
 	BranchCommit(name string) (Commit, error)

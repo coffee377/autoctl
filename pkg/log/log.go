@@ -32,6 +32,7 @@ func NewStdLog(level logrus.Level) Log {
 	log := logrus.New()
 	// 以Stdout为输出，代替默认的stderr
 	log.SetOutput(os.Stdout)
+	log.SetFormatter(&std)
 	// 设置日志等级,环境变量配置优先
 	parseLevel, err := logrus.ParseLevel(os.Getenv("LOG_LEVEL"))
 	if err == nil {
@@ -53,8 +54,11 @@ func (l *stdLog) Format(entry *logrus.Entry) ([]byte, error) {
 	}
 
 	timestamp := entry.Time.Format("2006/01/02 15:04:05")
-	var newLog string
-	newLog = fmt.Sprintf("[%s] [\t%s\t] %s\n", timestamp, entry.Level.String(), entry.Message)
+	level := entry.Level.String()
+	if level == "warning" {
+		level = "warn"
+	}
+	newLog := fmt.Sprintf("[%s] [ %s ] %s\n", timestamp, level, entry.Message)
 	b.WriteString(newLog)
 	return b.Bytes(), nil
 }
