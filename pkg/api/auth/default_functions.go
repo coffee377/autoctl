@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/coffee377/autoctl/pkg/log"
 	"github.com/todocoder/go-stream/stream"
+	"math"
 	"math/big"
 	"strconv"
 	"strings"
@@ -46,16 +47,22 @@ func (f *defaultFunctions) Has(authority any) bool {
 		switch res := authority.(type) {
 		case IAuthority:
 			auth = res.Get()
-			log.Warn("%T => %v", res, res)
 			break
 		case FunctionPoint:
 			auth = new(big.Int).Lsh(One, res.GetPosition()-1)
 		case string:
 			auth, _ = new(big.Int).SetString(res, 0)
-			log.Warn("%T => %v %s", res, res, auth.String())
 			break
 		default:
 
+		}
+
+		if log.IsDebugEnabled() {
+			t1 := f.data.Text(2)
+			t2 := auth.Text(2)
+			l := math.Max(float64(len(t1)), float64(len(t2)))
+			format := strings.Join([]string{"%0", strconv.Itoa(int(l)), "s"}, "")
+			log.Debug("%s & %s", fmt.Sprintf(format, t1), fmt.Sprintf(format, t2))
 		}
 
 		return has(f.data, auth)
