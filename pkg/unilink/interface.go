@@ -29,4 +29,11 @@ type App struct {
 	Icon string
 }
 
+type AppInstance interface {
+	GetId() uint64
+	GetBaseUrl() string
+	GeTHomePageUri() string
+	GetConfig() map[string]any
+}
+
 //type

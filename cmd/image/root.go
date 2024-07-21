@@ -36,6 +36,8 @@ func NewImageCmd(opts RootOptions) (imageCmd *cobra.Command) {
 	imageCmd.PersistentFlags().StringVarP(&opts.config, "config", "c", "", "config file (default is $HOME/image.yaml)")
 	imageCmd.PersistentFlags().BoolVarP(&opts.verbose, "verbose", "v", false, "verbose output")
 
+	imageCmd.AddCommand(NewImagePullCmd())
+
 	return imageCmd
 }
 
@@ -72,7 +74,6 @@ func initConfig(cfgFile, configName string) {
 
 	if err = viper.ReadInConfig(); err != nil {
 		//fmt.Println("Can't read config:", err)
-		//fmt.Println("初始化默认配置")
 		log.Info("初始化默认配置")
 
 		//filename := path.Join(home, "automation.yaml")

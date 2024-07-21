@@ -27,7 +27,7 @@ type Encoder interface {
 // CreateDelegatingPasswordEncoder https://docs.oracle.com/en/java/javase/11/docs/specs/security/standard-names.html#messagedigest-algorithms
 func CreateDelegatingPasswordEncoder() Encoder {
 	encodingId := "bcrypt"
-	encoders := make(map[string]Encoder)
+	encoders := make(map[string]Encoder, 11)
 	encoders[encodingId] = BCryptPasswordEncoder()
 	encoders["ldap"] = ldapShaPasswordEncoder{}
 	encoders["MD4"] = Md4PasswordEncoder()
