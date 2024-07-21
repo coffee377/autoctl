@@ -3,15 +3,15 @@ package dingtalk
 import (
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
 	oauth21 "github.com/alibabacloud-go/dingtalk/oauth2_1_0"
+	"github.com/coffee377/autoctl/pkg/log"
 )
 
-//type EventSubscription struct {
-//	aesKey string
-//	token  string
-//	url    string
-//}
+type AccessToken interface {
+	GetAccessToken() string
+}
 
-type Base struct {
+type App struct {
+	Id string
 	/**
 	 * 应用名称
 	 */
@@ -23,47 +23,33 @@ type Base struct {
 	/**
 	 * 应用的 Key
 	 */
-	AppKey string
+	ClientKey string
 	/**
 	 * 应用的密钥
 	 */
-	AppSecret string
+	ClientSecret string
+
+	/**
+	 * 应用机器人编码
+	 */
+	RobotCode string
+	// 是否主应用
+	Primary bool
 }
 
-type AccessToken interface {
-	GetAccessToken() string
-}
-
-type App struct {
-	Base
-	//Primary           bool
-	//eventSubscription EventSubscription
-}
-
+// GetAccessToken 获取企业内部应用的accessToken
 func (a *App) GetAccessToken() string {
+	// todo 使用 redis 缓存 access token
 	config := new(openapi.Config)
 	config.SetProtocol("https")
 	config.SetRegionId("central")
 	client, _ := oauth21.NewClient(config)
 
 	request := new(oauth21.GetAccessTokenRequest)
-	request.SetAppKey(a.AppKey)
-	request.SetAppSecret(a.AppSecret)
+	request.SetAppKey(a.ClientKey)
+	request.SetAppSecret(a.ClientSecret)
 	response, _ := client.GetAccessToken(request)
 	accessToken := response.Body.AccessToken
-	//log.Debug("AccessToken: %s", *accessToken)
+	log.Info("AccessToken: %s", *accessToken)
 	return *accessToken
 }
-
-//type Robot struct {
-//	Base
-//}
-//
-//type DingTalk struct {
-//	CorpId string
-//	Apps   []App
-//}
-//
-//type IDingTalk interface {
-//	GetApps() []App
-//}

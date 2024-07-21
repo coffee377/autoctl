@@ -3,10 +3,10 @@ module github.com/coffee377/autoctl
 go 1.18
 
 require (
-	github.com/alibabacloud-go/darabonba-openapi/v2 v2.0.4
-	github.com/alibabacloud-go/dingtalk v1.5.83
-	github.com/alibabacloud-go/tea v1.1.19
-	github.com/alibabacloud-go/tea-utils/v2 v2.0.4
+	github.com/alibabacloud-go/darabonba-openapi/v2 v2.0.6
+	github.com/alibabacloud-go/dingtalk v1.6.71
+	github.com/alibabacloud-go/tea v1.2.1
+	github.com/alibabacloud-go/tea-utils/v2 v2.0.5
 	github.com/coffee377/autoctl/pkg/git v0.0.0-20230814021200-7584891b7cda
 	github.com/coffee377/autoctl/pkg/log v0.0.0-20230814021200-7584891b7cda
 	github.com/coffee377/autoctl/pkg/semver v0.1.0
@@ -24,8 +24,8 @@ require (
 	github.com/alibabacloud-go/gateway-dingtalk v1.0.2 // indirect
 	github.com/alibabacloud-go/openapi-util v0.1.0 // indirect
 	github.com/alibabacloud-go/tea-utils v1.3.1 // indirect
-	github.com/alibabacloud-go/tea-xml v1.1.2 // indirect
-	github.com/aliyun/credentials-go v1.1.2 // indirect
+	github.com/alibabacloud-go/tea-xml v1.1.3 // indirect
+	github.com/aliyun/credentials-go v1.3.1 // indirect
 	github.com/avast/retry-go/v4 v4.3.0 // indirect
 	github.com/clbanning/mxj/v2 v2.5.5 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -54,6 +54,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
+	github.com/open-dingtalk/dingtalk-stream-sdk-go v0.9.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
