@@ -1,4 +1,3 @@
-// This file is auto-generated, don't edit it. Thanks.
 package dingtalk
 
 import (
@@ -55,12 +54,15 @@ func (c Card) Create(templateId string) (string, error) {
 	request.SetCallbackType("STREAM")
 	request.SetCardData(&card10.CreateCardRequestCardData{
 		CardParamMap: map[string]*string{
-			"title":       tea.String("xxx提交的财务报销"),
-			"type":        tea.String("差旅费"),
-			"amount":      tea.String("1000元"),
-			"reason":      tea.String("出差费用"),
-			"lastMessage": tea.String("审批"),
-			"created_at":  tea.String(createdAt.Format(time.DateTime)),
+			"title":           tea.String("CI/CD"),
+			"abstract":        tea.String("CI/CD投出提示"),
+			"env_name":        tea.String("测试环境"),
+			"env_color":       tea.String("orange"),
+			"stage":           tea.String("Maven 构建"),
+			"consumeTime":     tea.String("8h8min"),
+			"status":          tea.String("出差费用"),
+			"createdAt":       tea.String(createdAt.Format(time.DateTime)),
+			"sys_lastMessage": tea.String("审批"),
 		},
 	})
 
@@ -87,12 +89,18 @@ func (c Card) CreateAndDeliver(templateId string) (*card10.CreateAndDeliverRespo
 	request.SetCallbackType("STREAM")
 	request.SetCardData(&card10.CreateAndDeliverRequestCardData{
 		CardParamMap: map[string]*string{
-			"name":        tea.String("朱小志"),
-			"type":        tea.String("差旅费"),
-			"amount":      tea.String("100.00"),
-			"reason":      tea.String("出差费用"),
-			"lastMessage": tea.String("审批"),
-			"created_at":  tea.String(createdAt.Format(time.DateTime)),
+			"title":               tea.String("CI/CD"),
+			"abstract":            tea.String("CI/CD透出提示"),
+			"sys_lastMessageI18n": tea.String("{\"zh_CN\":\"蚂蚁分工\",\"zh_TW\":\"螞蟻分工\",\"zh_HK\":\"螞蟻分工\",\"ja_JP\":\"アリの分業\",\"en_US\":\"Ant division of labor\"}"),
+			//"env":                 tea.String("{\"name\": \"测试环境\",\"color\": \"orange\"}"),
+			"env":         tea.String("{\"name\": \"预生产环境\",\"color\": \"green\"}"),
+			"stage":       tea.String("Maven 构建"),
+			"consumeTime": tea.String("8h8min"),
+			"status":      tea.String("2"),
+			"createdAt":   tea.String(createdAt.Format(time.DateTime)),
+			"buildable":   tea.String("true"),
+			"deployable":  tea.String("false"),
+			"reversible":  tea.String("false"),
 		},
 	})
 	request.SetPrivateData(map[string]*card10.PrivateDataValue{
@@ -110,7 +118,10 @@ func (c Card) CreateAndDeliver(templateId string) (*card10.CreateAndDeliverRespo
 	//})
 	//request.SetImGroupOpenDeliverModel(&card10.CreateAndDeliverRequestImGroupOpenDeliverModel{
 	//	RobotCode:  tea.String(c.app.RobotCode),
-	//	Recipients: tea.StringSlice([]string{"02140408367343"}),
+	//	Recipients: tea.StringSlice([]string{"02140408367343", "016729230300631918553"}),
+	//	AtUserIds: map[string]*string{
+	//		"02140408367343": tea.String("test"),
+	//	},
 	//})
 
 	// 2. 群置顶卡片（吊顶）
@@ -119,7 +130,7 @@ func (c Card) CreateAndDeliver(templateId string) (*card10.CreateAndDeliverRespo
 	//	SpaceType: tea.String("ONE_BOX"),
 	//})
 	//request.SetTopOpenDeliverModel(&card10.CreateAndDeliverRequestTopOpenDeliverModel{
-	//	ExpiredTimeMillis: tea.Int64(time.Now().Add(time.Second * 60).UnixMilli()),
+	//	ExpiredTimeMillis: tea.Int64(time.Now().Add(time.Second * 10).UnixMilli()),
 	//	UserIds:           tea.StringSlice([]string{"02140408367343"}),
 	//})
 

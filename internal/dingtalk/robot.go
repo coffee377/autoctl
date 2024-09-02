@@ -9,11 +9,6 @@ import (
 	"time"
 )
 
-const (
-	cardTemplateId = "49528a07-0818-4306-9066-4e9775744bf1.schema"
-	robotCode      = "dingybihm3fg4sjh3dtx"
-)
-
 type Robot struct {
 	app    *App
 	client *dingtalkim10.Client
@@ -39,7 +34,8 @@ const (
 )
 
 // SendCardMessage https://open.dingtalk.com/document/orgapp/send-interactive-dynamic-cards-1
-func (r Robot) SendCardMessage(chatType ChatType) (string, error) {
+// 机器人发送的互动卡片没有流式回调
+func (r Robot) SendCardMessage(chatType ChatType, cardTemplateId string) (string, error) {
 	accessToken := r.app.GetAccessToken()
 	headers := &dingtalkim10.SendInteractiveCardHeaders{}
 	headers.SetXAcsDingtalkAccessToken(accessToken)
@@ -66,12 +62,15 @@ func (r Robot) SendCardMessage(chatType ChatType) (string, error) {
 	// 卡片模板数据
 	cardData := &dingtalkim10.SendInteractiveCardRequestCardData{
 		CardParamMap: map[string]*string{
-			"title":       tea.String("朱小志提交的财务报销"),
-			"type":        tea.String("差旅费"),
-			"amount":      tea.String("1000元"),
-			"reason":      tea.String("出差费用"),
+			"title":       tea.String("CI/CD"),
+			"abstract":    tea.String("CI/CD投出提示"),
+			"env_name":    tea.String("测试环境"),
+			"env_color":   tea.String("orange"),
+			"stage":       tea.String("Maven 构建"),
+			"consumeTime": tea.String("7h8min"),
+			"status":      tea.String("出差费用"),
+			"createdAt":   tea.String(createdAt.Format(time.DateTime)),
 			"lastMessage": tea.String("审批"),
-			"created_at":  tea.String(createdAt.Format(time.DateTime)),
 		},
 		CardMediaIdParamMap: map[string]*string{},
 	}

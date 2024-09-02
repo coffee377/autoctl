@@ -54,6 +54,7 @@ func OnPluginMessageReceived(ctx context.Context, request *plugin.GraphRequest) 
 }
 
 // OnEventReceived 事件处理
+// https://open.dingtalk.com/document/orgapp/event-subscription-overview#8dcdbb72adhxy
 func OnEventReceived(ctx context.Context, df *payload.DataFrame) (frameResp *payload.DataFrameResponse, err error) {
 	eventHeader := event.NewEventHeaderFromDataFrame(df)
 
@@ -76,23 +77,35 @@ func OnEventReceived(ctx context.Context, df *payload.DataFrame) (frameResp *pay
 // OnCardCallbackReceived 卡片回调处理
 func OnCardCallbackReceived(ctx context.Context, request *card.CardRequest) (*card.CardResponse, error) {
 	logger.GetLogger().Infof("receive card data: %v", request)
-	action := request.CardActionData.CardPrivateData.ActionIdList[0]
+	action := request.CardActionData.CardPrivateData.Params["action"]
+	logger.GetLogger().Infof("action: %s", action)
+
+	cardParamMap := map[string]string{}
+	switch action {
+	case "build":
+		cardParamMap["buildable"] = "false"
+		cardParamMap["deployable"] = "true"
+		cardParamMap["reversible"] = "false"
+	case "deploy":
+		cardParamMap["buildable"] = "false"
+		cardParamMap["deployable"] = "false"
+		cardParamMap["reversible"] = "true"
+	case "rollback":
+		cardParamMap["buildable"] = "false"
+		cardParamMap["deployable"] = "false"
+		cardParamMap["reversible"] = "false"
+	}
+
 	response := &card.CardResponse{
 		CardUpdateOptions: &card.CardUpdateOptions{
-			UpdateCardDataByKey:    true,
+			UpdateCardDataByKey:    false,
 			UpdatePrivateDataByKey: true,
 		},
 		CardData: &card.CardDataDto{
-			CardParamMap: map[string]string{
-				"status": action,
-				"amount": "88.88",
-			},
+			CardParamMap: map[string]string{},
 		},
 		UserPrivateData: &card.CardDataDto{
-			CardParamMap: map[string]string{
-				"status": action,
-				"amount": "88.88",
-			},
+			CardParamMap: cardParamMap,
 		},
 	}
 	return response, nil

@@ -40,8 +40,7 @@ func TestCard_CreateAndDeliver(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	result, err := card.CreateAndDeliver("5c9ffe50-2720-4d99-8ace-b2045807f6b5.schema")
-	//result, err := card.CreateAndDeliver("d6f799c5-27d5-484e-a725-c7e176424baf.schema")
+	result, err := card.CreateAndDeliver(testCardTemplateId)
 	if err != nil {
 		panic(err)
 	}
