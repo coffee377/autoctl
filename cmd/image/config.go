@@ -19,10 +19,5 @@ type Conf struct {
 	//Name  string
 	//Image Image
 	//K8S   K8S
-	cc map[string]sss
-}
-
-type sss struct {
-	Image Image
-	K8S   K8S
+	cc map[string]any
 }

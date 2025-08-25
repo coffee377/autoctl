@@ -3,8 +3,8 @@ package build
 import (
 	"context"
 	"fmt"
-	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/client"
 	"io"
 	"os"
@@ -26,7 +26,7 @@ func NewDockerCli() DockerCli {
 
 func (d DockerCli) EnsureImage(ctx context.Context) error {
 	// 获取所有镜像信息
-	images, err := d.cli.ImageList(ctx, types.ImageListOptions{ContainerCount: true})
+	images, err := d.cli.ImageList(ctx, image.ListOptions{})
 	for _, image := range images {
 		if len(image.RepoTags) == 0 {
 			continue
@@ -37,7 +37,7 @@ func (d DockerCli) EnsureImage(ctx context.Context) error {
 			}
 		}
 	}
-	reader, err := d.cli.ImagePull(ctx, "alpine", types.ImagePullOptions{})
+	reader, err := d.cli.ImagePull(ctx, "alpine", image.PullOptions{})
 	//d.cli.ImageBuild()
 	io.Copy(os.Stdout, reader)
 	if err != nil {

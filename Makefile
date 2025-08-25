@@ -41,3 +41,11 @@ install-static: static-build/install/lib/libgit2.a
 
 #init:
 #	git submodule add -f https://github.com/libgit2/libgit2.git vendor/libgit2
+
+webhook:
+	mc admin config set cds-test notify_webhook:file_download endpoint="http://10.1.42.244:9098/minio-events"
+	mc admin service restart cds-test
+
+event:
+	mc event add cds-test/download arn:minio:sqs::file_download:webhook --event put --suffix .xlsx
+	#mc event rm local/download arn:minio:sqs::primary:webhook --event put,delete --suffix .xlsx
