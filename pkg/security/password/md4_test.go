@@ -1,9 +1,10 @@
 package password
 
 import (
-	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMd4PasswordEncoder(t *testing.T) {

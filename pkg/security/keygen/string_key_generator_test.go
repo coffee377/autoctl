@@ -1,8 +1,9 @@
 package keygen
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 type StringEncodingVector struct {
@@ -47,23 +48,26 @@ var testBase64EncodingVectors = []StringEncodingVector{
 func testStringKeyGenerator(t *testing.T, stringKeyGenerator StringKeyGenerator, vectors []StringEncodingVector) {
 	for _, v := range vectors {
 		keyGenerator := RandomBytesKeyGenerator(RandomWithKeyLength(v.keyLength), RandomWithVisibleCode())
+
 		var skg StringKeyGenerator
+		var n int
 
 		if _, ok := stringKeyGenerator.(hexEncodingStringKeyGenerator); ok {
 			skg = HexEncodingStringKeyGenerator(keyGenerator)
+			n = v.keyLength * 2
 		}
 
 		if _, ok := stringKeyGenerator.(base64StringKeyGenerator); ok {
 			skg = Base64StringKeyGenerator(Base64WithKeyLength(v.keyLength), Base64WithStdEncoder())
+			n = v.keyLength / 3
+			if v.keyLength%3 > 0 {
+				n += 1
+			}
+			n *= 4
 		}
 
 		s := skg.GenerateKey()
-		n := v.keyLength / 3
-		m := v.keyLength % 3
-		if m > 0 {
-			n += 1
-		}
-		assert.Equal(t, v.stringLength, n*4)
+		assert.Equal(t, v.stringLength, n)
 		assert.Equal(t, v.stringLength, len(s))
 	}
 }

@@ -4,8 +4,9 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
-	"github.com/coffee377/autoctl/pkg/security/keygen"
 	"strings"
+
+	"github.com/coffee377/autoctl/pkg/security/keygen"
 )
 
 // Deprecated

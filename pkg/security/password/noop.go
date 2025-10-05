@@ -1,9 +1,8 @@
 package password
 
-// Deprecated
 type noopPasswordEncoder struct{}
 
-// Deprecated
+// NoopPasswordEncoder Deprecated
 func NoopPasswordEncoder() Encoder {
 	return &noopPasswordEncoder{}
 }

@@ -1,8 +1,9 @@
 package password
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 type vector struct {
@@ -42,7 +43,6 @@ var testVectors = []vector{
 func test(t *testing.T, vectors []vector) {
 	for _, v := range vectors {
 		encoder := CreateDelegatingPasswordEncoder()
-		//out := encoder.Encode(v.password)
 		match := encoder.Matches(v.password, v.encodedPassword)
 		assert.Equal(t, match, v.match)
 	}

@@ -7,10 +7,11 @@ import (
 	"crypto/sha512"
 	"encoding/base64"
 	"encoding/hex"
-	"github.com/coffee377/autoctl/pkg/security/keygen"
-	"golang.org/x/crypto/pbkdf2"
 	"hash"
 	"strings"
+
+	"github.com/coffee377/autoctl/pkg/security/keygen"
+	"golang.org/x/crypto/pbkdf2"
 )
 
 type pbkdf2PasswordEncoder struct {

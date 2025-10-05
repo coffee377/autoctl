@@ -1,10 +1,11 @@
 package password
 
 import (
-	"github.com/stretchr/testify/assert"
-	"golang.org/x/crypto/bcrypt"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func TestBCryptPasswordEncoder(t *testing.T) {
@@ -52,11 +53,10 @@ func TestBcryptPasswordEncoder_Encode(t *testing.T) {
 	for i := 0; i < 16; i++ {
 		encoder := BCryptPasswordEncoder(BCryptWithStrength(i))
 		start := time.Now()
-		encode := encoder.Encode("WuYujie890927")
+		encode := encoder.Encode("Asdfg@123456")
 		duration := time.Since(start)
 		cost, _ := bcrypt.Cost([]byte(encode))
 		println("设置密码强度：", i, "实际密码强度：", cost, "耗时：", duration.String())
-		//println(fmt.Sprintf("设置密码强度：%v\t\t实际密码强度：%v\t\t耗时：%v", i, cost, duration.Nanoseconds()))
 	}
 
 }
