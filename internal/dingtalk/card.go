@@ -7,6 +7,7 @@ import (
 	card10 "github.com/alibabacloud-go/dingtalk/card_1_0"
 	util "github.com/alibabacloud-go/tea-utils/v2/service"
 	"github.com/alibabacloud-go/tea/tea"
+	"github.com/coffee377/autoctl/internal/dingtalk/app"
 	"github.com/coffee377/autoctl/pkg/log"
 )
 
@@ -20,11 +21,11 @@ func CreateClient() (_result *card10.Client, _err error) {
 }
 
 type Card struct {
-	app    *App
+	app    app.App
 	client *card10.Client
 }
 
-func NewCard(app *App) (*Card, error) {
+func NewCard(app app.App) (*Card, error) {
 	config := new(openapi.Config)
 	config.SetProtocol("https")
 	config.SetRegionId("central")
@@ -34,10 +35,6 @@ func NewCard(app *App) (*Card, error) {
 	}
 	return &Card{app: app, client: client}, nil
 }
-
-//type ICard interface {
-//	CreateCard(card *card10.CreateCardRequest) (card10.CreateCardResponse, error)
-//}
 
 func (c Card) Create(templateId string) (string, error) {
 	accessToken := c.app.GetAccessToken()
@@ -141,7 +138,7 @@ func (c Card) CreateAndDeliver(templateId string) (*card10.CreateAndDeliverRespo
 		SupportForward: tea.Bool(false),
 	})
 	request.SetImRobotOpenDeliverModel(&card10.CreateAndDeliverRequestImRobotOpenDeliverModel{
-		RobotCode: tea.String(c.app.RobotCode),
+		RobotCode: tea.String(c.app.GetRobotCode()),
 		SpaceType: tea.String("IM_ROBOT"),
 	})
 
@@ -183,7 +180,7 @@ func (c Card) Deliver(outTrackId string) ([]*card10.DeliverCardResponseBodyResul
 	request.SetOutTrackId(outTrackId)
 	request.SetOpenSpaceId("dtv1.card//IM_GROUP.cidXdtJXrL/VA2X4/C/MQA/6g==")
 	request.SetImGroupOpenDeliverModel(&card10.DeliverCardRequestImGroupOpenDeliverModel{
-		RobotCode:  tea.String(c.app.RobotCode),
+		RobotCode:  tea.String(c.app.GetRobotCode()),
 		Recipients: tea.StringSlice([]string{"02140408367343"}),
 	})
 	result, err := c.client.DeliverCardWithOptions(request, headers, &util.RuntimeOptions{})

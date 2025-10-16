@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	clientId     = "dingybihm3fg4sjh3dtx"
-	clientSecret = "smpvcY639CMUdAfmWOoyIImFCdD0woA09cMp7S5AsAQZGki6XFUUVrp0XCUCE-N2"
+	clientId     = "dingopfniakkw72klkjv"
+	clientSecret = "6Il0DuPZPPIr-OG03uMrnqDNu_o03tpIkK03ScpuEPP6NAw7J52D0LWPvTjRf4BR"
 )
 
 func SimpleReplyCard(ctx context.Context, sessionWebhook string, r *chatbot.ChatbotReplier, title, content []byte) error {
@@ -112,8 +112,9 @@ func OnCardCallbackReceived(ctx context.Context, request *card.CardRequest) (*ca
 	return response, nil
 }
 
-func Start() {
+func CallbackStart() {
 	logger.SetLogger(logger.NewStdTestLogger())
+
 	cli := client.NewStreamClient(client.WithAppCredential(client.NewAppCredentialConfig(clientId, clientSecret)))
 
 	// 注册事件类型的处理函数

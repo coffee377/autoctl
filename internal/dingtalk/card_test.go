@@ -3,18 +3,21 @@ package dingtalk
 import (
 	"testing"
 
+	"github.com/coffee377/autoctl/internal/dingtalk/app"
 	"github.com/coffee377/autoctl/pkg/log"
 )
 
+var (
+	a = app.New("", "118447d2-1c73-486f-8058-7daa046c9577",
+		app.WithClient("dingybihm3fg4sjh3dtx", "smpvcY639CMUdAfmWOoyIImFCdD0woA09cMp7S5AsAQZGki6XFUUVrp0XCUCE-N2"),
+		app.WithAgent("194334207"),
+		app.WithRobot("dingybihm3fg4sjh3dtx"),
+	)
+)
+
 func TestCard_Create(t *testing.T) {
-	app := &App{
-		Id:           "118447d2-1c73-486f-8058-7daa046c9577",
-		AgentId:      "194334207",
-		ClientID:     "dingybihm3fg4sjh3dtx",
-		ClientSecret: "smpvcY639CMUdAfmWOoyIImFCdD0woA09cMp7S5AsAQZGki6XFUUVrp0XCUCE-N2",
-		RobotCode:    "dingybihm3fg4sjh3dtx",
-	}
-	card, err := NewCard(app)
+
+	card, err := NewCard(a)
 	if err != nil {
 		panic(err)
 	}
@@ -30,14 +33,7 @@ func TestCard_Create(t *testing.T) {
 }
 
 func TestCard_CreateAndDeliver(t *testing.T) {
-	app := &App{
-		Id:           "118447d2-1c73-486f-8058-7daa046c9577",
-		AgentId:      "194334207",
-		ClientID:     "dingybihm3fg4sjh3dtx",
-		ClientSecret: "smpvcY639CMUdAfmWOoyIImFCdD0woA09cMp7S5AsAQZGki6XFUUVrp0XCUCE-N2",
-		RobotCode:    "dingybihm3fg4sjh3dtx",
-	}
-	card, err := NewCard(app)
+	card, err := NewCard(a)
 	if err != nil {
 		panic(err)
 	}

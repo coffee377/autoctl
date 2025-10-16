@@ -26,7 +26,7 @@ type (
 	}
 
 	ICreatedAt interface {
-		GetCreatedAt() time.Time
+		GetCreatedAt() *time.Time
 	}
 )
 
@@ -36,7 +36,7 @@ type (
 	}
 
 	IUpdatedAt interface {
-		GetUpdatedAt() time.Time
+		GetUpdatedAt() *time.Time
 	}
 )
 

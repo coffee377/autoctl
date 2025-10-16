@@ -13,7 +13,7 @@ type (
 		GetName() string
 	}
 
-	IValue[V any] interface {
+	IValue[V string | int | bool] interface {
 		// GetValue 实际值
 		GetValue() V
 	}
@@ -29,7 +29,7 @@ type (
 	}
 )
 
-type Dictionary[Item DictionaryItem[any]] interface {
+type Dictionary[Item DictionaryItem[string]] interface {
 	ICode
 	IName
 	GetItems() []Item

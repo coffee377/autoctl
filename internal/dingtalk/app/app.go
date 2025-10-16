@@ -5,12 +5,19 @@ import (
 
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
 	oauth21 "github.com/alibabacloud-go/dingtalk/oauth2_1_0"
-	"github.com/coffee377/autoctl/internal/dingtalk"
 )
 
+type Namespace interface {
+	GetNamespaceName() string // 获取命名空间名称
+}
+
+type AccessToken interface {
+	GetAccessToken() string
+}
+
 type App interface {
-	dingtalk.Namespace
-	dingtalk.AccessToken
+	Namespace
+	AccessToken
 
 	GetID() string
 	GetName() string
@@ -18,8 +25,8 @@ type App interface {
 	GetClientID() string
 	GetClientSecret() string
 
-	GetAgentId() *string
-	GetRobotCode() *string
+	GetAgentId() string
+	GetRobotCode() string
 }
 
 func New(namespace, id string, options ...Option) App {
@@ -54,7 +61,8 @@ func (a *app) GetNamespaceName() string {
 	return a.namespace
 }
 
-func (a *app) GetAccessToken(ctx context.Context) string {
+func (a *app) GetAccessToken() string {
+	ctx := context.TODO()
 	if a.cacheBeforeTokenHook != nil {
 		if val, ok := a.cacheBeforeTokenHook(ctx); ok {
 			return val
@@ -95,10 +103,10 @@ func (a *app) GetClientSecret() string {
 	return a.clientSecret
 }
 
-func (a *app) GetAgentId() *string {
-	return a.agentId
+func (a *app) GetAgentId() string {
+	return *a.agentId
 }
 
-func (a *app) GetRobotCode() *string {
-	return a.robotCode
+func (a *app) GetRobotCode() string {
+	return *a.robotCode
 }

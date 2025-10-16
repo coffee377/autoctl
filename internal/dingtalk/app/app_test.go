@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"os"
 	"testing"
 
@@ -10,8 +9,8 @@ import (
 )
 
 var (
-	testClientId     = os.Getenv("TEST_CLIENT_ID")
-	testClientSecret = os.Getenv("TEST_CLIENT_SECRET")
+	testClientId     = os.Getenv("APP_CLIENT_ID")
+	testClientSecret = os.Getenv("APP_CLIENT_SECRET")
 )
 
 func TestNormalApp(t *testing.T) {
@@ -44,8 +43,8 @@ func TestAppOther(t *testing.T) {
 	assert.Equal(t, "代码工匠实验室", a.GetName())
 	assert.Equal(t, "1", a.GetClientID())
 	assert.Equal(t, "2", a.GetClientSecret())
-	assert.Equal(t, "000", *a.GetAgentId())
-	assert.Equal(t, "robot", *a.GetRobotCode())
+	assert.Equal(t, "000", a.GetAgentId())
+	assert.Equal(t, "robot", a.GetRobotCode())
 }
 
 func TestGetAccessToken(t *testing.T) {
@@ -58,7 +57,7 @@ func TestGetAccessToken(t *testing.T) {
 		WithClient(testClientId, testClientSecret),
 		WithAgent("194334207"),
 	)
-	token := ap.GetAccessToken(context.Background())
+	token := ap.GetAccessToken()
 	assert.NotNil(t, token)
 }
 
@@ -77,6 +76,6 @@ func TestGetAccessTokenWithRedis(t *testing.T) {
 			DB:       0,
 		}),
 	)
-	token := ap.GetAccessToken(context.Background())
+	token := ap.GetAccessToken()
 	assert.NotNil(t, token)
 }

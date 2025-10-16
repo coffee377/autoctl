@@ -2,8 +2,9 @@ go 1.24.4
 
 use (
 	.
+	./internal/bid
+	./pkg/api
 	./pkg/log
 	./pkg/security
 	./pkg/semver
-	./internal/bid
 )
