@@ -2,37 +2,29 @@ package dingtalk
 
 import (
 	"testing"
+
+	"github.com/coffee377/autoctl/internal/dingtalk/utils"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetAccessToken(t *testing.T) {
-	app := App{
+	app1 := App{
 		Id:           "118447d2-1c73-486f-8058-7daa046c9577",
+		Name:         utils.ToPtr("代码工匠实验室-监控平台"),
 		AgentId:      "194334207",
-		ClientKey:    clientId,
+		ClientID:     clientId,
 		ClientSecret: clientSecret,
 	}
-	accessToken := app.GetAccessToken()
-	t.Log(accessToken)
+	accessToken := app1.GetAccessToken()
+	assert.NotNil(t, accessToken)
 
-	// 获取审批实例ID列表
-	//config := &openapi.Config{}
-	//config.SetProtocol("https")
-	//config.SetRegionId("central")
-	//client, _ := dingtalkworkflow10.NewClient(config)
-	//
-	//headers := &dingtalkworkflow10.ListProcessInstanceIdsHeaders{
-	//	XAcsDingtalkAccessToken: &accessToken,
-	//}
-	//listProcessInstanceIdsRequest := &dingtalkworkflow10.ListProcessInstanceIdsRequest{
-	//	ProcessCode: tea.String("PROC-CFC2784B-CD66-43C3-91A5-B3CD7D3ABBC6"),
-	//	StartTime:   tea.Int64(1688140800000),
-	//	//EndTime:     tea.Int64(time.Now().UnixMilli()),
-	//	NextToken:  tea.Int64(0),
-	//	MaxResults: tea.Int64(20),
-	//	Statuses:   tea.StringSlice([]string{"COMPLETED"}),
-	//}
-	//result, err := client.ListProcessInstanceIdsWithOptions(listProcessInstanceIdsRequest, headers, &service.RuntimeOptions{})
-	//if err != nil {
-	//	t.Log(result)
-	//}
+	app2 := App{
+		Id:           "a57e9681-79cb-4242-96df-952be2dc3af7",
+		Name:         utils.ToPtr("安徽晶奇-统一认证"),
+		AgentId:      "1038540627",
+		ClientID:     "dingopfniakkw72klkjv",
+		ClientSecret: "6Il0DuPZPPIr-OG03uMrnqDNu_o03tpIkK03ScpuEPP6NAw7J52D0LWPvTjRf4BR",
+	}
+
+	assert.NotNil(t, app2.GetAccessToken())
 }

@@ -3,6 +3,7 @@ package dingtalk
 import (
 	"context"
 	"fmt"
+
 	"github.com/open-dingtalk/dingtalk-stream-sdk-go/card"
 	"github.com/open-dingtalk/dingtalk-stream-sdk-go/chatbot"
 	"github.com/open-dingtalk/dingtalk-stream-sdk-go/client"
