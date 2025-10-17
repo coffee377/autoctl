@@ -7,15 +7,16 @@ import (
 	dingtalkim10 "github.com/alibabacloud-go/dingtalk/im_1_0"
 	util "github.com/alibabacloud-go/tea-utils/v2/service"
 	"github.com/alibabacloud-go/tea/tea"
+	"github.com/coffee377/autoctl/internal/dingtalk/app"
 	"github.com/coffee377/autoctl/pkg/log"
 )
 
 type Robot struct {
-	app    *App
+	app.App
 	client *dingtalkim10.Client
 }
 
-func NewRobot(app *App) (*Robot, error) {
+func NewRobot(app app.App) (*Robot, error) {
 	config := new(openapi.Config)
 	config.SetProtocol("https")
 	config.SetRegionId("central")
@@ -24,7 +25,7 @@ func NewRobot(app *App) (*Robot, error) {
 		return nil, err
 	}
 
-	return &Robot{app: app, client: client}, nil
+	return &Robot{App: app, client: client}, nil
 }
 
 type ChatType int
@@ -37,7 +38,7 @@ const (
 // SendCardMessage https://open.dingtalk.com/document/orgapp/send-interactive-dynamic-cards-1
 // 机器人发送的互动卡片没有流式回调
 func (r Robot) SendCardMessage(chatType ChatType, cardTemplateId string) (string, error) {
-	accessToken := r.app.GetAccessToken()
+	accessToken := r.GetAccessToken()
 	headers := &dingtalkim10.SendInteractiveCardHeaders{}
 	headers.SetXAcsDingtalkAccessToken(accessToken)
 
@@ -56,8 +57,8 @@ func (r Robot) SendCardMessage(chatType ChatType, cardTemplateId string) (string
 
 	request.SetReceiverUserIdList(tea.StringSlice([]string{"02140408367343"})) // 接收者用户ID列表
 	request.SetOutTrackId(outTrackId)                                          // 唯一标识一张卡片的外部ID,可用于更新或重复发送同一卡片
-	if r.app.RobotCode != "" {
-		request.SetRobotCode(r.app.RobotCode)
+	if r.GetRobotCode() != "" {
+		request.SetRobotCode(r.GetRobotCode())
 	}
 
 	// 卡片模板数据

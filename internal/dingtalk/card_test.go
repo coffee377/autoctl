@@ -8,15 +8,10 @@ import (
 )
 
 var (
-	a = app.New("", "118447d2-1c73-486f-8058-7daa046c9577",
-		app.WithClient("dingybihm3fg4sjh3dtx", "smpvcY639CMUdAfmWOoyIImFCdD0woA09cMp7S5AsAQZGki6XFUUVrp0XCUCE-N2"),
-		app.WithAgent("194334207"),
-		app.WithRobot("dingybihm3fg4sjh3dtx"),
-	)
+	a = app.New("118447d2-1c73-486f-8058-7daa046c9577", app.WithRedis())
 )
 
 func TestCard_Create(t *testing.T) {
-
 	card, err := NewCard(a)
 	if err != nil {
 		panic(err)

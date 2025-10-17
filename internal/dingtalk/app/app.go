@@ -2,6 +2,9 @@ package app
 
 import (
 	"context"
+	"errors"
+	"log/slog"
+	"os"
 
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
 	oauth21 "github.com/alibabacloud-go/dingtalk/oauth2_1_0"
@@ -29,19 +32,55 @@ type App interface {
 	GetRobotCode() string
 }
 
-func New(namespace, id string, options ...Option) App {
-	application := &app{
-		namespace:   namespace,
-		id:          id,
+func New(appId string, options ...Option) App {
+	configurations := ReadConfiguration()
+	var config *Configuration
+	for _, app := range configurations.App {
+		if app.Id == appId {
+			config = &app
+			break
+		}
+	}
+
+	app := &application{
 		cachePrefix: "dingtalk",
 	}
-	for _, option := range options {
-		option(application)
+
+	if config != nil {
+		app.namespace = config.Namespace
+		app.id = config.Id
+		app.name = config.Name
+		app.clientId = config.ClientId
+		app.clientSecret = config.ClientSecret
+		app.agentId = config.AgentId
+		app.robotCode = config.RobotCode
 	}
-	return application
+
+	for _, option := range options {
+		option(app)
+	}
+	err := validateApp(app)
+	if err != nil {
+		slog.Error("validate app failed", slog.String("error", err.Error()))
+		os.Exit(1)
+	}
+	return app
 }
 
-type app struct {
+func validateApp(application *application) error {
+	if application.namespace == "" {
+		return errors.New("app namespace is required")
+	}
+	if application.id == "" {
+		return errors.New("app id is required")
+	}
+	if application.clientId == "" || application.clientSecret == "" {
+		return errors.New("app clientId and clientSecret is required")
+	}
+	return nil
+}
+
+type application struct {
 	namespace string
 	id        string // 应用ID
 
@@ -57,11 +96,11 @@ type app struct {
 	cacheAfterTokenHook  func(context.Context, string)
 }
 
-func (a *app) GetNamespaceName() string {
+func (a *application) GetNamespaceName() string {
 	return a.namespace
 }
 
-func (a *app) GetAccessToken() string {
+func (a *application) GetAccessToken() string {
 	ctx := context.TODO()
 	if a.cacheBeforeTokenHook != nil {
 		if val, ok := a.cacheBeforeTokenHook(ctx); ok {
@@ -87,26 +126,26 @@ func (a *app) GetAccessToken() string {
 	return *accessToken
 }
 
-func (a *app) GetID() string {
+func (a *application) GetID() string {
 	return a.id
 }
 
-func (a *app) GetName() string {
+func (a *application) GetName() string {
 	return *a.name
 }
 
-func (a *app) GetClientID() string {
+func (a *application) GetClientID() string {
 	return a.clientId
 }
 
-func (a *app) GetClientSecret() string {
+func (a *application) GetClientSecret() string {
 	return a.clientSecret
 }
 
-func (a *app) GetAgentId() string {
+func (a *application) GetAgentId() string {
 	return *a.agentId
 }
 
-func (a *app) GetRobotCode() string {
+func (a *application) GetRobotCode() string {
 	return *a.robotCode
 }

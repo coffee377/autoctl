@@ -1,7 +1,6 @@
 package oa
 
 import (
-	"context"
 	"strconv"
 
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
@@ -31,16 +30,15 @@ func New(app app.App) (*Approval, error) {
 	}, nil
 }
 
-// GetProcessInstanceIds 获取审批实例ID列表
-// 时间格式 yyyy-MM-dd
-func (a *Approval) GetProcessInstanceIds(ctx context.Context, processCode string, startTime string, endTime string, nextToken *int64) ([]string, error) {
+// GetProcessInstanceIds 获取审批实例ID列表,时间格式 yyyy-MM-dd
+func (a *Approval) GetProcessInstanceIds(processCode string, startTime string, endTime string, nextToken *int64) ([]string, error) {
 	timeRange, err := ProcessTimeRange(startTime, endTime)
 	if err != nil {
 		return nil, err
 	}
 	var result []string
 	for _, segment := range timeRange {
-		ids, err := a.processInstanceIds(ctx, processCode, segment, nextToken)
+		ids, err := a.processInstanceIds(processCode, segment, nextToken)
 		if err != nil {
 			return nil, err
 		}
@@ -49,8 +47,16 @@ func (a *Approval) GetProcessInstanceIds(ctx context.Context, processCode string
 	return result, nil
 }
 
+func (a *Approval) GetProcessInstanceIdsByMonth(processCode string, year uint, month uint8, nextToken *int64) ([]string, error) {
+	startTime, endTime, err := GetMonthStartAndEnd(year, month)
+	if err != nil {
+		return nil, err
+	}
+	return a.GetProcessInstanceIds(processCode, startTime, endTime, nextToken)
+}
+
 // GetProcessInstance 获取审批实例详情
-func (a *Approval) GetProcessInstance(ctx context.Context, instanceId string) (*dingtalkworkflow10.GetProcessInstanceResponseBody, error) {
+func (a *Approval) GetProcessInstance(instanceId string) (*dingtalkworkflow10.GetProcessInstanceResponseBody, error) {
 	processInstanceHeaders := &dingtalkworkflow10.GetProcessInstanceHeaders{
 		XAcsDingtalkAccessToken: tea.String(a.GetAccessToken()),
 	}
@@ -66,7 +72,7 @@ func (a *Approval) GetProcessInstance(ctx context.Context, instanceId string) (*
 	return result.Body, nil
 }
 
-func (a *Approval) processInstanceIds(ctx context.Context, processCode string, segment TimeSegment, token *int64) ([]string, error) {
+func (a *Approval) processInstanceIds(processCode string, segment TimeSegment, token *int64) ([]string, error) {
 	headers := &dingtalkworkflow10.ListProcessInstanceIdsHeaders{
 		XAcsDingtalkAccessToken: tea.String(a.GetAccessToken()),
 	}
@@ -101,7 +107,7 @@ func (a *Approval) processInstanceIds(ctx context.Context, processCode string, s
 	// 如果有更多数据继续获取
 	if bodyResult.NextToken != nil {
 		nextToken, _ := strconv.ParseInt(*bodyResult.NextToken, 10, 64)
-		ids, e := a.processInstanceIds(ctx, processCode, segment, &nextToken)
+		ids, e := a.processInstanceIds(processCode, segment, &nextToken)
 		if e != nil {
 			return nil, err
 		}

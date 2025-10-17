@@ -1,0 +1,15 @@
+app:
+  - namespace: dev
+    id: 3f7a1d9c-8b2e-4d6c-9a1b-2c3d4e5f6a7b
+    name: 监控平台-生产集群
+    client_id: dingx7kf3m9p2s4n8v0b6d1r3
+    client_secret: 9Lk5-2jR_8pQ~3mZ7tF4wS6vD2nG5kH1bJ0eL8rP3s
+    agent_id: "87654321"
+    robot_code: dingy2p5s7m9k3j1f8d6v0b4
+  - namespace: test
+    id: 7e2d4c6b-1a3f-5e7d-9c2b-4a6f8e0d2c4b
+    name: 统一认证-v2.0
+    client_id: dingh3j7k9p2s5n8v0d6r1b3
+    client_secret: 4Rj8-6mT_2wQ~5gZ9tF7sH3vD1nG6kJ2bL0eP9rS4
+    agent_id: "123456789"
+    robot_code: dingz5s8m2k6j3f9d7v1b5

@@ -119,3 +119,36 @@ func addMonths(t time.Time, months int, loc *time.Location) time.Time {
 	// 返回该月最后一天的结束时间
 	return time.Date(newYear, time.Month(newMonth), lastDay, 23, 59, 59, 999999999, loc)
 }
+
+// GetMonthStartAndEnd 根据年份和月份获取该月的起始日期和结束日期（格式：yyyy-MM-dd）
+// year: 年份（如 2024）
+// month: 月份（1-12，如 2 表示2月）
+// 返回值：起始日期字符串、结束日期字符串、可能的错误（如月份无效）
+func GetMonthStartAndEnd(year uint, month uint8) (startDate, endDate string, err error) {
+	// 验证月份有效性（1-12）
+	if month < 1 || month > 12 {
+		return "", "", fmt.Errorf("invalid month: %d (must be 1-12)", month)
+	}
+
+	// 1. 计算起始日期：当月1日
+	start := time.Date(int(year), time.Month(month), 1, 0, 0, 0, 0, time.UTC)
+	startDate = start.Format(time.DateOnly) // 格式化为 yyyy-MM-dd
+
+	// 2. 计算结束日期：当月最后一天
+	// 逻辑：下个月1号减去1天，即为当月最后一天（自动处理2月、30天/31天月）
+	nextMonth := month + 1
+	nextYear := year
+	// 若当前是12月，下个月为次年1月
+	if nextMonth > 12 {
+		nextMonth = 1
+		nextYear++
+	}
+
+	// 下个月1号的0点
+	firstDayOfNextMonth := time.Date(int(nextYear), time.Month(nextMonth), 1, 0, 0, 0, 0, time.UTC)
+	// 下个月1号减1天 = 当月最后一天
+	lastDayOfCurrentMonth := firstDayOfNextMonth.AddDate(0, 0, -1)
+	endDate = lastDayOfCurrentMonth.Format(time.DateOnly)
+
+	return startDate, endDate, nil
+}
