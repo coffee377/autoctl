@@ -9,110 +9,77 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"time"
 
-	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
-	dingtalkworkflow "github.com/alibabacloud-go/dingtalk/workflow_1_0"
-	util "github.com/alibabacloud-go/tea-utils/v2/service"
 	"github.com/alibabacloud-go/tea/tea"
 	"github.com/coffee377/autoctl/internal/dingtalk/app"
 	"github.com/coffee377/autoctl/pkg/log"
 )
 
 type Lic struct {
-	app.App
-	client *dingtalkworkflow.Client
+	*Approval
 }
 
-func NewOA(app app.App) (*Lic, error) {
-	config := new(openapi.Config)
-	config.SetProtocol("https")
-	config.SetRegionId("central")
-	client, err := dingtalkworkflow.NewClient(config)
+func NewLic(app app.App) (*Lic, error) {
+	approval, err := New(app)
 	if err != nil {
 		return nil, err
 	}
-	return &Lic{App: app, client: client}, nil
+	return &Lic{Approval: approval}, nil
 }
 
-func (l *Lic) Demo() {
-	accessToken := l.GetAccessToken()
-	headers := &dingtalkworkflow.ListProcessInstanceIdsHeaders{
-		XAcsDingtalkAccessToken: tea.String(accessToken),
-	}
-	request := &dingtalkworkflow.ListProcessInstanceIdsRequest{}
-	request.SetProcessCode("PROC-2C30849D-B138-47E8-90ED-F1BE217444AC")
+func (l *Lic) Run(startTime string, licDir string) error {
+	log.Info("审批实例开始时间: %s", startTime)
 
-	now := time.Now()
-	startTime := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location()).UnixMilli()
-
-	log.Info("审批实例开始时间: %d", startTime)
-
-	request.SetStartTime(startTime)
-	request.SetNextToken(0)
-	request.SetMaxResults(20)
-	//request.SetUserIds(tea.StringSlice([]string{"3015582306805324"}))
-	response, err := l.client.ListProcessInstanceIdsWithOptions(request, headers, &util.RuntimeOptions{})
+	ids, err := l.GetProcessInstanceIds("PROC-2C30849D-B138-47E8-90ED-F1BE217444AC", startTime, "", nil)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	dir := "D:\\project\\personal\\Lic-grpc"
+	if licDir != "" {
+		// 删除 licDir 目录下所有 *.Lic *.rif
+		_ = filepath.WalkDir(licDir, func(path string, file fs.DirEntry, err error) error {
+			if !file.IsDir() && (filepath.Ext(path) == ".Lic" || filepath.Ext(path) == ".rif") {
+				_ = os.Remove(path)
+			}
+			return nil
+		})
+	}
 
-	// 删除 dir 目录下所有 *.Lic *.rif
-	_ = filepath.WalkDir(dir, func(path string, file fs.DirEntry, err error) error {
-		if !file.IsDir() && (filepath.Ext(path) == ".Lic" || filepath.Ext(path) == ".rif") {
-			_ = os.Remove(path)
-		}
-		return nil
-	})
-
-	for _, instanceId := range response.Body.Result.List {
+	for _, instanceId := range ids {
 
 		// 获取审批实列详情
-		getProcessInstanceHeaders := &dingtalkworkflow.GetProcessInstanceHeaders{
-			XAcsDingtalkAccessToken: tea.String(accessToken),
-		}
-		getProcessInstanceRequest := &dingtalkworkflow.GetProcessInstanceRequest{
-			ProcessInstanceId: instanceId,
-		}
-		res, err := l.client.GetProcessInstanceWithOptions(getProcessInstanceRequest, getProcessInstanceHeaders, &util.RuntimeOptions{})
+		instance, err := l.GetProcessInstance(instanceId)
 		if err != nil {
-			panic(err)
+			return err
 		}
 
 		log.Info("")
-		log.Info("审批实例：%s", *instanceId)
-		log.Info("标   题：%s", *res.Body.Result.Title)
-		log.Info("审批编号：%s", *res.Body.Result.BusinessId)
-		log.Info("部   门：%s", *res.Body.Result.OriginatorDeptName)
+		log.Info("审批实例：%s", instanceId)
+		log.Info("标   题：%s", *instance.Title)
+		log.Info("审批编号：%s", *instance.BusinessId)
+		log.Info("部   门：%s", *instance.OriginatorDeptName)
 
+		if licDir == "" {
+			continue
+		}
 		var attachments []attachment
 
-		for _, e := range res.Body.Result.FormComponentValues {
+		for _, e := range instance.FormComponentValues {
 			if *e.ComponentType == "DDAttachment" && *e.Name == "上传导出注册文件" {
 				_ = json.Unmarshal([]byte(*e.Value), &attachments)
 				for _, a := range attachments {
 					if !a.isRegistrationInformationFile() {
 						continue
 					}
-					// 注册信息文件
-
-					grantProcessInstanceForDownloadFileHeaders := &dingtalkworkflow.GrantProcessInstanceForDownloadFileHeaders{
-						XAcsDingtalkAccessToken: tea.String(accessToken),
-					}
-					grantProcessInstanceForDownloadFileRequest := &dingtalkworkflow.GrantProcessInstanceForDownloadFileRequest{
-						ProcessInstanceId: instanceId,
-						FileId:            tea.String(a.FileId),
-					}
-					fileRes, err := l.client.GrantProcessInstanceForDownloadFileWithOptions(grantProcessInstanceForDownloadFileRequest, grantProcessInstanceForDownloadFileHeaders, &util.RuntimeOptions{})
+					downloadUri, err := l.GetAttachmentDownloadUri(instanceId, a.FileId)
 					if err != nil {
-						panic(err)
+						return err
 					}
-					downloadUri := fileRes.Body.Result.DownloadUri
-					log.Info("注册信息文件下载 url：%s", *downloadUri)
-
-					_, _ = a.downloadFile(*downloadUri, *res.Body.Result.BusinessId, &dir)
+					if downloadUri == nil {
+						continue
+					}
+					log.Info("注册信息文件下载 url：%s", downloadUri)
+					_, _ = a.downloadFile(*downloadUri, *instance.BusinessId, &licDir)
 				}
 				break
 			}
@@ -121,6 +88,7 @@ func (l *Lic) Demo() {
 
 	}
 
+	return nil
 }
 
 type attachment struct {

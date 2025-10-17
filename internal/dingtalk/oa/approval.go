@@ -56,7 +56,7 @@ func (a *Approval) GetProcessInstanceIdsByMonth(processCode string, year uint, m
 }
 
 // GetProcessInstance 获取审批实例详情
-func (a *Approval) GetProcessInstance(instanceId string) (*dingtalkworkflow10.GetProcessInstanceResponseBody, error) {
+func (a *Approval) GetProcessInstance(instanceId string) (*dingtalkworkflow10.GetProcessInstanceResponseBodyResult, error) {
 	processInstanceHeaders := &dingtalkworkflow10.GetProcessInstanceHeaders{
 		XAcsDingtalkAccessToken: tea.String(a.GetAccessToken()),
 	}
@@ -69,7 +69,23 @@ func (a *Approval) GetProcessInstance(instanceId string) (*dingtalkworkflow10.Ge
 		return nil, err
 	}
 
-	return result.Body, nil
+	return result.Body.Result, nil
+}
+
+func (a *Approval) GetAttachmentDownloadUri(instanceId string, fileId string) (*string, error) {
+	// 注册信息文件
+	headers := &dingtalkworkflow10.GrantProcessInstanceForDownloadFileHeaders{
+		XAcsDingtalkAccessToken: tea.String(a.GetAccessToken()),
+	}
+	request := &dingtalkworkflow10.GrantProcessInstanceForDownloadFileRequest{
+		ProcessInstanceId: tea.String(instanceId),
+		FileId:            tea.String(fileId),
+	}
+	fileRes, err := a.cli.GrantProcessInstanceForDownloadFileWithOptions(request, headers, &util.RuntimeOptions{})
+	if err != nil {
+		return nil, err
+	}
+	return fileRes.Body.Result.DownloadUri, nil
 }
 
 func (a *Approval) processInstanceIds(processCode string, segment TimeSegment, token *int64) ([]string, error) {

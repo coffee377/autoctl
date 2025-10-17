@@ -3,7 +3,6 @@ package app
 import (
 	"testing"
 
-	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -50,15 +49,17 @@ func TestGetAccessToken(t *testing.T) {
 }
 
 func TestGetAccessTokenWithRedis(t *testing.T) {
-	ap := New("118447d2-1c73-486f-8058-7daa046c9577",
-		WithName("代码工匠实验室-监控平台-Redis缓存测试"),
-		WithRedis(redis.Options{
-			Addr:     "127.0.0.1:6379",
-			Password: "redis!@@&",
-			DB:       0,
-		}),
+	ap := New("a57e9681-79cb-4242-96df-952be2dc3af7",
+		WithRedis(),
 		WithCachePrefix("dingtalk"),
 	)
 	token := ap.GetAccessToken()
 	assert.NotNil(t, token)
+
+	ap2 := New("118447d2-1c73-486f-8058-7daa046c9577",
+		WithRedis(),
+		WithCachePrefix("dingtalk"),
+	)
+	token2 := ap2.GetAccessToken()
+	assert.NotNil(t, token2)
 }
