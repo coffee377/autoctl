@@ -1,6 +1,7 @@
 package oa
 
 import (
+	"cds/dingtalk/app"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -11,7 +12,7 @@ import (
 	"regexp"
 
 	"github.com/alibabacloud-go/tea/tea"
-	"github.com/coffee377/autoctl/internal/dingtalk/app"
+
 	"github.com/coffee377/autoctl/pkg/log"
 )
 

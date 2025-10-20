@@ -1,10 +1,10 @@
 package oa
 
 import (
+	"cds/dingtalk/app"
 	"testing"
 	"time"
 
-	"github.com/coffee377/autoctl/internal/dingtalk/app"
 	"github.com/stretchr/testify/assert"
 )
 

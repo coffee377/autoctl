@@ -1,13 +1,18 @@
 package oa
 
 import (
+	"cds/dingtalk/app"
 	"strconv"
 
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
 	dingtalkworkflow10 "github.com/alibabacloud-go/dingtalk/workflow_1_0"
 	util "github.com/alibabacloud-go/tea-utils/v2/service"
 	"github.com/alibabacloud-go/tea/tea"
-	"github.com/coffee377/autoctl/internal/dingtalk/app"
+)
+
+const (
+	BidApplyProcessCode   = "PROC-958C3100-85BF-45D3-8583-6645DA922756" // 投标申请审批表单编码
+	BidExpenseProcessCode = "PROC-D8453B77-B313-4BEB-BE42-C71EE81DA61A" // 投标项目转款表单编码
 )
 
 type Approval struct {
