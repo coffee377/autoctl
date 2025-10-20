@@ -81,6 +81,7 @@ func validateApp(application *application) error {
 }
 
 type application struct {
+	confDir   string // 配置文件目录
 	namespace string
 	id        string // 应用ID
 

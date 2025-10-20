@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/viper"
 )
@@ -47,19 +48,29 @@ func loadConfig() (*Configurations, error) {
 	// 3. 配置文件路径（根据实际项目调整，这里假设在 config 目录下）
 	v.AddConfigPath(".")
 	v.AddConfigPath("..")
+	// 步骤 1：获取用户主目录
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		panic(fmt.Errorf("获取用户目录失败: %w", err))
+	}
+
+	// 步骤 2：拼接用户目录下的配置子目录（如 ~/.autoctl/）
+	configDir := filepath.Join(homeDir, ".autoctl")
+	v.AddConfigPath(configDir)
 
 	// 4. （可选）加载通用默认配置（app.yml）
 	v.SetConfigName("app")
 	v.SetConfigType("yaml")
 
-	if err := v.ReadInConfig(); err != nil {
-		// 非必需，若没有默认配置可忽略错误
-		log.Printf("未找到通用配置文件 app.yml，跳过加载：%v", err)
-	}
+	_ = v.ReadInConfig()
 
 	// 5. 加载环境特定配置（如 app.dev.yml）
 	v.SetConfigName(fmt.Sprintf("app.%s", env)) // 构造文件名：app.dev
 	_ = v.MergeInConfig()
+
+	// 环境变量（覆盖配置文件和默认值）
+	v.SetEnvPrefix("CDS") // 环境变量前缀
+	v.AutomaticEnv()
 
 	// 6. 反序列化为结构体
 	var config Configurations
