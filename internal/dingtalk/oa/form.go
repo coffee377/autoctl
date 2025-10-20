@@ -23,19 +23,24 @@ type FieldMapper struct {
 	ComponentId string         // 钉钉表单组件ID（如"TextField_1"）
 	FieldName   string         // 实体对象的字段名（如"ProjectName"）
 	Converter   ValueConverter // 类型转换函数（将字符串转为字段类型）
+	Pointer     bool
 }
 
 // ValueConverter 类型转换接口：将表单字符串值转换为目标类型
-type ValueConverter func(raw string) (interface{}, error)
+type ValueConverter func(raw string, pointer bool) (interface{}, error)
 
 // StringConverter 字符串转换器（默认，直接trim空格）
-func StringConverter(raw string) (interface{}, error) {
-	return strings.Trim(raw, " "), nil
+func StringConverter(raw string, pointer bool) (interface{}, error) {
+	trim := strings.Trim(raw, " ")
+	if pointer {
+		return &trim, nil
+	}
+	return trim, nil
 }
 
 // DateConverter 时间转换器（支持"2006-01-02"格式，返回*time.Time）
 func DateConverter(layout string, loc *time.Location) ValueConverter {
-	return func(raw string) (interface{}, error) {
+	return func(raw string, pointer bool) (interface{}, error) {
 		raw = strings.Trim(raw, " ")
 		if raw == "" {
 			return nil, nil // 空值返回nil（适配指针类型）
@@ -44,19 +49,29 @@ func DateConverter(layout string, loc *time.Location) ValueConverter {
 		if err != nil {
 			return nil, fmt.Errorf("parse date failed: %w", err)
 		}
-		return &t, nil
+		if pointer {
+			return &t, nil
+		}
+		return t, nil
 	}
 }
 
 // Float64Converter 浮点数转换器（返回float64）
-func Float64Converter(raw string) (interface{}, error) {
+func Float64Converter(raw string, pointer bool) (interface{}, error) {
 	raw = strings.Trim(raw, " ")
 	if raw == "" {
-		return 0.0, nil // 空值返回0（或根据需求返回nil）
+		r := 0.0
+		if pointer {
+			return &r, nil
+		}
+		return r, nil
 	}
 	val, err := strconv.ParseFloat(raw, 64)
 	if err != nil {
 		return nil, fmt.Errorf("parse float failed: %w", err)
+	}
+	if pointer {
+		return &val, nil
 	}
 	return val, nil
 }
@@ -95,7 +110,8 @@ func MapFormToEntity(res *dingtalkworkflow10.GetProcessInstanceResponseBodyResul
 		}
 
 		// 2. 转换值为目标类型
-		convertedValue, err := mapper.Converter(rawValue)
+		convertedValue, err := mapper.Converter(rawValue, mapper.Pointer)
+
 		if err != nil {
 			return fmt.Errorf("field %s convert failed: %w", mapper.FieldName, err)
 		}
@@ -118,5 +134,45 @@ func MapFormToEntity(res *dingtalkworkflow10.GetProcessInstanceResponseBodyResul
 		field.Set(val)
 	}
 
+	return nil
+}
+
+// setField 实现条件赋值逻辑
+func setField(field reflect.Value, convertedValue interface{}) error {
+	// 1. 获取源值的类型
+	valType := reflect.TypeOf(convertedValue)
+	// 2. 获取目标字段的类型
+	fieldType := field.Type()
+
+	// 3. 判断目标字段是否是源值类型的指针
+	isPtrToValType := false
+	if fieldType.Kind() == reflect.Ptr {
+		// 若目标是指针，取其指向的元素类型
+		elemType := fieldType.Elem()
+		// 比较元素类型是否与源值类型一致
+		if elemType == valType {
+			isPtrToValType = true
+		}
+	}
+
+	// 4. 条件赋值
+	var val reflect.Value
+	if isPtrToValType {
+		// 目标是源值类型的指针：使用源值的地址（注意：需确保值可寻址）
+		// 为避免取字面量地址报错，先将值赋给临时变量
+		temp := convertedValue
+		val = reflect.ValueOf(&temp)
+	} else {
+		// 其他情况：直接使用源值
+		val = reflect.ValueOf(convertedValue)
+	}
+
+	// 5. 检查最终类型是否匹配（避免非预期的类型错误）
+	if val.Type() != fieldType {
+		return fmt.Errorf("field type mismatch: expect %s, got %s", fieldType, val.Type())
+	}
+
+	// 6. 执行赋值
+	field.Set(val)
 	return nil
 }
