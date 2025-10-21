@@ -2,8 +2,13 @@ package app
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"log/slog"
+	"net/http"
+	"net/url"
 	"os"
 
 	openapi "github.com/alibabacloud-go/darabonba-openapi/v2/client"
@@ -18,6 +23,27 @@ type AccessToken interface {
 	GetAccessToken() string
 }
 
+type (
+	User struct {
+		UserId    string `json:"userid"`
+		UnionId   string `json:"unionid"`
+		RealName  string `json:"name"`
+		JobNumber string `json:"job_number"`
+		Email     string `json:"email"`
+		Mobile    string `json:"mobile"`
+		Avatar    string `json:"avatar"`
+		Active    bool   `json:"active"`
+	}
+
+	Result[T any] struct {
+		Code    int    `json:"errcode"`
+		Message string `json:"errmsg"`
+		Data    T      `json:"result"`
+	}
+
+	UserHook func(userId string) (*User, bool)
+)
+
 type App interface {
 	Namespace
 	AccessToken
@@ -30,6 +56,45 @@ type App interface {
 
 	GetAgentId() string
 	GetRobotCode() string
+
+	GetUser(userId string) (*User, error)
+	GetUserHook() UserHook
+}
+
+func (a *application) GetUserHook() UserHook {
+	return func(userId string) (*User, bool) {
+		if user, err := a.GetUser(userId); err == nil {
+			return user, true
+		}
+		return nil, false
+	}
+}
+
+func (a *application) GetUser(userId string) (*User, error) {
+	params := url.Values{}
+	params.Add("access_token", a.GetAccessToken())
+	params.Add("userid", userId)
+	resp, err := http.Get(fmt.Sprintf("https://oapi.dingtalk.com/topapi/v2/user/get?%s", params.Encode()))
+	if err != nil {
+		return nil, err
+	}
+	defer func(Body io.ReadCloser) {
+		_ = Body.Close()
+	}(resp.Body) // 确保关闭响应体，避免资源泄漏
+
+	// 2. 读取响应体为字节流
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var res Result[User]
+	if err := json.Unmarshal(body, &res); err != nil {
+		return nil, err
+	}
+	if res.Code != 0 {
+		return nil, fmt.Errorf("%s", res.Message)
+	}
+	return &res.Data, nil
 }
 
 func New(appId string, options ...Option) App {

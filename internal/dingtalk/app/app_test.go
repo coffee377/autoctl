@@ -63,3 +63,12 @@ func TestGetAccessTokenWithRedis(t *testing.T) {
 	token2 := ap2.GetAccessToken()
 	assert.NotNil(t, token2)
 }
+
+func TestGetUser(t *testing.T) {
+	ap := New("a57e9681-79cb-4242-96df-952be2dc3af7",
+		WithRedis(),
+	)
+	user, err := ap.GetUser("011555322729176962")
+	assert.Nil(t, err)
+	assert.NotNil(t, user)
+}
