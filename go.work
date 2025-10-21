@@ -4,6 +4,7 @@ toolchain go1.24.9
 
 use (
 	.
+	../entcc
 	./internal/bid
 	./internal/dingtalk
 	./pkg/api
