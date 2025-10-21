@@ -22,12 +22,12 @@ func (BaseMixin) Fields() []ent.Field {
 	return []ent.Field{
 		field.Time("create_at").Comment("创建时间").Default(time.Now).SchemaType(map[string]string{
 			dialect.MySQL: "datetime(3)",
-		}).Annotations(entcc.SortTail(1)),
-		field.String("create_by").Comment("创建人").Optional().Nillable().Annotations(entcc.SortTail(2)),
+		}).Annotations(entcc.Sort(1), entcc.Tail(true)),
+		field.String("create_by").Comment("创建人").Optional().Nillable().Annotations(entcc.TailSort(2)),
 		field.Time("update_at").Comment("更新时间").Default(time.Now).UpdateDefault(time.Now).SchemaType(map[string]string{
 			dialect.MySQL: "datetime(3)",
-		}).Annotations(entcc.SortTail(3)),
-		field.String("update_by").Comment("更新人").Optional().Nillable().Annotations(entcc.SortTail(4)),
+		}).Annotations(entcc.TailSort(3)),
+		field.String("update_by").Comment("更新人").Optional().Nillable().Annotations(entcc.TailSort(4)),
 	}
 }
 

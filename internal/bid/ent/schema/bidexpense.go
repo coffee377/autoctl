@@ -30,7 +30,7 @@ func (BidExpense) Indexes() []ent.Index {
 func (BidExpense) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		entsql.WithComments(true),
-		entsql.Annotation{Table: "bid_expense"},
+		entsql.Table("bid_expense"),
 		schema.Comment("投标费用支出"),
 	}
 }

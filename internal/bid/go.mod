@@ -5,7 +5,7 @@ go 1.24.6
 require (
 	entgo.io/ent v0.14.5
 	github.com/alibabacloud-go/dingtalk v1.6.91
-	github.com/coffee377/entcc v0.0.0-20251021080314-c47d92a7a498
+	github.com/coffee377/entcc v0.0.0-20251021095116-5bb324334584
 	github.com/go-sql-driver/mysql v1.9.3
 	github.com/mattn/go-sqlite3 v1.14.32
 	github.com/stretchr/testify v1.11.1

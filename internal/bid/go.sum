@@ -73,10 +73,10 @@ github.com/clbanning/mxj/v2 v2.7.0 h1:WA/La7UGCanFe5NpHF0Q3DNtnCsVoxbPKuyBNHWRyM
 github.com/clbanning/mxj/v2 v2.7.0/go.mod h1:hNiWqW14h+kc+MdF9C6/YoRfjEJoR3ou6tn/Qo+ve2s=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
-github.com/coffee377/entcc v0.0.0-20251021073218-cd8c77fd32f1 h1:H3b8xW7nx4zPcjnYtghXK+UD5iuu4W5OqGsBTek3CUQ=
-github.com/coffee377/entcc v0.0.0-20251021073218-cd8c77fd32f1/go.mod h1:LDNP0M1gCy8SEDkR/WoT3GnR8WWDiPy/ewpIAZ6Q1/c=
 github.com/coffee377/entcc v0.0.0-20251021080314-c47d92a7a498 h1:aG2G1tBsTWfun+SLBtvOMo+ngCbeE3Mc8GwpoMuVxZA=
 github.com/coffee377/entcc v0.0.0-20251021080314-c47d92a7a498/go.mod h1:LDNP0M1gCy8SEDkR/WoT3GnR8WWDiPy/ewpIAZ6Q1/c=
+github.com/coffee377/entcc v0.0.0-20251021095116-5bb324334584 h1:n0MpMwVFS0ojMNGX5o/jtSZHXa1LVlVK7DVWs9Aq27A=
+github.com/coffee377/entcc v0.0.0-20251021095116-5bb324334584/go.mod h1:LDNP0M1gCy8SEDkR/WoT3GnR8WWDiPy/ewpIAZ6Q1/c=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=

@@ -30,7 +30,7 @@ func (BidInfo) Indexes() []ent.Index {
 func (BidInfo) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		entsql.WithComments(true),
-		entsql.Annotation{Table: "bid_info"},
+		entsql.Table("bid_info"),
 		schema.Comment("投标信息"),
 	}
 }
