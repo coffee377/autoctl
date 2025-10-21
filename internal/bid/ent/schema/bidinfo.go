@@ -34,3 +34,9 @@ func (BidInfo) Annotations() []schema.Annotation {
 		schema.Comment("投标信息"),
 	}
 }
+
+func (BidInfo) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		BaseMixin{},
+	}
+}

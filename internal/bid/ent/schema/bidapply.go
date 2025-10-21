@@ -63,8 +63,14 @@ func (BidApply) Indexes() []ent.Index {
 // Annotations of the BidApply.
 func (BidApply) Annotations() []schema.Annotation {
 	return []schema.Annotation{
+		entsql.Table("bid_apply"),
 		entsql.WithComments(true),
-		entsql.Annotation{Table: "bid_apply"},
 		schema.Comment("投标申请"),
+	}
+}
+
+func (BidApply) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		BaseMixin{},
 	}
 }

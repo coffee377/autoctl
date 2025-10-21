@@ -34,3 +34,9 @@ func (BidExpense) Annotations() []schema.Annotation {
 		schema.Comment("投标费用支出"),
 	}
 }
+
+func (BidExpense) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		BaseMixin{},
+	}
+}

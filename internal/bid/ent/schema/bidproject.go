@@ -55,3 +55,9 @@ func (BidProject) Annotations() []schema.Annotation {
 		schema.Comment("投标项目"),
 	}
 }
+
+func (BidProject) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		BaseMixin{},
+	}
+}

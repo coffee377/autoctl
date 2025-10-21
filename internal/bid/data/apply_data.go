@@ -10,33 +10,49 @@ import (
 )
 
 type BidApplyForm struct {
-	ID             string // 申请 ID
-	ApprovalNumber string // 审批编号
-	InstanceId     string // 实例ID
-	ProjectID      string // 项目ID
+	*DingTalkWorkflowData
 
-	ProjectName string  // 项目名称
-	ProjectCode *string // 项目编号
-	ProjectType *string // 项目类型
+	ID        string // 申请 ID
+	ProjectID string // 项目ID
 
-	DepartmentName string  // 项目所属部门
-	DepartmentCode *string // 项目所属部门编码
+	ProjectName string  // v1 项目名称
+	ProjectCode *string // v2 项目编号
+	ProjectType *string // v2 项目类型
 
-	OpeningDate  *time.Time // 开标时间
-	NoticeUrl    *string    // 招标网址
-	BudgetAmount float64    // 预算金额（元）
-	Remark       *string    // 事项说明
+	DepartmentName string     // v1 项目所属部门
+	DepartmentCode *string    // v1 项目所属部门编码
+	OpeningDate    *time.Time // v1 开标时间
+	NoticeUrl      *string    // v1 招标网址
+	BudgetAmount   float64    // v1 预算金额（元）
+	Remark         *string    // v2 事项说明
 
-	Handler    string // 办理人
-	Attachment string // 附件
+	Handler    string // v1 办理人
+	Attachment string // v1 附件
+
+}
+
+func NewBidApply(instId string, res *dingtalkworkflow10.GetProcessInstanceResponseBodyResult, opts ...WorkflowOption) (*BidApplyForm, error) {
+	apply := &BidApplyForm{
+		DingTalkWorkflowData: NewWorkflowData(instId, res, opts...),
+	}
+	// 生成项目 ID 和申请 ID
+	apply.generateID()
+	// 调用通用映射函数填充表单数据
+	mappers := apply.getApplyMappers()
+	err := oa.MapFormToEntity(res, mappers, apply)
+	if err != nil {
+		return nil, err
+	}
+	return apply, nil
 }
 
 // GenerateID 根据ApprovalNumber生成唯一Id
-func (af *BidApplyForm) GenerateID() {
+func (af *BidApplyForm) generateID() {
 	// 1. 组合两个字段作为哈希源（使用特殊分隔符避免字段值拼接冲突）
-	p := af.ApprovalNumber + "|project"
-	a := af.ApprovalNumber + "|apply"
-	//b := af.ApprovalNumber + "|bid"
+	wd := af.DingTalkWorkflowData
+	p := wd.BusinessId + "|project"
+	a := wd.BusinessId + "|apply"
+	//b := af.BusinessId + "|bid"
 
 	// 2. 计算SHA-1哈希（160位，20字节）
 	pHash := md5.Sum([]byte(p))
@@ -49,7 +65,7 @@ func (af *BidApplyForm) GenerateID() {
 	//af.BidId = hex.EncodeToString(bHash[:])
 }
 
-func getApplyMappers() []oa.FieldMapper {
+func (af *BidApplyForm) getApplyMappers() []oa.FieldMapper {
 	return []oa.FieldMapper{
 		{
 			ComponentId: "TextField_1FNYLBKS38XS0", // 项目名称组件ID
@@ -96,20 +112,4 @@ func getApplyMappers() []oa.FieldMapper {
 			Converter:   oa.StringConverter,
 		},
 	}
-}
-
-func GetApplyData(instId string, res *dingtalkworkflow10.GetProcessInstanceResponseBodyResult) (*BidApplyForm, error) {
-	var apply BidApplyForm
-	apply.InstanceId = instId
-	apply.ApprovalNumber = *res.BusinessId
-
-	apply.GenerateID()
-
-	// 调用通用映射函数填充表单数据
-	mappers := getApplyMappers()
-	err := oa.MapFormToEntity(res, mappers, &apply)
-	if err != nil {
-		return nil, err
-	}
-	return &apply, nil
 }
