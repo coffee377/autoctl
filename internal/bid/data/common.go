@@ -24,8 +24,16 @@ type DingTalkWorkflowData struct {
 	*hooks
 }
 
+type KV struct {
+	Code string // 编码
+	Name string // 名称
+}
+
+type DictHook func(codeOrName string) (*KV, bool)
+
 type hooks struct {
-	creatorHook app.UserHook // 获取创建人信息
+	creatorHook    app.UserHook // 获取创建人信息
+	departmentHook DictHook     // 获取部门信息
 }
 
 type WorkflowOption func(opts *hooks)
@@ -118,6 +126,16 @@ func (receiver *DingTalkWorkflowData) extractCreatorName(s string) (string, bool
 
 func WithUserHook(hook app.UserHook) WorkflowOption {
 	return func(opts *hooks) {
-		opts.creatorHook = hook
+		if hook != nil {
+			opts.creatorHook = hook
+		}
+	}
+}
+
+func WithDepartmentHook(hook DictHook) WorkflowOption {
+	return func(opts *hooks) {
+		if hook != nil {
+			opts.departmentHook = hook
+		}
 	}
 }

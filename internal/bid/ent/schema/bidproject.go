@@ -41,8 +41,9 @@ func (BidProject) Edges() []ent.Edge {
 // Indexes of the BidProject.
 func (BidProject) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("code", "name").Unique().StorageKey("uk_code_name"),
-		index.Fields("name").StorageKey("idx_name"),
+		// todo 历史数据项目名称存在重复（可能多次提交记录）
+		//index.Fields("code", "name").Unique().StorageKey("uk_code_name"),
+		index.Fields("code", "name").StorageKey("idx_code_name"),
 		index.Fields("department_code").StorageKey("idx_department_code"),
 	}
 }

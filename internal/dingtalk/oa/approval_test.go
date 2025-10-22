@@ -2,12 +2,14 @@ package oa
 
 import (
 	"cds/dingtalk/app"
+	"fmt"
 	"testing"
 	"time"
 
 	"github.com/coffee377/autoctl/pkg/log"
 	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/assert"
+	"go.uber.org/zap/buffer"
 )
 
 var (
@@ -30,13 +32,24 @@ func init() {
 }
 
 func TestGetProcessInstanceIds(t *testing.T) {
-	ids, err2 := approval.GetProcessInstanceIdsByMonth(BidApplyProcessCode, 2025, 1, nil)
+	ids, err2 := approval.GetProcessInstanceIds(BidApplyProcessCode, "2025-01-01", "", nil)
 	assert.Nil(t, err2)
 	assert.NotNil(t, ids)
+	buf := buffer.Buffer{}
+	_, _ = buf.WriteString("\ninsert into ids (id) values ")
+	for i, id := range ids {
+		_, _ = buf.WriteString(fmt.Sprintf("('%s')", id))
+		if i < len(ids)-1 {
+			_ = buf.WriteByte(',')
+		} else {
+			_ = buf.WriteByte(';')
+		}
+	}
+	t.Logf("%s", buf.String())
 }
 
 func TestGetProcessInstance(t *testing.T) {
-	instId := "Rp9D_t0WQrqgpfxvxUZ_EQ07201760318742"
+	instId := "Z0CLpnUoT3m-mtMZC8SQ2w07201742289469"
 	res, err := approval.GetProcessInstance(instId)
 	assert.Nil(t, err)
 	assert.NotNil(t, res)

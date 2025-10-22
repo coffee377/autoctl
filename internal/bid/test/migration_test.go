@@ -1,31 +1,20 @@
 package test
 
 import (
-	"cds/bid/ent"
+	"cds/bid/ds"
 	"context"
-	"fmt"
 	"log"
 	"testing"
 
-	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql/schema"
-	_ "github.com/go-sql-driver/mysql"
-	_ "github.com/mattn/go-sqlite3"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_Migration(t *testing.T) {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?%s", "root", "root!@@&", "localhost", "3306", "cds_infra",
-		"charset=utf8mb4&parseTime=True&loc=Asia%2FShanghai")
-	client, err := ent.Open(dialect.MySQL, dsn)
-	if err != nil {
-		log.Fatalf("failed opening connection to mysql: %v", err)
-	}
-	defer func(client *ent.Client) {
-		err := client.Close()
-		if err != nil {
-			log.Fatalf("failed closing connection to mysql: %v", err)
-		}
-	}(client)
+	client, ok := ds.Mysql()
+	defer ds.CloseMysql(client)
+	assert.Equal(t, true, ok)
 
 	ctx := context.Background()
 
