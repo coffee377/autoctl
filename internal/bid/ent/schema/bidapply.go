@@ -7,6 +7,7 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
+	"entgo.io/ent/schema/index"
 )
 
 // BidApply holds the schema definition for the BidApply entity.
@@ -57,7 +58,9 @@ func (BidApply) Edges() []ent.Edge {
 
 // Indexes of the BidApply.
 func (BidApply) Indexes() []ent.Index {
-	return []ent.Index{}
+	return []ent.Index{
+		index.Fields("approval_status").StorageKey("idx_approval_status"),
+	}
 }
 
 // Annotations of the BidApply.

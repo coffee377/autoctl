@@ -66,12 +66,12 @@ func NewBidApply(instId string, res *dingtalkworkflow10.GetProcessInstanceRespon
 func (af *BidApplyForm) Save(ctx context.Context, client *ent.Client) error {
 	return ds.WithEntTx(ctx, client, func(tx *ent.Tx) error {
 		// 项目信息
-		project, err1 := saveProject(ctx, tx, af)
+		project, err1 := af.saveProject(ctx, tx)
 		if err1 != nil {
 			return err1
 		}
 		// 申请信息
-		_, err2 := saveApply(ctx, tx, af, project)
+		_, err2 := af.saveApply(ctx, tx, project)
 		if err2 != nil {
 			return err2
 		}
@@ -147,105 +147,30 @@ func (af *BidApplyForm) getApplyMappers() []oa.FieldMapper {
 	}
 }
 
-func saveApply(ctx context.Context, tx *ent.Tx, applyData *BidApplyForm, project *ent.BidProject) (*ent.BidApply, error) {
-	count, err := tx.BidApply.Query().Where(bidapply.ID(applyData.ID)).Count(ctx)
-	if err != nil {
-		return nil, err
-	}
-	if count == 0 {
-		create := tx.BidApply.Create()
-		create.SetID(applyData.ID)
-		create.SetBusinessID(applyData.BusinessId)
-		create.SetInstanceID(applyData.InstanceId)
-		create.SetProjectID(project.ID)
-
-		// v2 投标申请新增字段
-		create.SetNillablePurchaser(applyData.Purchaser)
-		if applyData.BidType != nil {
-			bidType := bidapply.BidType(*applyData.BidType)
-			create.SetBidType(bidType)
-		}
-		create.SetNillableAgencyName(applyData.AgencyName)
-		create.SetNillableAgencyContact(applyData.AgencyContact)
-
-		// v1
-		create.SetNillableOpeningDate(applyData.OpeningDate)
-		create.SetNillableNoticeURL(applyData.NoticeUrl)
-		create.SetBudgetAmount(applyData.BudgetAmount)
-		create.SetNillableRemark(applyData.Remark)
-
-		create.SetApprovalStatus(applyData.ApprovalStatus)
-
-		create.SetCreateAt(*applyData.CreateAt)
-		if applyData.UpdateAt != nil {
-			create.SetUpdateAt(*applyData.UpdateAt)
-		}
-
-		apply, err := create.Save(ctx)
-		if err != nil {
-			return nil, err
-		}
-		return apply, nil
-	}
-
-	update := tx.BidApply.UpdateOneID(applyData.ID)
-	update.SetBusinessID(applyData.BusinessId)
-	update.SetInstanceID(applyData.InstanceId)
-	update.SetProjectID(project.ID)
-
-	// v2 投标新增字段
-	update.SetNillablePurchaser(applyData.Purchaser)
-	if applyData.BidType != nil {
-		bidType := bidapply.BidType(*applyData.BidType)
-		update.SetBidType(bidType)
-	}
-	update.SetNillableAgencyName(applyData.AgencyName)
-	update.SetNillableAgencyContact(applyData.AgencyContact)
-
-	// v1
-	update.SetNillableOpeningDate(applyData.OpeningDate)
-	update.SetNillableNoticeURL(applyData.NoticeUrl)
-	update.SetBudgetAmount(applyData.BudgetAmount)
-	update.SetNillableRemark(applyData.Remark)
-
-	update.SetApprovalStatus(applyData.ApprovalStatus)
-
-	update.SetCreateAt(*applyData.CreateAt)
-	if applyData.UpdateAt != nil {
-		update.SetUpdateAt(*applyData.UpdateAt)
-	}
-
-	apply, err := update.Save(ctx)
-	if err != nil {
-		return nil, err
-	}
-	return apply, nil
-}
-
-func saveProject(ctx context.Context, tx *ent.Tx, applyData *BidApplyForm) (*ent.BidProject, error) {
-	count, _ := tx.BidProject.Query().Where(bidproject.IDEQ(applyData.ProjectID)).Count(ctx)
+func (af *BidApplyForm) saveProject(ctx context.Context, tx *ent.Tx) (*ent.BidProject, error) {
+	count, _ := tx.BidProject.Query().Where(bidproject.IDEQ(af.ProjectID)).Count(ctx)
 
 	// 新增
 	if count == 0 {
 		projectCreate := tx.BidProject.Create()
-		projectCreate.SetID(applyData.ProjectID)
+		projectCreate.SetID(af.ProjectID)
 
-		if applyData.ProjectCode != nil {
-			projectCreate.SetCode(*applyData.ProjectCode)
+		if af.ProjectCode != nil {
+			projectCreate.SetCode(*af.ProjectCode)
 		}
-		projectCreate.SetName(applyData.ProjectName)
+		projectCreate.SetName(af.ProjectName)
 
-		if applyData.DepartmentCode != nil {
-			projectCreate.SetDepartmentCode(*applyData.DepartmentCode)
+		if af.DepartmentCode != nil {
+			projectCreate.SetDepartmentCode(*af.DepartmentCode)
 		}
-		projectCreate.SetDepartmentName(applyData.DepartmentName)
+		projectCreate.SetDepartmentName(af.DepartmentName)
 
-		projectCreate.SetBizRepNo(applyData.CreateBy)
-		projectCreate.SetBizRepName(applyData.CreatorName)
+		projectCreate.SetBizRepNo(af.CreateBy)
+		projectCreate.SetBizRepName(af.CreatorName)
 
-		projectCreate.SetCreateAt(*applyData.CreateAt)
-		if applyData.UpdateAt != nil {
-			projectCreate.SetUpdateAt(*applyData.UpdateAt)
+		projectCreate.SetCreateAt(*af.CreateAt)
+		if af.UpdateAt != nil {
+			projectCreate.SetUpdateAt(*af.UpdateAt)
 		}
 
 		project, err := projectCreate.Save(ctx)
@@ -256,24 +181,24 @@ func saveProject(ctx context.Context, tx *ent.Tx, applyData *BidApplyForm) (*ent
 	}
 
 	// 更新
-	projectUpdate := tx.BidProject.UpdateOneID(applyData.ProjectID)
+	projectUpdate := tx.BidProject.UpdateOneID(af.ProjectID)
 
-	if applyData.ProjectCode != nil {
-		projectUpdate.SetCode(*applyData.ProjectCode)
+	if af.ProjectCode != nil {
+		projectUpdate.SetCode(*af.ProjectCode)
 	}
-	projectUpdate.SetName(applyData.ProjectName)
+	projectUpdate.SetName(af.ProjectName)
 
-	if applyData.DepartmentCode != nil {
-		projectUpdate.SetDepartmentCode(*applyData.DepartmentCode)
+	if af.DepartmentCode != nil {
+		projectUpdate.SetDepartmentCode(*af.DepartmentCode)
 	}
-	projectUpdate.SetDepartmentName(applyData.DepartmentName)
+	projectUpdate.SetDepartmentName(af.DepartmentName)
 
-	projectUpdate.SetBizRepNo(applyData.CreateBy)
-	projectUpdate.SetBizRepName(applyData.CreatorName)
+	projectUpdate.SetBizRepNo(af.CreateBy)
+	projectUpdate.SetBizRepName(af.CreatorName)
 
-	projectUpdate.SetCreateAt(*applyData.CreateAt)
-	if applyData.UpdateAt != nil {
-		projectUpdate.SetUpdateAt(*applyData.UpdateAt)
+	projectUpdate.SetCreateAt(*af.CreateAt)
+	if af.UpdateAt != nil {
+		projectUpdate.SetUpdateAt(*af.UpdateAt)
 	}
 
 	project, err := projectUpdate.Save(ctx)
@@ -281,4 +206,79 @@ func saveProject(ctx context.Context, tx *ent.Tx, applyData *BidApplyForm) (*ent
 		return nil, err
 	}
 	return project, nil
+}
+
+func (af *BidApplyForm) saveApply(ctx context.Context, tx *ent.Tx, project *ent.BidProject) (*ent.BidApply, error) {
+	count, err := tx.BidApply.Query().Where(bidapply.ID(af.ID)).Count(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if count == 0 {
+		create := tx.BidApply.Create()
+		create.SetID(af.ID)
+		create.SetBusinessID(af.BusinessId)
+		create.SetInstanceID(af.InstanceId)
+		create.SetProjectID(project.ID)
+
+		// v2 投标申请新增字段
+		create.SetNillablePurchaser(af.Purchaser)
+		if af.BidType != nil {
+			bidType := bidapply.BidType(*af.BidType)
+			create.SetBidType(bidType)
+		}
+		create.SetNillableAgencyName(af.AgencyName)
+		create.SetNillableAgencyContact(af.AgencyContact)
+
+		// v1
+		create.SetNillableOpeningDate(af.OpeningDate)
+		create.SetNillableNoticeURL(af.NoticeUrl)
+		create.SetBudgetAmount(af.BudgetAmount)
+		create.SetNillableRemark(af.Remark)
+
+		create.SetApprovalStatus(af.ApprovalStatus)
+
+		create.SetCreateAt(*af.CreateAt)
+		if af.UpdateAt != nil {
+			create.SetUpdateAt(*af.UpdateAt)
+		}
+
+		apply, err := create.Save(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return apply, nil
+	}
+
+	update := tx.BidApply.UpdateOneID(af.ID)
+	update.SetBusinessID(af.BusinessId)
+	update.SetInstanceID(af.InstanceId)
+	update.SetProjectID(project.ID)
+
+	// v2 投标新增字段
+	update.SetNillablePurchaser(af.Purchaser)
+	if af.BidType != nil {
+		bidType := bidapply.BidType(*af.BidType)
+		update.SetBidType(bidType)
+	}
+	update.SetNillableAgencyName(af.AgencyName)
+	update.SetNillableAgencyContact(af.AgencyContact)
+
+	// v1
+	update.SetNillableOpeningDate(af.OpeningDate)
+	update.SetNillableNoticeURL(af.NoticeUrl)
+	update.SetBudgetAmount(af.BudgetAmount)
+	update.SetNillableRemark(af.Remark)
+
+	update.SetApprovalStatus(af.ApprovalStatus)
+
+	update.SetCreateAt(*af.CreateAt)
+	if af.UpdateAt != nil {
+		update.SetUpdateAt(*af.UpdateAt)
+	}
+
+	apply, err := update.Save(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return apply, nil
 }

@@ -2,8 +2,11 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/field"
+	"entgo.io/ent/schema/index"
 )
 
 // BidExpense holds the schema definition for the BidExpense entity.
@@ -13,7 +16,41 @@ type BidExpense struct {
 
 // Fields of the BidExpense.
 func (BidExpense) Fields() []ent.Field {
-	return []ent.Field{}
+	return []ent.Field{
+		field.String("id").Comment("投标支出 ID").MaxLen(32),
+		field.String("business_id").Comment("审批编号").MaxLen(32),
+		field.String("instance_id").Comment("审批实例 ID").MaxLen(64),
+		field.String("bill_no").Comment("单据编码").MaxRuneLen(16),
+
+		field.String("project_id").Comment("项目 ID").MaxLen(32).Nillable(),
+		// todo 临时字段，拉取数据，后期删除
+		field.String("project_name").Comment("项目名称").MaxRuneLen(64),
+		field.String("project_code").Comment("项目编码").MaxRuneLen(64),
+		field.String("biz_rep_name").Comment("商务代表").MaxRuneLen(16),
+		field.String("purchaser").Comment("采购人名称").MaxLen(64).Optional().Nillable(),
+
+		field.Enum("fee_type").Comment("费用类型 RF:报名费 DF:标书工本费 CA:CA费用 EF:专家费 BB:投标保证金 BS:中标服务费 PB:履约保证金 OE:其他费用").Values("RF", "DF", "CA", "EF", "BB", "BS", "PB", "OE"),
+		field.Bool("refunded").Comment("是否（保证金）退还金额").Default(false),
+		field.String("pay_reason").Comment("付款事由").MaxRuneLen(64).Optional().Nillable(),
+		field.String("payee_bank").Comment("收款方开户银行").MaxRuneLen(64),
+		field.String("payee_name").Comment("收款方账户名称").MaxRuneLen(64),
+		field.String("payee_account").Comment("收款方账号").MaxRuneLen(64),
+		field.Float("pay_ratio").Comment("付款比例").Default(1).SchemaType(
+			map[string]string{
+				dialect.MySQL: "decimal(5,2)",
+			},
+		),
+		field.Float("pay_amount").Comment("付款金额（元）").Default(0).SchemaType(
+			map[string]string{
+				dialect.MySQL: "decimal(16,2)",
+			},
+		),
+		field.Text("pay_remark").Comment("付款备注").Optional().Nillable(),
+		field.String("pay_method").Comment("付款方式").MaxRuneLen(64).Optional().Nillable(),
+		field.Time("plan_pay_time").Comment("预计转账时间").Nillable(),
+
+		field.String("approval_status").Comment("费用审批状态"),
+	}
 }
 
 // Edges of the BidExpense.
@@ -23,7 +60,11 @@ func (BidExpense) Edges() []ent.Edge {
 
 // Indexes of the BidExpense.
 func (BidExpense) Indexes() []ent.Index {
-	return []ent.Index{}
+	return []ent.Index{
+		index.Fields("bill_no").StorageKey("idx_bill_no"),
+		index.Fields("fee_type").StorageKey("idx_fee_type"),
+		index.Fields("approval_status").StorageKey("idx_approval_status"),
+	}
 }
 
 // Annotations of the BidExpense.
