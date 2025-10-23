@@ -100,50 +100,14 @@ func (af *BidApplyForm) generateID() {
 
 func (af *BidApplyForm) getApplyMappers() []oa.FieldMapper {
 	return []oa.FieldMapper{
-		{
-			ComponentId: "TextField_1FNYLBKS38XS0", // 项目名称组件ID
-			FieldName:   "ProjectName",
-			Converter:   oa.StringConverter, // 字符串转换
-		},
-		{
-			ComponentId: "DDSelectField_5CJS7PFW1CG0", // 所属部门组件ID
-			FieldName:   "DepartmentName",
-			Converter:   oa.StringConverter,
-		},
-		{
-			ComponentId: "TextField_1P4X7NQK70W00", // 招标网址组件ID
-			FieldName:   "NoticeUrl",
-			Converter:   oa.StringConverter,
-			Pointer:     true,
-		},
-		{
-			ComponentId: "DDDateField_1GR3BL6HLUWW", // 开标时间组件ID
-			FieldName:   "OpeningDate",
-			// 时间转换（格式"2006-01-02"，本地时区）
-			Converter: oa.DateConverter(time.DateOnly, time.Local),
-			Pointer:   true,
-		},
-		{
-			ComponentId: "MoneyField_7FQ2FMK1KQC0", // 预算金额组件ID
-			FieldName:   "BudgetAmount",
-			Converter:   oa.Float64Converter, // 浮点数转换
-		},
-		{
-			ComponentId: "TextareaField_1EP1SOW22D1C0", // 事项说明组件ID
-			FieldName:   "Remark",
-			Converter:   oa.StringConverter,
-			Pointer:     true,
-		},
-		{
-			ComponentId: "InnerContactField_1ER3G5MU4HR40", // 办理人组件ID
-			FieldName:   "Handler",
-			Converter:   oa.StringConverter,
-		},
-		{
-			ComponentId: "DDAttachment_I8PPSWWCCDC0", // 附件组件ID
-			FieldName:   "Attachment",
-			Converter:   oa.StringConverter,
-		},
+		{ComponentId: "TextField_1FNYLBKS38XS0", FieldName: "ProjectName", Converter: oa.StringConverter},
+		{ComponentId: "DDSelectField_5CJS7PFW1CG0", FieldName: "DepartmentName", Converter: oa.StringConverter},
+		{ComponentId: "TextField_1P4X7NQK70W00", FieldName: "NoticeUrl", Converter: oa.StringConverter, Pointer: true},
+		{ComponentId: "DDDateField_1GR3BL6HLUWW", FieldName: "OpeningDate", Converter: oa.DateConverter(time.DateOnly, time.Local), Pointer: true},
+		{ComponentId: "MoneyField_7FQ2FMK1KQC0", FieldName: "BudgetAmount", Converter: oa.Float64Converter},
+		{ComponentId: "TextareaField_1EP1SOW22D1C0", FieldName: "Remark", Converter: oa.StringConverter, Pointer: true},
+		{ComponentId: "InnerContactField_1ER3G5MU4HR40", FieldName: "Handler", Converter: oa.StringConverter},
+		{ComponentId: "DDAttachment_I8PPSWWCCDC0", FieldName: "Attachment", Converter: oa.StringConverter},
 	}
 }
 
@@ -169,8 +133,11 @@ func (af *BidApplyForm) saveProject(ctx context.Context, tx *ent.Tx) (*ent.BidPr
 		projectCreate.SetBizRepName(af.CreatorName)
 
 		projectCreate.SetCreateAt(*af.CreateAt)
+		projectCreate.SetCreateBy(af.CreateBy)
 		if af.UpdateAt != nil {
 			projectCreate.SetUpdateAt(*af.UpdateAt)
+		} else {
+			projectCreate.SetUpdateAt(*af.CreateAt)
 		}
 
 		project, err := projectCreate.Save(ctx)
@@ -238,8 +205,11 @@ func (af *BidApplyForm) saveApply(ctx context.Context, tx *ent.Tx, project *ent.
 		create.SetApprovalStatus(af.ApprovalStatus)
 
 		create.SetCreateAt(*af.CreateAt)
+		create.SetCreateBy(af.CreateBy)
 		if af.UpdateAt != nil {
 			create.SetUpdateAt(*af.UpdateAt)
+		} else {
+			create.SetUpdateAt(*af.CreateAt)
 		}
 
 		apply, err := create.Save(ctx)
