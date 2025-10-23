@@ -34,7 +34,11 @@ func (BidProject) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("apply", BidApply.Type).Unique().Annotations(
 			entsql.OnDelete(entsql.Cascade),
-		).StorageKey(edge.Symbol("fk_project_id")),
+		).StorageKey(edge.Symbol("fk_pid_01")),
+
+		edge.To("expense", BidExpense.Type).Annotations(
+			entsql.OnDelete(entsql.Cascade),
+		).StorageKey(edge.Symbol("fk_pid_02")),
 	}
 }
 

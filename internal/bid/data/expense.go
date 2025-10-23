@@ -8,7 +8,6 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/hex"
-	"regexp"
 	"time"
 
 	dingtalkworkflow10 "github.com/alibabacloud-go/dingtalk/workflow_1_0"
@@ -53,26 +52,17 @@ func NewBidExpense(instId string, res *dingtalkworkflow10.GetProcessInstanceResp
 		return nil, err
 	}
 
-	// 费用类型转换,支持 v1,v2
-	feeTypeConvert(expense)
+	// 费用类型转换, v2 版本支持
+	code, ok := expense.ExtraDictCode(&expense.FeeType)
+	if ok {
+		expense.FeeTypeV1 = nil
+		expense.FeeType = code
+	} else {
+		expense.FeeTypeV1 = &code
+		expense.FeeType = ""
+	}
 
 	return expense, nil
-}
-
-// 正则表达式,匹配任意类似“xxx(yyy)”的字符串，`\(([^)]+)\)`
-var re = regexp.MustCompile(`\(([^)]+)\)`)
-
-func feeTypeConvert(expense *BidExpenseForm) {
-	// 2. 查找匹配的子串
-	match := re.FindStringSubmatch(expense.FeeType)
-	if len(match) < 2 {
-		t := expense.FeeType
-		expense.FeeTypeV1 = &t
-		expense.FeeType = ""
-	} else {
-		expense.FeeTypeV1 = nil
-		expense.FeeType = match[1]
-	}
 }
 
 func (ef *BidExpenseForm) Save(ctx context.Context, client *ent.Client) error {

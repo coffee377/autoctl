@@ -44,6 +44,7 @@ func (BidApply) Fields() []ent.Field {
 		field.JSON("attachments", []map[string]any{}).Comment("附件").Optional(),
 
 		field.String("approval_status").Comment("审批状态"),
+		field.Bool("done").Comment("审批流程是否已结束").Default(false),
 	}
 
 }

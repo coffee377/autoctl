@@ -18,6 +18,7 @@ type DingTalkWorkflowData struct {
 	UpdateAt    *time.Time // 更新时间
 
 	ApprovalStatus string // 审批状态
+	Done           bool   // 审批是否结束
 
 	res *dingtalkworkflow10.GetProcessInstanceResponseBodyResult
 
@@ -57,6 +58,9 @@ func (receiver *DingTalkWorkflowData) GetData() *dingtalkworkflow10.GetProcessIn
 
 // Extract 从审批实例响应中提取通用数据
 func (receiver *DingTalkWorkflowData) Extract(instId string, res *dingtalkworkflow10.GetProcessInstanceResponseBodyResult) {
+	if res == nil {
+		return
+	}
 	receiver.InstanceId = instId
 	receiver.BusinessId = *res.BusinessId
 	// 审批发起人
@@ -86,8 +90,10 @@ func (receiver *DingTalkWorkflowData) Extract(instId string, res *dingtalkworkfl
 		receiver.ApprovalStatus = "审批中"
 		break
 	case "TERMINATED":
+		receiver.Done = true
 		receiver.ApprovalStatus = "已撤销"
 	case "COMPLETED":
+		receiver.Done = true
 		if *res.Result == "agree" {
 			receiver.ApprovalStatus = "审批通过"
 		} else if *res.Result == "refuse" {
@@ -122,6 +128,21 @@ func (receiver *DingTalkWorkflowData) extractCreatorName(s string) (string, bool
 
 	// 第一个分组（索引1）即为"提交"前面的内容
 	return match[1], true
+}
+
+// 正则表达式,匹配任意类似“xxx(yyy)”的字符串，`\(([^)]+)\)`
+var codeReg = regexp.MustCompile(`\(([^)]+)\)`)
+
+func (receiver *DingTalkWorkflowData) ExtraDictCode(text *string) (string, bool) {
+	if text == nil {
+		return "", false
+	}
+	match := codeReg.FindStringSubmatch(*text)
+	if len(match) < 2 {
+		return *text, false
+	} else {
+		return match[1], true
+	}
 }
 
 func WithUserHook(hook app.UserHook) WorkflowOption {
