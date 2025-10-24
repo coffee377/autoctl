@@ -29,6 +29,7 @@ func main() {
 		Hooks: []gen.Hook{
 			testHook(development.Sugar()),
 		},
+		Features: []gen.Feature{gen.FeatureVersionedMigration},
 	}, opts...); err != nil {
 		log.Fatal("running ent codegen:", err)
 	}

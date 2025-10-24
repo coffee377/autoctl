@@ -1,6 +1,6 @@
 module cds/bid
 
-go 1.24.6
+go 1.24.9
 
 require (
 	entgo.io/ent v0.14.5
