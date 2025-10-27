@@ -11,8 +11,9 @@ import (
 )
 
 const (
-	BidApplyProcessCode   = "PROC-958C3100-85BF-45D3-8583-6645DA922756" // 投标申请审批表单编码
-	BidExpenseProcessCode = "PROC-D8453B77-B313-4BEB-BE42-C71EE81DA61A" // 投标项目转款表单编码
+	BidApplyProcessCode      = "PROC-958C3100-85BF-45D3-8583-6645DA922756" // 投标申请审批表单编码
+	BidExpenseProcessCode    = "PROC-D8453B77-B313-4BEB-BE42-C71EE81DA61A" // 投标项目转款表单编码
+	BidExpenseProcessCodeNew = "PROC-4EDF46AF-CACD-47F2-A787-0C1EAC98C935"
 )
 
 type Approval struct {

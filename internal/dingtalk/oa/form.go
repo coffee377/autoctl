@@ -97,6 +97,7 @@ func MapFormToEntity(res *dingtalkworkflow10.GetProcessInstanceResponseBodyResul
 	componentMap := make(map[string]string)
 	for _, comp := range components {
 		if comp.Id != nil && comp.Value != nil {
+			// todo comp.ExtValue 获取连接器绑定的数据
 			componentMap[*comp.Id] = *comp.Value
 		}
 	}

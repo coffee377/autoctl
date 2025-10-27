@@ -26,7 +26,10 @@ func TestGetBidExpenseFormSchema(t *testing.T) {
 	for i, item := range schema2.SchemaContent.Items {
 		buf.Reset()
 		props := item.Props
-		pointer := !*props.Required
+		pointer := false
+		if props.Required != nil && *props.Required {
+			pointer = true
+		}
 		_, _ = buf.WriteString(fmt.Sprintf("{ComponentId: \"%s\", FieldName: \"%s\", Converter: %s", *props.Id, *props.Label, "oa.StringConverter"))
 		if pointer {
 			_, _ = buf.WriteString(fmt.Sprintf(", Pointer: %t},", pointer))
