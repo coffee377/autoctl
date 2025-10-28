@@ -41,7 +41,7 @@ func (BidApply) Fields() []ent.Field {
 		),
 
 		field.Text("remark").Comment("备注说明;如资质要求、技术难点、事项说明等").Optional().Nillable(),
-		field.JSON("attachments", []map[string]any{}).Comment("附件").Optional(),
+		field.JSON("attachments", []map[string]any{}).Comment("投标报名相关附件").Optional(),
 
 		field.String("approval_status").Comment("审批状态"),
 		field.Bool("done").Comment("审批流程是否已结束").Default(false),

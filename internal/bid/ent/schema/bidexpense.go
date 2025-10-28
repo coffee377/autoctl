@@ -31,8 +31,8 @@ func (BidExpense) Fields() []ent.Field {
 		field.String("purchaser").Comment("采购人名称").MaxRuneLen(64).Optional().Nillable(),
 
 		field.String("fee_type_v1").Comment("费用类型").Optional().Nillable(),
-		field.Enum("fee_type").Comment("费用类型 RF:报名费 DF:标书工本费 CA:CA费用 EF:专家费 BB:投标保证金 BS:中标服务费 PB:履约保证金 OE:其他费用").
-			Values("RF", "DF", "CA", "EF", "BB", "BS", "PB", "OE").Default("OE"),
+		field.Enum("fee_type").Comment("费用类型 RF:报名费 DF:标书工本费 CA:CA费用 EF:专家费 BB:投标保证金 BS:中标服务费 PB:履约保证金 PG:预付保函 OE:其他费用").
+			Values("RF", "DF", "CA", "EF", "BB", "BS", "PB", "PG", "OE").Default("OE"),
 		field.String("pay_reason").Comment("付款事由").MaxRuneLen(64).Optional().Nillable(),
 
 		field.Bool("refunded").Comment("是否（保证金）退还金额").Default(false),
@@ -49,7 +49,11 @@ func (BidExpense) Fields() []ent.Field {
 				dialect.MySQL: "decimal(16,2)",
 			},
 		),
+		// 付款主体
+		// 付款账户 与付款主体联动
+		// 核算项目
 		field.Text("pay_remark").Comment("付款备注").Optional().Nillable(),
+
 		field.String("pay_method").Comment("付款方式").MaxRuneLen(64).Optional().Nillable(),
 		field.Time("plan_pay_time").Comment("预计转账时间").Nillable(),
 
