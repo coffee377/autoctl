@@ -12,9 +12,21 @@ func TestGetBidApplyFormSchema(t *testing.T) {
 	schema1, err1 := approval.GetFormSchema(BidApplyProcessCode)
 	assert.Nil(t, err1)
 
+	buf := buffer.Buffer{}
 	for i, item := range schema1.SchemaContent.Items {
+		buf.Reset()
 		props := item.Props
-		t.Log(i+1, *props.Label, *props.Id, *props.Required)
+		pointer := true
+		if props.Required != nil && *props.Required {
+			pointer = false
+		}
+		_, _ = buf.WriteString(fmt.Sprintf("{ComponentId: \"%s\", FieldName: \"%s\", Converter: %s", *props.Id, *props.Label, "oa.StringConverter"))
+		if pointer {
+			_, _ = buf.WriteString(fmt.Sprintf(", Pointer: %t},", pointer))
+		} else {
+			_, _ = buf.WriteString("},")
+		}
+		t.Log(fmt.Sprintf("%02d", i+1), buf.String())
 	}
 }
 

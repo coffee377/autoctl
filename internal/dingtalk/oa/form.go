@@ -56,6 +56,26 @@ func DateConverter(layout string, loc *time.Location) ValueConverter {
 	}
 }
 
+func DateConverters(layouts []string, loc *time.Location) ValueConverter {
+	return func(raw string, pointer bool) (interface{}, error) {
+		raw = strings.Trim(raw, " ")
+		if raw == "" {
+			return nil, nil // 空值返回nil（适配指针类型）
+		}
+		for _, layout := range layouts {
+			t, err := time.ParseInLocation(layout, raw, loc)
+			if err != nil {
+				continue
+			}
+			if pointer {
+				return &t, nil
+			}
+			return t, nil
+		}
+		return nil, fmt.Errorf("parse date failed: %w", errors.New("all layouts failed"))
+	}
+}
+
 // Float64Converter 浮点数转换器（返回float64）
 func Float64Converter(raw string, pointer bool) (interface{}, error) {
 	raw = strings.Trim(raw, " ")

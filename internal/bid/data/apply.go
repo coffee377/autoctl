@@ -9,6 +9,7 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/hex"
+	"strings"
 	"time"
 
 	dingtalkworkflow10 "github.com/alibabacloud-go/dingtalk/workflow_1_0"
@@ -24,20 +25,21 @@ type BidApplyForm struct {
 	ProjectCode *string // v2 项目编号
 	ProjectType *string // v2 项目类型
 
-	Purchaser     *string // v2 采购人名称
-	BidType       *string // v2 招标类型
-	AgencyName    *string // v2 招标代理机构名称
-	AgencyContact *string // v2 招标代理机构联系人及电话
+	PurchaserName            *string // v2 采购人名称
+	BidType                  *string // v2 招标类型(采购方式)
+	AgencyName               *string // v2 招标代理机构名称
+	AgencyContactPerson      *string // v2 招标代理机构联系
+	AgencyContactInformation *string // v2 招标代理机构联系方式
 
 	DepartmentName string     // v1 项目所属部门
 	DepartmentCode *string    // v1 项目所属部门编码
 	OpeningDate    *time.Time // v1 开标时间
 	NoticeUrl      *string    // v1 招标网址
 	BudgetAmount   float64    // v1 预算金额（元）
-	Remark         *string    // v1 事项说明
+	Remark         *string    // v1 备注说明
 
-	Handler    string // v1 办理人
-	Attachment string // v1 附件
+	BidRegistrationHandler string // v1 投标报名办理人
+	Attachment             string // v1 附件
 
 }
 
@@ -119,12 +121,19 @@ func (af *BidApplyForm) generateID() {
 func (af *BidApplyForm) getApplyMappers() []oa.FieldMapper {
 	return []oa.FieldMapper{
 		{ComponentId: "TextField_1FNYLBKS38XS0", FieldName: "ProjectName", Converter: oa.StringConverter},
+		{ComponentId: "DDSelectField_12X96ZZZPIIO0", FieldName: "ProjectType", Converter: oa.StringConverter, Pointer: true},
+		{ComponentId: "TextField_R6ZC4JEPWHZ4", FieldName: "ProjectCode", Converter: oa.StringConverter, Pointer: true},
 		{ComponentId: "DDSelectField_5CJS7PFW1CG0", FieldName: "DepartmentName", Converter: oa.StringConverter},
-		{ComponentId: "TextField_1P4X7NQK70W00", FieldName: "NoticeUrl", Converter: oa.StringConverter, Pointer: true},
-		{ComponentId: "DDDateField_1GR3BL6HLUWW", FieldName: "OpeningDate", Converter: oa.DateConverter(time.DateOnly, time.Local), Pointer: true},
+		{ComponentId: "TextField_1WA1WVNMXKV7K", FieldName: "PurchaserName", Converter: oa.StringConverter, Pointer: true},
+		{ComponentId: "DDSelectField_DYE2Z0A8VY80", FieldName: "BidType", Converter: oa.StringConverter, Pointer: true},
+		{ComponentId: "TextField_LJX2NLWH06WW", FieldName: "AgencyName", Converter: oa.StringConverter, Pointer: true},
+		{ComponentId: "TextField_JJY6USO8AA68", FieldName: "AgencyContactPerson", Converter: oa.StringConverter, Pointer: true},
+		{ComponentId: "TextField_F62UJ59YNTHC", FieldName: "AgencyContactInformation", Converter: oa.StringConverter, Pointer: true},
 		{ComponentId: "MoneyField_7FQ2FMK1KQC0", FieldName: "BudgetAmount", Converter: oa.Float64Converter},
+		{ComponentId: "DDDateField_1GR3BL6HLUWW", FieldName: "OpeningDate", Converter: oa.DateConverters([]string{"2006-01-02 15:04", time.DateOnly}, time.Local), Pointer: true},
+		{ComponentId: "TextField_1P4X7NQK70W00", FieldName: "NoticeUrl", Converter: oa.StringConverter, Pointer: true},
 		{ComponentId: "TextareaField_1EP1SOW22D1C0", FieldName: "Remark", Converter: oa.StringConverter, Pointer: true},
-		{ComponentId: "InnerContactField_1ER3G5MU4HR40", FieldName: "Handler", Converter: oa.StringConverter},
+		{ComponentId: "InnerContactField_1ER3G5MU4HR40", FieldName: "BidRegistrationHandler", Converter: oa.StringConverter},
 		{ComponentId: "DDAttachment_I8PPSWWCCDC0", FieldName: "Attachment", Converter: oa.StringConverter},
 	}
 }
@@ -223,13 +232,21 @@ func (af *BidApplyForm) createApply(ctx context.Context, tx *ent.Tx) (*ent.BidAp
 	create.SetProjectID(af.ProjectID)
 
 	// v2 投标申请新增字段
-	create.SetNillablePurchaser(af.Purchaser)
+	create.SetNillablePurchaserName(af.PurchaserName)
 	if af.BidType != nil {
 		bidType := bidapply.BidType(*af.BidType)
 		create.SetBidType(bidType)
 	}
 	create.SetNillableAgencyName(af.AgencyName)
-	create.SetNillableAgencyContact(af.AgencyContact)
+	if af.AgencyContactPerson != nil && af.AgencyContactInformation != nil {
+		builder := strings.Builder{}
+		builder.WriteString(*af.AgencyContactPerson)
+		builder.WriteString(" ")
+		builder.WriteString(*af.AgencyContactInformation)
+		if builder.String() != "" {
+			create.SetAgencyContact(builder.String())
+		}
+	}
 
 	// v1
 	create.SetNillableOpeningDate(af.OpeningDate)
