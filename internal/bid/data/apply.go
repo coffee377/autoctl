@@ -76,7 +76,7 @@ func NewBidApply(instId string, res *dingtalkworkflow10.GetProcessInstanceRespon
 	return apply, nil
 }
 
-func (af *BidApplyForm) Save(ctx context.Context, client *ent.Client) error {
+func (af *BidApplyForm) Save(ctx context.Context, client *ent.Client, projectUpdatable bool) error {
 	return ds.WithEntTx(ctx, client, func(tx *ent.Tx) error {
 		count, _ := tx.BidApply.Query().Where(bidapply.ID(af.ID)).Count(ctx)
 		done := false
@@ -84,7 +84,7 @@ func (af *BidApplyForm) Save(ctx context.Context, client *ent.Client) error {
 			done = true
 		}
 		// 项目信息
-		_, err1 := af.saveProject(ctx, tx, done)
+		_, err1 := af.saveProject(ctx, tx, done, projectUpdatable)
 		if err1 != nil {
 			return err1
 		}
@@ -138,7 +138,7 @@ func (af *BidApplyForm) getApplyMappers() []oa.FieldMapper {
 	}
 }
 
-func (af *BidApplyForm) saveProject(ctx context.Context, tx *ent.Tx, done bool) (*ent.BidProject, error) {
+func (af *BidApplyForm) saveProject(ctx context.Context, tx *ent.Tx, done, updatable bool) (*ent.BidProject, error) {
 	res, err := tx.BidProject.Query().Where(bidproject.IDEQ(af.ProjectID)).Only(ctx)
 	if ent.IsNotFound(err) {
 		return af.createProject(ctx, tx)
@@ -148,7 +148,10 @@ func (af *BidApplyForm) saveProject(ctx context.Context, tx *ent.Tx, done bool) 
 	if done {
 		return res, nil
 	}
-	return af.updateProject(ctx, tx)
+	if updatable {
+		return af.updateProject(ctx, tx)
+	}
+	return res, nil
 }
 
 func (af *BidApplyForm) createProject(ctx context.Context, tx *ent.Tx) (*ent.BidProject, error) {

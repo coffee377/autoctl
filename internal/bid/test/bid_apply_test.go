@@ -80,7 +80,7 @@ var (
 func TestApplyBatch(t *testing.T) {
 	approval, err := oa.New(app.New("a57e9681-79cb-4242-96df-952be2dc3af7", app.WithRedis()))
 	assert.Nil(t, err)
-	ids, err := approval.GetProcessInstanceIds(oa.BidApplyProcessCode, "2025-01-01", "", nil)
+	ids, err := approval.GetProcessInstanceIds(oa.BidApplyProcessCode, "2025-10-31", "", nil)
 	assert.Nil(t, err)
 
 	client, ok := ds.Mysql()
@@ -97,7 +97,7 @@ func TestApplyBatch(t *testing.T) {
 		applyData, err := data.NewBidApply(id, res, data.WithUserHook(approval.GetUserHook()), data.WithDepartmentHook(dHook))
 		assert.Nil(t, err)
 
-		err = applyData.Save(ctx, client)
+		err = applyData.Save(ctx, client, false)
 		assert.Nil(t, err)
 	}
 }
@@ -122,6 +122,6 @@ func TestApply(t *testing.T) {
 	applyData, err := data.NewBidApply(id, res, data.WithUserHook(approval.GetUserHook()), data.WithDepartmentHook(dHook))
 	assert.Nil(t, err)
 
-	err = applyData.Save(ctx, client)
+	err = applyData.Save(ctx, client, false)
 	assert.Nil(t, err)
 }
