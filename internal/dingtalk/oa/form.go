@@ -23,6 +23,7 @@ type FieldMapper struct {
 	ComponentId string         // 钉钉表单组件ID（如"TextField_1"）
 	FieldName   string         // 实体对象的字段名（如"ProjectName"）
 	Converter   ValueConverter // 类型转换函数（将字符串转为字段类型）
+	Version     string         // 表单版本
 	Pointer     bool
 }
 

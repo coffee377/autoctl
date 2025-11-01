@@ -88,18 +88,46 @@ func (ef *BidExpenseForm) generateID() {
 	ef.ID = hex.EncodeToString(eHash[:])
 }
 
+// {ComponentId: "SeqNumberField_1U1O5KHHSHUDC", FieldName: "单据编号", Converter: oa.StringConverter, Pointer: true},
+// {ComponentId: "TextField_22K742TU7DTS0", FieldName: "单据编号（废弃）", Converter: oa.StringConverter, Pointer: true},
+// {ComponentId: "FormRelateField_7YS5XZOZRUDC", FieldName: "项目投标", Converter: oa.StringConverter},
+// {ComponentId: "TextField_17HCU4VR5UQK0", FieldName: "项目名称", Converter: oa.StringConverter, Pointer: true},
+// {ComponentId: "TextField_82D5H6HY60O0", FieldName: "项目编号", Converter: oa.StringConverter, Pointer: true},
+// {ComponentId: "TextField_8L38ISBPCSG0", FieldName: "商务代表", Converter: oa.StringConverter, Pointer: true},
+// {ComponentId: "TextField_3Y2MPH8USDG0", FieldName: "采购人", Converter: oa.StringConverter, Pointer: true},
+// {ComponentId: "MoneyField_1SA588VBGU3K0", FieldName: "中标价/预算价（元）", Converter: oa.StringConverter, Pointer: true},
+// {ComponentId: "DDSelectField_RE7H7DQVRPS0", FieldName: "费用类型", Converter: oa.StringConverter},
+// {ComponentId: "MoneyField_QP9DYIENY4G0", FieldName: "付款金额", Converter: oa.StringConverter},
+// {ComponentId: "TextField_1SRLTMRI2F4W0", FieldName: "付款事由", Converter: oa.StringConverter},
+// {ComponentId: "TextField_1YIHQLKCJLUO0", FieldName: "付款备注", Converter: oa.StringConverter, Pointer: true},
+// {ComponentId: "RecipientAccountField_1FXC118HK3MDC", FieldName: "收款账户", Converter: oa.StringConverter},
+// {ComponentId: "TextField_1HHDR2YRQGPS0", FieldName: "开户银行（废弃）", Converter: oa.StringConverter, Pointer: true},
+// {ComponentId: "TextField_138818FKKQC00", FieldName: "账户名称（废弃）", Converter: oa.StringConverter, Pointer: true},
+// {ComponentId: "TextField_WKU63CA5OGG0", FieldName: "账号（废弃）", Converter: oa.StringConverter, Pointer: true},
+// {ComponentId: "TextField_B9JO23R61XK0", FieldName: "付款方式", Converter: oa.StringConverter, Pointer: true},
+// {ComponentId: "DDDateField_10RG38623CV40", FieldName: "预计转账时间", Converter: oa.StringConverter, Pointer: true},
+// {ComponentId: "SignatureField_1KKQBJ6VLAWW0", FieldName: "审批人", Converter: oa.StringConverter},
+// {ComponentId: "SignatureField_338G622D99Q0", FieldName: "商务部经理", Converter: oa.StringConverter},
+// {ComponentId: "SignatureField_J1RW9LZQB480", FieldName: "分管领导", Converter: oa.StringConverter},
+
 func (ef *BidExpenseForm) getApplyMappers() []oa.FieldMapper {
 	return []oa.FieldMapper{
-		{ComponentId: "TextField_22K742TU7DTS0", FieldName: "BillNo", Converter: oa.StringConverter},
+		{ComponentId: "TextField_22K742TU7DTS0", FieldName: "BillNo", Converter: oa.StringConverter, Version: "v1"}, // v1 手动编号 2025.11.01 之前
+		{ComponentId: "SeqNumberField_1U1O5KHHSHUDC", FieldName: "BillNo", Converter: oa.StringConverter},           // v2 自动编号
+
 		{ComponentId: "TextField_17HCU4VR5UQK0", FieldName: "ProjectName", Converter: oa.StringConverter},
 		{ComponentId: "TextField_82D5H6HY60O0", FieldName: "ProjectCode", Converter: oa.StringConverter},
 		{ComponentId: "TextField_8L38ISBPCSG0", FieldName: "BizRepName", Converter: oa.StringConverter},
 		{ComponentId: "DDSelectField_RE7H7DQVRPS0", FieldName: "FeeType", Converter: oa.StringConverter},
 		{ComponentId: "TextField_1SRLTMRI2F4W0", FieldName: "PayReason", Converter: oa.StringConverter, Pointer: true},
+
 		{ComponentId: "TextField_3Y2MPH8USDG0", FieldName: "Purchaser", Converter: oa.StringConverter, Pointer: true},
+
+		// 收款方信息 v1
 		{ComponentId: "TextField_138818FKKQC00", FieldName: "PayeeName", Converter: oa.StringConverter},
 		{ComponentId: "TextField_1HHDR2YRQGPS0", FieldName: "PayeeBank", Converter: oa.StringConverter},
 		{ComponentId: "TextField_WKU63CA5OGG0", FieldName: "PayeeAccount", Converter: oa.StringConverter},
+
 		{ComponentId: "TextField_1YIHQLKCJLUO0", FieldName: "PayRemark", Converter: oa.StringConverter, Pointer: true},
 		{ComponentId: "MoneyField_QP9DYIENY4G0", FieldName: "PayAmount", Converter: oa.Float64Converter},
 		{ComponentId: "TextField_B9JO23R61XK0", FieldName: "PayMethod", Converter: oa.StringConverter, Pointer: true},
