@@ -5,6 +5,7 @@ package ent
 import (
 	"cds/bid/ent/bidapply"
 	"cds/bid/ent/bidproject"
+	"cds/bid/ent/schema"
 	"encoding/json"
 	"fmt"
 	"strings"
@@ -43,7 +44,7 @@ type BidApply struct {
 	// 备注说明;如资质要求、技术难点、事项说明等
 	Remark *string `json:"remark,omitempty"`
 	// 投标报名相关附件
-	Attachments []map[string]interface{} `json:"attachments,omitempty"`
+	Attachments []schema.Attachment `json:"attachments,omitempty"`
 	// 审批状态
 	ApprovalStatus string `json:"approval_status,omitempty"`
 	// 审批流程是否已结束

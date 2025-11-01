@@ -8,6 +8,7 @@ import (
 	"cds/bid/ent/bidinfo"
 	"cds/bid/ent/bidproject"
 	"cds/bid/ent/predicate"
+	"cds/bid/ent/schema"
 	"context"
 	"errors"
 	"fmt"
@@ -50,8 +51,8 @@ type BidApplyMutation struct {
 	budget_amount     *float64
 	addbudget_amount  *float64
 	remark            *string
-	attachments       *[]map[string]interface{}
-	appendattachments []map[string]interface{}
+	attachments       *[]schema.Attachment
+	appendattachments []schema.Attachment
 	approval_status   *string
 	_done             *bool
 	create_at         *time.Time
@@ -665,13 +666,13 @@ func (m *BidApplyMutation) ResetRemark() {
 }
 
 // SetAttachments sets the "attachments" field.
-func (m *BidApplyMutation) SetAttachments(value []map[string]interface{}) {
-	m.attachments = &value
+func (m *BidApplyMutation) SetAttachments(s []schema.Attachment) {
+	m.attachments = &s
 	m.appendattachments = nil
 }
 
 // Attachments returns the value of the "attachments" field in the mutation.
-func (m *BidApplyMutation) Attachments() (r []map[string]interface{}, exists bool) {
+func (m *BidApplyMutation) Attachments() (r []schema.Attachment, exists bool) {
 	v := m.attachments
 	if v == nil {
 		return
@@ -682,7 +683,7 @@ func (m *BidApplyMutation) Attachments() (r []map[string]interface{}, exists boo
 // OldAttachments returns the old "attachments" field's value of the BidApply entity.
 // If the BidApply object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidApplyMutation) OldAttachments(ctx context.Context) (v []map[string]interface{}, err error) {
+func (m *BidApplyMutation) OldAttachments(ctx context.Context) (v []schema.Attachment, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldAttachments is only allowed on UpdateOne operations")
 	}
@@ -696,13 +697,13 @@ func (m *BidApplyMutation) OldAttachments(ctx context.Context) (v []map[string]i
 	return oldValue.Attachments, nil
 }
 
-// AppendAttachments adds value to the "attachments" field.
-func (m *BidApplyMutation) AppendAttachments(value []map[string]interface{}) {
-	m.appendattachments = append(m.appendattachments, value...)
+// AppendAttachments adds s to the "attachments" field.
+func (m *BidApplyMutation) AppendAttachments(s []schema.Attachment) {
+	m.appendattachments = append(m.appendattachments, s...)
 }
 
 // AppendedAttachments returns the list of values that were appended to the "attachments" field in this mutation.
-func (m *BidApplyMutation) AppendedAttachments() ([]map[string]interface{}, bool) {
+func (m *BidApplyMutation) AppendedAttachments() ([]schema.Attachment, bool) {
 	if len(m.appendattachments) == 0 {
 		return nil, false
 	}
@@ -1263,7 +1264,7 @@ func (m *BidApplyMutation) SetField(name string, value ent.Value) error {
 		m.SetRemark(v)
 		return nil
 	case bidapply.FieldAttachments:
-		v, ok := value.([]map[string]interface{})
+		v, ok := value.([]schema.Attachment)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

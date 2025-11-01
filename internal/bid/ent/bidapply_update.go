@@ -6,6 +6,7 @@ import (
 	"cds/bid/ent/bidapply"
 	"cds/bid/ent/bidproject"
 	"cds/bid/ent/predicate"
+	"cds/bid/ent/schema"
 	"context"
 	"errors"
 	"fmt"
@@ -229,13 +230,13 @@ func (_u *BidApplyUpdate) ClearRemark() *BidApplyUpdate {
 }
 
 // SetAttachments sets the "attachments" field.
-func (_u *BidApplyUpdate) SetAttachments(v []map[string]interface{}) *BidApplyUpdate {
+func (_u *BidApplyUpdate) SetAttachments(v []schema.Attachment) *BidApplyUpdate {
 	_u.mutation.SetAttachments(v)
 	return _u
 }
 
 // AppendAttachments appends value to the "attachments" field.
-func (_u *BidApplyUpdate) AppendAttachments(v []map[string]interface{}) *BidApplyUpdate {
+func (_u *BidApplyUpdate) AppendAttachments(v []schema.Attachment) *BidApplyUpdate {
 	_u.mutation.AppendAttachments(v)
 	return _u
 }
@@ -792,13 +793,13 @@ func (_u *BidApplyUpdateOne) ClearRemark() *BidApplyUpdateOne {
 }
 
 // SetAttachments sets the "attachments" field.
-func (_u *BidApplyUpdateOne) SetAttachments(v []map[string]interface{}) *BidApplyUpdateOne {
+func (_u *BidApplyUpdateOne) SetAttachments(v []schema.Attachment) *BidApplyUpdateOne {
 	_u.mutation.SetAttachments(v)
 	return _u
 }
 
 // AppendAttachments appends value to the "attachments" field.
-func (_u *BidApplyUpdateOne) AppendAttachments(v []map[string]interface{}) *BidApplyUpdateOne {
+func (_u *BidApplyUpdateOne) AppendAttachments(v []schema.Attachment) *BidApplyUpdateOne {
 	_u.mutation.AppendAttachments(v)
 	return _u
 }

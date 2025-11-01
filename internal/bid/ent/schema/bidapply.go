@@ -41,12 +41,20 @@ func (BidApply) Fields() []ent.Field {
 		),
 
 		field.Text("remark").Comment("备注说明;如资质要求、技术难点、事项说明等").Optional().Nillable(),
-		field.JSON("attachments", []map[string]any{}).Comment("投标报名相关附件").Optional(),
+		field.JSON("attachments", []Attachment{}).Comment("投标报名相关附件").Optional(),
 
 		field.String("approval_status").Comment("审批状态"),
 		field.Bool("done").Comment("审批流程是否已结束").Default(false),
 	}
 
+}
+
+type Attachment struct {
+	SpaceId  string `json:"spaceId"`
+	FileName string `json:"fileName"`
+	FileSize uint64 `json:"fileSize"`
+	FileType string `json:"fileType"`
+	FileId   string `json:"fileId"`
 }
 
 // Edges of the BidApply.

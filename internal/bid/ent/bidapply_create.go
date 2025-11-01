@@ -5,6 +5,7 @@ package ent
 import (
 	"cds/bid/ent/bidapply"
 	"cds/bid/ent/bidproject"
+	"cds/bid/ent/schema"
 	"context"
 	"errors"
 	"fmt"
@@ -152,7 +153,7 @@ func (_c *BidApplyCreate) SetNillableRemark(v *string) *BidApplyCreate {
 }
 
 // SetAttachments sets the "attachments" field.
-func (_c *BidApplyCreate) SetAttachments(v []map[string]interface{}) *BidApplyCreate {
+func (_c *BidApplyCreate) SetAttachments(v []schema.Attachment) *BidApplyCreate {
 	_c.mutation.SetAttachments(v)
 	return _c
 }

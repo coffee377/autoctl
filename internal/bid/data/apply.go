@@ -5,10 +5,12 @@ import (
 	"cds/bid/ent"
 	"cds/bid/ent/bidapply"
 	"cds/bid/ent/bidproject"
+	"cds/bid/ent/schema"
 	"cds/dingtalk/oa"
 	"context"
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
 	"strings"
 	"time"
 
@@ -39,7 +41,7 @@ type BidApplyForm struct {
 	Remark         *string    // v1 备注说明
 
 	BidRegistrationHandler string // v1 投标报名办理人
-	Attachment             string // v1 附件
+	Attachments            string // v1 附件
 
 }
 
@@ -134,7 +136,7 @@ func (af *BidApplyForm) getApplyMappers() []oa.FieldMapper {
 		{ComponentId: "TextField_1P4X7NQK70W00", FieldName: "NoticeUrl", Converter: oa.StringConverter, Pointer: true},
 		{ComponentId: "TextareaField_1EP1SOW22D1C0", FieldName: "Remark", Converter: oa.StringConverter, Pointer: true},
 		{ComponentId: "InnerContactField_1ER3G5MU4HR40", FieldName: "BidRegistrationHandler", Converter: oa.StringConverter},
-		{ComponentId: "DDAttachment_I8PPSWWCCDC0", FieldName: "Attachment", Converter: oa.StringConverter},
+		{ComponentId: "DDAttachment_I8PPSWWCCDC0", FieldName: "Attachments", Converter: oa.StringConverter},
 	}
 }
 
@@ -256,6 +258,14 @@ func (af *BidApplyForm) createApply(ctx context.Context, tx *ent.Tx) (*ent.BidAp
 	create.SetNillableNoticeURL(af.NoticeUrl)
 	create.SetBudgetAmount(af.BudgetAmount)
 	create.SetNillableRemark(af.Remark)
+
+	var attachments []schema.Attachment
+	if af.Attachments != "" {
+		_ = json.Unmarshal([]byte(af.Attachments), &attachments)
+	}
+	if attachments != nil {
+		create.SetAttachments(attachments)
+	}
 
 	create.SetApprovalStatus(af.ApprovalStatus)
 	create.SetDone(af.Done)
