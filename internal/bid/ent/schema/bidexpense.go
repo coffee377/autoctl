@@ -23,7 +23,7 @@ func (BidExpense) Fields() []ent.Field {
 		field.String("instance_id").Comment("审批实例 ID").MaxLen(64),
 		field.String("bill_no").Comment("单据编码").MaxRuneLen(16),
 
-		field.String("project_id").Comment("项目 ID").MaxLen(32).Optional().Nillable(),
+		field.String("project_id").Comment("项目 ID").MaxRuneLen(32).Optional().Nillable(),
 		// todo 临时字段，拉取数据，后期删除
 		field.String("project_name").Comment("项目名称").MaxRuneLen(64),
 		field.String("project_code").Comment("项目编码").MaxRuneLen(64),
@@ -55,8 +55,10 @@ func (BidExpense) Fields() []ent.Field {
 		field.Text("pay_remark").Comment("付款备注").Optional().Nillable(),
 
 		field.String("pay_method").Comment("付款方式").MaxRuneLen(64).Optional().Nillable(),
-		field.Time("plan_pay_time").Comment("预计转账时间").Nillable(),
-
+		field.Time("plan_pay_time").Comment("预计转账时间").Optional().Nillable().
+			SchemaType(map[string]string{
+				dialect.MySQL: "datetime", // 适配MySQL datetime类型
+			}),
 		field.String("approval_status").Comment("费用审批状态"),
 		field.Bool("done").Comment("审批流程是否已结束").Default(false),
 	}
@@ -92,4 +94,18 @@ func (BidExpense) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		BaseMixin{},
 	}
+}
+
+type RecipientAccount struct {
+	Id             string `json:"id,omitempty"`
+	Name           string `json:"name,omitempty"`
+	CardNo         string `json:"cardNo,omitempty"`
+	InstBranchCode string `json:"instBranchCode,omitempty"`
+	IdentityType   string `json:"identityType,omitempty"`
+	InstProvince   string `json:"instProvince,omitempty"`
+	InstCity       string `json:"instCity,omitempty"`
+	InstCode       string `json:"instCode,omitempty"`
+	InstName       string `json:"instName,omitempty"`
+	InstBranchName string `json:"instBranchName,omitempty"`
+	Source         string `json:"source,omitempty"`
 }

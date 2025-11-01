@@ -23,7 +23,8 @@ type FieldMapper struct {
 	ComponentId string         // 钉钉表单组件ID（如"TextField_1"）
 	FieldName   string         // 实体对象的字段名（如"ProjectName"）
 	Converter   ValueConverter // 类型转换函数（将字符串转为字段类型）
-	Version     string         // 表单版本
+	ExtValue    bool
+	Version     string // 表单版本
 	Pointer     bool
 }
 
@@ -115,27 +116,37 @@ func MapFormToEntity(res *dingtalkworkflow10.GetProcessInstanceResponseBodyResul
 	}
 
 	// 将组件列表转为map（ComponentId -> Value），方便查询
-	componentMap := make(map[string]string)
+	componentMap := make(map[string]*dingtalkworkflow10.GetProcessInstanceResponseBodyResultFormComponentValues)
 	for _, comp := range components {
-		if comp.Id != nil && comp.Value != nil {
-			// todo comp.ExtValue 获取连接器绑定的数据
-			componentMap[*comp.Id] = *comp.Value
+		if comp.Id != nil {
+			componentMap[*comp.Id] = comp
 		}
 	}
 
 	// 遍历映射规则，填充字段
 	for _, mapper := range mappers {
 		// 1. 查找表单组件值
-		rawValue, exists := componentMap[mapper.ComponentId]
+		comp, exists := componentMap[mapper.ComponentId]
 		if !exists {
 			continue // 组件不存在，跳过（或根据需求报错）
 		}
 
 		// 2. 转换值为目标类型
+		var rawValue string
+		if mapper.ExtValue && comp.ExtValue != nil {
+			rawValue = *comp.ExtValue
+		} else if !mapper.ExtValue && comp.Value != nil {
+			rawValue = *comp.Value
+		}
+
 		convertedValue, err := mapper.Converter(rawValue, mapper.Pointer)
 
 		if err != nil {
 			return fmt.Errorf("field %s convert failed: %w", mapper.FieldName, err)
+		}
+
+		if convertedValue == nil {
+			continue
 		}
 
 		// 3. 反射设置实体字段

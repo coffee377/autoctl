@@ -360,6 +360,12 @@ func (_u *BidExpenseUpdate) SetNillablePlanPayTime(v *time.Time) *BidExpenseUpda
 	return _u
 }
 
+// ClearPlanPayTime clears the value of the "plan_pay_time" field.
+func (_u *BidExpenseUpdate) ClearPlanPayTime() *BidExpenseUpdate {
+	_u.mutation.ClearPlanPayTime()
+	return _u
+}
+
 // SetApprovalStatus sets the "approval_status" field.
 func (_u *BidExpenseUpdate) SetApprovalStatus(v string) *BidExpenseUpdate {
 	_u.mutation.SetApprovalStatus(v)
@@ -680,6 +686,9 @@ func (_u *BidExpenseUpdate) sqlSave(ctx context.Context) (_node int, err error) 
 	}
 	if value, ok := _u.mutation.PlanPayTime(); ok {
 		_spec.SetField(bidexpense.FieldPlanPayTime, field.TypeTime, value)
+	}
+	if _u.mutation.PlanPayTimeCleared() {
+		_spec.ClearField(bidexpense.FieldPlanPayTime, field.TypeTime)
 	}
 	if value, ok := _u.mutation.ApprovalStatus(); ok {
 		_spec.SetField(bidexpense.FieldApprovalStatus, field.TypeString, value)
@@ -1086,6 +1095,12 @@ func (_u *BidExpenseUpdateOne) SetNillablePlanPayTime(v *time.Time) *BidExpenseU
 	return _u
 }
 
+// ClearPlanPayTime clears the value of the "plan_pay_time" field.
+func (_u *BidExpenseUpdateOne) ClearPlanPayTime() *BidExpenseUpdateOne {
+	_u.mutation.ClearPlanPayTime()
+	return _u
+}
+
 // SetApprovalStatus sets the "approval_status" field.
 func (_u *BidExpenseUpdateOne) SetApprovalStatus(v string) *BidExpenseUpdateOne {
 	_u.mutation.SetApprovalStatus(v)
@@ -1436,6 +1451,9 @@ func (_u *BidExpenseUpdateOne) sqlSave(ctx context.Context) (_node *BidExpense, 
 	}
 	if value, ok := _u.mutation.PlanPayTime(); ok {
 		_spec.SetField(bidexpense.FieldPlanPayTime, field.TypeTime, value)
+	}
+	if _u.mutation.PlanPayTimeCleared() {
+		_spec.ClearField(bidexpense.FieldPlanPayTime, field.TypeTime)
 	}
 	if value, ok := _u.mutation.ApprovalStatus(); ok {
 		_spec.SetField(bidexpense.FieldApprovalStatus, field.TypeString, value)

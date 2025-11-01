@@ -1375,6 +1375,16 @@ func PlanPayTimeLTE(v time.Time) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldLTE(FieldPlanPayTime, v))
 }
 
+// PlanPayTimeIsNil applies the IsNil predicate on the "plan_pay_time" field.
+func PlanPayTimeIsNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIsNull(FieldPlanPayTime))
+}
+
+// PlanPayTimeNotNil applies the NotNil predicate on the "plan_pay_time" field.
+func PlanPayTimeNotNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotNull(FieldPlanPayTime))
+}
+
 // ApprovalStatusEQ applies the EQ predicate on the "approval_status" field.
 func ApprovalStatusEQ(v string) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldApprovalStatus, v))

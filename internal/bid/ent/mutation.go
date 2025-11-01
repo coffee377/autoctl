@@ -2543,9 +2543,22 @@ func (m *BidExpenseMutation) OldPlanPayTime(ctx context.Context) (v *time.Time, 
 	return oldValue.PlanPayTime, nil
 }
 
+// ClearPlanPayTime clears the value of the "plan_pay_time" field.
+func (m *BidExpenseMutation) ClearPlanPayTime() {
+	m.plan_pay_time = nil
+	m.clearedFields[bidexpense.FieldPlanPayTime] = struct{}{}
+}
+
+// PlanPayTimeCleared returns if the "plan_pay_time" field was cleared in this mutation.
+func (m *BidExpenseMutation) PlanPayTimeCleared() bool {
+	_, ok := m.clearedFields[bidexpense.FieldPlanPayTime]
+	return ok
+}
+
 // ResetPlanPayTime resets all changes to the "plan_pay_time" field.
 func (m *BidExpenseMutation) ResetPlanPayTime() {
 	m.plan_pay_time = nil
+	delete(m.clearedFields, bidexpense.FieldPlanPayTime)
 }
 
 // SetApprovalStatus sets the "approval_status" field.
@@ -3317,6 +3330,9 @@ func (m *BidExpenseMutation) ClearedFields() []string {
 	if m.FieldCleared(bidexpense.FieldPayMethod) {
 		fields = append(fields, bidexpense.FieldPayMethod)
 	}
+	if m.FieldCleared(bidexpense.FieldPlanPayTime) {
+		fields = append(fields, bidexpense.FieldPlanPayTime)
+	}
 	if m.FieldCleared(bidexpense.FieldCreateBy) {
 		fields = append(fields, bidexpense.FieldCreateBy)
 	}
@@ -3354,6 +3370,9 @@ func (m *BidExpenseMutation) ClearField(name string) error {
 		return nil
 	case bidexpense.FieldPayMethod:
 		m.ClearPayMethod()
+		return nil
+	case bidexpense.FieldPlanPayTime:
+		m.ClearPlanPayTime()
 		return nil
 	case bidexpense.FieldCreateBy:
 		m.ClearCreateBy()

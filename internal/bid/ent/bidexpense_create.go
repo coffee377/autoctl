@@ -221,6 +221,14 @@ func (_c *BidExpenseCreate) SetPlanPayTime(v time.Time) *BidExpenseCreate {
 	return _c
 }
 
+// SetNillablePlanPayTime sets the "plan_pay_time" field if the given value is not nil.
+func (_c *BidExpenseCreate) SetNillablePlanPayTime(v *time.Time) *BidExpenseCreate {
+	if v != nil {
+		_c.SetPlanPayTime(*v)
+	}
+	return _c
+}
+
 // SetApprovalStatus sets the "approval_status" field.
 func (_c *BidExpenseCreate) SetApprovalStatus(v string) *BidExpenseCreate {
 	_c.mutation.SetApprovalStatus(v)
@@ -483,9 +491,6 @@ func (_c *BidExpenseCreate) check() error {
 		if err := bidexpense.PayMethodValidator(v); err != nil {
 			return &ValidationError{Name: "pay_method", err: fmt.Errorf(`ent: validator failed for field "BidExpense.pay_method": %w`, err)}
 		}
-	}
-	if _, ok := _c.mutation.PlanPayTime(); !ok {
-		return &ValidationError{Name: "plan_pay_time", err: errors.New(`ent: missing required field "BidExpense.plan_pay_time"`)}
 	}
 	if _, ok := _c.mutation.ApprovalStatus(); !ok {
 		return &ValidationError{Name: "approval_status", err: errors.New(`ent: missing required field "BidExpense.approval_status"`)}

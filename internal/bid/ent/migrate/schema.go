@@ -74,7 +74,7 @@ var (
 		{Name: "pay_amount", Type: field.TypeFloat64, Comment: "付款金额（元）", Default: 0, SchemaType: map[string]string{"mysql": "decimal(16,2)"}},
 		{Name: "pay_remark", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "付款备注"},
 		{Name: "pay_method", Type: field.TypeString, Nullable: true, Size: 64, Comment: "付款方式"},
-		{Name: "plan_pay_time", Type: field.TypeTime, Comment: "预计转账时间"},
+		{Name: "plan_pay_time", Type: field.TypeTime, Nullable: true, Comment: "预计转账时间", SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "approval_status", Type: field.TypeString, Comment: "费用审批状态"},
 		{Name: "done", Type: field.TypeBool, Comment: "审批流程是否已结束", Default: false},
 		{Name: "create_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
