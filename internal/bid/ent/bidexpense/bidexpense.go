@@ -187,6 +187,7 @@ const (
 	FeeTypePB FeeType = "PB"
 	FeeTypePG FeeType = "PG"
 	FeeTypeOE FeeType = "OE"
+	FeeTypeEB FeeType = "EB"
 )
 
 func (ft FeeType) String() string {
@@ -196,7 +197,7 @@ func (ft FeeType) String() string {
 // FeeTypeValidator is a validator for the "fee_type" field enum values. It is called by the builders before save.
 func FeeTypeValidator(ft FeeType) error {
 	switch ft {
-	case FeeTypeRF, FeeTypeDF, FeeTypeCA, FeeTypeEF, FeeTypeBB, FeeTypeBS, FeeTypePB, FeeTypePG, FeeTypeOE:
+	case FeeTypeRF, FeeTypeDF, FeeTypeCA, FeeTypeEF, FeeTypeBB, FeeTypeBS, FeeTypePB, FeeTypePG, FeeTypeOE, FeeTypeEB:
 		return nil
 	default:
 		return fmt.Errorf("bidexpense: invalid enum value for fee_type field: %q", ft)

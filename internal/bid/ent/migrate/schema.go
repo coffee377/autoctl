@@ -64,7 +64,7 @@ var (
 		{Name: "biz_rep_name", Type: field.TypeString, Size: 16, Comment: "商务代表"},
 		{Name: "purchaser", Type: field.TypeString, Nullable: true, Size: 64, Comment: "采购人名称"},
 		{Name: "fee_type_v1", Type: field.TypeString, Nullable: true, Comment: "费用类型"},
-		{Name: "fee_type", Type: field.TypeEnum, Comment: "费用类型 RF:报名费 DF:标书工本费 CA:CA费用 EF:专家费 BB:投标保证金 BS:中标服务费 PB:履约保证金 PG:预付保函 OE:其他费用", Enums: []string{"RF", "DF", "CA", "EF", "BB", "BS", "PB", "PG", "OE"}, Default: "OE"},
+		{Name: "fee_type", Type: field.TypeEnum, Comment: "费用类型 RF:报名费 DF:标书工本费 CA:CA费用 EF:专家费 BB:投标保证金 BS:中标服务费 PB:履约保证金 PG:预付保函 OE:其他费用 EB:入库保证金", Enums: []string{"RF", "DF", "CA", "EF", "BB", "BS", "PB", "PG", "OE", "EB"}, Default: "OE"},
 		{Name: "pay_reason", Type: field.TypeString, Nullable: true, Size: 64, Comment: "付款事由"},
 		{Name: "refunded", Type: field.TypeBool, Comment: "是否（保证金）退还金额", Default: false},
 		{Name: "payee_bank", Type: field.TypeString, Size: 64, Comment: "收款方开户银行"},

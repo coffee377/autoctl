@@ -37,7 +37,7 @@ type BidExpense struct {
 	Purchaser *string `json:"purchaser,omitempty"`
 	// 费用类型
 	FeeTypeV1 *string `json:"fee_type_v1,omitempty"`
-	// 费用类型 RF:报名费 DF:标书工本费 CA:CA费用 EF:专家费 BB:投标保证金 BS:中标服务费 PB:履约保证金 PG:预付保函 OE:其他费用
+	// 费用类型 RF:报名费 DF:标书工本费 CA:CA费用 EF:专家费 BB:投标保证金 BS:中标服务费 PB:履约保证金 PG:预付保函 OE:其他费用 EB:入库保证金
 	FeeType bidexpense.FeeType `json:"fee_type,omitempty"`
 	// 付款事由
 	PayReason *string `json:"pay_reason,omitempty"`
