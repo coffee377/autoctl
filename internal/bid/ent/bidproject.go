@@ -33,6 +33,12 @@ type BidProject struct {
 	BizRepNo string `json:"biz_rep_no,omitempty"`
 	// 商务代表
 	BizRepName string `json:"biz_rep_name,omitempty"`
+	// 项目来源
+	Source bidproject.Source `json:"source,omitempty"`
+	// 来源标识 SC:销售合同号
+	SourceID *string `json:"source_id,omitempty"`
+	// 备注信息
+	Remark *string `json:"remark,omitempty"`
 	// 创建时间
 	CreateAt time.Time `json:"create_at,omitempty"`
 	// 创建人
@@ -83,7 +89,7 @@ func (*BidProject) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case bidproject.FieldID, bidproject.FieldCode, bidproject.FieldName, bidproject.FieldType, bidproject.FieldDepartmentCode, bidproject.FieldDepartmentName, bidproject.FieldBizRepNo, bidproject.FieldBizRepName, bidproject.FieldCreateBy, bidproject.FieldUpdateBy:
+		case bidproject.FieldID, bidproject.FieldCode, bidproject.FieldName, bidproject.FieldType, bidproject.FieldDepartmentCode, bidproject.FieldDepartmentName, bidproject.FieldBizRepNo, bidproject.FieldBizRepName, bidproject.FieldSource, bidproject.FieldSourceID, bidproject.FieldRemark, bidproject.FieldCreateBy, bidproject.FieldUpdateBy:
 			values[i] = new(sql.NullString)
 		case bidproject.FieldCreateAt, bidproject.FieldUpdateAt:
 			values[i] = new(sql.NullTime)
@@ -149,6 +155,26 @@ func (_m *BidProject) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field biz_rep_name", values[i])
 			} else if value.Valid {
 				_m.BizRepName = value.String
+			}
+		case bidproject.FieldSource:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field source", values[i])
+			} else if value.Valid {
+				_m.Source = bidproject.Source(value.String)
+			}
+		case bidproject.FieldSourceID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field source_id", values[i])
+			} else if value.Valid {
+				_m.SourceID = new(string)
+				*_m.SourceID = value.String
+			}
+		case bidproject.FieldRemark:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field remark", values[i])
+			} else if value.Valid {
+				_m.Remark = new(string)
+				*_m.Remark = value.String
 			}
 		case bidproject.FieldCreateAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -242,6 +268,19 @@ func (_m *BidProject) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("biz_rep_name=")
 	builder.WriteString(_m.BizRepName)
+	builder.WriteString(", ")
+	builder.WriteString("source=")
+	builder.WriteString(fmt.Sprintf("%v", _m.Source))
+	builder.WriteString(", ")
+	if v := _m.SourceID; v != nil {
+		builder.WriteString("source_id=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := _m.Remark; v != nil {
+		builder.WriteString("remark=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
 	builder.WriteString("create_at=")
 	builder.WriteString(_m.CreateAt.Format(time.ANSIC))

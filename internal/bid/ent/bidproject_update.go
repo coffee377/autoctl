@@ -129,6 +129,60 @@ func (_u *BidProjectUpdate) SetNillableBizRepName(v *string) *BidProjectUpdate {
 	return _u
 }
 
+// SetSource sets the "source" field.
+func (_u *BidProjectUpdate) SetSource(v bidproject.Source) *BidProjectUpdate {
+	_u.mutation.SetSource(v)
+	return _u
+}
+
+// SetNillableSource sets the "source" field if the given value is not nil.
+func (_u *BidProjectUpdate) SetNillableSource(v *bidproject.Source) *BidProjectUpdate {
+	if v != nil {
+		_u.SetSource(*v)
+	}
+	return _u
+}
+
+// SetSourceID sets the "source_id" field.
+func (_u *BidProjectUpdate) SetSourceID(v string) *BidProjectUpdate {
+	_u.mutation.SetSourceID(v)
+	return _u
+}
+
+// SetNillableSourceID sets the "source_id" field if the given value is not nil.
+func (_u *BidProjectUpdate) SetNillableSourceID(v *string) *BidProjectUpdate {
+	if v != nil {
+		_u.SetSourceID(*v)
+	}
+	return _u
+}
+
+// ClearSourceID clears the value of the "source_id" field.
+func (_u *BidProjectUpdate) ClearSourceID() *BidProjectUpdate {
+	_u.mutation.ClearSourceID()
+	return _u
+}
+
+// SetRemark sets the "remark" field.
+func (_u *BidProjectUpdate) SetRemark(v string) *BidProjectUpdate {
+	_u.mutation.SetRemark(v)
+	return _u
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (_u *BidProjectUpdate) SetNillableRemark(v *string) *BidProjectUpdate {
+	if v != nil {
+		_u.SetRemark(*v)
+	}
+	return _u
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (_u *BidProjectUpdate) ClearRemark() *BidProjectUpdate {
+	_u.mutation.ClearRemark()
+	return _u
+}
+
 // SetCreateAt sets the "create_at" field.
 func (_u *BidProjectUpdate) SetCreateAt(v time.Time) *BidProjectUpdate {
 	_u.mutation.SetCreateAt(v)
@@ -328,6 +382,16 @@ func (_u *BidProjectUpdate) check() error {
 			return &ValidationError{Name: "biz_rep_name", err: fmt.Errorf(`ent: validator failed for field "BidProject.biz_rep_name": %w`, err)}
 		}
 	}
+	if v, ok := _u.mutation.Source(); ok {
+		if err := bidproject.SourceValidator(v); err != nil {
+			return &ValidationError{Name: "source", err: fmt.Errorf(`ent: validator failed for field "BidProject.source": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.SourceID(); ok {
+		if err := bidproject.SourceIDValidator(v); err != nil {
+			return &ValidationError{Name: "source_id", err: fmt.Errorf(`ent: validator failed for field "BidProject.source_id": %w`, err)}
+		}
+	}
 	if v, ok := _u.mutation.CreateBy(); ok {
 		if err := bidproject.CreateByValidator(v); err != nil {
 			return &ValidationError{Name: "create_by", err: fmt.Errorf(`ent: validator failed for field "BidProject.create_by": %w`, err)}
@@ -379,6 +443,21 @@ func (_u *BidProjectUpdate) sqlSave(ctx context.Context) (_node int, err error) 
 	}
 	if value, ok := _u.mutation.BizRepName(); ok {
 		_spec.SetField(bidproject.FieldBizRepName, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.Source(); ok {
+		_spec.SetField(bidproject.FieldSource, field.TypeEnum, value)
+	}
+	if value, ok := _u.mutation.SourceID(); ok {
+		_spec.SetField(bidproject.FieldSourceID, field.TypeString, value)
+	}
+	if _u.mutation.SourceIDCleared() {
+		_spec.ClearField(bidproject.FieldSourceID, field.TypeString)
+	}
+	if value, ok := _u.mutation.Remark(); ok {
+		_spec.SetField(bidproject.FieldRemark, field.TypeString, value)
+	}
+	if _u.mutation.RemarkCleared() {
+		_spec.ClearField(bidproject.FieldRemark, field.TypeString)
 	}
 	if value, ok := _u.mutation.CreateAt(); ok {
 		_spec.SetField(bidproject.FieldCreateAt, field.TypeTime, value)
@@ -589,6 +668,60 @@ func (_u *BidProjectUpdateOne) SetNillableBizRepName(v *string) *BidProjectUpdat
 	if v != nil {
 		_u.SetBizRepName(*v)
 	}
+	return _u
+}
+
+// SetSource sets the "source" field.
+func (_u *BidProjectUpdateOne) SetSource(v bidproject.Source) *BidProjectUpdateOne {
+	_u.mutation.SetSource(v)
+	return _u
+}
+
+// SetNillableSource sets the "source" field if the given value is not nil.
+func (_u *BidProjectUpdateOne) SetNillableSource(v *bidproject.Source) *BidProjectUpdateOne {
+	if v != nil {
+		_u.SetSource(*v)
+	}
+	return _u
+}
+
+// SetSourceID sets the "source_id" field.
+func (_u *BidProjectUpdateOne) SetSourceID(v string) *BidProjectUpdateOne {
+	_u.mutation.SetSourceID(v)
+	return _u
+}
+
+// SetNillableSourceID sets the "source_id" field if the given value is not nil.
+func (_u *BidProjectUpdateOne) SetNillableSourceID(v *string) *BidProjectUpdateOne {
+	if v != nil {
+		_u.SetSourceID(*v)
+	}
+	return _u
+}
+
+// ClearSourceID clears the value of the "source_id" field.
+func (_u *BidProjectUpdateOne) ClearSourceID() *BidProjectUpdateOne {
+	_u.mutation.ClearSourceID()
+	return _u
+}
+
+// SetRemark sets the "remark" field.
+func (_u *BidProjectUpdateOne) SetRemark(v string) *BidProjectUpdateOne {
+	_u.mutation.SetRemark(v)
+	return _u
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (_u *BidProjectUpdateOne) SetNillableRemark(v *string) *BidProjectUpdateOne {
+	if v != nil {
+		_u.SetRemark(*v)
+	}
+	return _u
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (_u *BidProjectUpdateOne) ClearRemark() *BidProjectUpdateOne {
+	_u.mutation.ClearRemark()
 	return _u
 }
 
@@ -804,6 +937,16 @@ func (_u *BidProjectUpdateOne) check() error {
 			return &ValidationError{Name: "biz_rep_name", err: fmt.Errorf(`ent: validator failed for field "BidProject.biz_rep_name": %w`, err)}
 		}
 	}
+	if v, ok := _u.mutation.Source(); ok {
+		if err := bidproject.SourceValidator(v); err != nil {
+			return &ValidationError{Name: "source", err: fmt.Errorf(`ent: validator failed for field "BidProject.source": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.SourceID(); ok {
+		if err := bidproject.SourceIDValidator(v); err != nil {
+			return &ValidationError{Name: "source_id", err: fmt.Errorf(`ent: validator failed for field "BidProject.source_id": %w`, err)}
+		}
+	}
 	if v, ok := _u.mutation.CreateBy(); ok {
 		if err := bidproject.CreateByValidator(v); err != nil {
 			return &ValidationError{Name: "create_by", err: fmt.Errorf(`ent: validator failed for field "BidProject.create_by": %w`, err)}
@@ -872,6 +1015,21 @@ func (_u *BidProjectUpdateOne) sqlSave(ctx context.Context) (_node *BidProject, 
 	}
 	if value, ok := _u.mutation.BizRepName(); ok {
 		_spec.SetField(bidproject.FieldBizRepName, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.Source(); ok {
+		_spec.SetField(bidproject.FieldSource, field.TypeEnum, value)
+	}
+	if value, ok := _u.mutation.SourceID(); ok {
+		_spec.SetField(bidproject.FieldSourceID, field.TypeString, value)
+	}
+	if _u.mutation.SourceIDCleared() {
+		_spec.ClearField(bidproject.FieldSourceID, field.TypeString)
+	}
+	if value, ok := _u.mutation.Remark(); ok {
+		_spec.SetField(bidproject.FieldRemark, field.TypeString, value)
+	}
+	if _u.mutation.RemarkCleared() {
+		_spec.ClearField(bidproject.FieldRemark, field.TypeString)
 	}
 	if value, ok := _u.mutation.CreateAt(); ok {
 		_spec.SetField(bidproject.FieldCreateAt, field.TypeTime, value)

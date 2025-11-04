@@ -4086,6 +4086,9 @@ type BidProjectMutation struct {
 	department_name *string
 	biz_rep_no      *string
 	biz_rep_name    *string
+	source          *bidproject.Source
+	source_id       *string
+	remark          *string
 	create_at       *time.Time
 	create_by       *string
 	update_at       *time.Time
@@ -4457,6 +4460,140 @@ func (m *BidProjectMutation) ResetBizRepName() {
 	m.biz_rep_name = nil
 }
 
+// SetSource sets the "source" field.
+func (m *BidProjectMutation) SetSource(b bidproject.Source) {
+	m.source = &b
+}
+
+// Source returns the value of the "source" field in the mutation.
+func (m *BidProjectMutation) Source() (r bidproject.Source, exists bool) {
+	v := m.source
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSource returns the old "source" field's value of the BidProject entity.
+// If the BidProject object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidProjectMutation) OldSource(ctx context.Context) (v bidproject.Source, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSource is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSource requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSource: %w", err)
+	}
+	return oldValue.Source, nil
+}
+
+// ResetSource resets all changes to the "source" field.
+func (m *BidProjectMutation) ResetSource() {
+	m.source = nil
+}
+
+// SetSourceID sets the "source_id" field.
+func (m *BidProjectMutation) SetSourceID(s string) {
+	m.source_id = &s
+}
+
+// SourceID returns the value of the "source_id" field in the mutation.
+func (m *BidProjectMutation) SourceID() (r string, exists bool) {
+	v := m.source_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSourceID returns the old "source_id" field's value of the BidProject entity.
+// If the BidProject object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidProjectMutation) OldSourceID(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSourceID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSourceID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSourceID: %w", err)
+	}
+	return oldValue.SourceID, nil
+}
+
+// ClearSourceID clears the value of the "source_id" field.
+func (m *BidProjectMutation) ClearSourceID() {
+	m.source_id = nil
+	m.clearedFields[bidproject.FieldSourceID] = struct{}{}
+}
+
+// SourceIDCleared returns if the "source_id" field was cleared in this mutation.
+func (m *BidProjectMutation) SourceIDCleared() bool {
+	_, ok := m.clearedFields[bidproject.FieldSourceID]
+	return ok
+}
+
+// ResetSourceID resets all changes to the "source_id" field.
+func (m *BidProjectMutation) ResetSourceID() {
+	m.source_id = nil
+	delete(m.clearedFields, bidproject.FieldSourceID)
+}
+
+// SetRemark sets the "remark" field.
+func (m *BidProjectMutation) SetRemark(s string) {
+	m.remark = &s
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *BidProjectMutation) Remark() (r string, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the BidProject entity.
+// If the BidProject object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidProjectMutation) OldRemark(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *BidProjectMutation) ClearRemark() {
+	m.remark = nil
+	m.clearedFields[bidproject.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *BidProjectMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[bidproject.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *BidProjectMutation) ResetRemark() {
+	m.remark = nil
+	delete(m.clearedFields, bidproject.FieldRemark)
+}
+
 // SetCreateAt sets the "create_at" field.
 func (m *BidProjectMutation) SetCreateAt(t time.Time) {
 	m.create_at = &t
@@ -4754,7 +4891,7 @@ func (m *BidProjectMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *BidProjectMutation) Fields() []string {
-	fields := make([]string, 0, 11)
+	fields := make([]string, 0, 14)
 	if m.code != nil {
 		fields = append(fields, bidproject.FieldCode)
 	}
@@ -4775,6 +4912,15 @@ func (m *BidProjectMutation) Fields() []string {
 	}
 	if m.biz_rep_name != nil {
 		fields = append(fields, bidproject.FieldBizRepName)
+	}
+	if m.source != nil {
+		fields = append(fields, bidproject.FieldSource)
+	}
+	if m.source_id != nil {
+		fields = append(fields, bidproject.FieldSourceID)
+	}
+	if m.remark != nil {
+		fields = append(fields, bidproject.FieldRemark)
 	}
 	if m.create_at != nil {
 		fields = append(fields, bidproject.FieldCreateAt)
@@ -4810,6 +4956,12 @@ func (m *BidProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.BizRepNo()
 	case bidproject.FieldBizRepName:
 		return m.BizRepName()
+	case bidproject.FieldSource:
+		return m.Source()
+	case bidproject.FieldSourceID:
+		return m.SourceID()
+	case bidproject.FieldRemark:
+		return m.Remark()
 	case bidproject.FieldCreateAt:
 		return m.CreateAt()
 	case bidproject.FieldCreateBy:
@@ -4841,6 +4993,12 @@ func (m *BidProjectMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldBizRepNo(ctx)
 	case bidproject.FieldBizRepName:
 		return m.OldBizRepName(ctx)
+	case bidproject.FieldSource:
+		return m.OldSource(ctx)
+	case bidproject.FieldSourceID:
+		return m.OldSourceID(ctx)
+	case bidproject.FieldRemark:
+		return m.OldRemark(ctx)
 	case bidproject.FieldCreateAt:
 		return m.OldCreateAt(ctx)
 	case bidproject.FieldCreateBy:
@@ -4907,6 +5065,27 @@ func (m *BidProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetBizRepName(v)
 		return nil
+	case bidproject.FieldSource:
+		v, ok := value.(bidproject.Source)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSource(v)
+		return nil
+	case bidproject.FieldSourceID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSourceID(v)
+		return nil
+	case bidproject.FieldRemark:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
+		return nil
 	case bidproject.FieldCreateAt:
 		v, ok := value.(time.Time)
 		if !ok {
@@ -4965,6 +5144,12 @@ func (m *BidProjectMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *BidProjectMutation) ClearedFields() []string {
 	var fields []string
+	if m.FieldCleared(bidproject.FieldSourceID) {
+		fields = append(fields, bidproject.FieldSourceID)
+	}
+	if m.FieldCleared(bidproject.FieldRemark) {
+		fields = append(fields, bidproject.FieldRemark)
+	}
 	if m.FieldCleared(bidproject.FieldCreateBy) {
 		fields = append(fields, bidproject.FieldCreateBy)
 	}
@@ -4985,6 +5170,12 @@ func (m *BidProjectMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *BidProjectMutation) ClearField(name string) error {
 	switch name {
+	case bidproject.FieldSourceID:
+		m.ClearSourceID()
+		return nil
+	case bidproject.FieldRemark:
+		m.ClearRemark()
+		return nil
 	case bidproject.FieldCreateBy:
 		m.ClearCreateBy()
 		return nil
@@ -5019,6 +5210,15 @@ func (m *BidProjectMutation) ResetField(name string) error {
 		return nil
 	case bidproject.FieldBizRepName:
 		m.ResetBizRepName()
+		return nil
+	case bidproject.FieldSource:
+		m.ResetSource()
+		return nil
+	case bidproject.FieldSourceID:
+		m.ResetSourceID()
+		return nil
+	case bidproject.FieldRemark:
+		m.ResetRemark()
 		return nil
 	case bidproject.FieldCreateAt:
 		m.ResetCreateAt()

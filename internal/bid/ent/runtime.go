@@ -229,6 +229,10 @@ func init() {
 	bidproject.DefaultBizRepName = bidprojectDescBizRepName.Default.(string)
 	// bidproject.BizRepNameValidator is a validator for the "biz_rep_name" field. It is called by the builders before save.
 	bidproject.BizRepNameValidator = bidprojectDescBizRepName.Validators[0].(func(string) error)
+	// bidprojectDescSourceID is the schema descriptor for source_id field.
+	bidprojectDescSourceID := bidprojectFields[9].Descriptor()
+	// bidproject.SourceIDValidator is a validator for the "source_id" field. It is called by the builders before save.
+	bidproject.SourceIDValidator = bidprojectDescSourceID.Validators[0].(func(string) error)
 	// bidprojectDescCreateAt is the schema descriptor for create_at field.
 	bidprojectDescCreateAt := bidprojectMixinFields0[0].Descriptor()
 	// bidproject.DefaultCreateAt holds the default value on creation for the create_at field.

@@ -26,6 +26,9 @@ func (BidProject) Fields() []ent.Field {
 		field.String("department_name").Comment("所属部门名称").MaxRuneLen(64),
 		field.String("biz_rep_no").Comment("商务代表工号").MaxRuneLen(8).Default(""),
 		field.String("biz_rep_name").Comment("商务代表").MaxRuneLen(16).Default(""),
+		field.Enum("source").Comment("项目来源").Values("BA", "SC", "0").Default("0"),
+		field.String("source_id").Comment("来源标识 SC:销售合同号").MaxRuneLen(64).Optional().Nillable(),
+		field.Text("remark").Comment("备注信息").Optional().Nillable(),
 	}
 }
 
@@ -45,8 +48,6 @@ func (BidProject) Edges() []ent.Edge {
 // Indexes of the BidProject.
 func (BidProject) Indexes() []ent.Index {
 	return []ent.Index{
-		// todo 历史数据项目名称存在重复（可能多次提交记录）
-		//index.Fields("code", "name").Unique().StorageKey("uk_code_name"),
 		index.Fields("code", "name").StorageKey("idx_code_name"),
 		index.Fields("department_code").StorageKey("idx_department_code"),
 	}

@@ -29,6 +29,12 @@ const (
 	FieldBizRepNo = "biz_rep_no"
 	// FieldBizRepName holds the string denoting the biz_rep_name field in the database.
 	FieldBizRepName = "biz_rep_name"
+	// FieldSource holds the string denoting the source field in the database.
+	FieldSource = "source"
+	// FieldSourceID holds the string denoting the source_id field in the database.
+	FieldSourceID = "source_id"
+	// FieldRemark holds the string denoting the remark field in the database.
+	FieldRemark = "remark"
 	// FieldCreateAt holds the string denoting the create_at field in the database.
 	FieldCreateAt = "create_at"
 	// FieldCreateBy holds the string denoting the create_by field in the database.
@@ -69,6 +75,9 @@ var Columns = []string{
 	FieldDepartmentName,
 	FieldBizRepNo,
 	FieldBizRepName,
+	FieldSource,
+	FieldSourceID,
+	FieldRemark,
 	FieldCreateAt,
 	FieldCreateBy,
 	FieldUpdateAt,
@@ -106,6 +115,8 @@ var (
 	DefaultBizRepName string
 	// BizRepNameValidator is a validator for the "biz_rep_name" field. It is called by the builders before save.
 	BizRepNameValidator func(string) error
+	// SourceIDValidator is a validator for the "source_id" field. It is called by the builders before save.
+	SourceIDValidator func(string) error
 	// DefaultCreateAt holds the default value on creation for the "create_at" field.
 	DefaultCreateAt func() time.Time
 	// CreateByValidator is a validator for the "create_by" field. It is called by the builders before save.
@@ -146,6 +157,33 @@ func TypeValidator(_type Type) error {
 		return nil
 	default:
 		return fmt.Errorf("bidproject: invalid enum value for type field: %q", _type)
+	}
+}
+
+// Source defines the type for the "source" enum field.
+type Source string
+
+// Source0 is the default value of the Source enum.
+const DefaultSource = Source0
+
+// Source values.
+const (
+	SourceBA Source = "BA"
+	SourceSC Source = "SC"
+	Source0  Source = "0"
+)
+
+func (s Source) String() string {
+	return string(s)
+}
+
+// SourceValidator is a validator for the "source" field enum values. It is called by the builders before save.
+func SourceValidator(s Source) error {
+	switch s {
+	case SourceBA, SourceSC, Source0:
+		return nil
+	default:
+		return fmt.Errorf("bidproject: invalid enum value for source field: %q", s)
 	}
 }
 
@@ -190,6 +228,21 @@ func ByBizRepNo(opts ...sql.OrderTermOption) OrderOption {
 // ByBizRepName orders the results by the biz_rep_name field.
 func ByBizRepName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBizRepName, opts...).ToFunc()
+}
+
+// BySource orders the results by the source field.
+func BySource(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSource, opts...).ToFunc()
+}
+
+// BySourceID orders the results by the source_id field.
+func BySourceID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSourceID, opts...).ToFunc()
+}
+
+// ByRemark orders the results by the remark field.
+func ByRemark(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRemark, opts...).ToFunc()
 }
 
 // ByCreateAt orders the results by the create_at field.

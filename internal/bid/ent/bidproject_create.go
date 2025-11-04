@@ -104,6 +104,48 @@ func (_c *BidProjectCreate) SetNillableBizRepName(v *string) *BidProjectCreate {
 	return _c
 }
 
+// SetSource sets the "source" field.
+func (_c *BidProjectCreate) SetSource(v bidproject.Source) *BidProjectCreate {
+	_c.mutation.SetSource(v)
+	return _c
+}
+
+// SetNillableSource sets the "source" field if the given value is not nil.
+func (_c *BidProjectCreate) SetNillableSource(v *bidproject.Source) *BidProjectCreate {
+	if v != nil {
+		_c.SetSource(*v)
+	}
+	return _c
+}
+
+// SetSourceID sets the "source_id" field.
+func (_c *BidProjectCreate) SetSourceID(v string) *BidProjectCreate {
+	_c.mutation.SetSourceID(v)
+	return _c
+}
+
+// SetNillableSourceID sets the "source_id" field if the given value is not nil.
+func (_c *BidProjectCreate) SetNillableSourceID(v *string) *BidProjectCreate {
+	if v != nil {
+		_c.SetSourceID(*v)
+	}
+	return _c
+}
+
+// SetRemark sets the "remark" field.
+func (_c *BidProjectCreate) SetRemark(v string) *BidProjectCreate {
+	_c.mutation.SetRemark(v)
+	return _c
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (_c *BidProjectCreate) SetNillableRemark(v *string) *BidProjectCreate {
+	if v != nil {
+		_c.SetRemark(*v)
+	}
+	return _c
+}
+
 // SetCreateAt sets the "create_at" field.
 func (_c *BidProjectCreate) SetCreateAt(v time.Time) *BidProjectCreate {
 	_c.mutation.SetCreateAt(v)
@@ -255,6 +297,10 @@ func (_c *BidProjectCreate) defaults() {
 		v := bidproject.DefaultBizRepName
 		_c.mutation.SetBizRepName(v)
 	}
+	if _, ok := _c.mutation.Source(); !ok {
+		v := bidproject.DefaultSource
+		_c.mutation.SetSource(v)
+	}
 	if _, ok := _c.mutation.CreateAt(); !ok {
 		v := bidproject.DefaultCreateAt()
 		_c.mutation.SetCreateAt(v)
@@ -321,6 +367,19 @@ func (_c *BidProjectCreate) check() error {
 	if v, ok := _c.mutation.BizRepName(); ok {
 		if err := bidproject.BizRepNameValidator(v); err != nil {
 			return &ValidationError{Name: "biz_rep_name", err: fmt.Errorf(`ent: validator failed for field "BidProject.biz_rep_name": %w`, err)}
+		}
+	}
+	if _, ok := _c.mutation.Source(); !ok {
+		return &ValidationError{Name: "source", err: errors.New(`ent: missing required field "BidProject.source"`)}
+	}
+	if v, ok := _c.mutation.Source(); ok {
+		if err := bidproject.SourceValidator(v); err != nil {
+			return &ValidationError{Name: "source", err: fmt.Errorf(`ent: validator failed for field "BidProject.source": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.SourceID(); ok {
+		if err := bidproject.SourceIDValidator(v); err != nil {
+			return &ValidationError{Name: "source_id", err: fmt.Errorf(`ent: validator failed for field "BidProject.source_id": %w`, err)}
 		}
 	}
 	if _, ok := _c.mutation.CreateAt(); !ok {
@@ -406,6 +465,18 @@ func (_c *BidProjectCreate) createSpec() (*BidProject, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.BizRepName(); ok {
 		_spec.SetField(bidproject.FieldBizRepName, field.TypeString, value)
 		_node.BizRepName = value
+	}
+	if value, ok := _c.mutation.Source(); ok {
+		_spec.SetField(bidproject.FieldSource, field.TypeEnum, value)
+		_node.Source = value
+	}
+	if value, ok := _c.mutation.SourceID(); ok {
+		_spec.SetField(bidproject.FieldSourceID, field.TypeString, value)
+		_node.SourceID = &value
+	}
+	if value, ok := _c.mutation.Remark(); ok {
+		_spec.SetField(bidproject.FieldRemark, field.TypeString, value)
+		_node.Remark = &value
 	}
 	if value, ok := _c.mutation.CreateAt(); ok {
 		_spec.SetField(bidproject.FieldCreateAt, field.TypeTime, value)

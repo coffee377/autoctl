@@ -95,6 +95,16 @@ func BizRepName(v string) predicate.BidProject {
 	return predicate.BidProject(sql.FieldEQ(FieldBizRepName, v))
 }
 
+// SourceID applies equality check predicate on the "source_id" field. It's identical to SourceIDEQ.
+func SourceID(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEQ(FieldSourceID, v))
+}
+
+// Remark applies equality check predicate on the "remark" field. It's identical to RemarkEQ.
+func Remark(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEQ(FieldRemark, v))
+}
+
 // CreateAt applies equality check predicate on the "create_at" field. It's identical to CreateAtEQ.
 func CreateAt(v time.Time) predicate.BidProject {
 	return predicate.BidProject(sql.FieldEQ(FieldCreateAt, v))
@@ -523,6 +533,176 @@ func BizRepNameEqualFold(v string) predicate.BidProject {
 // BizRepNameContainsFold applies the ContainsFold predicate on the "biz_rep_name" field.
 func BizRepNameContainsFold(v string) predicate.BidProject {
 	return predicate.BidProject(sql.FieldContainsFold(FieldBizRepName, v))
+}
+
+// SourceEQ applies the EQ predicate on the "source" field.
+func SourceEQ(v Source) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEQ(FieldSource, v))
+}
+
+// SourceNEQ applies the NEQ predicate on the "source" field.
+func SourceNEQ(v Source) predicate.BidProject {
+	return predicate.BidProject(sql.FieldNEQ(FieldSource, v))
+}
+
+// SourceIn applies the In predicate on the "source" field.
+func SourceIn(vs ...Source) predicate.BidProject {
+	return predicate.BidProject(sql.FieldIn(FieldSource, vs...))
+}
+
+// SourceNotIn applies the NotIn predicate on the "source" field.
+func SourceNotIn(vs ...Source) predicate.BidProject {
+	return predicate.BidProject(sql.FieldNotIn(FieldSource, vs...))
+}
+
+// SourceIDEQ applies the EQ predicate on the "source_id" field.
+func SourceIDEQ(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEQ(FieldSourceID, v))
+}
+
+// SourceIDNEQ applies the NEQ predicate on the "source_id" field.
+func SourceIDNEQ(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldNEQ(FieldSourceID, v))
+}
+
+// SourceIDIn applies the In predicate on the "source_id" field.
+func SourceIDIn(vs ...string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldIn(FieldSourceID, vs...))
+}
+
+// SourceIDNotIn applies the NotIn predicate on the "source_id" field.
+func SourceIDNotIn(vs ...string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldNotIn(FieldSourceID, vs...))
+}
+
+// SourceIDGT applies the GT predicate on the "source_id" field.
+func SourceIDGT(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldGT(FieldSourceID, v))
+}
+
+// SourceIDGTE applies the GTE predicate on the "source_id" field.
+func SourceIDGTE(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldGTE(FieldSourceID, v))
+}
+
+// SourceIDLT applies the LT predicate on the "source_id" field.
+func SourceIDLT(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldLT(FieldSourceID, v))
+}
+
+// SourceIDLTE applies the LTE predicate on the "source_id" field.
+func SourceIDLTE(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldLTE(FieldSourceID, v))
+}
+
+// SourceIDContains applies the Contains predicate on the "source_id" field.
+func SourceIDContains(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldContains(FieldSourceID, v))
+}
+
+// SourceIDHasPrefix applies the HasPrefix predicate on the "source_id" field.
+func SourceIDHasPrefix(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldHasPrefix(FieldSourceID, v))
+}
+
+// SourceIDHasSuffix applies the HasSuffix predicate on the "source_id" field.
+func SourceIDHasSuffix(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldHasSuffix(FieldSourceID, v))
+}
+
+// SourceIDIsNil applies the IsNil predicate on the "source_id" field.
+func SourceIDIsNil() predicate.BidProject {
+	return predicate.BidProject(sql.FieldIsNull(FieldSourceID))
+}
+
+// SourceIDNotNil applies the NotNil predicate on the "source_id" field.
+func SourceIDNotNil() predicate.BidProject {
+	return predicate.BidProject(sql.FieldNotNull(FieldSourceID))
+}
+
+// SourceIDEqualFold applies the EqualFold predicate on the "source_id" field.
+func SourceIDEqualFold(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEqualFold(FieldSourceID, v))
+}
+
+// SourceIDContainsFold applies the ContainsFold predicate on the "source_id" field.
+func SourceIDContainsFold(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldContainsFold(FieldSourceID, v))
+}
+
+// RemarkEQ applies the EQ predicate on the "remark" field.
+func RemarkEQ(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEQ(FieldRemark, v))
+}
+
+// RemarkNEQ applies the NEQ predicate on the "remark" field.
+func RemarkNEQ(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldNEQ(FieldRemark, v))
+}
+
+// RemarkIn applies the In predicate on the "remark" field.
+func RemarkIn(vs ...string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldIn(FieldRemark, vs...))
+}
+
+// RemarkNotIn applies the NotIn predicate on the "remark" field.
+func RemarkNotIn(vs ...string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldNotIn(FieldRemark, vs...))
+}
+
+// RemarkGT applies the GT predicate on the "remark" field.
+func RemarkGT(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldGT(FieldRemark, v))
+}
+
+// RemarkGTE applies the GTE predicate on the "remark" field.
+func RemarkGTE(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldGTE(FieldRemark, v))
+}
+
+// RemarkLT applies the LT predicate on the "remark" field.
+func RemarkLT(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldLT(FieldRemark, v))
+}
+
+// RemarkLTE applies the LTE predicate on the "remark" field.
+func RemarkLTE(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldLTE(FieldRemark, v))
+}
+
+// RemarkContains applies the Contains predicate on the "remark" field.
+func RemarkContains(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldContains(FieldRemark, v))
+}
+
+// RemarkHasPrefix applies the HasPrefix predicate on the "remark" field.
+func RemarkHasPrefix(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldHasPrefix(FieldRemark, v))
+}
+
+// RemarkHasSuffix applies the HasSuffix predicate on the "remark" field.
+func RemarkHasSuffix(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldHasSuffix(FieldRemark, v))
+}
+
+// RemarkIsNil applies the IsNil predicate on the "remark" field.
+func RemarkIsNil() predicate.BidProject {
+	return predicate.BidProject(sql.FieldIsNull(FieldRemark))
+}
+
+// RemarkNotNil applies the NotNil predicate on the "remark" field.
+func RemarkNotNil() predicate.BidProject {
+	return predicate.BidProject(sql.FieldNotNull(FieldRemark))
+}
+
+// RemarkEqualFold applies the EqualFold predicate on the "remark" field.
+func RemarkEqualFold(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEqualFold(FieldRemark, v))
+}
+
+// RemarkContainsFold applies the ContainsFold predicate on the "remark" field.
+func RemarkContainsFold(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldContainsFold(FieldRemark, v))
 }
 
 // CreateAtEQ applies the EQ predicate on the "create_at" field.
