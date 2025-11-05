@@ -47,6 +47,8 @@ const (
 	EdgeApply = "apply"
 	// EdgeExpense holds the string denoting the expense edge name in mutations.
 	EdgeExpense = "expense"
+	// EdgeInfo holds the string denoting the info edge name in mutations.
+	EdgeInfo = "info"
 	// Table holds the table name of the bidproject in the database.
 	Table = "bid_project"
 	// ApplyTable is the table that holds the apply relation/edge.
@@ -63,6 +65,13 @@ const (
 	ExpenseInverseTable = "bid_expense"
 	// ExpenseColumn is the table column denoting the expense relation/edge.
 	ExpenseColumn = "project_id"
+	// InfoTable is the table that holds the info relation/edge.
+	InfoTable = "bid_info"
+	// InfoInverseTable is the table name for the BidInfo entity.
+	// It exists in this package in order to avoid circular dependency with the "bidinfo" package.
+	InfoInverseTable = "bid_info"
+	// InfoColumn is the table column denoting the info relation/edge.
+	InfoColumn = "project_id"
 )
 
 // Columns holds all SQL columns for bidproject fields.
@@ -285,6 +294,20 @@ func ByExpense(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newExpenseStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
+
+// ByInfoCount orders the results by info count.
+func ByInfoCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newInfoStep(), opts...)
+	}
+}
+
+// ByInfo orders the results by info terms.
+func ByInfo(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newInfoStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newApplyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
@@ -297,5 +320,12 @@ func newExpenseStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(ExpenseInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, ExpenseTable, ExpenseColumn),
+	)
+}
+func newInfoStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(InfoInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, InfoTable, InfoColumn),
 	)
 }

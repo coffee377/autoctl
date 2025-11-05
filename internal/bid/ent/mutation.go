@@ -3547,17 +3547,35 @@ func (m *BidExpenseMutation) ResetEdge(name string) error {
 // BidInfoMutation represents an operation that mutates the BidInfo nodes in the graph.
 type BidInfoMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *int
-	create_at     *time.Time
-	create_by     *string
-	update_at     *time.Time
-	update_by     *string
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*BidInfo, error)
-	predicates    []predicate.BidInfo
+	op                  Op
+	typ                 string
+	id                  *string
+	bid_subject_code    *string
+	bid_subject_name    *string
+	bid_amount          *float64
+	addbid_amount       *float64
+	bid_status          *bidinfo.BidStatus
+	bid_date            *time.Time
+	software_amount     *float64
+	addsoftware_amount  *float64
+	hardware_amount     *float64
+	addhardware_amount  *float64
+	operation_amount    *float64
+	addoperation_amount *float64
+	result_url          *string
+	contract_signed     *bool
+	contract_no         *string
+	contract_sign_date  *time.Time
+	create_at           *time.Time
+	create_by           *string
+	update_at           *time.Time
+	update_by           *string
+	clearedFields       map[string]struct{}
+	project             *string
+	clearedproject      bool
+	done                bool
+	oldValue            func(context.Context) (*BidInfo, error)
+	predicates          []predicate.BidInfo
 }
 
 var _ ent.Mutation = (*BidInfoMutation)(nil)
@@ -3580,7 +3598,7 @@ func newBidInfoMutation(c config, op Op, opts ...bidinfoOption) *BidInfoMutation
 }
 
 // withBidInfoID sets the ID field of the mutation.
-func withBidInfoID(id int) bidinfoOption {
+func withBidInfoID(id string) bidinfoOption {
 	return func(m *BidInfoMutation) {
 		var (
 			err   error
@@ -3630,9 +3648,15 @@ func (m BidInfoMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of BidInfo entities.
+func (m *BidInfoMutation) SetID(id string) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
-func (m *BidInfoMutation) ID() (id int, exists bool) {
+func (m *BidInfoMutation) ID() (id string, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -3643,12 +3667,12 @@ func (m *BidInfoMutation) ID() (id int, exists bool) {
 // That means, if the mutation is applied within a transaction with an isolation level such
 // as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
 // or updated by the mutation.
-func (m *BidInfoMutation) IDs(ctx context.Context) ([]int, error) {
+func (m *BidInfoMutation) IDs(ctx context.Context) ([]string, error) {
 	switch {
 	case m.op.Is(OpUpdateOne | OpDeleteOne):
 		id, exists := m.ID()
 		if exists {
-			return []int{id}, nil
+			return []string{id}, nil
 		}
 		fallthrough
 	case m.op.Is(OpUpdate | OpDelete):
@@ -3656,6 +3680,606 @@ func (m *BidInfoMutation) IDs(ctx context.Context) ([]int, error) {
 	default:
 		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
 	}
+}
+
+// SetProjectID sets the "project_id" field.
+func (m *BidInfoMutation) SetProjectID(s string) {
+	m.project = &s
+}
+
+// ProjectID returns the value of the "project_id" field in the mutation.
+func (m *BidInfoMutation) ProjectID() (r string, exists bool) {
+	v := m.project
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldProjectID returns the old "project_id" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldProjectID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldProjectID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldProjectID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldProjectID: %w", err)
+	}
+	return oldValue.ProjectID, nil
+}
+
+// ResetProjectID resets all changes to the "project_id" field.
+func (m *BidInfoMutation) ResetProjectID() {
+	m.project = nil
+}
+
+// SetBidSubjectCode sets the "bid_subject_code" field.
+func (m *BidInfoMutation) SetBidSubjectCode(s string) {
+	m.bid_subject_code = &s
+}
+
+// BidSubjectCode returns the value of the "bid_subject_code" field in the mutation.
+func (m *BidInfoMutation) BidSubjectCode() (r string, exists bool) {
+	v := m.bid_subject_code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBidSubjectCode returns the old "bid_subject_code" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldBidSubjectCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBidSubjectCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBidSubjectCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBidSubjectCode: %w", err)
+	}
+	return oldValue.BidSubjectCode, nil
+}
+
+// ResetBidSubjectCode resets all changes to the "bid_subject_code" field.
+func (m *BidInfoMutation) ResetBidSubjectCode() {
+	m.bid_subject_code = nil
+}
+
+// SetBidSubjectName sets the "bid_subject_name" field.
+func (m *BidInfoMutation) SetBidSubjectName(s string) {
+	m.bid_subject_name = &s
+}
+
+// BidSubjectName returns the value of the "bid_subject_name" field in the mutation.
+func (m *BidInfoMutation) BidSubjectName() (r string, exists bool) {
+	v := m.bid_subject_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBidSubjectName returns the old "bid_subject_name" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldBidSubjectName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBidSubjectName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBidSubjectName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBidSubjectName: %w", err)
+	}
+	return oldValue.BidSubjectName, nil
+}
+
+// ResetBidSubjectName resets all changes to the "bid_subject_name" field.
+func (m *BidInfoMutation) ResetBidSubjectName() {
+	m.bid_subject_name = nil
+}
+
+// SetBidAmount sets the "bid_amount" field.
+func (m *BidInfoMutation) SetBidAmount(f float64) {
+	m.bid_amount = &f
+	m.addbid_amount = nil
+}
+
+// BidAmount returns the value of the "bid_amount" field in the mutation.
+func (m *BidInfoMutation) BidAmount() (r float64, exists bool) {
+	v := m.bid_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBidAmount returns the old "bid_amount" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldBidAmount(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBidAmount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBidAmount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBidAmount: %w", err)
+	}
+	return oldValue.BidAmount, nil
+}
+
+// AddBidAmount adds f to the "bid_amount" field.
+func (m *BidInfoMutation) AddBidAmount(f float64) {
+	if m.addbid_amount != nil {
+		*m.addbid_amount += f
+	} else {
+		m.addbid_amount = &f
+	}
+}
+
+// AddedBidAmount returns the value that was added to the "bid_amount" field in this mutation.
+func (m *BidInfoMutation) AddedBidAmount() (r float64, exists bool) {
+	v := m.addbid_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetBidAmount resets all changes to the "bid_amount" field.
+func (m *BidInfoMutation) ResetBidAmount() {
+	m.bid_amount = nil
+	m.addbid_amount = nil
+}
+
+// SetBidStatus sets the "bid_status" field.
+func (m *BidInfoMutation) SetBidStatus(bs bidinfo.BidStatus) {
+	m.bid_status = &bs
+}
+
+// BidStatus returns the value of the "bid_status" field in the mutation.
+func (m *BidInfoMutation) BidStatus() (r bidinfo.BidStatus, exists bool) {
+	v := m.bid_status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBidStatus returns the old "bid_status" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldBidStatus(ctx context.Context) (v bidinfo.BidStatus, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBidStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBidStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBidStatus: %w", err)
+	}
+	return oldValue.BidStatus, nil
+}
+
+// ResetBidStatus resets all changes to the "bid_status" field.
+func (m *BidInfoMutation) ResetBidStatus() {
+	m.bid_status = nil
+}
+
+// SetBidDate sets the "bid_date" field.
+func (m *BidInfoMutation) SetBidDate(t time.Time) {
+	m.bid_date = &t
+}
+
+// BidDate returns the value of the "bid_date" field in the mutation.
+func (m *BidInfoMutation) BidDate() (r time.Time, exists bool) {
+	v := m.bid_date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBidDate returns the old "bid_date" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldBidDate(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBidDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBidDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBidDate: %w", err)
+	}
+	return oldValue.BidDate, nil
+}
+
+// ClearBidDate clears the value of the "bid_date" field.
+func (m *BidInfoMutation) ClearBidDate() {
+	m.bid_date = nil
+	m.clearedFields[bidinfo.FieldBidDate] = struct{}{}
+}
+
+// BidDateCleared returns if the "bid_date" field was cleared in this mutation.
+func (m *BidInfoMutation) BidDateCleared() bool {
+	_, ok := m.clearedFields[bidinfo.FieldBidDate]
+	return ok
+}
+
+// ResetBidDate resets all changes to the "bid_date" field.
+func (m *BidInfoMutation) ResetBidDate() {
+	m.bid_date = nil
+	delete(m.clearedFields, bidinfo.FieldBidDate)
+}
+
+// SetSoftwareAmount sets the "software_amount" field.
+func (m *BidInfoMutation) SetSoftwareAmount(f float64) {
+	m.software_amount = &f
+	m.addsoftware_amount = nil
+}
+
+// SoftwareAmount returns the value of the "software_amount" field in the mutation.
+func (m *BidInfoMutation) SoftwareAmount() (r float64, exists bool) {
+	v := m.software_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSoftwareAmount returns the old "software_amount" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldSoftwareAmount(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSoftwareAmount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSoftwareAmount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSoftwareAmount: %w", err)
+	}
+	return oldValue.SoftwareAmount, nil
+}
+
+// AddSoftwareAmount adds f to the "software_amount" field.
+func (m *BidInfoMutation) AddSoftwareAmount(f float64) {
+	if m.addsoftware_amount != nil {
+		*m.addsoftware_amount += f
+	} else {
+		m.addsoftware_amount = &f
+	}
+}
+
+// AddedSoftwareAmount returns the value that was added to the "software_amount" field in this mutation.
+func (m *BidInfoMutation) AddedSoftwareAmount() (r float64, exists bool) {
+	v := m.addsoftware_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSoftwareAmount resets all changes to the "software_amount" field.
+func (m *BidInfoMutation) ResetSoftwareAmount() {
+	m.software_amount = nil
+	m.addsoftware_amount = nil
+}
+
+// SetHardwareAmount sets the "hardware_amount" field.
+func (m *BidInfoMutation) SetHardwareAmount(f float64) {
+	m.hardware_amount = &f
+	m.addhardware_amount = nil
+}
+
+// HardwareAmount returns the value of the "hardware_amount" field in the mutation.
+func (m *BidInfoMutation) HardwareAmount() (r float64, exists bool) {
+	v := m.hardware_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldHardwareAmount returns the old "hardware_amount" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldHardwareAmount(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldHardwareAmount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldHardwareAmount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldHardwareAmount: %w", err)
+	}
+	return oldValue.HardwareAmount, nil
+}
+
+// AddHardwareAmount adds f to the "hardware_amount" field.
+func (m *BidInfoMutation) AddHardwareAmount(f float64) {
+	if m.addhardware_amount != nil {
+		*m.addhardware_amount += f
+	} else {
+		m.addhardware_amount = &f
+	}
+}
+
+// AddedHardwareAmount returns the value that was added to the "hardware_amount" field in this mutation.
+func (m *BidInfoMutation) AddedHardwareAmount() (r float64, exists bool) {
+	v := m.addhardware_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetHardwareAmount resets all changes to the "hardware_amount" field.
+func (m *BidInfoMutation) ResetHardwareAmount() {
+	m.hardware_amount = nil
+	m.addhardware_amount = nil
+}
+
+// SetOperationAmount sets the "operation_amount" field.
+func (m *BidInfoMutation) SetOperationAmount(f float64) {
+	m.operation_amount = &f
+	m.addoperation_amount = nil
+}
+
+// OperationAmount returns the value of the "operation_amount" field in the mutation.
+func (m *BidInfoMutation) OperationAmount() (r float64, exists bool) {
+	v := m.operation_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOperationAmount returns the old "operation_amount" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldOperationAmount(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOperationAmount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOperationAmount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOperationAmount: %w", err)
+	}
+	return oldValue.OperationAmount, nil
+}
+
+// AddOperationAmount adds f to the "operation_amount" field.
+func (m *BidInfoMutation) AddOperationAmount(f float64) {
+	if m.addoperation_amount != nil {
+		*m.addoperation_amount += f
+	} else {
+		m.addoperation_amount = &f
+	}
+}
+
+// AddedOperationAmount returns the value that was added to the "operation_amount" field in this mutation.
+func (m *BidInfoMutation) AddedOperationAmount() (r float64, exists bool) {
+	v := m.addoperation_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetOperationAmount resets all changes to the "operation_amount" field.
+func (m *BidInfoMutation) ResetOperationAmount() {
+	m.operation_amount = nil
+	m.addoperation_amount = nil
+}
+
+// SetResultURL sets the "result_url" field.
+func (m *BidInfoMutation) SetResultURL(s string) {
+	m.result_url = &s
+}
+
+// ResultURL returns the value of the "result_url" field in the mutation.
+func (m *BidInfoMutation) ResultURL() (r string, exists bool) {
+	v := m.result_url
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldResultURL returns the old "result_url" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldResultURL(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldResultURL is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldResultURL requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldResultURL: %w", err)
+	}
+	return oldValue.ResultURL, nil
+}
+
+// ClearResultURL clears the value of the "result_url" field.
+func (m *BidInfoMutation) ClearResultURL() {
+	m.result_url = nil
+	m.clearedFields[bidinfo.FieldResultURL] = struct{}{}
+}
+
+// ResultURLCleared returns if the "result_url" field was cleared in this mutation.
+func (m *BidInfoMutation) ResultURLCleared() bool {
+	_, ok := m.clearedFields[bidinfo.FieldResultURL]
+	return ok
+}
+
+// ResetResultURL resets all changes to the "result_url" field.
+func (m *BidInfoMutation) ResetResultURL() {
+	m.result_url = nil
+	delete(m.clearedFields, bidinfo.FieldResultURL)
+}
+
+// SetContractSigned sets the "contract_signed" field.
+func (m *BidInfoMutation) SetContractSigned(b bool) {
+	m.contract_signed = &b
+}
+
+// ContractSigned returns the value of the "contract_signed" field in the mutation.
+func (m *BidInfoMutation) ContractSigned() (r bool, exists bool) {
+	v := m.contract_signed
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContractSigned returns the old "contract_signed" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldContractSigned(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContractSigned is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContractSigned requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContractSigned: %w", err)
+	}
+	return oldValue.ContractSigned, nil
+}
+
+// ResetContractSigned resets all changes to the "contract_signed" field.
+func (m *BidInfoMutation) ResetContractSigned() {
+	m.contract_signed = nil
+}
+
+// SetContractNo sets the "contract_no" field.
+func (m *BidInfoMutation) SetContractNo(s string) {
+	m.contract_no = &s
+}
+
+// ContractNo returns the value of the "contract_no" field in the mutation.
+func (m *BidInfoMutation) ContractNo() (r string, exists bool) {
+	v := m.contract_no
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContractNo returns the old "contract_no" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldContractNo(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContractNo is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContractNo requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContractNo: %w", err)
+	}
+	return oldValue.ContractNo, nil
+}
+
+// ClearContractNo clears the value of the "contract_no" field.
+func (m *BidInfoMutation) ClearContractNo() {
+	m.contract_no = nil
+	m.clearedFields[bidinfo.FieldContractNo] = struct{}{}
+}
+
+// ContractNoCleared returns if the "contract_no" field was cleared in this mutation.
+func (m *BidInfoMutation) ContractNoCleared() bool {
+	_, ok := m.clearedFields[bidinfo.FieldContractNo]
+	return ok
+}
+
+// ResetContractNo resets all changes to the "contract_no" field.
+func (m *BidInfoMutation) ResetContractNo() {
+	m.contract_no = nil
+	delete(m.clearedFields, bidinfo.FieldContractNo)
+}
+
+// SetContractSignDate sets the "contract_sign_date" field.
+func (m *BidInfoMutation) SetContractSignDate(t time.Time) {
+	m.contract_sign_date = &t
+}
+
+// ContractSignDate returns the value of the "contract_sign_date" field in the mutation.
+func (m *BidInfoMutation) ContractSignDate() (r time.Time, exists bool) {
+	v := m.contract_sign_date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContractSignDate returns the old "contract_sign_date" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldContractSignDate(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContractSignDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContractSignDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContractSignDate: %w", err)
+	}
+	return oldValue.ContractSignDate, nil
+}
+
+// ClearContractSignDate clears the value of the "contract_sign_date" field.
+func (m *BidInfoMutation) ClearContractSignDate() {
+	m.contract_sign_date = nil
+	m.clearedFields[bidinfo.FieldContractSignDate] = struct{}{}
+}
+
+// ContractSignDateCleared returns if the "contract_sign_date" field was cleared in this mutation.
+func (m *BidInfoMutation) ContractSignDateCleared() bool {
+	_, ok := m.clearedFields[bidinfo.FieldContractSignDate]
+	return ok
+}
+
+// ResetContractSignDate resets all changes to the "contract_sign_date" field.
+func (m *BidInfoMutation) ResetContractSignDate() {
+	m.contract_sign_date = nil
+	delete(m.clearedFields, bidinfo.FieldContractSignDate)
 }
 
 // SetCreateAt sets the "create_at" field.
@@ -3828,6 +4452,33 @@ func (m *BidInfoMutation) ResetUpdateBy() {
 	delete(m.clearedFields, bidinfo.FieldUpdateBy)
 }
 
+// ClearProject clears the "project" edge to the BidProject entity.
+func (m *BidInfoMutation) ClearProject() {
+	m.clearedproject = true
+	m.clearedFields[bidinfo.FieldProjectID] = struct{}{}
+}
+
+// ProjectCleared reports if the "project" edge to the BidProject entity was cleared.
+func (m *BidInfoMutation) ProjectCleared() bool {
+	return m.clearedproject
+}
+
+// ProjectIDs returns the "project" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// ProjectID instead. It exists only for internal usage by the builders.
+func (m *BidInfoMutation) ProjectIDs() (ids []string) {
+	if id := m.project; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetProject resets all changes to the "project" edge.
+func (m *BidInfoMutation) ResetProject() {
+	m.project = nil
+	m.clearedproject = false
+}
+
 // Where appends a list predicates to the BidInfoMutation builder.
 func (m *BidInfoMutation) Where(ps ...predicate.BidInfo) {
 	m.predicates = append(m.predicates, ps...)
@@ -3862,7 +4513,46 @@ func (m *BidInfoMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *BidInfoMutation) Fields() []string {
-	fields := make([]string, 0, 4)
+	fields := make([]string, 0, 17)
+	if m.project != nil {
+		fields = append(fields, bidinfo.FieldProjectID)
+	}
+	if m.bid_subject_code != nil {
+		fields = append(fields, bidinfo.FieldBidSubjectCode)
+	}
+	if m.bid_subject_name != nil {
+		fields = append(fields, bidinfo.FieldBidSubjectName)
+	}
+	if m.bid_amount != nil {
+		fields = append(fields, bidinfo.FieldBidAmount)
+	}
+	if m.bid_status != nil {
+		fields = append(fields, bidinfo.FieldBidStatus)
+	}
+	if m.bid_date != nil {
+		fields = append(fields, bidinfo.FieldBidDate)
+	}
+	if m.software_amount != nil {
+		fields = append(fields, bidinfo.FieldSoftwareAmount)
+	}
+	if m.hardware_amount != nil {
+		fields = append(fields, bidinfo.FieldHardwareAmount)
+	}
+	if m.operation_amount != nil {
+		fields = append(fields, bidinfo.FieldOperationAmount)
+	}
+	if m.result_url != nil {
+		fields = append(fields, bidinfo.FieldResultURL)
+	}
+	if m.contract_signed != nil {
+		fields = append(fields, bidinfo.FieldContractSigned)
+	}
+	if m.contract_no != nil {
+		fields = append(fields, bidinfo.FieldContractNo)
+	}
+	if m.contract_sign_date != nil {
+		fields = append(fields, bidinfo.FieldContractSignDate)
+	}
 	if m.create_at != nil {
 		fields = append(fields, bidinfo.FieldCreateAt)
 	}
@@ -3883,6 +4573,32 @@ func (m *BidInfoMutation) Fields() []string {
 // schema.
 func (m *BidInfoMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case bidinfo.FieldProjectID:
+		return m.ProjectID()
+	case bidinfo.FieldBidSubjectCode:
+		return m.BidSubjectCode()
+	case bidinfo.FieldBidSubjectName:
+		return m.BidSubjectName()
+	case bidinfo.FieldBidAmount:
+		return m.BidAmount()
+	case bidinfo.FieldBidStatus:
+		return m.BidStatus()
+	case bidinfo.FieldBidDate:
+		return m.BidDate()
+	case bidinfo.FieldSoftwareAmount:
+		return m.SoftwareAmount()
+	case bidinfo.FieldHardwareAmount:
+		return m.HardwareAmount()
+	case bidinfo.FieldOperationAmount:
+		return m.OperationAmount()
+	case bidinfo.FieldResultURL:
+		return m.ResultURL()
+	case bidinfo.FieldContractSigned:
+		return m.ContractSigned()
+	case bidinfo.FieldContractNo:
+		return m.ContractNo()
+	case bidinfo.FieldContractSignDate:
+		return m.ContractSignDate()
 	case bidinfo.FieldCreateAt:
 		return m.CreateAt()
 	case bidinfo.FieldCreateBy:
@@ -3900,6 +4616,32 @@ func (m *BidInfoMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *BidInfoMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case bidinfo.FieldProjectID:
+		return m.OldProjectID(ctx)
+	case bidinfo.FieldBidSubjectCode:
+		return m.OldBidSubjectCode(ctx)
+	case bidinfo.FieldBidSubjectName:
+		return m.OldBidSubjectName(ctx)
+	case bidinfo.FieldBidAmount:
+		return m.OldBidAmount(ctx)
+	case bidinfo.FieldBidStatus:
+		return m.OldBidStatus(ctx)
+	case bidinfo.FieldBidDate:
+		return m.OldBidDate(ctx)
+	case bidinfo.FieldSoftwareAmount:
+		return m.OldSoftwareAmount(ctx)
+	case bidinfo.FieldHardwareAmount:
+		return m.OldHardwareAmount(ctx)
+	case bidinfo.FieldOperationAmount:
+		return m.OldOperationAmount(ctx)
+	case bidinfo.FieldResultURL:
+		return m.OldResultURL(ctx)
+	case bidinfo.FieldContractSigned:
+		return m.OldContractSigned(ctx)
+	case bidinfo.FieldContractNo:
+		return m.OldContractNo(ctx)
+	case bidinfo.FieldContractSignDate:
+		return m.OldContractSignDate(ctx)
 	case bidinfo.FieldCreateAt:
 		return m.OldCreateAt(ctx)
 	case bidinfo.FieldCreateBy:
@@ -3917,6 +4659,97 @@ func (m *BidInfoMutation) OldField(ctx context.Context, name string) (ent.Value,
 // type.
 func (m *BidInfoMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case bidinfo.FieldProjectID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetProjectID(v)
+		return nil
+	case bidinfo.FieldBidSubjectCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBidSubjectCode(v)
+		return nil
+	case bidinfo.FieldBidSubjectName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBidSubjectName(v)
+		return nil
+	case bidinfo.FieldBidAmount:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBidAmount(v)
+		return nil
+	case bidinfo.FieldBidStatus:
+		v, ok := value.(bidinfo.BidStatus)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBidStatus(v)
+		return nil
+	case bidinfo.FieldBidDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBidDate(v)
+		return nil
+	case bidinfo.FieldSoftwareAmount:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSoftwareAmount(v)
+		return nil
+	case bidinfo.FieldHardwareAmount:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetHardwareAmount(v)
+		return nil
+	case bidinfo.FieldOperationAmount:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOperationAmount(v)
+		return nil
+	case bidinfo.FieldResultURL:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetResultURL(v)
+		return nil
+	case bidinfo.FieldContractSigned:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContractSigned(v)
+		return nil
+	case bidinfo.FieldContractNo:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContractNo(v)
+		return nil
+	case bidinfo.FieldContractSignDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContractSignDate(v)
+		return nil
 	case bidinfo.FieldCreateAt:
 		v, ok := value.(time.Time)
 		if !ok {
@@ -3952,13 +4785,36 @@ func (m *BidInfoMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *BidInfoMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addbid_amount != nil {
+		fields = append(fields, bidinfo.FieldBidAmount)
+	}
+	if m.addsoftware_amount != nil {
+		fields = append(fields, bidinfo.FieldSoftwareAmount)
+	}
+	if m.addhardware_amount != nil {
+		fields = append(fields, bidinfo.FieldHardwareAmount)
+	}
+	if m.addoperation_amount != nil {
+		fields = append(fields, bidinfo.FieldOperationAmount)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *BidInfoMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case bidinfo.FieldBidAmount:
+		return m.AddedBidAmount()
+	case bidinfo.FieldSoftwareAmount:
+		return m.AddedSoftwareAmount()
+	case bidinfo.FieldHardwareAmount:
+		return m.AddedHardwareAmount()
+	case bidinfo.FieldOperationAmount:
+		return m.AddedOperationAmount()
+	}
 	return nil, false
 }
 
@@ -3967,6 +4823,34 @@ func (m *BidInfoMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *BidInfoMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case bidinfo.FieldBidAmount:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddBidAmount(v)
+		return nil
+	case bidinfo.FieldSoftwareAmount:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSoftwareAmount(v)
+		return nil
+	case bidinfo.FieldHardwareAmount:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddHardwareAmount(v)
+		return nil
+	case bidinfo.FieldOperationAmount:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddOperationAmount(v)
+		return nil
 	}
 	return fmt.Errorf("unknown BidInfo numeric field %s", name)
 }
@@ -3975,6 +4859,18 @@ func (m *BidInfoMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *BidInfoMutation) ClearedFields() []string {
 	var fields []string
+	if m.FieldCleared(bidinfo.FieldBidDate) {
+		fields = append(fields, bidinfo.FieldBidDate)
+	}
+	if m.FieldCleared(bidinfo.FieldResultURL) {
+		fields = append(fields, bidinfo.FieldResultURL)
+	}
+	if m.FieldCleared(bidinfo.FieldContractNo) {
+		fields = append(fields, bidinfo.FieldContractNo)
+	}
+	if m.FieldCleared(bidinfo.FieldContractSignDate) {
+		fields = append(fields, bidinfo.FieldContractSignDate)
+	}
 	if m.FieldCleared(bidinfo.FieldCreateBy) {
 		fields = append(fields, bidinfo.FieldCreateBy)
 	}
@@ -3995,6 +4891,18 @@ func (m *BidInfoMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *BidInfoMutation) ClearField(name string) error {
 	switch name {
+	case bidinfo.FieldBidDate:
+		m.ClearBidDate()
+		return nil
+	case bidinfo.FieldResultURL:
+		m.ClearResultURL()
+		return nil
+	case bidinfo.FieldContractNo:
+		m.ClearContractNo()
+		return nil
+	case bidinfo.FieldContractSignDate:
+		m.ClearContractSignDate()
+		return nil
 	case bidinfo.FieldCreateBy:
 		m.ClearCreateBy()
 		return nil
@@ -4009,6 +4917,45 @@ func (m *BidInfoMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *BidInfoMutation) ResetField(name string) error {
 	switch name {
+	case bidinfo.FieldProjectID:
+		m.ResetProjectID()
+		return nil
+	case bidinfo.FieldBidSubjectCode:
+		m.ResetBidSubjectCode()
+		return nil
+	case bidinfo.FieldBidSubjectName:
+		m.ResetBidSubjectName()
+		return nil
+	case bidinfo.FieldBidAmount:
+		m.ResetBidAmount()
+		return nil
+	case bidinfo.FieldBidStatus:
+		m.ResetBidStatus()
+		return nil
+	case bidinfo.FieldBidDate:
+		m.ResetBidDate()
+		return nil
+	case bidinfo.FieldSoftwareAmount:
+		m.ResetSoftwareAmount()
+		return nil
+	case bidinfo.FieldHardwareAmount:
+		m.ResetHardwareAmount()
+		return nil
+	case bidinfo.FieldOperationAmount:
+		m.ResetOperationAmount()
+		return nil
+	case bidinfo.FieldResultURL:
+		m.ResetResultURL()
+		return nil
+	case bidinfo.FieldContractSigned:
+		m.ResetContractSigned()
+		return nil
+	case bidinfo.FieldContractNo:
+		m.ResetContractNo()
+		return nil
+	case bidinfo.FieldContractSignDate:
+		m.ResetContractSignDate()
+		return nil
 	case bidinfo.FieldCreateAt:
 		m.ResetCreateAt()
 		return nil
@@ -4027,19 +4974,28 @@ func (m *BidInfoMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *BidInfoMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.project != nil {
+		edges = append(edges, bidinfo.EdgeProject)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *BidInfoMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case bidinfo.EdgeProject:
+		if id := m.project; id != nil {
+			return []ent.Value{*id}
+		}
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *BidInfoMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
 	return edges
 }
 
@@ -4051,25 +5007,42 @@ func (m *BidInfoMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *BidInfoMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 1)
+	if m.clearedproject {
+		edges = append(edges, bidinfo.EdgeProject)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *BidInfoMutation) EdgeCleared(name string) bool {
+	switch name {
+	case bidinfo.EdgeProject:
+		return m.clearedproject
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *BidInfoMutation) ClearEdge(name string) error {
+	switch name {
+	case bidinfo.EdgeProject:
+		m.ClearProject()
+		return nil
+	}
 	return fmt.Errorf("unknown BidInfo unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *BidInfoMutation) ResetEdge(name string) error {
+	switch name {
+	case bidinfo.EdgeProject:
+		m.ResetProject()
+		return nil
+	}
 	return fmt.Errorf("unknown BidInfo edge %s", name)
 }
 
@@ -4099,6 +5072,9 @@ type BidProjectMutation struct {
 	expense         map[string]struct{}
 	removedexpense  map[string]struct{}
 	clearedexpense  bool
+	info            map[string]struct{}
+	removedinfo     map[string]struct{}
+	clearedinfo     bool
 	done            bool
 	oldValue        func(context.Context) (*BidProject, error)
 	predicates      []predicate.BidProject
@@ -4857,6 +5833,60 @@ func (m *BidProjectMutation) ResetExpense() {
 	m.removedexpense = nil
 }
 
+// AddInfoIDs adds the "info" edge to the BidInfo entity by ids.
+func (m *BidProjectMutation) AddInfoIDs(ids ...string) {
+	if m.info == nil {
+		m.info = make(map[string]struct{})
+	}
+	for i := range ids {
+		m.info[ids[i]] = struct{}{}
+	}
+}
+
+// ClearInfo clears the "info" edge to the BidInfo entity.
+func (m *BidProjectMutation) ClearInfo() {
+	m.clearedinfo = true
+}
+
+// InfoCleared reports if the "info" edge to the BidInfo entity was cleared.
+func (m *BidProjectMutation) InfoCleared() bool {
+	return m.clearedinfo
+}
+
+// RemoveInfoIDs removes the "info" edge to the BidInfo entity by IDs.
+func (m *BidProjectMutation) RemoveInfoIDs(ids ...string) {
+	if m.removedinfo == nil {
+		m.removedinfo = make(map[string]struct{})
+	}
+	for i := range ids {
+		delete(m.info, ids[i])
+		m.removedinfo[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedInfo returns the removed IDs of the "info" edge to the BidInfo entity.
+func (m *BidProjectMutation) RemovedInfoIDs() (ids []string) {
+	for id := range m.removedinfo {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// InfoIDs returns the "info" edge IDs in the mutation.
+func (m *BidProjectMutation) InfoIDs() (ids []string) {
+	for id := range m.info {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetInfo resets all changes to the "info" edge.
+func (m *BidProjectMutation) ResetInfo() {
+	m.info = nil
+	m.clearedinfo = false
+	m.removedinfo = nil
+}
+
 // Where appends a list predicates to the BidProjectMutation builder.
 func (m *BidProjectMutation) Where(ps ...predicate.BidProject) {
 	m.predicates = append(m.predicates, ps...)
@@ -5238,12 +6268,15 @@ func (m *BidProjectMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *BidProjectMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.apply != nil {
 		edges = append(edges, bidproject.EdgeApply)
 	}
 	if m.expense != nil {
 		edges = append(edges, bidproject.EdgeExpense)
+	}
+	if m.info != nil {
+		edges = append(edges, bidproject.EdgeInfo)
 	}
 	return edges
 }
@@ -5262,15 +6295,24 @@ func (m *BidProjectMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case bidproject.EdgeInfo:
+		ids := make([]ent.Value, 0, len(m.info))
+		for id := range m.info {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *BidProjectMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.removedexpense != nil {
 		edges = append(edges, bidproject.EdgeExpense)
+	}
+	if m.removedinfo != nil {
+		edges = append(edges, bidproject.EdgeInfo)
 	}
 	return edges
 }
@@ -5285,18 +6327,27 @@ func (m *BidProjectMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case bidproject.EdgeInfo:
+		ids := make([]ent.Value, 0, len(m.removedinfo))
+		for id := range m.removedinfo {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *BidProjectMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.clearedapply {
 		edges = append(edges, bidproject.EdgeApply)
 	}
 	if m.clearedexpense {
 		edges = append(edges, bidproject.EdgeExpense)
+	}
+	if m.clearedinfo {
+		edges = append(edges, bidproject.EdgeInfo)
 	}
 	return edges
 }
@@ -5309,6 +6360,8 @@ func (m *BidProjectMutation) EdgeCleared(name string) bool {
 		return m.clearedapply
 	case bidproject.EdgeExpense:
 		return m.clearedexpense
+	case bidproject.EdgeInfo:
+		return m.clearedinfo
 	}
 	return false
 }
@@ -5333,6 +6386,9 @@ func (m *BidProjectMutation) ResetEdge(name string) error {
 		return nil
 	case bidproject.EdgeExpense:
 		m.ResetExpense()
+		return nil
+	case bidproject.EdgeInfo:
+		m.ResetInfo()
 		return nil
 	}
 	return fmt.Errorf("unknown BidProject edge %s", name)

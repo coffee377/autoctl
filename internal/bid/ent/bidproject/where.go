@@ -981,6 +981,29 @@ func HasExpenseWith(preds ...predicate.BidExpense) predicate.BidProject {
 	})
 }
 
+// HasInfo applies the HasEdge predicate on the "info" edge.
+func HasInfo() predicate.BidProject {
+	return predicate.BidProject(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, InfoTable, InfoColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasInfoWith applies the HasEdge predicate on the "info" edge with a given conditions (other predicates).
+func HasInfoWith(preds ...predicate.BidInfo) predicate.BidProject {
+	return predicate.BidProject(func(s *sql.Selector) {
+		step := newInfoStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.BidProject) predicate.BidProject {
 	return predicate.BidProject(sql.AndPredicates(predicates...))

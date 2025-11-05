@@ -7,51 +7,122 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // ID filters vertices based on their ID field.
-func ID(id int) predicate.BidInfo {
+func ID(id string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldEQ(FieldID, id))
 }
 
 // IDEQ applies the EQ predicate on the ID field.
-func IDEQ(id int) predicate.BidInfo {
+func IDEQ(id string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldEQ(FieldID, id))
 }
 
 // IDNEQ applies the NEQ predicate on the ID field.
-func IDNEQ(id int) predicate.BidInfo {
+func IDNEQ(id string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldNEQ(FieldID, id))
 }
 
 // IDIn applies the In predicate on the ID field.
-func IDIn(ids ...int) predicate.BidInfo {
+func IDIn(ids ...string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldIn(FieldID, ids...))
 }
 
 // IDNotIn applies the NotIn predicate on the ID field.
-func IDNotIn(ids ...int) predicate.BidInfo {
+func IDNotIn(ids ...string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldNotIn(FieldID, ids...))
 }
 
 // IDGT applies the GT predicate on the ID field.
-func IDGT(id int) predicate.BidInfo {
+func IDGT(id string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldGT(FieldID, id))
 }
 
 // IDGTE applies the GTE predicate on the ID field.
-func IDGTE(id int) predicate.BidInfo {
+func IDGTE(id string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldGTE(FieldID, id))
 }
 
 // IDLT applies the LT predicate on the ID field.
-func IDLT(id int) predicate.BidInfo {
+func IDLT(id string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldLT(FieldID, id))
 }
 
 // IDLTE applies the LTE predicate on the ID field.
-func IDLTE(id int) predicate.BidInfo {
+func IDLTE(id string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldLTE(FieldID, id))
+}
+
+// IDEqualFold applies the EqualFold predicate on the ID field.
+func IDEqualFold(id string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEqualFold(FieldID, id))
+}
+
+// IDContainsFold applies the ContainsFold predicate on the ID field.
+func IDContainsFold(id string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContainsFold(FieldID, id))
+}
+
+// ProjectID applies equality check predicate on the "project_id" field. It's identical to ProjectIDEQ.
+func ProjectID(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldProjectID, v))
+}
+
+// BidSubjectCode applies equality check predicate on the "bid_subject_code" field. It's identical to BidSubjectCodeEQ.
+func BidSubjectCode(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldBidSubjectCode, v))
+}
+
+// BidSubjectName applies equality check predicate on the "bid_subject_name" field. It's identical to BidSubjectNameEQ.
+func BidSubjectName(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldBidSubjectName, v))
+}
+
+// BidAmount applies equality check predicate on the "bid_amount" field. It's identical to BidAmountEQ.
+func BidAmount(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldBidAmount, v))
+}
+
+// BidDate applies equality check predicate on the "bid_date" field. It's identical to BidDateEQ.
+func BidDate(v time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldBidDate, v))
+}
+
+// SoftwareAmount applies equality check predicate on the "software_amount" field. It's identical to SoftwareAmountEQ.
+func SoftwareAmount(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldSoftwareAmount, v))
+}
+
+// HardwareAmount applies equality check predicate on the "hardware_amount" field. It's identical to HardwareAmountEQ.
+func HardwareAmount(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldHardwareAmount, v))
+}
+
+// OperationAmount applies equality check predicate on the "operation_amount" field. It's identical to OperationAmountEQ.
+func OperationAmount(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldOperationAmount, v))
+}
+
+// ResultURL applies equality check predicate on the "result_url" field. It's identical to ResultURLEQ.
+func ResultURL(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldResultURL, v))
+}
+
+// ContractSigned applies equality check predicate on the "contract_signed" field. It's identical to ContractSignedEQ.
+func ContractSigned(v bool) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldContractSigned, v))
+}
+
+// ContractNo applies equality check predicate on the "contract_no" field. It's identical to ContractNoEQ.
+func ContractNo(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldContractNo, v))
+}
+
+// ContractSignDate applies equality check predicate on the "contract_sign_date" field. It's identical to ContractSignDateEQ.
+func ContractSignDate(v time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldContractSignDate, v))
 }
 
 // CreateAt applies equality check predicate on the "create_at" field. It's identical to CreateAtEQ.
@@ -72,6 +143,641 @@ func UpdateAt(v time.Time) predicate.BidInfo {
 // UpdateBy applies equality check predicate on the "update_by" field. It's identical to UpdateByEQ.
 func UpdateBy(v string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldEQ(FieldUpdateBy, v))
+}
+
+// ProjectIDEQ applies the EQ predicate on the "project_id" field.
+func ProjectIDEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldProjectID, v))
+}
+
+// ProjectIDNEQ applies the NEQ predicate on the "project_id" field.
+func ProjectIDNEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldProjectID, v))
+}
+
+// ProjectIDIn applies the In predicate on the "project_id" field.
+func ProjectIDIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldProjectID, vs...))
+}
+
+// ProjectIDNotIn applies the NotIn predicate on the "project_id" field.
+func ProjectIDNotIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldProjectID, vs...))
+}
+
+// ProjectIDGT applies the GT predicate on the "project_id" field.
+func ProjectIDGT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGT(FieldProjectID, v))
+}
+
+// ProjectIDGTE applies the GTE predicate on the "project_id" field.
+func ProjectIDGTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGTE(FieldProjectID, v))
+}
+
+// ProjectIDLT applies the LT predicate on the "project_id" field.
+func ProjectIDLT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLT(FieldProjectID, v))
+}
+
+// ProjectIDLTE applies the LTE predicate on the "project_id" field.
+func ProjectIDLTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLTE(FieldProjectID, v))
+}
+
+// ProjectIDContains applies the Contains predicate on the "project_id" field.
+func ProjectIDContains(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContains(FieldProjectID, v))
+}
+
+// ProjectIDHasPrefix applies the HasPrefix predicate on the "project_id" field.
+func ProjectIDHasPrefix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasPrefix(FieldProjectID, v))
+}
+
+// ProjectIDHasSuffix applies the HasSuffix predicate on the "project_id" field.
+func ProjectIDHasSuffix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasSuffix(FieldProjectID, v))
+}
+
+// ProjectIDEqualFold applies the EqualFold predicate on the "project_id" field.
+func ProjectIDEqualFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEqualFold(FieldProjectID, v))
+}
+
+// ProjectIDContainsFold applies the ContainsFold predicate on the "project_id" field.
+func ProjectIDContainsFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContainsFold(FieldProjectID, v))
+}
+
+// BidSubjectCodeEQ applies the EQ predicate on the "bid_subject_code" field.
+func BidSubjectCodeEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldBidSubjectCode, v))
+}
+
+// BidSubjectCodeNEQ applies the NEQ predicate on the "bid_subject_code" field.
+func BidSubjectCodeNEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldBidSubjectCode, v))
+}
+
+// BidSubjectCodeIn applies the In predicate on the "bid_subject_code" field.
+func BidSubjectCodeIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldBidSubjectCode, vs...))
+}
+
+// BidSubjectCodeNotIn applies the NotIn predicate on the "bid_subject_code" field.
+func BidSubjectCodeNotIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldBidSubjectCode, vs...))
+}
+
+// BidSubjectCodeGT applies the GT predicate on the "bid_subject_code" field.
+func BidSubjectCodeGT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGT(FieldBidSubjectCode, v))
+}
+
+// BidSubjectCodeGTE applies the GTE predicate on the "bid_subject_code" field.
+func BidSubjectCodeGTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGTE(FieldBidSubjectCode, v))
+}
+
+// BidSubjectCodeLT applies the LT predicate on the "bid_subject_code" field.
+func BidSubjectCodeLT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLT(FieldBidSubjectCode, v))
+}
+
+// BidSubjectCodeLTE applies the LTE predicate on the "bid_subject_code" field.
+func BidSubjectCodeLTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLTE(FieldBidSubjectCode, v))
+}
+
+// BidSubjectCodeContains applies the Contains predicate on the "bid_subject_code" field.
+func BidSubjectCodeContains(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContains(FieldBidSubjectCode, v))
+}
+
+// BidSubjectCodeHasPrefix applies the HasPrefix predicate on the "bid_subject_code" field.
+func BidSubjectCodeHasPrefix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasPrefix(FieldBidSubjectCode, v))
+}
+
+// BidSubjectCodeHasSuffix applies the HasSuffix predicate on the "bid_subject_code" field.
+func BidSubjectCodeHasSuffix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasSuffix(FieldBidSubjectCode, v))
+}
+
+// BidSubjectCodeEqualFold applies the EqualFold predicate on the "bid_subject_code" field.
+func BidSubjectCodeEqualFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEqualFold(FieldBidSubjectCode, v))
+}
+
+// BidSubjectCodeContainsFold applies the ContainsFold predicate on the "bid_subject_code" field.
+func BidSubjectCodeContainsFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContainsFold(FieldBidSubjectCode, v))
+}
+
+// BidSubjectNameEQ applies the EQ predicate on the "bid_subject_name" field.
+func BidSubjectNameEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldBidSubjectName, v))
+}
+
+// BidSubjectNameNEQ applies the NEQ predicate on the "bid_subject_name" field.
+func BidSubjectNameNEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldBidSubjectName, v))
+}
+
+// BidSubjectNameIn applies the In predicate on the "bid_subject_name" field.
+func BidSubjectNameIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldBidSubjectName, vs...))
+}
+
+// BidSubjectNameNotIn applies the NotIn predicate on the "bid_subject_name" field.
+func BidSubjectNameNotIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldBidSubjectName, vs...))
+}
+
+// BidSubjectNameGT applies the GT predicate on the "bid_subject_name" field.
+func BidSubjectNameGT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGT(FieldBidSubjectName, v))
+}
+
+// BidSubjectNameGTE applies the GTE predicate on the "bid_subject_name" field.
+func BidSubjectNameGTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGTE(FieldBidSubjectName, v))
+}
+
+// BidSubjectNameLT applies the LT predicate on the "bid_subject_name" field.
+func BidSubjectNameLT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLT(FieldBidSubjectName, v))
+}
+
+// BidSubjectNameLTE applies the LTE predicate on the "bid_subject_name" field.
+func BidSubjectNameLTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLTE(FieldBidSubjectName, v))
+}
+
+// BidSubjectNameContains applies the Contains predicate on the "bid_subject_name" field.
+func BidSubjectNameContains(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContains(FieldBidSubjectName, v))
+}
+
+// BidSubjectNameHasPrefix applies the HasPrefix predicate on the "bid_subject_name" field.
+func BidSubjectNameHasPrefix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasPrefix(FieldBidSubjectName, v))
+}
+
+// BidSubjectNameHasSuffix applies the HasSuffix predicate on the "bid_subject_name" field.
+func BidSubjectNameHasSuffix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasSuffix(FieldBidSubjectName, v))
+}
+
+// BidSubjectNameEqualFold applies the EqualFold predicate on the "bid_subject_name" field.
+func BidSubjectNameEqualFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEqualFold(FieldBidSubjectName, v))
+}
+
+// BidSubjectNameContainsFold applies the ContainsFold predicate on the "bid_subject_name" field.
+func BidSubjectNameContainsFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContainsFold(FieldBidSubjectName, v))
+}
+
+// BidAmountEQ applies the EQ predicate on the "bid_amount" field.
+func BidAmountEQ(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldBidAmount, v))
+}
+
+// BidAmountNEQ applies the NEQ predicate on the "bid_amount" field.
+func BidAmountNEQ(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldBidAmount, v))
+}
+
+// BidAmountIn applies the In predicate on the "bid_amount" field.
+func BidAmountIn(vs ...float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldBidAmount, vs...))
+}
+
+// BidAmountNotIn applies the NotIn predicate on the "bid_amount" field.
+func BidAmountNotIn(vs ...float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldBidAmount, vs...))
+}
+
+// BidAmountGT applies the GT predicate on the "bid_amount" field.
+func BidAmountGT(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGT(FieldBidAmount, v))
+}
+
+// BidAmountGTE applies the GTE predicate on the "bid_amount" field.
+func BidAmountGTE(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGTE(FieldBidAmount, v))
+}
+
+// BidAmountLT applies the LT predicate on the "bid_amount" field.
+func BidAmountLT(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLT(FieldBidAmount, v))
+}
+
+// BidAmountLTE applies the LTE predicate on the "bid_amount" field.
+func BidAmountLTE(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLTE(FieldBidAmount, v))
+}
+
+// BidStatusEQ applies the EQ predicate on the "bid_status" field.
+func BidStatusEQ(v BidStatus) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldBidStatus, v))
+}
+
+// BidStatusNEQ applies the NEQ predicate on the "bid_status" field.
+func BidStatusNEQ(v BidStatus) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldBidStatus, v))
+}
+
+// BidStatusIn applies the In predicate on the "bid_status" field.
+func BidStatusIn(vs ...BidStatus) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldBidStatus, vs...))
+}
+
+// BidStatusNotIn applies the NotIn predicate on the "bid_status" field.
+func BidStatusNotIn(vs ...BidStatus) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldBidStatus, vs...))
+}
+
+// BidDateEQ applies the EQ predicate on the "bid_date" field.
+func BidDateEQ(v time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldBidDate, v))
+}
+
+// BidDateNEQ applies the NEQ predicate on the "bid_date" field.
+func BidDateNEQ(v time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldBidDate, v))
+}
+
+// BidDateIn applies the In predicate on the "bid_date" field.
+func BidDateIn(vs ...time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldBidDate, vs...))
+}
+
+// BidDateNotIn applies the NotIn predicate on the "bid_date" field.
+func BidDateNotIn(vs ...time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldBidDate, vs...))
+}
+
+// BidDateGT applies the GT predicate on the "bid_date" field.
+func BidDateGT(v time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGT(FieldBidDate, v))
+}
+
+// BidDateGTE applies the GTE predicate on the "bid_date" field.
+func BidDateGTE(v time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGTE(FieldBidDate, v))
+}
+
+// BidDateLT applies the LT predicate on the "bid_date" field.
+func BidDateLT(v time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLT(FieldBidDate, v))
+}
+
+// BidDateLTE applies the LTE predicate on the "bid_date" field.
+func BidDateLTE(v time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLTE(FieldBidDate, v))
+}
+
+// BidDateIsNil applies the IsNil predicate on the "bid_date" field.
+func BidDateIsNil() predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIsNull(FieldBidDate))
+}
+
+// BidDateNotNil applies the NotNil predicate on the "bid_date" field.
+func BidDateNotNil() predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotNull(FieldBidDate))
+}
+
+// SoftwareAmountEQ applies the EQ predicate on the "software_amount" field.
+func SoftwareAmountEQ(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldSoftwareAmount, v))
+}
+
+// SoftwareAmountNEQ applies the NEQ predicate on the "software_amount" field.
+func SoftwareAmountNEQ(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldSoftwareAmount, v))
+}
+
+// SoftwareAmountIn applies the In predicate on the "software_amount" field.
+func SoftwareAmountIn(vs ...float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldSoftwareAmount, vs...))
+}
+
+// SoftwareAmountNotIn applies the NotIn predicate on the "software_amount" field.
+func SoftwareAmountNotIn(vs ...float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldSoftwareAmount, vs...))
+}
+
+// SoftwareAmountGT applies the GT predicate on the "software_amount" field.
+func SoftwareAmountGT(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGT(FieldSoftwareAmount, v))
+}
+
+// SoftwareAmountGTE applies the GTE predicate on the "software_amount" field.
+func SoftwareAmountGTE(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGTE(FieldSoftwareAmount, v))
+}
+
+// SoftwareAmountLT applies the LT predicate on the "software_amount" field.
+func SoftwareAmountLT(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLT(FieldSoftwareAmount, v))
+}
+
+// SoftwareAmountLTE applies the LTE predicate on the "software_amount" field.
+func SoftwareAmountLTE(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLTE(FieldSoftwareAmount, v))
+}
+
+// HardwareAmountEQ applies the EQ predicate on the "hardware_amount" field.
+func HardwareAmountEQ(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldHardwareAmount, v))
+}
+
+// HardwareAmountNEQ applies the NEQ predicate on the "hardware_amount" field.
+func HardwareAmountNEQ(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldHardwareAmount, v))
+}
+
+// HardwareAmountIn applies the In predicate on the "hardware_amount" field.
+func HardwareAmountIn(vs ...float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldHardwareAmount, vs...))
+}
+
+// HardwareAmountNotIn applies the NotIn predicate on the "hardware_amount" field.
+func HardwareAmountNotIn(vs ...float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldHardwareAmount, vs...))
+}
+
+// HardwareAmountGT applies the GT predicate on the "hardware_amount" field.
+func HardwareAmountGT(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGT(FieldHardwareAmount, v))
+}
+
+// HardwareAmountGTE applies the GTE predicate on the "hardware_amount" field.
+func HardwareAmountGTE(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGTE(FieldHardwareAmount, v))
+}
+
+// HardwareAmountLT applies the LT predicate on the "hardware_amount" field.
+func HardwareAmountLT(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLT(FieldHardwareAmount, v))
+}
+
+// HardwareAmountLTE applies the LTE predicate on the "hardware_amount" field.
+func HardwareAmountLTE(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLTE(FieldHardwareAmount, v))
+}
+
+// OperationAmountEQ applies the EQ predicate on the "operation_amount" field.
+func OperationAmountEQ(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldOperationAmount, v))
+}
+
+// OperationAmountNEQ applies the NEQ predicate on the "operation_amount" field.
+func OperationAmountNEQ(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldOperationAmount, v))
+}
+
+// OperationAmountIn applies the In predicate on the "operation_amount" field.
+func OperationAmountIn(vs ...float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldOperationAmount, vs...))
+}
+
+// OperationAmountNotIn applies the NotIn predicate on the "operation_amount" field.
+func OperationAmountNotIn(vs ...float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldOperationAmount, vs...))
+}
+
+// OperationAmountGT applies the GT predicate on the "operation_amount" field.
+func OperationAmountGT(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGT(FieldOperationAmount, v))
+}
+
+// OperationAmountGTE applies the GTE predicate on the "operation_amount" field.
+func OperationAmountGTE(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGTE(FieldOperationAmount, v))
+}
+
+// OperationAmountLT applies the LT predicate on the "operation_amount" field.
+func OperationAmountLT(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLT(FieldOperationAmount, v))
+}
+
+// OperationAmountLTE applies the LTE predicate on the "operation_amount" field.
+func OperationAmountLTE(v float64) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLTE(FieldOperationAmount, v))
+}
+
+// ResultURLEQ applies the EQ predicate on the "result_url" field.
+func ResultURLEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldResultURL, v))
+}
+
+// ResultURLNEQ applies the NEQ predicate on the "result_url" field.
+func ResultURLNEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldResultURL, v))
+}
+
+// ResultURLIn applies the In predicate on the "result_url" field.
+func ResultURLIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldResultURL, vs...))
+}
+
+// ResultURLNotIn applies the NotIn predicate on the "result_url" field.
+func ResultURLNotIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldResultURL, vs...))
+}
+
+// ResultURLGT applies the GT predicate on the "result_url" field.
+func ResultURLGT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGT(FieldResultURL, v))
+}
+
+// ResultURLGTE applies the GTE predicate on the "result_url" field.
+func ResultURLGTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGTE(FieldResultURL, v))
+}
+
+// ResultURLLT applies the LT predicate on the "result_url" field.
+func ResultURLLT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLT(FieldResultURL, v))
+}
+
+// ResultURLLTE applies the LTE predicate on the "result_url" field.
+func ResultURLLTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLTE(FieldResultURL, v))
+}
+
+// ResultURLContains applies the Contains predicate on the "result_url" field.
+func ResultURLContains(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContains(FieldResultURL, v))
+}
+
+// ResultURLHasPrefix applies the HasPrefix predicate on the "result_url" field.
+func ResultURLHasPrefix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasPrefix(FieldResultURL, v))
+}
+
+// ResultURLHasSuffix applies the HasSuffix predicate on the "result_url" field.
+func ResultURLHasSuffix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasSuffix(FieldResultURL, v))
+}
+
+// ResultURLIsNil applies the IsNil predicate on the "result_url" field.
+func ResultURLIsNil() predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIsNull(FieldResultURL))
+}
+
+// ResultURLNotNil applies the NotNil predicate on the "result_url" field.
+func ResultURLNotNil() predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotNull(FieldResultURL))
+}
+
+// ResultURLEqualFold applies the EqualFold predicate on the "result_url" field.
+func ResultURLEqualFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEqualFold(FieldResultURL, v))
+}
+
+// ResultURLContainsFold applies the ContainsFold predicate on the "result_url" field.
+func ResultURLContainsFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContainsFold(FieldResultURL, v))
+}
+
+// ContractSignedEQ applies the EQ predicate on the "contract_signed" field.
+func ContractSignedEQ(v bool) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldContractSigned, v))
+}
+
+// ContractSignedNEQ applies the NEQ predicate on the "contract_signed" field.
+func ContractSignedNEQ(v bool) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldContractSigned, v))
+}
+
+// ContractNoEQ applies the EQ predicate on the "contract_no" field.
+func ContractNoEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldContractNo, v))
+}
+
+// ContractNoNEQ applies the NEQ predicate on the "contract_no" field.
+func ContractNoNEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldContractNo, v))
+}
+
+// ContractNoIn applies the In predicate on the "contract_no" field.
+func ContractNoIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldContractNo, vs...))
+}
+
+// ContractNoNotIn applies the NotIn predicate on the "contract_no" field.
+func ContractNoNotIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldContractNo, vs...))
+}
+
+// ContractNoGT applies the GT predicate on the "contract_no" field.
+func ContractNoGT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGT(FieldContractNo, v))
+}
+
+// ContractNoGTE applies the GTE predicate on the "contract_no" field.
+func ContractNoGTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGTE(FieldContractNo, v))
+}
+
+// ContractNoLT applies the LT predicate on the "contract_no" field.
+func ContractNoLT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLT(FieldContractNo, v))
+}
+
+// ContractNoLTE applies the LTE predicate on the "contract_no" field.
+func ContractNoLTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLTE(FieldContractNo, v))
+}
+
+// ContractNoContains applies the Contains predicate on the "contract_no" field.
+func ContractNoContains(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContains(FieldContractNo, v))
+}
+
+// ContractNoHasPrefix applies the HasPrefix predicate on the "contract_no" field.
+func ContractNoHasPrefix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasPrefix(FieldContractNo, v))
+}
+
+// ContractNoHasSuffix applies the HasSuffix predicate on the "contract_no" field.
+func ContractNoHasSuffix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasSuffix(FieldContractNo, v))
+}
+
+// ContractNoIsNil applies the IsNil predicate on the "contract_no" field.
+func ContractNoIsNil() predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIsNull(FieldContractNo))
+}
+
+// ContractNoNotNil applies the NotNil predicate on the "contract_no" field.
+func ContractNoNotNil() predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotNull(FieldContractNo))
+}
+
+// ContractNoEqualFold applies the EqualFold predicate on the "contract_no" field.
+func ContractNoEqualFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEqualFold(FieldContractNo, v))
+}
+
+// ContractNoContainsFold applies the ContainsFold predicate on the "contract_no" field.
+func ContractNoContainsFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContainsFold(FieldContractNo, v))
+}
+
+// ContractSignDateEQ applies the EQ predicate on the "contract_sign_date" field.
+func ContractSignDateEQ(v time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldContractSignDate, v))
+}
+
+// ContractSignDateNEQ applies the NEQ predicate on the "contract_sign_date" field.
+func ContractSignDateNEQ(v time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldContractSignDate, v))
+}
+
+// ContractSignDateIn applies the In predicate on the "contract_sign_date" field.
+func ContractSignDateIn(vs ...time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldContractSignDate, vs...))
+}
+
+// ContractSignDateNotIn applies the NotIn predicate on the "contract_sign_date" field.
+func ContractSignDateNotIn(vs ...time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldContractSignDate, vs...))
+}
+
+// ContractSignDateGT applies the GT predicate on the "contract_sign_date" field.
+func ContractSignDateGT(v time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGT(FieldContractSignDate, v))
+}
+
+// ContractSignDateGTE applies the GTE predicate on the "contract_sign_date" field.
+func ContractSignDateGTE(v time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGTE(FieldContractSignDate, v))
+}
+
+// ContractSignDateLT applies the LT predicate on the "contract_sign_date" field.
+func ContractSignDateLT(v time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLT(FieldContractSignDate, v))
+}
+
+// ContractSignDateLTE applies the LTE predicate on the "contract_sign_date" field.
+func ContractSignDateLTE(v time.Time) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLTE(FieldContractSignDate, v))
+}
+
+// ContractSignDateIsNil applies the IsNil predicate on the "contract_sign_date" field.
+func ContractSignDateIsNil() predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIsNull(FieldContractSignDate))
+}
+
+// ContractSignDateNotNil applies the NotNil predicate on the "contract_sign_date" field.
+func ContractSignDateNotNil() predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotNull(FieldContractSignDate))
 }
 
 // CreateAtEQ applies the EQ predicate on the "create_at" field.
@@ -302,6 +1008,29 @@ func UpdateByEqualFold(v string) predicate.BidInfo {
 // UpdateByContainsFold applies the ContainsFold predicate on the "update_by" field.
 func UpdateByContainsFold(v string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldContainsFold(FieldUpdateBy, v))
+}
+
+// HasProject applies the HasEdge predicate on the "project" edge.
+func HasProject() predicate.BidInfo {
+	return predicate.BidInfo(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ProjectTable, ProjectColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasProjectWith applies the HasEdge predicate on the "project" edge with a given conditions (other predicates).
+func HasProjectWith(preds ...predicate.BidProject) predicate.BidInfo {
+	return predicate.BidInfo(func(s *sql.Selector) {
+		step := newProjectStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

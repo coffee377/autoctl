@@ -5,6 +5,7 @@ package ent
 import (
 	"cds/bid/ent/bidapply"
 	"cds/bid/ent/bidexpense"
+	"cds/bid/ent/bidinfo"
 	"cds/bid/ent/bidproject"
 	"context"
 	"errors"
@@ -240,6 +241,21 @@ func (_c *BidProjectCreate) AddExpense(v ...*BidExpense) *BidProjectCreate {
 		ids[i] = v[i].ID
 	}
 	return _c.AddExpenseIDs(ids...)
+}
+
+// AddInfoIDs adds the "info" edge to the BidInfo entity by IDs.
+func (_c *BidProjectCreate) AddInfoIDs(ids ...string) *BidProjectCreate {
+	_c.mutation.AddInfoIDs(ids...)
+	return _c
+}
+
+// AddInfo adds the "info" edges to the BidInfo entity.
+func (_c *BidProjectCreate) AddInfo(v ...*BidInfo) *BidProjectCreate {
+	ids := make([]string, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _c.AddInfoIDs(ids...)
 }
 
 // Mutation returns the BidProjectMutation object of the builder.
@@ -519,6 +535,22 @@ func (_c *BidProjectCreate) createSpec() (*BidProject, *sqlgraph.CreateSpec) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(bidexpense.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := _c.mutation.InfoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   bidproject.InfoTable,
+			Columns: []string{bidproject.InfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(bidinfo.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

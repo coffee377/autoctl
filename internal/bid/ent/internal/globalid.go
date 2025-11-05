@@ -2,4 +2,4 @@
 
 package internal
 
-const IncrementStarts = "{\"bid_apply\":0,\"bid_expense\":4294967296,\"bid_info\":8589934592,\"bid_project\":12884901888}"
+const IncrementStarts = "{\"bid_apply\":0,\"bid_expense\":4294967296,\"bid_info\":8589934592,\"bid_project\":12884901888,\"bid_project_info\":17179869184}"

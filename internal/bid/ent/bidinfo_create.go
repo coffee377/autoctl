@@ -4,6 +4,7 @@ package ent
 
 import (
 	"cds/bid/ent/bidinfo"
+	"cds/bid/ent/bidproject"
 	"context"
 	"errors"
 	"fmt"
@@ -18,6 +19,164 @@ type BidInfoCreate struct {
 	config
 	mutation *BidInfoMutation
 	hooks    []Hook
+}
+
+// SetProjectID sets the "project_id" field.
+func (_c *BidInfoCreate) SetProjectID(v string) *BidInfoCreate {
+	_c.mutation.SetProjectID(v)
+	return _c
+}
+
+// SetBidSubjectCode sets the "bid_subject_code" field.
+func (_c *BidInfoCreate) SetBidSubjectCode(v string) *BidInfoCreate {
+	_c.mutation.SetBidSubjectCode(v)
+	return _c
+}
+
+// SetBidSubjectName sets the "bid_subject_name" field.
+func (_c *BidInfoCreate) SetBidSubjectName(v string) *BidInfoCreate {
+	_c.mutation.SetBidSubjectName(v)
+	return _c
+}
+
+// SetBidAmount sets the "bid_amount" field.
+func (_c *BidInfoCreate) SetBidAmount(v float64) *BidInfoCreate {
+	_c.mutation.SetBidAmount(v)
+	return _c
+}
+
+// SetNillableBidAmount sets the "bid_amount" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableBidAmount(v *float64) *BidInfoCreate {
+	if v != nil {
+		_c.SetBidAmount(*v)
+	}
+	return _c
+}
+
+// SetBidStatus sets the "bid_status" field.
+func (_c *BidInfoCreate) SetBidStatus(v bidinfo.BidStatus) *BidInfoCreate {
+	_c.mutation.SetBidStatus(v)
+	return _c
+}
+
+// SetNillableBidStatus sets the "bid_status" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableBidStatus(v *bidinfo.BidStatus) *BidInfoCreate {
+	if v != nil {
+		_c.SetBidStatus(*v)
+	}
+	return _c
+}
+
+// SetBidDate sets the "bid_date" field.
+func (_c *BidInfoCreate) SetBidDate(v time.Time) *BidInfoCreate {
+	_c.mutation.SetBidDate(v)
+	return _c
+}
+
+// SetNillableBidDate sets the "bid_date" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableBidDate(v *time.Time) *BidInfoCreate {
+	if v != nil {
+		_c.SetBidDate(*v)
+	}
+	return _c
+}
+
+// SetSoftwareAmount sets the "software_amount" field.
+func (_c *BidInfoCreate) SetSoftwareAmount(v float64) *BidInfoCreate {
+	_c.mutation.SetSoftwareAmount(v)
+	return _c
+}
+
+// SetNillableSoftwareAmount sets the "software_amount" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableSoftwareAmount(v *float64) *BidInfoCreate {
+	if v != nil {
+		_c.SetSoftwareAmount(*v)
+	}
+	return _c
+}
+
+// SetHardwareAmount sets the "hardware_amount" field.
+func (_c *BidInfoCreate) SetHardwareAmount(v float64) *BidInfoCreate {
+	_c.mutation.SetHardwareAmount(v)
+	return _c
+}
+
+// SetNillableHardwareAmount sets the "hardware_amount" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableHardwareAmount(v *float64) *BidInfoCreate {
+	if v != nil {
+		_c.SetHardwareAmount(*v)
+	}
+	return _c
+}
+
+// SetOperationAmount sets the "operation_amount" field.
+func (_c *BidInfoCreate) SetOperationAmount(v float64) *BidInfoCreate {
+	_c.mutation.SetOperationAmount(v)
+	return _c
+}
+
+// SetNillableOperationAmount sets the "operation_amount" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableOperationAmount(v *float64) *BidInfoCreate {
+	if v != nil {
+		_c.SetOperationAmount(*v)
+	}
+	return _c
+}
+
+// SetResultURL sets the "result_url" field.
+func (_c *BidInfoCreate) SetResultURL(v string) *BidInfoCreate {
+	_c.mutation.SetResultURL(v)
+	return _c
+}
+
+// SetNillableResultURL sets the "result_url" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableResultURL(v *string) *BidInfoCreate {
+	if v != nil {
+		_c.SetResultURL(*v)
+	}
+	return _c
+}
+
+// SetContractSigned sets the "contract_signed" field.
+func (_c *BidInfoCreate) SetContractSigned(v bool) *BidInfoCreate {
+	_c.mutation.SetContractSigned(v)
+	return _c
+}
+
+// SetNillableContractSigned sets the "contract_signed" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableContractSigned(v *bool) *BidInfoCreate {
+	if v != nil {
+		_c.SetContractSigned(*v)
+	}
+	return _c
+}
+
+// SetContractNo sets the "contract_no" field.
+func (_c *BidInfoCreate) SetContractNo(v string) *BidInfoCreate {
+	_c.mutation.SetContractNo(v)
+	return _c
+}
+
+// SetNillableContractNo sets the "contract_no" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableContractNo(v *string) *BidInfoCreate {
+	if v != nil {
+		_c.SetContractNo(*v)
+	}
+	return _c
+}
+
+// SetContractSignDate sets the "contract_sign_date" field.
+func (_c *BidInfoCreate) SetContractSignDate(v time.Time) *BidInfoCreate {
+	_c.mutation.SetContractSignDate(v)
+	return _c
+}
+
+// SetNillableContractSignDate sets the "contract_sign_date" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableContractSignDate(v *time.Time) *BidInfoCreate {
+	if v != nil {
+		_c.SetContractSignDate(*v)
+	}
+	return _c
 }
 
 // SetCreateAt sets the "create_at" field.
@@ -76,6 +235,17 @@ func (_c *BidInfoCreate) SetNillableUpdateBy(v *string) *BidInfoCreate {
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *BidInfoCreate) SetID(v string) *BidInfoCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
+// SetProject sets the "project" edge to the BidProject entity.
+func (_c *BidInfoCreate) SetProject(v *BidProject) *BidInfoCreate {
+	return _c.SetProjectID(v.ID)
+}
+
 // Mutation returns the BidInfoMutation object of the builder.
 func (_c *BidInfoCreate) Mutation() *BidInfoMutation {
 	return _c.mutation
@@ -111,6 +281,30 @@ func (_c *BidInfoCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (_c *BidInfoCreate) defaults() {
+	if _, ok := _c.mutation.BidAmount(); !ok {
+		v := bidinfo.DefaultBidAmount
+		_c.mutation.SetBidAmount(v)
+	}
+	if _, ok := _c.mutation.BidStatus(); !ok {
+		v := bidinfo.DefaultBidStatus
+		_c.mutation.SetBidStatus(v)
+	}
+	if _, ok := _c.mutation.SoftwareAmount(); !ok {
+		v := bidinfo.DefaultSoftwareAmount
+		_c.mutation.SetSoftwareAmount(v)
+	}
+	if _, ok := _c.mutation.HardwareAmount(); !ok {
+		v := bidinfo.DefaultHardwareAmount
+		_c.mutation.SetHardwareAmount(v)
+	}
+	if _, ok := _c.mutation.OperationAmount(); !ok {
+		v := bidinfo.DefaultOperationAmount
+		_c.mutation.SetOperationAmount(v)
+	}
+	if _, ok := _c.mutation.ContractSigned(); !ok {
+		v := bidinfo.DefaultContractSigned
+		_c.mutation.SetContractSigned(v)
+	}
 	if _, ok := _c.mutation.CreateAt(); !ok {
 		v := bidinfo.DefaultCreateAt()
 		_c.mutation.SetCreateAt(v)
@@ -123,6 +317,58 @@ func (_c *BidInfoCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (_c *BidInfoCreate) check() error {
+	if _, ok := _c.mutation.ProjectID(); !ok {
+		return &ValidationError{Name: "project_id", err: errors.New(`ent: missing required field "BidInfo.project_id"`)}
+	}
+	if v, ok := _c.mutation.ProjectID(); ok {
+		if err := bidinfo.ProjectIDValidator(v); err != nil {
+			return &ValidationError{Name: "project_id", err: fmt.Errorf(`ent: validator failed for field "BidInfo.project_id": %w`, err)}
+		}
+	}
+	if _, ok := _c.mutation.BidSubjectCode(); !ok {
+		return &ValidationError{Name: "bid_subject_code", err: errors.New(`ent: missing required field "BidInfo.bid_subject_code"`)}
+	}
+	if v, ok := _c.mutation.BidSubjectCode(); ok {
+		if err := bidinfo.BidSubjectCodeValidator(v); err != nil {
+			return &ValidationError{Name: "bid_subject_code", err: fmt.Errorf(`ent: validator failed for field "BidInfo.bid_subject_code": %w`, err)}
+		}
+	}
+	if _, ok := _c.mutation.BidSubjectName(); !ok {
+		return &ValidationError{Name: "bid_subject_name", err: errors.New(`ent: missing required field "BidInfo.bid_subject_name"`)}
+	}
+	if v, ok := _c.mutation.BidSubjectName(); ok {
+		if err := bidinfo.BidSubjectNameValidator(v); err != nil {
+			return &ValidationError{Name: "bid_subject_name", err: fmt.Errorf(`ent: validator failed for field "BidInfo.bid_subject_name": %w`, err)}
+		}
+	}
+	if _, ok := _c.mutation.BidAmount(); !ok {
+		return &ValidationError{Name: "bid_amount", err: errors.New(`ent: missing required field "BidInfo.bid_amount"`)}
+	}
+	if _, ok := _c.mutation.BidStatus(); !ok {
+		return &ValidationError{Name: "bid_status", err: errors.New(`ent: missing required field "BidInfo.bid_status"`)}
+	}
+	if v, ok := _c.mutation.BidStatus(); ok {
+		if err := bidinfo.BidStatusValidator(v); err != nil {
+			return &ValidationError{Name: "bid_status", err: fmt.Errorf(`ent: validator failed for field "BidInfo.bid_status": %w`, err)}
+		}
+	}
+	if _, ok := _c.mutation.SoftwareAmount(); !ok {
+		return &ValidationError{Name: "software_amount", err: errors.New(`ent: missing required field "BidInfo.software_amount"`)}
+	}
+	if _, ok := _c.mutation.HardwareAmount(); !ok {
+		return &ValidationError{Name: "hardware_amount", err: errors.New(`ent: missing required field "BidInfo.hardware_amount"`)}
+	}
+	if _, ok := _c.mutation.OperationAmount(); !ok {
+		return &ValidationError{Name: "operation_amount", err: errors.New(`ent: missing required field "BidInfo.operation_amount"`)}
+	}
+	if _, ok := _c.mutation.ContractSigned(); !ok {
+		return &ValidationError{Name: "contract_signed", err: errors.New(`ent: missing required field "BidInfo.contract_signed"`)}
+	}
+	if v, ok := _c.mutation.ContractNo(); ok {
+		if err := bidinfo.ContractNoValidator(v); err != nil {
+			return &ValidationError{Name: "contract_no", err: fmt.Errorf(`ent: validator failed for field "BidInfo.contract_no": %w`, err)}
+		}
+	}
 	if _, ok := _c.mutation.CreateAt(); !ok {
 		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "BidInfo.create_at"`)}
 	}
@@ -139,6 +385,14 @@ func (_c *BidInfoCreate) check() error {
 			return &ValidationError{Name: "update_by", err: fmt.Errorf(`ent: validator failed for field "BidInfo.update_by": %w`, err)}
 		}
 	}
+	if v, ok := _c.mutation.ID(); ok {
+		if err := bidinfo.IDValidator(v); err != nil {
+			return &ValidationError{Name: "id", err: fmt.Errorf(`ent: validator failed for field "BidInfo.id": %w`, err)}
+		}
+	}
+	if len(_c.mutation.ProjectIDs()) == 0 {
+		return &ValidationError{Name: "project", err: errors.New(`ent: missing required edge "BidInfo.project"`)}
+	}
 	return nil
 }
 
@@ -153,8 +407,13 @@ func (_c *BidInfoCreate) sqlSave(ctx context.Context) (*BidInfo, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != nil {
+		if id, ok := _spec.ID.Value.(string); ok {
+			_node.ID = id
+		} else {
+			return nil, fmt.Errorf("unexpected BidInfo.ID type: %T", _spec.ID.Value)
+		}
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -163,8 +422,60 @@ func (_c *BidInfoCreate) sqlSave(ctx context.Context) (*BidInfo, error) {
 func (_c *BidInfoCreate) createSpec() (*BidInfo, *sqlgraph.CreateSpec) {
 	var (
 		_node = &BidInfo{config: _c.config}
-		_spec = sqlgraph.NewCreateSpec(bidinfo.Table, sqlgraph.NewFieldSpec(bidinfo.FieldID, field.TypeInt))
+		_spec = sqlgraph.NewCreateSpec(bidinfo.Table, sqlgraph.NewFieldSpec(bidinfo.FieldID, field.TypeString))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
+	if value, ok := _c.mutation.BidSubjectCode(); ok {
+		_spec.SetField(bidinfo.FieldBidSubjectCode, field.TypeString, value)
+		_node.BidSubjectCode = value
+	}
+	if value, ok := _c.mutation.BidSubjectName(); ok {
+		_spec.SetField(bidinfo.FieldBidSubjectName, field.TypeString, value)
+		_node.BidSubjectName = value
+	}
+	if value, ok := _c.mutation.BidAmount(); ok {
+		_spec.SetField(bidinfo.FieldBidAmount, field.TypeFloat64, value)
+		_node.BidAmount = value
+	}
+	if value, ok := _c.mutation.BidStatus(); ok {
+		_spec.SetField(bidinfo.FieldBidStatus, field.TypeEnum, value)
+		_node.BidStatus = value
+	}
+	if value, ok := _c.mutation.BidDate(); ok {
+		_spec.SetField(bidinfo.FieldBidDate, field.TypeTime, value)
+		_node.BidDate = &value
+	}
+	if value, ok := _c.mutation.SoftwareAmount(); ok {
+		_spec.SetField(bidinfo.FieldSoftwareAmount, field.TypeFloat64, value)
+		_node.SoftwareAmount = value
+	}
+	if value, ok := _c.mutation.HardwareAmount(); ok {
+		_spec.SetField(bidinfo.FieldHardwareAmount, field.TypeFloat64, value)
+		_node.HardwareAmount = value
+	}
+	if value, ok := _c.mutation.OperationAmount(); ok {
+		_spec.SetField(bidinfo.FieldOperationAmount, field.TypeFloat64, value)
+		_node.OperationAmount = value
+	}
+	if value, ok := _c.mutation.ResultURL(); ok {
+		_spec.SetField(bidinfo.FieldResultURL, field.TypeString, value)
+		_node.ResultURL = &value
+	}
+	if value, ok := _c.mutation.ContractSigned(); ok {
+		_spec.SetField(bidinfo.FieldContractSigned, field.TypeBool, value)
+		_node.ContractSigned = value
+	}
+	if value, ok := _c.mutation.ContractNo(); ok {
+		_spec.SetField(bidinfo.FieldContractNo, field.TypeString, value)
+		_node.ContractNo = &value
+	}
+	if value, ok := _c.mutation.ContractSignDate(); ok {
+		_spec.SetField(bidinfo.FieldContractSignDate, field.TypeTime, value)
+		_node.ContractSignDate = &value
+	}
 	if value, ok := _c.mutation.CreateAt(); ok {
 		_spec.SetField(bidinfo.FieldCreateAt, field.TypeTime, value)
 		_node.CreateAt = value
@@ -180,6 +491,23 @@ func (_c *BidInfoCreate) createSpec() (*BidInfo, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.UpdateBy(); ok {
 		_spec.SetField(bidinfo.FieldUpdateBy, field.TypeString, value)
 		_node.UpdateBy = &value
+	}
+	if nodes := _c.mutation.ProjectIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   bidinfo.ProjectTable,
+			Columns: []string{bidinfo.ProjectColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(bidproject.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.ProjectID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }
@@ -229,10 +557,6 @@ func (_c *BidInfoCreateBulk) Save(ctx context.Context) ([]*BidInfo, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
-					id := specs[i].ID.Value.(int64)
-					nodes[i].ID = int(id)
-				}
 				mutation.done = true
 				return nodes[i], nil
 			})

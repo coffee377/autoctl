@@ -4,6 +4,7 @@ package ent
 
 import (
 	"cds/bid/ent/bidinfo"
+	"cds/bid/ent/bidproject"
 	"cds/bid/ent/predicate"
 	"context"
 	"errors"
@@ -26,6 +27,240 @@ type BidInfoUpdate struct {
 // Where appends a list predicates to the BidInfoUpdate builder.
 func (_u *BidInfoUpdate) Where(ps ...predicate.BidInfo) *BidInfoUpdate {
 	_u.mutation.Where(ps...)
+	return _u
+}
+
+// SetProjectID sets the "project_id" field.
+func (_u *BidInfoUpdate) SetProjectID(v string) *BidInfoUpdate {
+	_u.mutation.SetProjectID(v)
+	return _u
+}
+
+// SetNillableProjectID sets the "project_id" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableProjectID(v *string) *BidInfoUpdate {
+	if v != nil {
+		_u.SetProjectID(*v)
+	}
+	return _u
+}
+
+// SetBidSubjectCode sets the "bid_subject_code" field.
+func (_u *BidInfoUpdate) SetBidSubjectCode(v string) *BidInfoUpdate {
+	_u.mutation.SetBidSubjectCode(v)
+	return _u
+}
+
+// SetNillableBidSubjectCode sets the "bid_subject_code" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableBidSubjectCode(v *string) *BidInfoUpdate {
+	if v != nil {
+		_u.SetBidSubjectCode(*v)
+	}
+	return _u
+}
+
+// SetBidSubjectName sets the "bid_subject_name" field.
+func (_u *BidInfoUpdate) SetBidSubjectName(v string) *BidInfoUpdate {
+	_u.mutation.SetBidSubjectName(v)
+	return _u
+}
+
+// SetNillableBidSubjectName sets the "bid_subject_name" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableBidSubjectName(v *string) *BidInfoUpdate {
+	if v != nil {
+		_u.SetBidSubjectName(*v)
+	}
+	return _u
+}
+
+// SetBidAmount sets the "bid_amount" field.
+func (_u *BidInfoUpdate) SetBidAmount(v float64) *BidInfoUpdate {
+	_u.mutation.ResetBidAmount()
+	_u.mutation.SetBidAmount(v)
+	return _u
+}
+
+// SetNillableBidAmount sets the "bid_amount" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableBidAmount(v *float64) *BidInfoUpdate {
+	if v != nil {
+		_u.SetBidAmount(*v)
+	}
+	return _u
+}
+
+// AddBidAmount adds value to the "bid_amount" field.
+func (_u *BidInfoUpdate) AddBidAmount(v float64) *BidInfoUpdate {
+	_u.mutation.AddBidAmount(v)
+	return _u
+}
+
+// SetBidStatus sets the "bid_status" field.
+func (_u *BidInfoUpdate) SetBidStatus(v bidinfo.BidStatus) *BidInfoUpdate {
+	_u.mutation.SetBidStatus(v)
+	return _u
+}
+
+// SetNillableBidStatus sets the "bid_status" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableBidStatus(v *bidinfo.BidStatus) *BidInfoUpdate {
+	if v != nil {
+		_u.SetBidStatus(*v)
+	}
+	return _u
+}
+
+// SetBidDate sets the "bid_date" field.
+func (_u *BidInfoUpdate) SetBidDate(v time.Time) *BidInfoUpdate {
+	_u.mutation.SetBidDate(v)
+	return _u
+}
+
+// SetNillableBidDate sets the "bid_date" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableBidDate(v *time.Time) *BidInfoUpdate {
+	if v != nil {
+		_u.SetBidDate(*v)
+	}
+	return _u
+}
+
+// ClearBidDate clears the value of the "bid_date" field.
+func (_u *BidInfoUpdate) ClearBidDate() *BidInfoUpdate {
+	_u.mutation.ClearBidDate()
+	return _u
+}
+
+// SetSoftwareAmount sets the "software_amount" field.
+func (_u *BidInfoUpdate) SetSoftwareAmount(v float64) *BidInfoUpdate {
+	_u.mutation.ResetSoftwareAmount()
+	_u.mutation.SetSoftwareAmount(v)
+	return _u
+}
+
+// SetNillableSoftwareAmount sets the "software_amount" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableSoftwareAmount(v *float64) *BidInfoUpdate {
+	if v != nil {
+		_u.SetSoftwareAmount(*v)
+	}
+	return _u
+}
+
+// AddSoftwareAmount adds value to the "software_amount" field.
+func (_u *BidInfoUpdate) AddSoftwareAmount(v float64) *BidInfoUpdate {
+	_u.mutation.AddSoftwareAmount(v)
+	return _u
+}
+
+// SetHardwareAmount sets the "hardware_amount" field.
+func (_u *BidInfoUpdate) SetHardwareAmount(v float64) *BidInfoUpdate {
+	_u.mutation.ResetHardwareAmount()
+	_u.mutation.SetHardwareAmount(v)
+	return _u
+}
+
+// SetNillableHardwareAmount sets the "hardware_amount" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableHardwareAmount(v *float64) *BidInfoUpdate {
+	if v != nil {
+		_u.SetHardwareAmount(*v)
+	}
+	return _u
+}
+
+// AddHardwareAmount adds value to the "hardware_amount" field.
+func (_u *BidInfoUpdate) AddHardwareAmount(v float64) *BidInfoUpdate {
+	_u.mutation.AddHardwareAmount(v)
+	return _u
+}
+
+// SetOperationAmount sets the "operation_amount" field.
+func (_u *BidInfoUpdate) SetOperationAmount(v float64) *BidInfoUpdate {
+	_u.mutation.ResetOperationAmount()
+	_u.mutation.SetOperationAmount(v)
+	return _u
+}
+
+// SetNillableOperationAmount sets the "operation_amount" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableOperationAmount(v *float64) *BidInfoUpdate {
+	if v != nil {
+		_u.SetOperationAmount(*v)
+	}
+	return _u
+}
+
+// AddOperationAmount adds value to the "operation_amount" field.
+func (_u *BidInfoUpdate) AddOperationAmount(v float64) *BidInfoUpdate {
+	_u.mutation.AddOperationAmount(v)
+	return _u
+}
+
+// SetResultURL sets the "result_url" field.
+func (_u *BidInfoUpdate) SetResultURL(v string) *BidInfoUpdate {
+	_u.mutation.SetResultURL(v)
+	return _u
+}
+
+// SetNillableResultURL sets the "result_url" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableResultURL(v *string) *BidInfoUpdate {
+	if v != nil {
+		_u.SetResultURL(*v)
+	}
+	return _u
+}
+
+// ClearResultURL clears the value of the "result_url" field.
+func (_u *BidInfoUpdate) ClearResultURL() *BidInfoUpdate {
+	_u.mutation.ClearResultURL()
+	return _u
+}
+
+// SetContractSigned sets the "contract_signed" field.
+func (_u *BidInfoUpdate) SetContractSigned(v bool) *BidInfoUpdate {
+	_u.mutation.SetContractSigned(v)
+	return _u
+}
+
+// SetNillableContractSigned sets the "contract_signed" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableContractSigned(v *bool) *BidInfoUpdate {
+	if v != nil {
+		_u.SetContractSigned(*v)
+	}
+	return _u
+}
+
+// SetContractNo sets the "contract_no" field.
+func (_u *BidInfoUpdate) SetContractNo(v string) *BidInfoUpdate {
+	_u.mutation.SetContractNo(v)
+	return _u
+}
+
+// SetNillableContractNo sets the "contract_no" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableContractNo(v *string) *BidInfoUpdate {
+	if v != nil {
+		_u.SetContractNo(*v)
+	}
+	return _u
+}
+
+// ClearContractNo clears the value of the "contract_no" field.
+func (_u *BidInfoUpdate) ClearContractNo() *BidInfoUpdate {
+	_u.mutation.ClearContractNo()
+	return _u
+}
+
+// SetContractSignDate sets the "contract_sign_date" field.
+func (_u *BidInfoUpdate) SetContractSignDate(v time.Time) *BidInfoUpdate {
+	_u.mutation.SetContractSignDate(v)
+	return _u
+}
+
+// SetNillableContractSignDate sets the "contract_sign_date" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableContractSignDate(v *time.Time) *BidInfoUpdate {
+	if v != nil {
+		_u.SetContractSignDate(*v)
+	}
+	return _u
+}
+
+// ClearContractSignDate clears the value of the "contract_sign_date" field.
+func (_u *BidInfoUpdate) ClearContractSignDate() *BidInfoUpdate {
+	_u.mutation.ClearContractSignDate()
 	return _u
 }
 
@@ -89,9 +324,20 @@ func (_u *BidInfoUpdate) ClearUpdateBy() *BidInfoUpdate {
 	return _u
 }
 
+// SetProject sets the "project" edge to the BidProject entity.
+func (_u *BidInfoUpdate) SetProject(v *BidProject) *BidInfoUpdate {
+	return _u.SetProjectID(v.ID)
+}
+
 // Mutation returns the BidInfoMutation object of the builder.
 func (_u *BidInfoUpdate) Mutation() *BidInfoMutation {
 	return _u.mutation
+}
+
+// ClearProject clears the "project" edge to the BidProject entity.
+func (_u *BidInfoUpdate) ClearProject() *BidInfoUpdate {
+	_u.mutation.ClearProject()
+	return _u
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -132,6 +378,31 @@ func (_u *BidInfoUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (_u *BidInfoUpdate) check() error {
+	if v, ok := _u.mutation.ProjectID(); ok {
+		if err := bidinfo.ProjectIDValidator(v); err != nil {
+			return &ValidationError{Name: "project_id", err: fmt.Errorf(`ent: validator failed for field "BidInfo.project_id": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.BidSubjectCode(); ok {
+		if err := bidinfo.BidSubjectCodeValidator(v); err != nil {
+			return &ValidationError{Name: "bid_subject_code", err: fmt.Errorf(`ent: validator failed for field "BidInfo.bid_subject_code": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.BidSubjectName(); ok {
+		if err := bidinfo.BidSubjectNameValidator(v); err != nil {
+			return &ValidationError{Name: "bid_subject_name", err: fmt.Errorf(`ent: validator failed for field "BidInfo.bid_subject_name": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.BidStatus(); ok {
+		if err := bidinfo.BidStatusValidator(v); err != nil {
+			return &ValidationError{Name: "bid_status", err: fmt.Errorf(`ent: validator failed for field "BidInfo.bid_status": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.ContractNo(); ok {
+		if err := bidinfo.ContractNoValidator(v); err != nil {
+			return &ValidationError{Name: "contract_no", err: fmt.Errorf(`ent: validator failed for field "BidInfo.contract_no": %w`, err)}
+		}
+	}
 	if v, ok := _u.mutation.CreateBy(); ok {
 		if err := bidinfo.CreateByValidator(v); err != nil {
 			return &ValidationError{Name: "create_by", err: fmt.Errorf(`ent: validator failed for field "BidInfo.create_by": %w`, err)}
@@ -141,6 +412,9 @@ func (_u *BidInfoUpdate) check() error {
 		if err := bidinfo.UpdateByValidator(v); err != nil {
 			return &ValidationError{Name: "update_by", err: fmt.Errorf(`ent: validator failed for field "BidInfo.update_by": %w`, err)}
 		}
+	}
+	if _u.mutation.ProjectCleared() && len(_u.mutation.ProjectIDs()) > 0 {
+		return errors.New(`ent: clearing a required unique edge "BidInfo.project"`)
 	}
 	return nil
 }
@@ -155,13 +429,73 @@ func (_u *BidInfoUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if err := _u.check(); err != nil {
 		return _node, err
 	}
-	_spec := sqlgraph.NewUpdateSpec(bidinfo.Table, bidinfo.Columns, sqlgraph.NewFieldSpec(bidinfo.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(bidinfo.Table, bidinfo.Columns, sqlgraph.NewFieldSpec(bidinfo.FieldID, field.TypeString))
 	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := _u.mutation.BidSubjectCode(); ok {
+		_spec.SetField(bidinfo.FieldBidSubjectCode, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.BidSubjectName(); ok {
+		_spec.SetField(bidinfo.FieldBidSubjectName, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.BidAmount(); ok {
+		_spec.SetField(bidinfo.FieldBidAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.AddedBidAmount(); ok {
+		_spec.AddField(bidinfo.FieldBidAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.BidStatus(); ok {
+		_spec.SetField(bidinfo.FieldBidStatus, field.TypeEnum, value)
+	}
+	if value, ok := _u.mutation.BidDate(); ok {
+		_spec.SetField(bidinfo.FieldBidDate, field.TypeTime, value)
+	}
+	if _u.mutation.BidDateCleared() {
+		_spec.ClearField(bidinfo.FieldBidDate, field.TypeTime)
+	}
+	if value, ok := _u.mutation.SoftwareAmount(); ok {
+		_spec.SetField(bidinfo.FieldSoftwareAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.AddedSoftwareAmount(); ok {
+		_spec.AddField(bidinfo.FieldSoftwareAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.HardwareAmount(); ok {
+		_spec.SetField(bidinfo.FieldHardwareAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.AddedHardwareAmount(); ok {
+		_spec.AddField(bidinfo.FieldHardwareAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.OperationAmount(); ok {
+		_spec.SetField(bidinfo.FieldOperationAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.AddedOperationAmount(); ok {
+		_spec.AddField(bidinfo.FieldOperationAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.ResultURL(); ok {
+		_spec.SetField(bidinfo.FieldResultURL, field.TypeString, value)
+	}
+	if _u.mutation.ResultURLCleared() {
+		_spec.ClearField(bidinfo.FieldResultURL, field.TypeString)
+	}
+	if value, ok := _u.mutation.ContractSigned(); ok {
+		_spec.SetField(bidinfo.FieldContractSigned, field.TypeBool, value)
+	}
+	if value, ok := _u.mutation.ContractNo(); ok {
+		_spec.SetField(bidinfo.FieldContractNo, field.TypeString, value)
+	}
+	if _u.mutation.ContractNoCleared() {
+		_spec.ClearField(bidinfo.FieldContractNo, field.TypeString)
+	}
+	if value, ok := _u.mutation.ContractSignDate(); ok {
+		_spec.SetField(bidinfo.FieldContractSignDate, field.TypeTime, value)
+	}
+	if _u.mutation.ContractSignDateCleared() {
+		_spec.ClearField(bidinfo.FieldContractSignDate, field.TypeTime)
 	}
 	if value, ok := _u.mutation.CreateAt(); ok {
 		_spec.SetField(bidinfo.FieldCreateAt, field.TypeTime, value)
@@ -180,6 +514,35 @@ func (_u *BidInfoUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	}
 	if _u.mutation.UpdateByCleared() {
 		_spec.ClearField(bidinfo.FieldUpdateBy, field.TypeString)
+	}
+	if _u.mutation.ProjectCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   bidinfo.ProjectTable,
+			Columns: []string{bidinfo.ProjectColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(bidproject.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.ProjectIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   bidinfo.ProjectTable,
+			Columns: []string{bidinfo.ProjectColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(bidproject.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_spec.AddModifiers(_u.modifiers...)
 	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
@@ -201,6 +564,240 @@ type BidInfoUpdateOne struct {
 	hooks     []Hook
 	mutation  *BidInfoMutation
 	modifiers []func(*sql.UpdateBuilder)
+}
+
+// SetProjectID sets the "project_id" field.
+func (_u *BidInfoUpdateOne) SetProjectID(v string) *BidInfoUpdateOne {
+	_u.mutation.SetProjectID(v)
+	return _u
+}
+
+// SetNillableProjectID sets the "project_id" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableProjectID(v *string) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetProjectID(*v)
+	}
+	return _u
+}
+
+// SetBidSubjectCode sets the "bid_subject_code" field.
+func (_u *BidInfoUpdateOne) SetBidSubjectCode(v string) *BidInfoUpdateOne {
+	_u.mutation.SetBidSubjectCode(v)
+	return _u
+}
+
+// SetNillableBidSubjectCode sets the "bid_subject_code" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableBidSubjectCode(v *string) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetBidSubjectCode(*v)
+	}
+	return _u
+}
+
+// SetBidSubjectName sets the "bid_subject_name" field.
+func (_u *BidInfoUpdateOne) SetBidSubjectName(v string) *BidInfoUpdateOne {
+	_u.mutation.SetBidSubjectName(v)
+	return _u
+}
+
+// SetNillableBidSubjectName sets the "bid_subject_name" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableBidSubjectName(v *string) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetBidSubjectName(*v)
+	}
+	return _u
+}
+
+// SetBidAmount sets the "bid_amount" field.
+func (_u *BidInfoUpdateOne) SetBidAmount(v float64) *BidInfoUpdateOne {
+	_u.mutation.ResetBidAmount()
+	_u.mutation.SetBidAmount(v)
+	return _u
+}
+
+// SetNillableBidAmount sets the "bid_amount" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableBidAmount(v *float64) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetBidAmount(*v)
+	}
+	return _u
+}
+
+// AddBidAmount adds value to the "bid_amount" field.
+func (_u *BidInfoUpdateOne) AddBidAmount(v float64) *BidInfoUpdateOne {
+	_u.mutation.AddBidAmount(v)
+	return _u
+}
+
+// SetBidStatus sets the "bid_status" field.
+func (_u *BidInfoUpdateOne) SetBidStatus(v bidinfo.BidStatus) *BidInfoUpdateOne {
+	_u.mutation.SetBidStatus(v)
+	return _u
+}
+
+// SetNillableBidStatus sets the "bid_status" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableBidStatus(v *bidinfo.BidStatus) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetBidStatus(*v)
+	}
+	return _u
+}
+
+// SetBidDate sets the "bid_date" field.
+func (_u *BidInfoUpdateOne) SetBidDate(v time.Time) *BidInfoUpdateOne {
+	_u.mutation.SetBidDate(v)
+	return _u
+}
+
+// SetNillableBidDate sets the "bid_date" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableBidDate(v *time.Time) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetBidDate(*v)
+	}
+	return _u
+}
+
+// ClearBidDate clears the value of the "bid_date" field.
+func (_u *BidInfoUpdateOne) ClearBidDate() *BidInfoUpdateOne {
+	_u.mutation.ClearBidDate()
+	return _u
+}
+
+// SetSoftwareAmount sets the "software_amount" field.
+func (_u *BidInfoUpdateOne) SetSoftwareAmount(v float64) *BidInfoUpdateOne {
+	_u.mutation.ResetSoftwareAmount()
+	_u.mutation.SetSoftwareAmount(v)
+	return _u
+}
+
+// SetNillableSoftwareAmount sets the "software_amount" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableSoftwareAmount(v *float64) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetSoftwareAmount(*v)
+	}
+	return _u
+}
+
+// AddSoftwareAmount adds value to the "software_amount" field.
+func (_u *BidInfoUpdateOne) AddSoftwareAmount(v float64) *BidInfoUpdateOne {
+	_u.mutation.AddSoftwareAmount(v)
+	return _u
+}
+
+// SetHardwareAmount sets the "hardware_amount" field.
+func (_u *BidInfoUpdateOne) SetHardwareAmount(v float64) *BidInfoUpdateOne {
+	_u.mutation.ResetHardwareAmount()
+	_u.mutation.SetHardwareAmount(v)
+	return _u
+}
+
+// SetNillableHardwareAmount sets the "hardware_amount" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableHardwareAmount(v *float64) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetHardwareAmount(*v)
+	}
+	return _u
+}
+
+// AddHardwareAmount adds value to the "hardware_amount" field.
+func (_u *BidInfoUpdateOne) AddHardwareAmount(v float64) *BidInfoUpdateOne {
+	_u.mutation.AddHardwareAmount(v)
+	return _u
+}
+
+// SetOperationAmount sets the "operation_amount" field.
+func (_u *BidInfoUpdateOne) SetOperationAmount(v float64) *BidInfoUpdateOne {
+	_u.mutation.ResetOperationAmount()
+	_u.mutation.SetOperationAmount(v)
+	return _u
+}
+
+// SetNillableOperationAmount sets the "operation_amount" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableOperationAmount(v *float64) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetOperationAmount(*v)
+	}
+	return _u
+}
+
+// AddOperationAmount adds value to the "operation_amount" field.
+func (_u *BidInfoUpdateOne) AddOperationAmount(v float64) *BidInfoUpdateOne {
+	_u.mutation.AddOperationAmount(v)
+	return _u
+}
+
+// SetResultURL sets the "result_url" field.
+func (_u *BidInfoUpdateOne) SetResultURL(v string) *BidInfoUpdateOne {
+	_u.mutation.SetResultURL(v)
+	return _u
+}
+
+// SetNillableResultURL sets the "result_url" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableResultURL(v *string) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetResultURL(*v)
+	}
+	return _u
+}
+
+// ClearResultURL clears the value of the "result_url" field.
+func (_u *BidInfoUpdateOne) ClearResultURL() *BidInfoUpdateOne {
+	_u.mutation.ClearResultURL()
+	return _u
+}
+
+// SetContractSigned sets the "contract_signed" field.
+func (_u *BidInfoUpdateOne) SetContractSigned(v bool) *BidInfoUpdateOne {
+	_u.mutation.SetContractSigned(v)
+	return _u
+}
+
+// SetNillableContractSigned sets the "contract_signed" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableContractSigned(v *bool) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetContractSigned(*v)
+	}
+	return _u
+}
+
+// SetContractNo sets the "contract_no" field.
+func (_u *BidInfoUpdateOne) SetContractNo(v string) *BidInfoUpdateOne {
+	_u.mutation.SetContractNo(v)
+	return _u
+}
+
+// SetNillableContractNo sets the "contract_no" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableContractNo(v *string) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetContractNo(*v)
+	}
+	return _u
+}
+
+// ClearContractNo clears the value of the "contract_no" field.
+func (_u *BidInfoUpdateOne) ClearContractNo() *BidInfoUpdateOne {
+	_u.mutation.ClearContractNo()
+	return _u
+}
+
+// SetContractSignDate sets the "contract_sign_date" field.
+func (_u *BidInfoUpdateOne) SetContractSignDate(v time.Time) *BidInfoUpdateOne {
+	_u.mutation.SetContractSignDate(v)
+	return _u
+}
+
+// SetNillableContractSignDate sets the "contract_sign_date" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableContractSignDate(v *time.Time) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetContractSignDate(*v)
+	}
+	return _u
+}
+
+// ClearContractSignDate clears the value of the "contract_sign_date" field.
+func (_u *BidInfoUpdateOne) ClearContractSignDate() *BidInfoUpdateOne {
+	_u.mutation.ClearContractSignDate()
+	return _u
 }
 
 // SetCreateAt sets the "create_at" field.
@@ -263,9 +860,20 @@ func (_u *BidInfoUpdateOne) ClearUpdateBy() *BidInfoUpdateOne {
 	return _u
 }
 
+// SetProject sets the "project" edge to the BidProject entity.
+func (_u *BidInfoUpdateOne) SetProject(v *BidProject) *BidInfoUpdateOne {
+	return _u.SetProjectID(v.ID)
+}
+
 // Mutation returns the BidInfoMutation object of the builder.
 func (_u *BidInfoUpdateOne) Mutation() *BidInfoMutation {
 	return _u.mutation
+}
+
+// ClearProject clears the "project" edge to the BidProject entity.
+func (_u *BidInfoUpdateOne) ClearProject() *BidInfoUpdateOne {
+	_u.mutation.ClearProject()
+	return _u
 }
 
 // Where appends a list predicates to the BidInfoUpdate builder.
@@ -319,6 +927,31 @@ func (_u *BidInfoUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (_u *BidInfoUpdateOne) check() error {
+	if v, ok := _u.mutation.ProjectID(); ok {
+		if err := bidinfo.ProjectIDValidator(v); err != nil {
+			return &ValidationError{Name: "project_id", err: fmt.Errorf(`ent: validator failed for field "BidInfo.project_id": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.BidSubjectCode(); ok {
+		if err := bidinfo.BidSubjectCodeValidator(v); err != nil {
+			return &ValidationError{Name: "bid_subject_code", err: fmt.Errorf(`ent: validator failed for field "BidInfo.bid_subject_code": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.BidSubjectName(); ok {
+		if err := bidinfo.BidSubjectNameValidator(v); err != nil {
+			return &ValidationError{Name: "bid_subject_name", err: fmt.Errorf(`ent: validator failed for field "BidInfo.bid_subject_name": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.BidStatus(); ok {
+		if err := bidinfo.BidStatusValidator(v); err != nil {
+			return &ValidationError{Name: "bid_status", err: fmt.Errorf(`ent: validator failed for field "BidInfo.bid_status": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.ContractNo(); ok {
+		if err := bidinfo.ContractNoValidator(v); err != nil {
+			return &ValidationError{Name: "contract_no", err: fmt.Errorf(`ent: validator failed for field "BidInfo.contract_no": %w`, err)}
+		}
+	}
 	if v, ok := _u.mutation.CreateBy(); ok {
 		if err := bidinfo.CreateByValidator(v); err != nil {
 			return &ValidationError{Name: "create_by", err: fmt.Errorf(`ent: validator failed for field "BidInfo.create_by": %w`, err)}
@@ -328,6 +961,9 @@ func (_u *BidInfoUpdateOne) check() error {
 		if err := bidinfo.UpdateByValidator(v); err != nil {
 			return &ValidationError{Name: "update_by", err: fmt.Errorf(`ent: validator failed for field "BidInfo.update_by": %w`, err)}
 		}
+	}
+	if _u.mutation.ProjectCleared() && len(_u.mutation.ProjectIDs()) > 0 {
+		return errors.New(`ent: clearing a required unique edge "BidInfo.project"`)
 	}
 	return nil
 }
@@ -342,7 +978,7 @@ func (_u *BidInfoUpdateOne) sqlSave(ctx context.Context) (_node *BidInfo, err er
 	if err := _u.check(); err != nil {
 		return _node, err
 	}
-	_spec := sqlgraph.NewUpdateSpec(bidinfo.Table, bidinfo.Columns, sqlgraph.NewFieldSpec(bidinfo.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(bidinfo.Table, bidinfo.Columns, sqlgraph.NewFieldSpec(bidinfo.FieldID, field.TypeString))
 	id, ok := _u.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "BidInfo.id" for update`)}
@@ -367,6 +1003,66 @@ func (_u *BidInfoUpdateOne) sqlSave(ctx context.Context) (_node *BidInfo, err er
 			}
 		}
 	}
+	if value, ok := _u.mutation.BidSubjectCode(); ok {
+		_spec.SetField(bidinfo.FieldBidSubjectCode, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.BidSubjectName(); ok {
+		_spec.SetField(bidinfo.FieldBidSubjectName, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.BidAmount(); ok {
+		_spec.SetField(bidinfo.FieldBidAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.AddedBidAmount(); ok {
+		_spec.AddField(bidinfo.FieldBidAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.BidStatus(); ok {
+		_spec.SetField(bidinfo.FieldBidStatus, field.TypeEnum, value)
+	}
+	if value, ok := _u.mutation.BidDate(); ok {
+		_spec.SetField(bidinfo.FieldBidDate, field.TypeTime, value)
+	}
+	if _u.mutation.BidDateCleared() {
+		_spec.ClearField(bidinfo.FieldBidDate, field.TypeTime)
+	}
+	if value, ok := _u.mutation.SoftwareAmount(); ok {
+		_spec.SetField(bidinfo.FieldSoftwareAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.AddedSoftwareAmount(); ok {
+		_spec.AddField(bidinfo.FieldSoftwareAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.HardwareAmount(); ok {
+		_spec.SetField(bidinfo.FieldHardwareAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.AddedHardwareAmount(); ok {
+		_spec.AddField(bidinfo.FieldHardwareAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.OperationAmount(); ok {
+		_spec.SetField(bidinfo.FieldOperationAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.AddedOperationAmount(); ok {
+		_spec.AddField(bidinfo.FieldOperationAmount, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.ResultURL(); ok {
+		_spec.SetField(bidinfo.FieldResultURL, field.TypeString, value)
+	}
+	if _u.mutation.ResultURLCleared() {
+		_spec.ClearField(bidinfo.FieldResultURL, field.TypeString)
+	}
+	if value, ok := _u.mutation.ContractSigned(); ok {
+		_spec.SetField(bidinfo.FieldContractSigned, field.TypeBool, value)
+	}
+	if value, ok := _u.mutation.ContractNo(); ok {
+		_spec.SetField(bidinfo.FieldContractNo, field.TypeString, value)
+	}
+	if _u.mutation.ContractNoCleared() {
+		_spec.ClearField(bidinfo.FieldContractNo, field.TypeString)
+	}
+	if value, ok := _u.mutation.ContractSignDate(); ok {
+		_spec.SetField(bidinfo.FieldContractSignDate, field.TypeTime, value)
+	}
+	if _u.mutation.ContractSignDateCleared() {
+		_spec.ClearField(bidinfo.FieldContractSignDate, field.TypeTime)
+	}
 	if value, ok := _u.mutation.CreateAt(); ok {
 		_spec.SetField(bidinfo.FieldCreateAt, field.TypeTime, value)
 	}
@@ -384,6 +1080,35 @@ func (_u *BidInfoUpdateOne) sqlSave(ctx context.Context) (_node *BidInfo, err er
 	}
 	if _u.mutation.UpdateByCleared() {
 		_spec.ClearField(bidinfo.FieldUpdateBy, field.TypeString)
+	}
+	if _u.mutation.ProjectCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   bidinfo.ProjectTable,
+			Columns: []string{bidinfo.ProjectColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(bidproject.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.ProjectIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   bidinfo.ProjectTable,
+			Columns: []string{bidinfo.ProjectColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(bidproject.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_spec.AddModifiers(_u.modifiers...)
 	_node = &BidInfo{config: _u.config}

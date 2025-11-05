@@ -4,6 +4,7 @@ package ent
 
 import (
 	"cds/bid/ent/bidinfo"
+	"cds/bid/ent/bidproject"
 	"fmt"
 	"strings"
 	"time"
@@ -16,7 +17,34 @@ import (
 type BidInfo struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
+	// 投标信息ID
+	ID string `json:"id,omitempty"`
+	// 项目 ID
+	ProjectID string `json:"project_id,omitempty"`
+	// 投标主体编码
+	BidSubjectCode string `json:"bid_subject_code,omitempty"`
+	// 投标主体名称
+	BidSubjectName string `json:"bid_subject_name,omitempty"`
+	// 投标金额
+	BidAmount float64 `json:"bid_amount,omitempty"`
+	// 投标状态 RP:待报名 RO:报名中 RS:报名成功 RF:报名失败 DP:标书编制中 B:投标中 W:已中标 L:未中标 F:流标 0:-
+	BidStatus bidinfo.BidStatus `json:"bid_status,omitempty"`
+	// 中标时间
+	BidDate *time.Time `json:"bid_date,omitempty"`
+	// 中标软件金额
+	SoftwareAmount float64 `json:"software_amount,omitempty"`
+	// 中标硬件金额
+	HardwareAmount float64 `json:"hardware_amount,omitempty"`
+	// 中标运维金额
+	OperationAmount float64 `json:"operation_amount,omitempty"`
+	// 中标结果公告网址
+	ResultURL *string `json:"result_url,omitempty"`
+	// 销售合同是否签署
+	ContractSigned bool `json:"contract_signed,omitempty"`
+	// 销售合同号
+	ContractNo *string `json:"contract_no,omitempty"`
+	// 销售合同签署日期
+	ContractSignDate *time.Time `json:"contract_sign_date,omitempty"`
 	// 创建时间
 	CreateAt time.Time `json:"create_at,omitempty"`
 	// 创建人
@@ -24,8 +52,31 @@ type BidInfo struct {
 	// 更新时间
 	UpdateAt time.Time `json:"update_at,omitempty"`
 	// 更新人
-	UpdateBy     *string `json:"update_by,omitempty"`
+	UpdateBy *string `json:"update_by,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the BidInfoQuery when eager-loading is set.
+	Edges        BidInfoEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// BidInfoEdges holds the relations/edges for other nodes in the graph.
+type BidInfoEdges struct {
+	// Project holds the value of the project edge.
+	Project *BidProject `json:"project,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// ProjectOrErr returns the Project value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e BidInfoEdges) ProjectOrErr() (*BidProject, error) {
+	if e.Project != nil {
+		return e.Project, nil
+	} else if e.loadedTypes[0] {
+		return nil, &NotFoundError{label: bidproject.Label}
+	}
+	return nil, &NotLoadedError{edge: "project"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -33,11 +84,13 @@ func (*BidInfo) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case bidinfo.FieldID:
-			values[i] = new(sql.NullInt64)
-		case bidinfo.FieldCreateBy, bidinfo.FieldUpdateBy:
+		case bidinfo.FieldContractSigned:
+			values[i] = new(sql.NullBool)
+		case bidinfo.FieldBidAmount, bidinfo.FieldSoftwareAmount, bidinfo.FieldHardwareAmount, bidinfo.FieldOperationAmount:
+			values[i] = new(sql.NullFloat64)
+		case bidinfo.FieldID, bidinfo.FieldProjectID, bidinfo.FieldBidSubjectCode, bidinfo.FieldBidSubjectName, bidinfo.FieldBidStatus, bidinfo.FieldResultURL, bidinfo.FieldContractNo, bidinfo.FieldCreateBy, bidinfo.FieldUpdateBy:
 			values[i] = new(sql.NullString)
-		case bidinfo.FieldCreateAt, bidinfo.FieldUpdateAt:
+		case bidinfo.FieldBidDate, bidinfo.FieldContractSignDate, bidinfo.FieldCreateAt, bidinfo.FieldUpdateAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -55,11 +108,93 @@ func (_m *BidInfo) assignValues(columns []string, values []any) error {
 	for i := range columns {
 		switch columns[i] {
 		case bidinfo.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value.Valid {
+				_m.ID = value.String
 			}
-			_m.ID = int(value.Int64)
+		case bidinfo.FieldProjectID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field project_id", values[i])
+			} else if value.Valid {
+				_m.ProjectID = value.String
+			}
+		case bidinfo.FieldBidSubjectCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field bid_subject_code", values[i])
+			} else if value.Valid {
+				_m.BidSubjectCode = value.String
+			}
+		case bidinfo.FieldBidSubjectName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field bid_subject_name", values[i])
+			} else if value.Valid {
+				_m.BidSubjectName = value.String
+			}
+		case bidinfo.FieldBidAmount:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field bid_amount", values[i])
+			} else if value.Valid {
+				_m.BidAmount = value.Float64
+			}
+		case bidinfo.FieldBidStatus:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field bid_status", values[i])
+			} else if value.Valid {
+				_m.BidStatus = bidinfo.BidStatus(value.String)
+			}
+		case bidinfo.FieldBidDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field bid_date", values[i])
+			} else if value.Valid {
+				_m.BidDate = new(time.Time)
+				*_m.BidDate = value.Time
+			}
+		case bidinfo.FieldSoftwareAmount:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field software_amount", values[i])
+			} else if value.Valid {
+				_m.SoftwareAmount = value.Float64
+			}
+		case bidinfo.FieldHardwareAmount:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field hardware_amount", values[i])
+			} else if value.Valid {
+				_m.HardwareAmount = value.Float64
+			}
+		case bidinfo.FieldOperationAmount:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field operation_amount", values[i])
+			} else if value.Valid {
+				_m.OperationAmount = value.Float64
+			}
+		case bidinfo.FieldResultURL:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field result_url", values[i])
+			} else if value.Valid {
+				_m.ResultURL = new(string)
+				*_m.ResultURL = value.String
+			}
+		case bidinfo.FieldContractSigned:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field contract_signed", values[i])
+			} else if value.Valid {
+				_m.ContractSigned = value.Bool
+			}
+		case bidinfo.FieldContractNo:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field contract_no", values[i])
+			} else if value.Valid {
+				_m.ContractNo = new(string)
+				*_m.ContractNo = value.String
+			}
+		case bidinfo.FieldContractSignDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field contract_sign_date", values[i])
+			} else if value.Valid {
+				_m.ContractSignDate = new(time.Time)
+				*_m.ContractSignDate = value.Time
+			}
 		case bidinfo.FieldCreateAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field create_at", values[i])
@@ -99,6 +234,11 @@ func (_m *BidInfo) Value(name string) (ent.Value, error) {
 	return _m.selectValues.Get(name)
 }
 
+// QueryProject queries the "project" edge of the BidInfo entity.
+func (_m *BidInfo) QueryProject() *BidProjectQuery {
+	return NewBidInfoClient(_m.config).QueryProject(_m)
+}
+
 // Update returns a builder for updating this BidInfo.
 // Note that you need to call BidInfo.Unwrap() before calling this method if this BidInfo
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -122,6 +262,53 @@ func (_m *BidInfo) String() string {
 	var builder strings.Builder
 	builder.WriteString("BidInfo(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
+	builder.WriteString("project_id=")
+	builder.WriteString(_m.ProjectID)
+	builder.WriteString(", ")
+	builder.WriteString("bid_subject_code=")
+	builder.WriteString(_m.BidSubjectCode)
+	builder.WriteString(", ")
+	builder.WriteString("bid_subject_name=")
+	builder.WriteString(_m.BidSubjectName)
+	builder.WriteString(", ")
+	builder.WriteString("bid_amount=")
+	builder.WriteString(fmt.Sprintf("%v", _m.BidAmount))
+	builder.WriteString(", ")
+	builder.WriteString("bid_status=")
+	builder.WriteString(fmt.Sprintf("%v", _m.BidStatus))
+	builder.WriteString(", ")
+	if v := _m.BidDate; v != nil {
+		builder.WriteString("bid_date=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	builder.WriteString("software_amount=")
+	builder.WriteString(fmt.Sprintf("%v", _m.SoftwareAmount))
+	builder.WriteString(", ")
+	builder.WriteString("hardware_amount=")
+	builder.WriteString(fmt.Sprintf("%v", _m.HardwareAmount))
+	builder.WriteString(", ")
+	builder.WriteString("operation_amount=")
+	builder.WriteString(fmt.Sprintf("%v", _m.OperationAmount))
+	builder.WriteString(", ")
+	if v := _m.ResultURL; v != nil {
+		builder.WriteString("result_url=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	builder.WriteString("contract_signed=")
+	builder.WriteString(fmt.Sprintf("%v", _m.ContractSigned))
+	builder.WriteString(", ")
+	if v := _m.ContractNo; v != nil {
+		builder.WriteString("contract_no=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := _m.ContractSignDate; v != nil {
+		builder.WriteString("contract_sign_date=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
 	builder.WriteString("create_at=")
 	builder.WriteString(_m.CreateAt.Format(time.ANSIC))
 	builder.WriteString(", ")

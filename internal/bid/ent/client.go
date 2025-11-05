@@ -587,7 +587,7 @@ func (c *BidInfoClient) UpdateOne(_m *BidInfo) *BidInfoUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *BidInfoClient) UpdateOneID(id int) *BidInfoUpdateOne {
+func (c *BidInfoClient) UpdateOneID(id string) *BidInfoUpdateOne {
 	mutation := newBidInfoMutation(c.config, OpUpdateOne, withBidInfoID(id))
 	return &BidInfoUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -604,7 +604,7 @@ func (c *BidInfoClient) DeleteOne(_m *BidInfo) *BidInfoDeleteOne {
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *BidInfoClient) DeleteOneID(id int) *BidInfoDeleteOne {
+func (c *BidInfoClient) DeleteOneID(id string) *BidInfoDeleteOne {
 	builder := c.Delete().Where(bidinfo.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -621,17 +621,33 @@ func (c *BidInfoClient) Query() *BidInfoQuery {
 }
 
 // Get returns a BidInfo entity by its id.
-func (c *BidInfoClient) Get(ctx context.Context, id int) (*BidInfo, error) {
+func (c *BidInfoClient) Get(ctx context.Context, id string) (*BidInfo, error) {
 	return c.Query().Where(bidinfo.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *BidInfoClient) GetX(ctx context.Context, id int) *BidInfo {
+func (c *BidInfoClient) GetX(ctx context.Context, id string) *BidInfo {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryProject queries the project edge of a BidInfo.
+func (c *BidInfoClient) QueryProject(_m *BidInfo) *BidProjectQuery {
+	query := (&BidProjectClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(bidinfo.Table, bidinfo.FieldID, id),
+			sqlgraph.To(bidproject.Table, bidproject.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, bidinfo.ProjectTable, bidinfo.ProjectColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -792,6 +808,22 @@ func (c *BidProjectClient) QueryExpense(_m *BidProject) *BidExpenseQuery {
 			sqlgraph.From(bidproject.Table, bidproject.FieldID, id),
 			sqlgraph.To(bidexpense.Table, bidexpense.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, bidproject.ExpenseTable, bidproject.ExpenseColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryInfo queries the info edge of a BidProject.
+func (c *BidProjectClient) QueryInfo(_m *BidProject) *BidInfoQuery {
+	query := (&BidInfoClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(bidproject.Table, bidproject.FieldID, id),
+			sqlgraph.To(bidinfo.Table, bidinfo.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, bidproject.InfoTable, bidproject.InfoColumn),
 		)
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil

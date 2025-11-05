@@ -3,9 +3,11 @@
 package bidinfo
 
 import (
+	"fmt"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -13,6 +15,32 @@ const (
 	Label = "bid_info"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldProjectID holds the string denoting the project_id field in the database.
+	FieldProjectID = "project_id"
+	// FieldBidSubjectCode holds the string denoting the bid_subject_code field in the database.
+	FieldBidSubjectCode = "bid_subject_code"
+	// FieldBidSubjectName holds the string denoting the bid_subject_name field in the database.
+	FieldBidSubjectName = "bid_subject_name"
+	// FieldBidAmount holds the string denoting the bid_amount field in the database.
+	FieldBidAmount = "bid_amount"
+	// FieldBidStatus holds the string denoting the bid_status field in the database.
+	FieldBidStatus = "bid_status"
+	// FieldBidDate holds the string denoting the bid_date field in the database.
+	FieldBidDate = "bid_date"
+	// FieldSoftwareAmount holds the string denoting the software_amount field in the database.
+	FieldSoftwareAmount = "software_amount"
+	// FieldHardwareAmount holds the string denoting the hardware_amount field in the database.
+	FieldHardwareAmount = "hardware_amount"
+	// FieldOperationAmount holds the string denoting the operation_amount field in the database.
+	FieldOperationAmount = "operation_amount"
+	// FieldResultURL holds the string denoting the result_url field in the database.
+	FieldResultURL = "result_url"
+	// FieldContractSigned holds the string denoting the contract_signed field in the database.
+	FieldContractSigned = "contract_signed"
+	// FieldContractNo holds the string denoting the contract_no field in the database.
+	FieldContractNo = "contract_no"
+	// FieldContractSignDate holds the string denoting the contract_sign_date field in the database.
+	FieldContractSignDate = "contract_sign_date"
 	// FieldCreateAt holds the string denoting the create_at field in the database.
 	FieldCreateAt = "create_at"
 	// FieldCreateBy holds the string denoting the create_by field in the database.
@@ -21,13 +49,35 @@ const (
 	FieldUpdateAt = "update_at"
 	// FieldUpdateBy holds the string denoting the update_by field in the database.
 	FieldUpdateBy = "update_by"
+	// EdgeProject holds the string denoting the project edge name in mutations.
+	EdgeProject = "project"
 	// Table holds the table name of the bidinfo in the database.
 	Table = "bid_info"
+	// ProjectTable is the table that holds the project relation/edge.
+	ProjectTable = "bid_info"
+	// ProjectInverseTable is the table name for the BidProject entity.
+	// It exists in this package in order to avoid circular dependency with the "bidproject" package.
+	ProjectInverseTable = "bid_project"
+	// ProjectColumn is the table column denoting the project relation/edge.
+	ProjectColumn = "project_id"
 )
 
 // Columns holds all SQL columns for bidinfo fields.
 var Columns = []string{
 	FieldID,
+	FieldProjectID,
+	FieldBidSubjectCode,
+	FieldBidSubjectName,
+	FieldBidAmount,
+	FieldBidStatus,
+	FieldBidDate,
+	FieldSoftwareAmount,
+	FieldHardwareAmount,
+	FieldOperationAmount,
+	FieldResultURL,
+	FieldContractSigned,
+	FieldContractNo,
+	FieldContractSignDate,
 	FieldCreateAt,
 	FieldCreateBy,
 	FieldUpdateAt,
@@ -45,6 +95,24 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// ProjectIDValidator is a validator for the "project_id" field. It is called by the builders before save.
+	ProjectIDValidator func(string) error
+	// BidSubjectCodeValidator is a validator for the "bid_subject_code" field. It is called by the builders before save.
+	BidSubjectCodeValidator func(string) error
+	// BidSubjectNameValidator is a validator for the "bid_subject_name" field. It is called by the builders before save.
+	BidSubjectNameValidator func(string) error
+	// DefaultBidAmount holds the default value on creation for the "bid_amount" field.
+	DefaultBidAmount float64
+	// DefaultSoftwareAmount holds the default value on creation for the "software_amount" field.
+	DefaultSoftwareAmount float64
+	// DefaultHardwareAmount holds the default value on creation for the "hardware_amount" field.
+	DefaultHardwareAmount float64
+	// DefaultOperationAmount holds the default value on creation for the "operation_amount" field.
+	DefaultOperationAmount float64
+	// DefaultContractSigned holds the default value on creation for the "contract_signed" field.
+	DefaultContractSigned bool
+	// ContractNoValidator is a validator for the "contract_no" field. It is called by the builders before save.
+	ContractNoValidator func(string) error
 	// DefaultCreateAt holds the default value on creation for the "create_at" field.
 	DefaultCreateAt func() time.Time
 	// CreateByValidator is a validator for the "create_by" field. It is called by the builders before save.
@@ -55,7 +123,43 @@ var (
 	UpdateDefaultUpdateAt func() time.Time
 	// UpdateByValidator is a validator for the "update_by" field. It is called by the builders before save.
 	UpdateByValidator func(string) error
+	// IDValidator is a validator for the "id" field. It is called by the builders before save.
+	IDValidator func(string) error
 )
+
+// BidStatus defines the type for the "bid_status" enum field.
+type BidStatus string
+
+// BidStatus0 is the default value of the BidStatus enum.
+const DefaultBidStatus = BidStatus0
+
+// BidStatus values.
+const (
+	BidStatusRP BidStatus = "RP"
+	BidStatusRO BidStatus = "RO"
+	BidStatusRS BidStatus = "RS"
+	BidStatusRF BidStatus = "RF"
+	BidStatusDP BidStatus = "DP"
+	BidStatusB  BidStatus = "B"
+	BidStatusW  BidStatus = "W"
+	BidStatusL  BidStatus = "L"
+	BidStatusF  BidStatus = "F"
+	BidStatus0  BidStatus = "0"
+)
+
+func (bs BidStatus) String() string {
+	return string(bs)
+}
+
+// BidStatusValidator is a validator for the "bid_status" field enum values. It is called by the builders before save.
+func BidStatusValidator(bs BidStatus) error {
+	switch bs {
+	case BidStatusRP, BidStatusRO, BidStatusRS, BidStatusRF, BidStatusDP, BidStatusB, BidStatusW, BidStatusL, BidStatusF, BidStatus0:
+		return nil
+	default:
+		return fmt.Errorf("bidinfo: invalid enum value for bid_status field: %q", bs)
+	}
+}
 
 // OrderOption defines the ordering options for the BidInfo queries.
 type OrderOption func(*sql.Selector)
@@ -63,6 +167,71 @@ type OrderOption func(*sql.Selector)
 // ByID orders the results by the id field.
 func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
+}
+
+// ByProjectID orders the results by the project_id field.
+func ByProjectID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldProjectID, opts...).ToFunc()
+}
+
+// ByBidSubjectCode orders the results by the bid_subject_code field.
+func ByBidSubjectCode(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBidSubjectCode, opts...).ToFunc()
+}
+
+// ByBidSubjectName orders the results by the bid_subject_name field.
+func ByBidSubjectName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBidSubjectName, opts...).ToFunc()
+}
+
+// ByBidAmount orders the results by the bid_amount field.
+func ByBidAmount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBidAmount, opts...).ToFunc()
+}
+
+// ByBidStatus orders the results by the bid_status field.
+func ByBidStatus(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBidStatus, opts...).ToFunc()
+}
+
+// ByBidDate orders the results by the bid_date field.
+func ByBidDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBidDate, opts...).ToFunc()
+}
+
+// BySoftwareAmount orders the results by the software_amount field.
+func BySoftwareAmount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSoftwareAmount, opts...).ToFunc()
+}
+
+// ByHardwareAmount orders the results by the hardware_amount field.
+func ByHardwareAmount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldHardwareAmount, opts...).ToFunc()
+}
+
+// ByOperationAmount orders the results by the operation_amount field.
+func ByOperationAmount(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldOperationAmount, opts...).ToFunc()
+}
+
+// ByResultURL orders the results by the result_url field.
+func ByResultURL(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldResultURL, opts...).ToFunc()
+}
+
+// ByContractSigned orders the results by the contract_signed field.
+func ByContractSigned(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContractSigned, opts...).ToFunc()
+}
+
+// ByContractNo orders the results by the contract_no field.
+func ByContractNo(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContractNo, opts...).ToFunc()
+}
+
+// ByContractSignDate orders the results by the contract_sign_date field.
+func ByContractSignDate(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContractSignDate, opts...).ToFunc()
 }
 
 // ByCreateAt orders the results by the create_at field.
@@ -83,4 +252,18 @@ func ByUpdateAt(opts ...sql.OrderTermOption) OrderOption {
 // ByUpdateBy orders the results by the update_by field.
 func ByUpdateBy(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdateBy, opts...).ToFunc()
+}
+
+// ByProjectField orders the results by project field.
+func ByProjectField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newProjectStep(), sql.OrderByField(field, opts...))
+	}
+}
+func newProjectStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ProjectInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, true, ProjectTable, ProjectColumn),
+	)
 }

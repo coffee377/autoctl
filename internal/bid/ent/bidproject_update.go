@@ -5,6 +5,7 @@ package ent
 import (
 	"cds/bid/ent/bidapply"
 	"cds/bid/ent/bidexpense"
+	"cds/bid/ent/bidinfo"
 	"cds/bid/ent/bidproject"
 	"cds/bid/ent/predicate"
 	"context"
@@ -277,6 +278,21 @@ func (_u *BidProjectUpdate) AddExpense(v ...*BidExpense) *BidProjectUpdate {
 	return _u.AddExpenseIDs(ids...)
 }
 
+// AddInfoIDs adds the "info" edge to the BidInfo entity by IDs.
+func (_u *BidProjectUpdate) AddInfoIDs(ids ...string) *BidProjectUpdate {
+	_u.mutation.AddInfoIDs(ids...)
+	return _u
+}
+
+// AddInfo adds the "info" edges to the BidInfo entity.
+func (_u *BidProjectUpdate) AddInfo(v ...*BidInfo) *BidProjectUpdate {
+	ids := make([]string, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.AddInfoIDs(ids...)
+}
+
 // Mutation returns the BidProjectMutation object of the builder.
 func (_u *BidProjectUpdate) Mutation() *BidProjectMutation {
 	return _u.mutation
@@ -307,6 +323,27 @@ func (_u *BidProjectUpdate) RemoveExpense(v ...*BidExpense) *BidProjectUpdate {
 		ids[i] = v[i].ID
 	}
 	return _u.RemoveExpenseIDs(ids...)
+}
+
+// ClearInfo clears all "info" edges to the BidInfo entity.
+func (_u *BidProjectUpdate) ClearInfo() *BidProjectUpdate {
+	_u.mutation.ClearInfo()
+	return _u
+}
+
+// RemoveInfoIDs removes the "info" edge to BidInfo entities by IDs.
+func (_u *BidProjectUpdate) RemoveInfoIDs(ids ...string) *BidProjectUpdate {
+	_u.mutation.RemoveInfoIDs(ids...)
+	return _u
+}
+
+// RemoveInfo removes "info" edges to BidInfo entities.
+func (_u *BidProjectUpdate) RemoveInfo(v ...*BidInfo) *BidProjectUpdate {
+	ids := make([]string, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.RemoveInfoIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -544,6 +581,51 @@ func (_u *BidProjectUpdate) sqlSave(ctx context.Context) (_node int, err error) 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(bidexpense.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if _u.mutation.InfoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   bidproject.InfoTable,
+			Columns: []string{bidproject.InfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(bidinfo.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.RemovedInfoIDs(); len(nodes) > 0 && !_u.mutation.InfoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   bidproject.InfoTable,
+			Columns: []string{bidproject.InfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(bidinfo.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.InfoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   bidproject.InfoTable,
+			Columns: []string{bidproject.InfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(bidinfo.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
@@ -819,6 +901,21 @@ func (_u *BidProjectUpdateOne) AddExpense(v ...*BidExpense) *BidProjectUpdateOne
 	return _u.AddExpenseIDs(ids...)
 }
 
+// AddInfoIDs adds the "info" edge to the BidInfo entity by IDs.
+func (_u *BidProjectUpdateOne) AddInfoIDs(ids ...string) *BidProjectUpdateOne {
+	_u.mutation.AddInfoIDs(ids...)
+	return _u
+}
+
+// AddInfo adds the "info" edges to the BidInfo entity.
+func (_u *BidProjectUpdateOne) AddInfo(v ...*BidInfo) *BidProjectUpdateOne {
+	ids := make([]string, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.AddInfoIDs(ids...)
+}
+
 // Mutation returns the BidProjectMutation object of the builder.
 func (_u *BidProjectUpdateOne) Mutation() *BidProjectMutation {
 	return _u.mutation
@@ -849,6 +946,27 @@ func (_u *BidProjectUpdateOne) RemoveExpense(v ...*BidExpense) *BidProjectUpdate
 		ids[i] = v[i].ID
 	}
 	return _u.RemoveExpenseIDs(ids...)
+}
+
+// ClearInfo clears all "info" edges to the BidInfo entity.
+func (_u *BidProjectUpdateOne) ClearInfo() *BidProjectUpdateOne {
+	_u.mutation.ClearInfo()
+	return _u
+}
+
+// RemoveInfoIDs removes the "info" edge to BidInfo entities by IDs.
+func (_u *BidProjectUpdateOne) RemoveInfoIDs(ids ...string) *BidProjectUpdateOne {
+	_u.mutation.RemoveInfoIDs(ids...)
+	return _u
+}
+
+// RemoveInfo removes "info" edges to BidInfo entities.
+func (_u *BidProjectUpdateOne) RemoveInfo(v ...*BidInfo) *BidProjectUpdateOne {
+	ids := make([]string, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.RemoveInfoIDs(ids...)
 }
 
 // Where appends a list predicates to the BidProjectUpdate builder.
@@ -1116,6 +1234,51 @@ func (_u *BidProjectUpdateOne) sqlSave(ctx context.Context) (_node *BidProject, 
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(bidexpense.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if _u.mutation.InfoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   bidproject.InfoTable,
+			Columns: []string{bidproject.InfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(bidinfo.FieldID, field.TypeString),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.RemovedInfoIDs(); len(nodes) > 0 && !_u.mutation.InfoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   bidproject.InfoTable,
+			Columns: []string{bidproject.InfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(bidinfo.FieldID, field.TypeString),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.InfoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   bidproject.InfoTable,
+			Columns: []string{bidproject.InfoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(bidinfo.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {

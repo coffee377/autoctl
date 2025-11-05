@@ -59,9 +59,11 @@ type BidProjectEdges struct {
 	Apply *BidApply `json:"apply,omitempty"`
 	// Expense holds the value of the expense edge.
 	Expense []*BidExpense `json:"expense,omitempty"`
+	// Info holds the value of the info edge.
+	Info []*BidInfo `json:"info,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 }
 
 // ApplyOrErr returns the Apply value or an error if the edge
@@ -82,6 +84,15 @@ func (e BidProjectEdges) ExpenseOrErr() ([]*BidExpense, error) {
 		return e.Expense, nil
 	}
 	return nil, &NotLoadedError{edge: "expense"}
+}
+
+// InfoOrErr returns the Info value or an error if the edge
+// was not loaded in eager-loading.
+func (e BidProjectEdges) InfoOrErr() ([]*BidInfo, error) {
+	if e.loadedTypes[2] {
+		return e.Info, nil
+	}
+	return nil, &NotLoadedError{edge: "info"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -223,6 +234,11 @@ func (_m *BidProject) QueryApply() *BidApplyQuery {
 // QueryExpense queries the "expense" edge of the BidProject entity.
 func (_m *BidProject) QueryExpense() *BidExpenseQuery {
 	return NewBidProjectClient(_m.config).QueryExpense(_m)
+}
+
+// QueryInfo queries the "info" edge of the BidProject entity.
+func (_m *BidProject) QueryInfo() *BidInfoQuery {
+	return NewBidProjectClient(_m.config).QueryInfo(_m)
 }
 
 // Update returns a builder for updating this BidProject.

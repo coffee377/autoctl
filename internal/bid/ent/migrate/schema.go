@@ -117,11 +117,24 @@ var (
 	}
 	// BidInfoColumns holds the columns for the "bid_info" table.
 	BidInfoColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "id", Type: field.TypeString, Size: 32, Comment: "投标信息ID"},
+		{Name: "bid_subject_code", Type: field.TypeString, Size: 32, Comment: "投标主体编码"},
+		{Name: "bid_subject_name", Type: field.TypeString, Size: 32, Comment: "投标主体名称"},
+		{Name: "bid_amount", Type: field.TypeFloat64, Comment: "投标金额", Default: 0, SchemaType: map[string]string{"mysql": "decimal(16,2)"}},
+		{Name: "bid_status", Type: field.TypeEnum, Comment: "投标状态 RP:待报名 RO:报名中 RS:报名成功 RF:报名失败 DP:标书编制中 B:投标中 W:已中标 L:未中标 F:流标 0:-", Enums: []string{"RP", "RO", "RS", "RF", "DP", "B", "W", "L", "F", "0"}, Default: "0"},
+		{Name: "bid_date", Type: field.TypeTime, Nullable: true, Comment: "中标时间", SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "software_amount", Type: field.TypeFloat64, Comment: "中标软件金额", Default: 0, SchemaType: map[string]string{"mysql": "decimal(16,2)"}},
+		{Name: "hardware_amount", Type: field.TypeFloat64, Comment: "中标硬件金额", Default: 0, SchemaType: map[string]string{"mysql": "decimal(16,2)"}},
+		{Name: "operation_amount", Type: field.TypeFloat64, Comment: "中标运维金额", Default: 0, SchemaType: map[string]string{"mysql": "decimal(16,2)"}},
+		{Name: "result_url", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "中标结果公告网址"},
+		{Name: "contract_signed", Type: field.TypeBool, Comment: "销售合同是否签署", Default: false},
+		{Name: "contract_no", Type: field.TypeString, Nullable: true, Size: 64, Comment: "销售合同号"},
+		{Name: "contract_sign_date", Type: field.TypeTime, Nullable: true, Comment: "销售合同签署日期", SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "create_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
 		{Name: "create_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
 		{Name: "update_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
 		{Name: "update_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "更新人"},
+		{Name: "project_id", Type: field.TypeString, Size: 32, Comment: "项目 ID"},
 	}
 	// BidInfoTable holds the schema information for the "bid_info" table.
 	BidInfoTable = &schema.Table{
@@ -129,6 +142,21 @@ var (
 		Comment:    "投标信息",
 		Columns:    BidInfoColumns,
 		PrimaryKey: []*schema.Column{BidInfoColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "fk_pid_03",
+				Columns:    []*schema.Column{BidInfoColumns[17]},
+				RefColumns: []*schema.Column{BidProjectColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "idx_bid_status",
+				Unique:  false,
+				Columns: []*schema.Column{BidInfoColumns[4]},
+			},
+		},
 	}
 	// BidProjectColumns holds the columns for the "bid_project" table.
 	BidProjectColumns = []*schema.Column{
@@ -187,6 +215,7 @@ func init() {
 		Table:          "bid_expense",
 		IncrementStart: func(i int) *int { return &i }(4294967296),
 	}
+	BidInfoTable.ForeignKeys[0].RefTable = BidProjectTable
 	BidInfoTable.Annotation = &entsql.Annotation{
 		Table:          "bid_info",
 		IncrementStart: func(i int) *int { return &i }(8589934592),

@@ -5,6 +5,7 @@ package ent
 import (
 	"cds/bid/ent/bidapply"
 	"cds/bid/ent/bidexpense"
+	"cds/bid/ent/bidinfo"
 	"cds/bid/ent/bidproject"
 	"cds/bid/ent/predicate"
 	"context"
@@ -27,6 +28,7 @@ type BidProjectQuery struct {
 	predicates  []predicate.BidProject
 	withApply   *BidApplyQuery
 	withExpense *BidExpenseQuery
+	withInfo    *BidInfoQuery
 	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -101,6 +103,28 @@ func (_q *BidProjectQuery) QueryExpense() *BidExpenseQuery {
 			sqlgraph.From(bidproject.Table, bidproject.FieldID, selector),
 			sqlgraph.To(bidexpense.Table, bidexpense.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, bidproject.ExpenseTable, bidproject.ExpenseColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryInfo chains the current query on the "info" edge.
+func (_q *BidProjectQuery) QueryInfo() *BidInfoQuery {
+	query := (&BidInfoClient{config: _q.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := _q.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := _q.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(bidproject.Table, bidproject.FieldID, selector),
+			sqlgraph.To(bidinfo.Table, bidinfo.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, bidproject.InfoTable, bidproject.InfoColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil
@@ -302,6 +326,7 @@ func (_q *BidProjectQuery) Clone() *BidProjectQuery {
 		predicates:  append([]predicate.BidProject{}, _q.predicates...),
 		withApply:   _q.withApply.Clone(),
 		withExpense: _q.withExpense.Clone(),
+		withInfo:    _q.withInfo.Clone(),
 		// clone intermediate query.
 		sql:       _q.sql.Clone(),
 		path:      _q.path,
@@ -328,6 +353,17 @@ func (_q *BidProjectQuery) WithExpense(opts ...func(*BidExpenseQuery)) *BidProje
 		opt(query)
 	}
 	_q.withExpense = query
+	return _q
+}
+
+// WithInfo tells the query-builder to eager-load the nodes that are connected to
+// the "info" edge. The optional arguments are used to configure the query builder of the edge.
+func (_q *BidProjectQuery) WithInfo(opts ...func(*BidInfoQuery)) *BidProjectQuery {
+	query := (&BidInfoClient{config: _q.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	_q.withInfo = query
 	return _q
 }
 
@@ -409,9 +445,10 @@ func (_q *BidProjectQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*B
 	var (
 		nodes       = []*BidProject{}
 		_spec       = _q.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [3]bool{
 			_q.withApply != nil,
 			_q.withExpense != nil,
+			_q.withInfo != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -445,6 +482,13 @@ func (_q *BidProjectQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*B
 		if err := _q.loadExpense(ctx, query, nodes,
 			func(n *BidProject) { n.Edges.Expense = []*BidExpense{} },
 			func(n *BidProject, e *BidExpense) { n.Edges.Expense = append(n.Edges.Expense, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := _q.withInfo; query != nil {
+		if err := _q.loadInfo(ctx, query, nodes,
+			func(n *BidProject) { n.Edges.Info = []*BidInfo{} },
+			func(n *BidProject, e *BidInfo) { n.Edges.Info = append(n.Edges.Info, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -506,6 +550,36 @@ func (_q *BidProjectQuery) loadExpense(ctx context.Context, query *BidExpenseQue
 		node, ok := nodeids[*fk]
 		if !ok {
 			return fmt.Errorf(`unexpected referenced foreign-key "project_id" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (_q *BidProjectQuery) loadInfo(ctx context.Context, query *BidInfoQuery, nodes []*BidProject, init func(*BidProject), assign func(*BidProject, *BidInfo)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[string]*BidProject)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(bidinfo.FieldProjectID)
+	}
+	query.Where(predicate.BidInfo(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(bidproject.InfoColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.ProjectID
+		node, ok := nodeids[fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "project_id" returned %v for node %v`, fk, n.ID)
 		}
 		assign(node, n)
 	}
