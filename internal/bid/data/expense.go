@@ -154,7 +154,7 @@ func (ef *BidExpenseForm) create(ctx context.Context, tx *ent.Tx) (*ent.BidExpen
 	expense.SetBillNo(ef.BillNo)
 
 	// 审批实例 ID 存在则查询获取项目编码
-	if ef.ApplyInstanceID != nil {
+	if ef.ApplyInstanceID != nil && *ef.ApplyInstanceID != "" {
 		applyInstance, err := tx.BidApply.Query().Select(bidapply.FieldProjectID).Where(bidapply.InstanceID(*ef.ApplyInstanceID)).Only(ctx)
 		if err != nil {
 			return nil, err
@@ -243,6 +243,9 @@ func (ef *BidExpenseForm) update(ctx context.Context, tx *ent.Tx) (*ent.BidExpen
 }
 
 func (ef *BidExpenseForm) applyInstanceIdConverter(raw string, pointer bool) (interface{}, error) {
+	if raw == "" {
+		return nil, nil
+	}
 	var rf formRelateField
 	_ = json.Unmarshal([]byte(raw), &rf)
 	instanceId := rf.GetInstanceId()
