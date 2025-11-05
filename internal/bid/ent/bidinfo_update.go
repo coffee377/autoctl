@@ -264,6 +264,26 @@ func (_u *BidInfoUpdate) ClearContractSignDate() *BidInfoUpdate {
 	return _u
 }
 
+// SetRemark sets the "remark" field.
+func (_u *BidInfoUpdate) SetRemark(v string) *BidInfoUpdate {
+	_u.mutation.SetRemark(v)
+	return _u
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableRemark(v *string) *BidInfoUpdate {
+	if v != nil {
+		_u.SetRemark(*v)
+	}
+	return _u
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (_u *BidInfoUpdate) ClearRemark() *BidInfoUpdate {
+	_u.mutation.ClearRemark()
+	return _u
+}
+
 // SetCreateAt sets the "create_at" field.
 func (_u *BidInfoUpdate) SetCreateAt(v time.Time) *BidInfoUpdate {
 	_u.mutation.SetCreateAt(v)
@@ -496,6 +516,12 @@ func (_u *BidInfoUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	}
 	if _u.mutation.ContractSignDateCleared() {
 		_spec.ClearField(bidinfo.FieldContractSignDate, field.TypeTime)
+	}
+	if value, ok := _u.mutation.Remark(); ok {
+		_spec.SetField(bidinfo.FieldRemark, field.TypeString, value)
+	}
+	if _u.mutation.RemarkCleared() {
+		_spec.ClearField(bidinfo.FieldRemark, field.TypeString)
 	}
 	if value, ok := _u.mutation.CreateAt(); ok {
 		_spec.SetField(bidinfo.FieldCreateAt, field.TypeTime, value)
@@ -800,6 +826,26 @@ func (_u *BidInfoUpdateOne) ClearContractSignDate() *BidInfoUpdateOne {
 	return _u
 }
 
+// SetRemark sets the "remark" field.
+func (_u *BidInfoUpdateOne) SetRemark(v string) *BidInfoUpdateOne {
+	_u.mutation.SetRemark(v)
+	return _u
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableRemark(v *string) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetRemark(*v)
+	}
+	return _u
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (_u *BidInfoUpdateOne) ClearRemark() *BidInfoUpdateOne {
+	_u.mutation.ClearRemark()
+	return _u
+}
+
 // SetCreateAt sets the "create_at" field.
 func (_u *BidInfoUpdateOne) SetCreateAt(v time.Time) *BidInfoUpdateOne {
 	_u.mutation.SetCreateAt(v)
@@ -1062,6 +1108,12 @@ func (_u *BidInfoUpdateOne) sqlSave(ctx context.Context) (_node *BidInfo, err er
 	}
 	if _u.mutation.ContractSignDateCleared() {
 		_spec.ClearField(bidinfo.FieldContractSignDate, field.TypeTime)
+	}
+	if value, ok := _u.mutation.Remark(); ok {
+		_spec.SetField(bidinfo.FieldRemark, field.TypeString, value)
+	}
+	if _u.mutation.RemarkCleared() {
+		_spec.ClearField(bidinfo.FieldRemark, field.TypeString)
 	}
 	if value, ok := _u.mutation.CreateAt(); ok {
 		_spec.SetField(bidinfo.FieldCreateAt, field.TypeTime, value)

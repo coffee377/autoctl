@@ -125,6 +125,11 @@ func ContractSignDate(v time.Time) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldEQ(FieldContractSignDate, v))
 }
 
+// Remark applies equality check predicate on the "remark" field. It's identical to RemarkEQ.
+func Remark(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldRemark, v))
+}
+
 // CreateAt applies equality check predicate on the "create_at" field. It's identical to CreateAtEQ.
 func CreateAt(v time.Time) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldEQ(FieldCreateAt, v))
@@ -778,6 +783,81 @@ func ContractSignDateIsNil() predicate.BidInfo {
 // ContractSignDateNotNil applies the NotNil predicate on the "contract_sign_date" field.
 func ContractSignDateNotNil() predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldNotNull(FieldContractSignDate))
+}
+
+// RemarkEQ applies the EQ predicate on the "remark" field.
+func RemarkEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldRemark, v))
+}
+
+// RemarkNEQ applies the NEQ predicate on the "remark" field.
+func RemarkNEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldRemark, v))
+}
+
+// RemarkIn applies the In predicate on the "remark" field.
+func RemarkIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldRemark, vs...))
+}
+
+// RemarkNotIn applies the NotIn predicate on the "remark" field.
+func RemarkNotIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldRemark, vs...))
+}
+
+// RemarkGT applies the GT predicate on the "remark" field.
+func RemarkGT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGT(FieldRemark, v))
+}
+
+// RemarkGTE applies the GTE predicate on the "remark" field.
+func RemarkGTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGTE(FieldRemark, v))
+}
+
+// RemarkLT applies the LT predicate on the "remark" field.
+func RemarkLT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLT(FieldRemark, v))
+}
+
+// RemarkLTE applies the LTE predicate on the "remark" field.
+func RemarkLTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLTE(FieldRemark, v))
+}
+
+// RemarkContains applies the Contains predicate on the "remark" field.
+func RemarkContains(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContains(FieldRemark, v))
+}
+
+// RemarkHasPrefix applies the HasPrefix predicate on the "remark" field.
+func RemarkHasPrefix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasPrefix(FieldRemark, v))
+}
+
+// RemarkHasSuffix applies the HasSuffix predicate on the "remark" field.
+func RemarkHasSuffix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasSuffix(FieldRemark, v))
+}
+
+// RemarkIsNil applies the IsNil predicate on the "remark" field.
+func RemarkIsNil() predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIsNull(FieldRemark))
+}
+
+// RemarkNotNil applies the NotNil predicate on the "remark" field.
+func RemarkNotNil() predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotNull(FieldRemark))
+}
+
+// RemarkEqualFold applies the EqualFold predicate on the "remark" field.
+func RemarkEqualFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEqualFold(FieldRemark, v))
+}
+
+// RemarkContainsFold applies the ContainsFold predicate on the "remark" field.
+func RemarkContainsFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContainsFold(FieldRemark, v))
 }
 
 // CreateAtEQ applies the EQ predicate on the "create_at" field.

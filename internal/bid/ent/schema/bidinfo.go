@@ -48,13 +48,14 @@ func (BidInfo) Fields() []ent.Field {
 				dialect.MySQL: "decimal(16,2)",
 			},
 		),
-		field.Text("result_url").Comment("中标结果公告网址").Optional().Nillable(),
+		field.Text("result_url").Comment("中标结果网址").Optional().Nillable(),
 
 		field.Bool("contract_signed").Comment("销售合同是否签署").Default(false),
 		field.String("contract_no").Comment("销售合同号").MaxRuneLen(64).Optional().Nillable(),
 		field.Time("contract_sign_date").Comment("销售合同签署日期").Optional().Nillable().SchemaType(map[string]string{
 			dialect.MySQL: "datetime",
 		}),
+		field.Text("remark").Comment("备注信息").Optional().Nillable(),
 	}
 }
 

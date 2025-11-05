@@ -126,10 +126,11 @@ var (
 		{Name: "software_amount", Type: field.TypeFloat64, Comment: "中标软件金额", Default: 0, SchemaType: map[string]string{"mysql": "decimal(16,2)"}},
 		{Name: "hardware_amount", Type: field.TypeFloat64, Comment: "中标硬件金额", Default: 0, SchemaType: map[string]string{"mysql": "decimal(16,2)"}},
 		{Name: "operation_amount", Type: field.TypeFloat64, Comment: "中标运维金额", Default: 0, SchemaType: map[string]string{"mysql": "decimal(16,2)"}},
-		{Name: "result_url", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "中标结果公告网址"},
+		{Name: "result_url", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "中标结果网址"},
 		{Name: "contract_signed", Type: field.TypeBool, Comment: "销售合同是否签署", Default: false},
 		{Name: "contract_no", Type: field.TypeString, Nullable: true, Size: 64, Comment: "销售合同号"},
 		{Name: "contract_sign_date", Type: field.TypeTime, Nullable: true, Comment: "销售合同签署日期", SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "remark", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "备注信息"},
 		{Name: "create_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
 		{Name: "create_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
 		{Name: "update_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
@@ -145,7 +146,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "fk_pid_03",
-				Columns:    []*schema.Column{BidInfoColumns[17]},
+				Columns:    []*schema.Column{BidInfoColumns[18]},
 				RefColumns: []*schema.Column{BidProjectColumns[0]},
 				OnDelete:   schema.Cascade,
 			},

@@ -179,6 +179,20 @@ func (_c *BidInfoCreate) SetNillableContractSignDate(v *time.Time) *BidInfoCreat
 	return _c
 }
 
+// SetRemark sets the "remark" field.
+func (_c *BidInfoCreate) SetRemark(v string) *BidInfoCreate {
+	_c.mutation.SetRemark(v)
+	return _c
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableRemark(v *string) *BidInfoCreate {
+	if v != nil {
+		_c.SetRemark(*v)
+	}
+	return _c
+}
+
 // SetCreateAt sets the "create_at" field.
 func (_c *BidInfoCreate) SetCreateAt(v time.Time) *BidInfoCreate {
 	_c.mutation.SetCreateAt(v)
@@ -475,6 +489,10 @@ func (_c *BidInfoCreate) createSpec() (*BidInfo, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.ContractSignDate(); ok {
 		_spec.SetField(bidinfo.FieldContractSignDate, field.TypeTime, value)
 		_node.ContractSignDate = &value
+	}
+	if value, ok := _c.mutation.Remark(); ok {
+		_spec.SetField(bidinfo.FieldRemark, field.TypeString, value)
+		_node.Remark = &value
 	}
 	if value, ok := _c.mutation.CreateAt(); ok {
 		_spec.SetField(bidinfo.FieldCreateAt, field.TypeTime, value)

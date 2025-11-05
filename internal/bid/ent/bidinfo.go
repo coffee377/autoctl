@@ -37,7 +37,7 @@ type BidInfo struct {
 	HardwareAmount float64 `json:"hardware_amount,omitempty"`
 	// 中标运维金额
 	OperationAmount float64 `json:"operation_amount,omitempty"`
-	// 中标结果公告网址
+	// 中标结果网址
 	ResultURL *string `json:"result_url,omitempty"`
 	// 销售合同是否签署
 	ContractSigned bool `json:"contract_signed,omitempty"`
@@ -45,6 +45,8 @@ type BidInfo struct {
 	ContractNo *string `json:"contract_no,omitempty"`
 	// 销售合同签署日期
 	ContractSignDate *time.Time `json:"contract_sign_date,omitempty"`
+	// 备注信息
+	Remark *string `json:"remark,omitempty"`
 	// 创建时间
 	CreateAt time.Time `json:"create_at,omitempty"`
 	// 创建人
@@ -88,7 +90,7 @@ func (*BidInfo) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case bidinfo.FieldBidAmount, bidinfo.FieldSoftwareAmount, bidinfo.FieldHardwareAmount, bidinfo.FieldOperationAmount:
 			values[i] = new(sql.NullFloat64)
-		case bidinfo.FieldID, bidinfo.FieldProjectID, bidinfo.FieldBidSubjectCode, bidinfo.FieldBidSubjectName, bidinfo.FieldBidStatus, bidinfo.FieldResultURL, bidinfo.FieldContractNo, bidinfo.FieldCreateBy, bidinfo.FieldUpdateBy:
+		case bidinfo.FieldID, bidinfo.FieldProjectID, bidinfo.FieldBidSubjectCode, bidinfo.FieldBidSubjectName, bidinfo.FieldBidStatus, bidinfo.FieldResultURL, bidinfo.FieldContractNo, bidinfo.FieldRemark, bidinfo.FieldCreateBy, bidinfo.FieldUpdateBy:
 			values[i] = new(sql.NullString)
 		case bidinfo.FieldBidDate, bidinfo.FieldContractSignDate, bidinfo.FieldCreateAt, bidinfo.FieldUpdateAt:
 			values[i] = new(sql.NullTime)
@@ -194,6 +196,13 @@ func (_m *BidInfo) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.ContractSignDate = new(time.Time)
 				*_m.ContractSignDate = value.Time
+			}
+		case bidinfo.FieldRemark:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field remark", values[i])
+			} else if value.Valid {
+				_m.Remark = new(string)
+				*_m.Remark = value.String
 			}
 		case bidinfo.FieldCreateAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -307,6 +316,11 @@ func (_m *BidInfo) String() string {
 	if v := _m.ContractSignDate; v != nil {
 		builder.WriteString("contract_sign_date=")
 		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	if v := _m.Remark; v != nil {
+		builder.WriteString("remark=")
+		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
 	builder.WriteString("create_at=")

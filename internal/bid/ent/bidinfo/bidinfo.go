@@ -41,6 +41,8 @@ const (
 	FieldContractNo = "contract_no"
 	// FieldContractSignDate holds the string denoting the contract_sign_date field in the database.
 	FieldContractSignDate = "contract_sign_date"
+	// FieldRemark holds the string denoting the remark field in the database.
+	FieldRemark = "remark"
 	// FieldCreateAt holds the string denoting the create_at field in the database.
 	FieldCreateAt = "create_at"
 	// FieldCreateBy holds the string denoting the create_by field in the database.
@@ -78,6 +80,7 @@ var Columns = []string{
 	FieldContractSigned,
 	FieldContractNo,
 	FieldContractSignDate,
+	FieldRemark,
 	FieldCreateAt,
 	FieldCreateBy,
 	FieldUpdateAt,
@@ -232,6 +235,11 @@ func ByContractNo(opts ...sql.OrderTermOption) OrderOption {
 // ByContractSignDate orders the results by the contract_sign_date field.
 func ByContractSignDate(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldContractSignDate, opts...).ToFunc()
+}
+
+// ByRemark orders the results by the remark field.
+func ByRemark(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRemark, opts...).ToFunc()
 }
 
 // ByCreateAt orders the results by the create_at field.

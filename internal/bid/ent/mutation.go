@@ -3566,6 +3566,7 @@ type BidInfoMutation struct {
 	contract_signed     *bool
 	contract_no         *string
 	contract_sign_date  *time.Time
+	remark              *string
 	create_at           *time.Time
 	create_by           *string
 	update_at           *time.Time
@@ -4282,6 +4283,55 @@ func (m *BidInfoMutation) ResetContractSignDate() {
 	delete(m.clearedFields, bidinfo.FieldContractSignDate)
 }
 
+// SetRemark sets the "remark" field.
+func (m *BidInfoMutation) SetRemark(s string) {
+	m.remark = &s
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *BidInfoMutation) Remark() (r string, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldRemark(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *BidInfoMutation) ClearRemark() {
+	m.remark = nil
+	m.clearedFields[bidinfo.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *BidInfoMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[bidinfo.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *BidInfoMutation) ResetRemark() {
+	m.remark = nil
+	delete(m.clearedFields, bidinfo.FieldRemark)
+}
+
 // SetCreateAt sets the "create_at" field.
 func (m *BidInfoMutation) SetCreateAt(t time.Time) {
 	m.create_at = &t
@@ -4513,7 +4563,7 @@ func (m *BidInfoMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *BidInfoMutation) Fields() []string {
-	fields := make([]string, 0, 17)
+	fields := make([]string, 0, 18)
 	if m.project != nil {
 		fields = append(fields, bidinfo.FieldProjectID)
 	}
@@ -4552,6 +4602,9 @@ func (m *BidInfoMutation) Fields() []string {
 	}
 	if m.contract_sign_date != nil {
 		fields = append(fields, bidinfo.FieldContractSignDate)
+	}
+	if m.remark != nil {
+		fields = append(fields, bidinfo.FieldRemark)
 	}
 	if m.create_at != nil {
 		fields = append(fields, bidinfo.FieldCreateAt)
@@ -4599,6 +4652,8 @@ func (m *BidInfoMutation) Field(name string) (ent.Value, bool) {
 		return m.ContractNo()
 	case bidinfo.FieldContractSignDate:
 		return m.ContractSignDate()
+	case bidinfo.FieldRemark:
+		return m.Remark()
 	case bidinfo.FieldCreateAt:
 		return m.CreateAt()
 	case bidinfo.FieldCreateBy:
@@ -4642,6 +4697,8 @@ func (m *BidInfoMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldContractNo(ctx)
 	case bidinfo.FieldContractSignDate:
 		return m.OldContractSignDate(ctx)
+	case bidinfo.FieldRemark:
+		return m.OldRemark(ctx)
 	case bidinfo.FieldCreateAt:
 		return m.OldCreateAt(ctx)
 	case bidinfo.FieldCreateBy:
@@ -4749,6 +4806,13 @@ func (m *BidInfoMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetContractSignDate(v)
+		return nil
+	case bidinfo.FieldRemark:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
 		return nil
 	case bidinfo.FieldCreateAt:
 		v, ok := value.(time.Time)
@@ -4871,6 +4935,9 @@ func (m *BidInfoMutation) ClearedFields() []string {
 	if m.FieldCleared(bidinfo.FieldContractSignDate) {
 		fields = append(fields, bidinfo.FieldContractSignDate)
 	}
+	if m.FieldCleared(bidinfo.FieldRemark) {
+		fields = append(fields, bidinfo.FieldRemark)
+	}
 	if m.FieldCleared(bidinfo.FieldCreateBy) {
 		fields = append(fields, bidinfo.FieldCreateBy)
 	}
@@ -4902,6 +4969,9 @@ func (m *BidInfoMutation) ClearField(name string) error {
 		return nil
 	case bidinfo.FieldContractSignDate:
 		m.ClearContractSignDate()
+		return nil
+	case bidinfo.FieldRemark:
+		m.ClearRemark()
 		return nil
 	case bidinfo.FieldCreateBy:
 		m.ClearCreateBy()
@@ -4955,6 +5025,9 @@ func (m *BidInfoMutation) ResetField(name string) error {
 		return nil
 	case bidinfo.FieldContractSignDate:
 		m.ResetContractSignDate()
+		return nil
+	case bidinfo.FieldRemark:
+		m.ResetRemark()
 		return nil
 	case bidinfo.FieldCreateAt:
 		m.ResetCreateAt()
