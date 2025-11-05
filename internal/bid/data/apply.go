@@ -41,7 +41,7 @@ type BidApplyForm struct {
 	Remark         *string    // v1 备注说明
 
 	BidRegistrationHandler string // v1 投标报名办理人
-	Attachments            string // v1 附件
+	Attachments            string // v1 投标报名附件
 
 }
 
@@ -165,6 +165,7 @@ func (af *BidApplyForm) createProject(ctx context.Context, tx *ent.Tx) (*ent.Bid
 	if af.ProjectType != nil {
 		create.SetType(bidproject.Type(*af.ProjectType))
 	}
+	create.SetSource(bidproject.SourceBA)
 
 	create.SetNillableDepartmentCode(af.DepartmentCode)
 	create.SetDepartmentName(af.DepartmentName)
