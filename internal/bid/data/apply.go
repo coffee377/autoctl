@@ -81,12 +81,12 @@ func NewBidApply(instId string, res *dingtalkworkflow10.GetProcessInstanceRespon
 func (af *BidApplyForm) Save(ctx context.Context, client *ent.Client, projectUpdatable bool) error {
 	return ds.WithEntTx(ctx, client, func(tx *ent.Tx) error {
 		count, _ := tx.BidApply.Query().Where(bidapply.ID(af.ID)).Count(ctx)
-		done := false
+		projectDone := false
 		if count > 0 {
-			done = true
+			projectDone = true
 		}
 		// 项目信息
-		_, err1 := af.saveProject(ctx, tx, done, projectUpdatable)
+		_, err1 := af.saveProject(ctx, tx, projectDone, projectUpdatable)
 		if err1 != nil {
 			return err1
 		}
