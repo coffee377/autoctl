@@ -20,15 +20,15 @@ type BaseMixin struct {
 
 func (BaseMixin) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("create_at").Comment("创建时间").Default(time.Now).SchemaType(map[string]string{
+		field.Time("created_at").Comment("创建时间").Default(time.Now).SchemaType(map[string]string{
 			dialect.MySQL: "datetime(3)",
 		}).Annotations(entcc.Sort(1), entcc.Tail(true)),
-		field.String("create_by").Comment("创建人").Optional().Nillable().MaxLen(32).
+		field.String("created_by").Comment("创建人").Optional().Nillable().MaxLen(32).
 			Annotations(entcc.TailSort(2)),
-		field.Time("update_at").Comment("更新时间").Default(time.Now).UpdateDefault(time.Now).SchemaType(map[string]string{
+		field.Time("updated_at").Comment("更新时间").Default(time.Now).UpdateDefault(time.Now).SchemaType(map[string]string{
 			dialect.MySQL: "datetime(3)",
 		}).Annotations(entcc.TailSort(3)),
-		field.String("update_by").Comment("更新人").Optional().Nillable().MaxLen(32).Annotations(entcc.TailSort(4)),
+		field.String("updated_by").Comment("更新人").Optional().Nillable().MaxLen(32).Annotations(entcc.TailSort(4)),
 	}
 }
 

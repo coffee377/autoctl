@@ -155,6 +155,16 @@ func PayMethod(v string) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldPayMethod, v))
 }
 
+// TransferInstructions applies equality check predicate on the "transfer_instructions" field. It's identical to TransferInstructionsEQ.
+func TransferInstructions(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldTransferInstructions, v))
+}
+
+// GuaranteeDeadline applies equality check predicate on the "guarantee_deadline" field. It's identical to GuaranteeDeadlineEQ.
+func GuaranteeDeadline(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldGuaranteeDeadline, v))
+}
+
 // PlanPayTime applies equality check predicate on the "plan_pay_time" field. It's identical to PlanPayTimeEQ.
 func PlanPayTime(v time.Time) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldPlanPayTime, v))
@@ -170,24 +180,24 @@ func Done(v bool) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldDone, v))
 }
 
-// CreateAt applies equality check predicate on the "create_at" field. It's identical to CreateAtEQ.
-func CreateAt(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEQ(FieldCreateAt, v))
+// CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
+func CreatedAt(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// CreateBy applies equality check predicate on the "create_by" field. It's identical to CreateByEQ.
-func CreateBy(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEQ(FieldCreateBy, v))
+// CreatedBy applies equality check predicate on the "created_by" field. It's identical to CreatedByEQ.
+func CreatedBy(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldCreatedBy, v))
 }
 
-// UpdateAt applies equality check predicate on the "update_at" field. It's identical to UpdateAtEQ.
-func UpdateAt(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEQ(FieldUpdateAt, v))
+// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
+func UpdatedAt(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// UpdateBy applies equality check predicate on the "update_by" field. It's identical to UpdateByEQ.
-func UpdateBy(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEQ(FieldUpdateBy, v))
+// UpdatedBy applies equality check predicate on the "updated_by" field. It's identical to UpdatedByEQ.
+func UpdatedBy(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldUpdatedBy, v))
 }
 
 // BusinessIDEQ applies the EQ predicate on the "business_id" field.
@@ -1335,6 +1345,131 @@ func PayMethodContainsFold(v string) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldContainsFold(FieldPayMethod, v))
 }
 
+// TransferInstructionsEQ applies the EQ predicate on the "transfer_instructions" field.
+func TransferInstructionsEQ(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldTransferInstructions, v))
+}
+
+// TransferInstructionsNEQ applies the NEQ predicate on the "transfer_instructions" field.
+func TransferInstructionsNEQ(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNEQ(FieldTransferInstructions, v))
+}
+
+// TransferInstructionsIn applies the In predicate on the "transfer_instructions" field.
+func TransferInstructionsIn(vs ...string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIn(FieldTransferInstructions, vs...))
+}
+
+// TransferInstructionsNotIn applies the NotIn predicate on the "transfer_instructions" field.
+func TransferInstructionsNotIn(vs ...string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotIn(FieldTransferInstructions, vs...))
+}
+
+// TransferInstructionsGT applies the GT predicate on the "transfer_instructions" field.
+func TransferInstructionsGT(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGT(FieldTransferInstructions, v))
+}
+
+// TransferInstructionsGTE applies the GTE predicate on the "transfer_instructions" field.
+func TransferInstructionsGTE(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGTE(FieldTransferInstructions, v))
+}
+
+// TransferInstructionsLT applies the LT predicate on the "transfer_instructions" field.
+func TransferInstructionsLT(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLT(FieldTransferInstructions, v))
+}
+
+// TransferInstructionsLTE applies the LTE predicate on the "transfer_instructions" field.
+func TransferInstructionsLTE(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLTE(FieldTransferInstructions, v))
+}
+
+// TransferInstructionsContains applies the Contains predicate on the "transfer_instructions" field.
+func TransferInstructionsContains(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldContains(FieldTransferInstructions, v))
+}
+
+// TransferInstructionsHasPrefix applies the HasPrefix predicate on the "transfer_instructions" field.
+func TransferInstructionsHasPrefix(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldHasPrefix(FieldTransferInstructions, v))
+}
+
+// TransferInstructionsHasSuffix applies the HasSuffix predicate on the "transfer_instructions" field.
+func TransferInstructionsHasSuffix(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldHasSuffix(FieldTransferInstructions, v))
+}
+
+// TransferInstructionsIsNil applies the IsNil predicate on the "transfer_instructions" field.
+func TransferInstructionsIsNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIsNull(FieldTransferInstructions))
+}
+
+// TransferInstructionsNotNil applies the NotNil predicate on the "transfer_instructions" field.
+func TransferInstructionsNotNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotNull(FieldTransferInstructions))
+}
+
+// TransferInstructionsEqualFold applies the EqualFold predicate on the "transfer_instructions" field.
+func TransferInstructionsEqualFold(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEqualFold(FieldTransferInstructions, v))
+}
+
+// TransferInstructionsContainsFold applies the ContainsFold predicate on the "transfer_instructions" field.
+func TransferInstructionsContainsFold(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldContainsFold(FieldTransferInstructions, v))
+}
+
+// GuaranteeDeadlineEQ applies the EQ predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineEQ(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldGuaranteeDeadline, v))
+}
+
+// GuaranteeDeadlineNEQ applies the NEQ predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineNEQ(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNEQ(FieldGuaranteeDeadline, v))
+}
+
+// GuaranteeDeadlineIn applies the In predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineIn(vs ...time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIn(FieldGuaranteeDeadline, vs...))
+}
+
+// GuaranteeDeadlineNotIn applies the NotIn predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineNotIn(vs ...time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotIn(FieldGuaranteeDeadline, vs...))
+}
+
+// GuaranteeDeadlineGT applies the GT predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineGT(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGT(FieldGuaranteeDeadline, v))
+}
+
+// GuaranteeDeadlineGTE applies the GTE predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineGTE(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGTE(FieldGuaranteeDeadline, v))
+}
+
+// GuaranteeDeadlineLT applies the LT predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineLT(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLT(FieldGuaranteeDeadline, v))
+}
+
+// GuaranteeDeadlineLTE applies the LTE predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineLTE(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLTE(FieldGuaranteeDeadline, v))
+}
+
+// GuaranteeDeadlineIsNil applies the IsNil predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineIsNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIsNull(FieldGuaranteeDeadline))
+}
+
+// GuaranteeDeadlineNotNil applies the NotNil predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineNotNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotNull(FieldGuaranteeDeadline))
+}
+
 // PlanPayTimeEQ applies the EQ predicate on the "plan_pay_time" field.
 func PlanPayTimeEQ(v time.Time) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldPlanPayTime, v))
@@ -1460,234 +1595,234 @@ func DoneNEQ(v bool) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldNEQ(FieldDone, v))
 }
 
-// CreateAtEQ applies the EQ predicate on the "create_at" field.
-func CreateAtEQ(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEQ(FieldCreateAt, v))
+// CreatedAtEQ applies the EQ predicate on the "created_at" field.
+func CreatedAtEQ(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// CreateAtNEQ applies the NEQ predicate on the "create_at" field.
-func CreateAtNEQ(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNEQ(FieldCreateAt, v))
+// CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
+func CreatedAtNEQ(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNEQ(FieldCreatedAt, v))
 }
 
-// CreateAtIn applies the In predicate on the "create_at" field.
-func CreateAtIn(vs ...time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldIn(FieldCreateAt, vs...))
+// CreatedAtIn applies the In predicate on the "created_at" field.
+func CreatedAtIn(vs ...time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIn(FieldCreatedAt, vs...))
 }
 
-// CreateAtNotIn applies the NotIn predicate on the "create_at" field.
-func CreateAtNotIn(vs ...time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNotIn(FieldCreateAt, vs...))
+// CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
+func CreatedAtNotIn(vs ...time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotIn(FieldCreatedAt, vs...))
 }
 
-// CreateAtGT applies the GT predicate on the "create_at" field.
-func CreateAtGT(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldGT(FieldCreateAt, v))
+// CreatedAtGT applies the GT predicate on the "created_at" field.
+func CreatedAtGT(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGT(FieldCreatedAt, v))
 }
 
-// CreateAtGTE applies the GTE predicate on the "create_at" field.
-func CreateAtGTE(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldGTE(FieldCreateAt, v))
+// CreatedAtGTE applies the GTE predicate on the "created_at" field.
+func CreatedAtGTE(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGTE(FieldCreatedAt, v))
 }
 
-// CreateAtLT applies the LT predicate on the "create_at" field.
-func CreateAtLT(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldLT(FieldCreateAt, v))
+// CreatedAtLT applies the LT predicate on the "created_at" field.
+func CreatedAtLT(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLT(FieldCreatedAt, v))
 }
 
-// CreateAtLTE applies the LTE predicate on the "create_at" field.
-func CreateAtLTE(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldLTE(FieldCreateAt, v))
+// CreatedAtLTE applies the LTE predicate on the "created_at" field.
+func CreatedAtLTE(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// CreateByEQ applies the EQ predicate on the "create_by" field.
-func CreateByEQ(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEQ(FieldCreateBy, v))
+// CreatedByEQ applies the EQ predicate on the "created_by" field.
+func CreatedByEQ(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldCreatedBy, v))
 }
 
-// CreateByNEQ applies the NEQ predicate on the "create_by" field.
-func CreateByNEQ(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNEQ(FieldCreateBy, v))
+// CreatedByNEQ applies the NEQ predicate on the "created_by" field.
+func CreatedByNEQ(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNEQ(FieldCreatedBy, v))
 }
 
-// CreateByIn applies the In predicate on the "create_by" field.
-func CreateByIn(vs ...string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldIn(FieldCreateBy, vs...))
+// CreatedByIn applies the In predicate on the "created_by" field.
+func CreatedByIn(vs ...string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIn(FieldCreatedBy, vs...))
 }
 
-// CreateByNotIn applies the NotIn predicate on the "create_by" field.
-func CreateByNotIn(vs ...string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNotIn(FieldCreateBy, vs...))
+// CreatedByNotIn applies the NotIn predicate on the "created_by" field.
+func CreatedByNotIn(vs ...string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotIn(FieldCreatedBy, vs...))
 }
 
-// CreateByGT applies the GT predicate on the "create_by" field.
-func CreateByGT(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldGT(FieldCreateBy, v))
+// CreatedByGT applies the GT predicate on the "created_by" field.
+func CreatedByGT(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGT(FieldCreatedBy, v))
 }
 
-// CreateByGTE applies the GTE predicate on the "create_by" field.
-func CreateByGTE(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldGTE(FieldCreateBy, v))
+// CreatedByGTE applies the GTE predicate on the "created_by" field.
+func CreatedByGTE(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGTE(FieldCreatedBy, v))
 }
 
-// CreateByLT applies the LT predicate on the "create_by" field.
-func CreateByLT(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldLT(FieldCreateBy, v))
+// CreatedByLT applies the LT predicate on the "created_by" field.
+func CreatedByLT(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLT(FieldCreatedBy, v))
 }
 
-// CreateByLTE applies the LTE predicate on the "create_by" field.
-func CreateByLTE(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldLTE(FieldCreateBy, v))
+// CreatedByLTE applies the LTE predicate on the "created_by" field.
+func CreatedByLTE(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLTE(FieldCreatedBy, v))
 }
 
-// CreateByContains applies the Contains predicate on the "create_by" field.
-func CreateByContains(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldContains(FieldCreateBy, v))
+// CreatedByContains applies the Contains predicate on the "created_by" field.
+func CreatedByContains(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldContains(FieldCreatedBy, v))
 }
 
-// CreateByHasPrefix applies the HasPrefix predicate on the "create_by" field.
-func CreateByHasPrefix(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldHasPrefix(FieldCreateBy, v))
+// CreatedByHasPrefix applies the HasPrefix predicate on the "created_by" field.
+func CreatedByHasPrefix(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldHasPrefix(FieldCreatedBy, v))
 }
 
-// CreateByHasSuffix applies the HasSuffix predicate on the "create_by" field.
-func CreateByHasSuffix(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldHasSuffix(FieldCreateBy, v))
+// CreatedByHasSuffix applies the HasSuffix predicate on the "created_by" field.
+func CreatedByHasSuffix(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldHasSuffix(FieldCreatedBy, v))
 }
 
-// CreateByIsNil applies the IsNil predicate on the "create_by" field.
-func CreateByIsNil() predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldIsNull(FieldCreateBy))
+// CreatedByIsNil applies the IsNil predicate on the "created_by" field.
+func CreatedByIsNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIsNull(FieldCreatedBy))
 }
 
-// CreateByNotNil applies the NotNil predicate on the "create_by" field.
-func CreateByNotNil() predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNotNull(FieldCreateBy))
+// CreatedByNotNil applies the NotNil predicate on the "created_by" field.
+func CreatedByNotNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotNull(FieldCreatedBy))
 }
 
-// CreateByEqualFold applies the EqualFold predicate on the "create_by" field.
-func CreateByEqualFold(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEqualFold(FieldCreateBy, v))
+// CreatedByEqualFold applies the EqualFold predicate on the "created_by" field.
+func CreatedByEqualFold(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEqualFold(FieldCreatedBy, v))
 }
 
-// CreateByContainsFold applies the ContainsFold predicate on the "create_by" field.
-func CreateByContainsFold(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldContainsFold(FieldCreateBy, v))
+// CreatedByContainsFold applies the ContainsFold predicate on the "created_by" field.
+func CreatedByContainsFold(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldContainsFold(FieldCreatedBy, v))
 }
 
-// UpdateAtEQ applies the EQ predicate on the "update_at" field.
-func UpdateAtEQ(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEQ(FieldUpdateAt, v))
+// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
+func UpdatedAtEQ(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// UpdateAtNEQ applies the NEQ predicate on the "update_at" field.
-func UpdateAtNEQ(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNEQ(FieldUpdateAt, v))
+// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
+func UpdatedAtNEQ(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNEQ(FieldUpdatedAt, v))
 }
 
-// UpdateAtIn applies the In predicate on the "update_at" field.
-func UpdateAtIn(vs ...time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldIn(FieldUpdateAt, vs...))
+// UpdatedAtIn applies the In predicate on the "updated_at" field.
+func UpdatedAtIn(vs ...time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIn(FieldUpdatedAt, vs...))
 }
 
-// UpdateAtNotIn applies the NotIn predicate on the "update_at" field.
-func UpdateAtNotIn(vs ...time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNotIn(FieldUpdateAt, vs...))
+// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
+func UpdatedAtNotIn(vs ...time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotIn(FieldUpdatedAt, vs...))
 }
 
-// UpdateAtGT applies the GT predicate on the "update_at" field.
-func UpdateAtGT(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldGT(FieldUpdateAt, v))
+// UpdatedAtGT applies the GT predicate on the "updated_at" field.
+func UpdatedAtGT(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGT(FieldUpdatedAt, v))
 }
 
-// UpdateAtGTE applies the GTE predicate on the "update_at" field.
-func UpdateAtGTE(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldGTE(FieldUpdateAt, v))
+// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
+func UpdatedAtGTE(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGTE(FieldUpdatedAt, v))
 }
 
-// UpdateAtLT applies the LT predicate on the "update_at" field.
-func UpdateAtLT(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldLT(FieldUpdateAt, v))
+// UpdatedAtLT applies the LT predicate on the "updated_at" field.
+func UpdatedAtLT(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLT(FieldUpdatedAt, v))
 }
 
-// UpdateAtLTE applies the LTE predicate on the "update_at" field.
-func UpdateAtLTE(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldLTE(FieldUpdateAt, v))
+// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
+func UpdatedAtLTE(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
-// UpdateByEQ applies the EQ predicate on the "update_by" field.
-func UpdateByEQ(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEQ(FieldUpdateBy, v))
+// UpdatedByEQ applies the EQ predicate on the "updated_by" field.
+func UpdatedByEQ(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldUpdatedBy, v))
 }
 
-// UpdateByNEQ applies the NEQ predicate on the "update_by" field.
-func UpdateByNEQ(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNEQ(FieldUpdateBy, v))
+// UpdatedByNEQ applies the NEQ predicate on the "updated_by" field.
+func UpdatedByNEQ(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNEQ(FieldUpdatedBy, v))
 }
 
-// UpdateByIn applies the In predicate on the "update_by" field.
-func UpdateByIn(vs ...string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldIn(FieldUpdateBy, vs...))
+// UpdatedByIn applies the In predicate on the "updated_by" field.
+func UpdatedByIn(vs ...string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIn(FieldUpdatedBy, vs...))
 }
 
-// UpdateByNotIn applies the NotIn predicate on the "update_by" field.
-func UpdateByNotIn(vs ...string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNotIn(FieldUpdateBy, vs...))
+// UpdatedByNotIn applies the NotIn predicate on the "updated_by" field.
+func UpdatedByNotIn(vs ...string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotIn(FieldUpdatedBy, vs...))
 }
 
-// UpdateByGT applies the GT predicate on the "update_by" field.
-func UpdateByGT(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldGT(FieldUpdateBy, v))
+// UpdatedByGT applies the GT predicate on the "updated_by" field.
+func UpdatedByGT(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGT(FieldUpdatedBy, v))
 }
 
-// UpdateByGTE applies the GTE predicate on the "update_by" field.
-func UpdateByGTE(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldGTE(FieldUpdateBy, v))
+// UpdatedByGTE applies the GTE predicate on the "updated_by" field.
+func UpdatedByGTE(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGTE(FieldUpdatedBy, v))
 }
 
-// UpdateByLT applies the LT predicate on the "update_by" field.
-func UpdateByLT(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldLT(FieldUpdateBy, v))
+// UpdatedByLT applies the LT predicate on the "updated_by" field.
+func UpdatedByLT(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLT(FieldUpdatedBy, v))
 }
 
-// UpdateByLTE applies the LTE predicate on the "update_by" field.
-func UpdateByLTE(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldLTE(FieldUpdateBy, v))
+// UpdatedByLTE applies the LTE predicate on the "updated_by" field.
+func UpdatedByLTE(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLTE(FieldUpdatedBy, v))
 }
 
-// UpdateByContains applies the Contains predicate on the "update_by" field.
-func UpdateByContains(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldContains(FieldUpdateBy, v))
+// UpdatedByContains applies the Contains predicate on the "updated_by" field.
+func UpdatedByContains(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldContains(FieldUpdatedBy, v))
 }
 
-// UpdateByHasPrefix applies the HasPrefix predicate on the "update_by" field.
-func UpdateByHasPrefix(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldHasPrefix(FieldUpdateBy, v))
+// UpdatedByHasPrefix applies the HasPrefix predicate on the "updated_by" field.
+func UpdatedByHasPrefix(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldHasPrefix(FieldUpdatedBy, v))
 }
 
-// UpdateByHasSuffix applies the HasSuffix predicate on the "update_by" field.
-func UpdateByHasSuffix(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldHasSuffix(FieldUpdateBy, v))
+// UpdatedByHasSuffix applies the HasSuffix predicate on the "updated_by" field.
+func UpdatedByHasSuffix(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldHasSuffix(FieldUpdatedBy, v))
 }
 
-// UpdateByIsNil applies the IsNil predicate on the "update_by" field.
-func UpdateByIsNil() predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldIsNull(FieldUpdateBy))
+// UpdatedByIsNil applies the IsNil predicate on the "updated_by" field.
+func UpdatedByIsNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIsNull(FieldUpdatedBy))
 }
 
-// UpdateByNotNil applies the NotNil predicate on the "update_by" field.
-func UpdateByNotNil() predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNotNull(FieldUpdateBy))
+// UpdatedByNotNil applies the NotNil predicate on the "updated_by" field.
+func UpdatedByNotNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotNull(FieldUpdatedBy))
 }
 
-// UpdateByEqualFold applies the EqualFold predicate on the "update_by" field.
-func UpdateByEqualFold(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEqualFold(FieldUpdateBy, v))
+// UpdatedByEqualFold applies the EqualFold predicate on the "updated_by" field.
+func UpdatedByEqualFold(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEqualFold(FieldUpdatedBy, v))
 }
 
-// UpdateByContainsFold applies the ContainsFold predicate on the "update_by" field.
-func UpdateByContainsFold(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldContainsFold(FieldUpdateBy, v))
+// UpdatedByContainsFold applies the ContainsFold predicate on the "updated_by" field.
+func UpdatedByContainsFold(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldContainsFold(FieldUpdatedBy, v))
 }
 
 // HasProject applies the HasEdge predicate on the "project" edge.

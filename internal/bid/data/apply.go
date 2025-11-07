@@ -173,12 +173,12 @@ func (af *BidApplyForm) createProject(ctx context.Context, tx *ent.Tx) (*ent.Bid
 	create.SetBizRepNo(af.CreateBy)
 	create.SetBizRepName(af.CreatorName)
 
-	create.SetCreateAt(*af.CreateAt)
-	create.SetCreateBy(af.CreateBy)
+	create.SetCreatedAt(*af.CreateAt)
+	create.SetCreatedBy(af.CreateBy)
 	if af.UpdateAt != nil {
-		create.SetUpdateAt(*af.UpdateAt)
+		create.SetUpdatedAt(*af.UpdateAt)
 	} else {
-		create.SetUpdateAt(*af.CreateAt)
+		create.SetUpdatedAt(*af.CreateAt)
 	}
 
 	project, err := create.Save(ctx)
@@ -204,7 +204,7 @@ func (af *BidApplyForm) updateProject(ctx context.Context, tx *ent.Tx) (*ent.Bid
 	update.SetBizRepName(af.CreatorName)
 
 	if af.UpdateAt != nil {
-		update.SetUpdateAt(*af.UpdateAt)
+		update.SetUpdatedAt(*af.UpdateAt)
 	}
 
 	project, err := update.Save(ctx)
@@ -270,12 +270,12 @@ func (af *BidApplyForm) createApply(ctx context.Context, tx *ent.Tx) (*ent.BidAp
 
 	create.SetApprovalStatus(af.ApprovalStatus)
 	create.SetDone(af.Done)
-	create.SetCreateAt(*af.CreateAt)
-	create.SetCreateBy(af.CreateBy)
+	create.SetCreatedAt(*af.CreateAt)
+	create.SetCreatedBy(af.CreateBy)
 	if af.UpdateAt != nil {
-		create.SetUpdateAt(*af.UpdateAt)
+		create.SetUpdatedAt(*af.UpdateAt)
 	} else {
-		create.SetUpdateAt(*af.CreateAt)
+		create.SetUpdatedAt(*af.CreateAt)
 	}
 
 	apply, err := create.Save(ctx)
@@ -292,7 +292,7 @@ func (af *BidApplyForm) updateApply(ctx context.Context, tx *ent.Tx) (*ent.BidAp
 	update.SetDone(af.Done)
 
 	if af.UpdateAt != nil {
-		update.SetUpdateAt(*af.UpdateAt)
+		update.SetUpdatedAt(*af.UpdateAt)
 	}
 
 	apply, err := update.Save(ctx)

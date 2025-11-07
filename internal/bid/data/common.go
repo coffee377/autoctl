@@ -13,7 +13,7 @@ type DingTalkWorkflowData struct {
 	InstanceId  string     // 审批实例 ID
 	BusinessId  string     // 审批编号
 	CreateBy    string     // 创建人工号
-	CreatorName string     // 创建人的名字（从 title 提取）
+	CreatorName string     // 创建人的名字
 	CreateAt    *time.Time // 创建时间
 	UpdateAt    *time.Time // 更新时间
 

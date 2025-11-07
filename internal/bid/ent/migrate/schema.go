@@ -25,10 +25,10 @@ var (
 		{Name: "attachments", Type: field.TypeJSON, Nullable: true, Comment: "投标报名相关附件"},
 		{Name: "approval_status", Type: field.TypeString, Comment: "审批状态"},
 		{Name: "done", Type: field.TypeBool, Comment: "审批流程是否已结束", Default: false},
-		{Name: "create_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
-		{Name: "create_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
-		{Name: "update_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
-		{Name: "update_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "更新人"},
+		{Name: "created_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "created_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "updated_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "更新人"},
 		{Name: "project_id", Type: field.TypeString, Unique: true, Size: 32, Comment: "项目 ID"},
 	}
 	// BidApplyTable holds the schema information for the "bid_apply" table.
@@ -74,13 +74,15 @@ var (
 		{Name: "pay_amount", Type: field.TypeFloat64, Comment: "付款金额（元）", Default: 0, SchemaType: map[string]string{"mysql": "decimal(16,2)"}},
 		{Name: "pay_remark", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "付款备注"},
 		{Name: "pay_method", Type: field.TypeString, Nullable: true, Size: 64, Comment: "付款方式"},
+		{Name: "transfer_instructions", Type: field.TypeString, Nullable: true, Size: 128, Comment: "转账说明"},
+		{Name: "guarantee_deadline", Type: field.TypeTime, Nullable: true, Comment: "保证期限（保函）", SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "plan_pay_time", Type: field.TypeTime, Nullable: true, Comment: "预计转账时间", SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "approval_status", Type: field.TypeString, Comment: "费用审批状态"},
 		{Name: "done", Type: field.TypeBool, Comment: "审批流程是否已结束", Default: false},
-		{Name: "create_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
-		{Name: "create_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
-		{Name: "update_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
-		{Name: "update_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "更新人"},
+		{Name: "created_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "created_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "updated_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "更新人"},
 		{Name: "project_id", Type: field.TypeString, Nullable: true, Size: 32, Comment: "项目 ID"},
 	}
 	// BidExpenseTable holds the schema information for the "bid_expense" table.
@@ -92,7 +94,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "fk_pid_02",
-				Columns:    []*schema.Column{BidExpenseColumns[26]},
+				Columns:    []*schema.Column{BidExpenseColumns[28]},
 				RefColumns: []*schema.Column{BidProjectColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
@@ -111,7 +113,7 @@ var (
 			{
 				Name:    "idx_approval_status",
 				Unique:  false,
-				Columns: []*schema.Column{BidExpenseColumns[20]},
+				Columns: []*schema.Column{BidExpenseColumns[22]},
 			},
 		},
 	}
@@ -131,10 +133,10 @@ var (
 		{Name: "contract_no", Type: field.TypeString, Nullable: true, Size: 64, Comment: "销售合同号"},
 		{Name: "contract_sign_date", Type: field.TypeTime, Nullable: true, Comment: "销售合同签署日期", SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "remark", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "备注信息"},
-		{Name: "create_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
-		{Name: "create_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
-		{Name: "update_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
-		{Name: "update_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "更新人"},
+		{Name: "created_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "created_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "updated_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "更新人"},
 		{Name: "project_id", Type: field.TypeString, Size: 32, Comment: "项目 ID"},
 	}
 	// BidInfoTable holds the schema information for the "bid_info" table.
@@ -172,10 +174,10 @@ var (
 		{Name: "source", Type: field.TypeEnum, Comment: "项目来源", Enums: []string{"BA", "SC", "0"}, Default: "0"},
 		{Name: "source_id", Type: field.TypeString, Nullable: true, Size: 64, Comment: "来源标识 SC:销售合同号"},
 		{Name: "remark", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "备注信息"},
-		{Name: "create_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
-		{Name: "create_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
-		{Name: "update_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
-		{Name: "update_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "更新人"},
+		{Name: "created_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "created_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "updated_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "更新人"},
 	}
 	// BidProjectTable holds the schema information for the "bid_project" table.
 	BidProjectTable = &schema.Table{

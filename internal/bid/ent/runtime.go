@@ -52,24 +52,24 @@ func init() {
 	bidapplyDescDone := bidapplyFields[14].Descriptor()
 	// bidapply.DefaultDone holds the default value on creation for the done field.
 	bidapply.DefaultDone = bidapplyDescDone.Default.(bool)
-	// bidapplyDescCreateAt is the schema descriptor for create_at field.
-	bidapplyDescCreateAt := bidapplyMixinFields0[0].Descriptor()
-	// bidapply.DefaultCreateAt holds the default value on creation for the create_at field.
-	bidapply.DefaultCreateAt = bidapplyDescCreateAt.Default.(func() time.Time)
-	// bidapplyDescCreateBy is the schema descriptor for create_by field.
-	bidapplyDescCreateBy := bidapplyMixinFields0[1].Descriptor()
-	// bidapply.CreateByValidator is a validator for the "create_by" field. It is called by the builders before save.
-	bidapply.CreateByValidator = bidapplyDescCreateBy.Validators[0].(func(string) error)
-	// bidapplyDescUpdateAt is the schema descriptor for update_at field.
-	bidapplyDescUpdateAt := bidapplyMixinFields0[2].Descriptor()
-	// bidapply.DefaultUpdateAt holds the default value on creation for the update_at field.
-	bidapply.DefaultUpdateAt = bidapplyDescUpdateAt.Default.(func() time.Time)
-	// bidapply.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
-	bidapply.UpdateDefaultUpdateAt = bidapplyDescUpdateAt.UpdateDefault.(func() time.Time)
-	// bidapplyDescUpdateBy is the schema descriptor for update_by field.
-	bidapplyDescUpdateBy := bidapplyMixinFields0[3].Descriptor()
-	// bidapply.UpdateByValidator is a validator for the "update_by" field. It is called by the builders before save.
-	bidapply.UpdateByValidator = bidapplyDescUpdateBy.Validators[0].(func(string) error)
+	// bidapplyDescCreatedAt is the schema descriptor for created_at field.
+	bidapplyDescCreatedAt := bidapplyMixinFields0[0].Descriptor()
+	// bidapply.DefaultCreatedAt holds the default value on creation for the created_at field.
+	bidapply.DefaultCreatedAt = bidapplyDescCreatedAt.Default.(func() time.Time)
+	// bidapplyDescCreatedBy is the schema descriptor for created_by field.
+	bidapplyDescCreatedBy := bidapplyMixinFields0[1].Descriptor()
+	// bidapply.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
+	bidapply.CreatedByValidator = bidapplyDescCreatedBy.Validators[0].(func(string) error)
+	// bidapplyDescUpdatedAt is the schema descriptor for updated_at field.
+	bidapplyDescUpdatedAt := bidapplyMixinFields0[2].Descriptor()
+	// bidapply.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	bidapply.DefaultUpdatedAt = bidapplyDescUpdatedAt.Default.(func() time.Time)
+	// bidapply.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	bidapply.UpdateDefaultUpdatedAt = bidapplyDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// bidapplyDescUpdatedBy is the schema descriptor for updated_by field.
+	bidapplyDescUpdatedBy := bidapplyMixinFields0[3].Descriptor()
+	// bidapply.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
+	bidapply.UpdatedByValidator = bidapplyDescUpdatedBy.Validators[0].(func(string) error)
 	// bidapplyDescID is the schema descriptor for id field.
 	bidapplyDescID := bidapplyFields[0].Descriptor()
 	// bidapply.IDValidator is a validator for the "id" field. It is called by the builders before save.
@@ -143,28 +143,32 @@ func init() {
 	bidexpenseDescPayMethod := bidexpenseFields[19].Descriptor()
 	// bidexpense.PayMethodValidator is a validator for the "pay_method" field. It is called by the builders before save.
 	bidexpense.PayMethodValidator = bidexpenseDescPayMethod.Validators[0].(func(string) error)
+	// bidexpenseDescTransferInstructions is the schema descriptor for transfer_instructions field.
+	bidexpenseDescTransferInstructions := bidexpenseFields[20].Descriptor()
+	// bidexpense.TransferInstructionsValidator is a validator for the "transfer_instructions" field. It is called by the builders before save.
+	bidexpense.TransferInstructionsValidator = bidexpenseDescTransferInstructions.Validators[0].(func(string) error)
 	// bidexpenseDescDone is the schema descriptor for done field.
-	bidexpenseDescDone := bidexpenseFields[22].Descriptor()
+	bidexpenseDescDone := bidexpenseFields[24].Descriptor()
 	// bidexpense.DefaultDone holds the default value on creation for the done field.
 	bidexpense.DefaultDone = bidexpenseDescDone.Default.(bool)
-	// bidexpenseDescCreateAt is the schema descriptor for create_at field.
-	bidexpenseDescCreateAt := bidexpenseMixinFields0[0].Descriptor()
-	// bidexpense.DefaultCreateAt holds the default value on creation for the create_at field.
-	bidexpense.DefaultCreateAt = bidexpenseDescCreateAt.Default.(func() time.Time)
-	// bidexpenseDescCreateBy is the schema descriptor for create_by field.
-	bidexpenseDescCreateBy := bidexpenseMixinFields0[1].Descriptor()
-	// bidexpense.CreateByValidator is a validator for the "create_by" field. It is called by the builders before save.
-	bidexpense.CreateByValidator = bidexpenseDescCreateBy.Validators[0].(func(string) error)
-	// bidexpenseDescUpdateAt is the schema descriptor for update_at field.
-	bidexpenseDescUpdateAt := bidexpenseMixinFields0[2].Descriptor()
-	// bidexpense.DefaultUpdateAt holds the default value on creation for the update_at field.
-	bidexpense.DefaultUpdateAt = bidexpenseDescUpdateAt.Default.(func() time.Time)
-	// bidexpense.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
-	bidexpense.UpdateDefaultUpdateAt = bidexpenseDescUpdateAt.UpdateDefault.(func() time.Time)
-	// bidexpenseDescUpdateBy is the schema descriptor for update_by field.
-	bidexpenseDescUpdateBy := bidexpenseMixinFields0[3].Descriptor()
-	// bidexpense.UpdateByValidator is a validator for the "update_by" field. It is called by the builders before save.
-	bidexpense.UpdateByValidator = bidexpenseDescUpdateBy.Validators[0].(func(string) error)
+	// bidexpenseDescCreatedAt is the schema descriptor for created_at field.
+	bidexpenseDescCreatedAt := bidexpenseMixinFields0[0].Descriptor()
+	// bidexpense.DefaultCreatedAt holds the default value on creation for the created_at field.
+	bidexpense.DefaultCreatedAt = bidexpenseDescCreatedAt.Default.(func() time.Time)
+	// bidexpenseDescCreatedBy is the schema descriptor for created_by field.
+	bidexpenseDescCreatedBy := bidexpenseMixinFields0[1].Descriptor()
+	// bidexpense.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
+	bidexpense.CreatedByValidator = bidexpenseDescCreatedBy.Validators[0].(func(string) error)
+	// bidexpenseDescUpdatedAt is the schema descriptor for updated_at field.
+	bidexpenseDescUpdatedAt := bidexpenseMixinFields0[2].Descriptor()
+	// bidexpense.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	bidexpense.DefaultUpdatedAt = bidexpenseDescUpdatedAt.Default.(func() time.Time)
+	// bidexpense.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	bidexpense.UpdateDefaultUpdatedAt = bidexpenseDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// bidexpenseDescUpdatedBy is the schema descriptor for updated_by field.
+	bidexpenseDescUpdatedBy := bidexpenseMixinFields0[3].Descriptor()
+	// bidexpense.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
+	bidexpense.UpdatedByValidator = bidexpenseDescUpdatedBy.Validators[0].(func(string) error)
 	// bidexpenseDescID is the schema descriptor for id field.
 	bidexpenseDescID := bidexpenseFields[0].Descriptor()
 	// bidexpense.IDValidator is a validator for the "id" field. It is called by the builders before save.
@@ -210,24 +214,24 @@ func init() {
 	bidinfoDescContractNo := bidinfoFields[12].Descriptor()
 	// bidinfo.ContractNoValidator is a validator for the "contract_no" field. It is called by the builders before save.
 	bidinfo.ContractNoValidator = bidinfoDescContractNo.Validators[0].(func(string) error)
-	// bidinfoDescCreateAt is the schema descriptor for create_at field.
-	bidinfoDescCreateAt := bidinfoMixinFields0[0].Descriptor()
-	// bidinfo.DefaultCreateAt holds the default value on creation for the create_at field.
-	bidinfo.DefaultCreateAt = bidinfoDescCreateAt.Default.(func() time.Time)
-	// bidinfoDescCreateBy is the schema descriptor for create_by field.
-	bidinfoDescCreateBy := bidinfoMixinFields0[1].Descriptor()
-	// bidinfo.CreateByValidator is a validator for the "create_by" field. It is called by the builders before save.
-	bidinfo.CreateByValidator = bidinfoDescCreateBy.Validators[0].(func(string) error)
-	// bidinfoDescUpdateAt is the schema descriptor for update_at field.
-	bidinfoDescUpdateAt := bidinfoMixinFields0[2].Descriptor()
-	// bidinfo.DefaultUpdateAt holds the default value on creation for the update_at field.
-	bidinfo.DefaultUpdateAt = bidinfoDescUpdateAt.Default.(func() time.Time)
-	// bidinfo.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
-	bidinfo.UpdateDefaultUpdateAt = bidinfoDescUpdateAt.UpdateDefault.(func() time.Time)
-	// bidinfoDescUpdateBy is the schema descriptor for update_by field.
-	bidinfoDescUpdateBy := bidinfoMixinFields0[3].Descriptor()
-	// bidinfo.UpdateByValidator is a validator for the "update_by" field. It is called by the builders before save.
-	bidinfo.UpdateByValidator = bidinfoDescUpdateBy.Validators[0].(func(string) error)
+	// bidinfoDescCreatedAt is the schema descriptor for created_at field.
+	bidinfoDescCreatedAt := bidinfoMixinFields0[0].Descriptor()
+	// bidinfo.DefaultCreatedAt holds the default value on creation for the created_at field.
+	bidinfo.DefaultCreatedAt = bidinfoDescCreatedAt.Default.(func() time.Time)
+	// bidinfoDescCreatedBy is the schema descriptor for created_by field.
+	bidinfoDescCreatedBy := bidinfoMixinFields0[1].Descriptor()
+	// bidinfo.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
+	bidinfo.CreatedByValidator = bidinfoDescCreatedBy.Validators[0].(func(string) error)
+	// bidinfoDescUpdatedAt is the schema descriptor for updated_at field.
+	bidinfoDescUpdatedAt := bidinfoMixinFields0[2].Descriptor()
+	// bidinfo.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	bidinfo.DefaultUpdatedAt = bidinfoDescUpdatedAt.Default.(func() time.Time)
+	// bidinfo.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	bidinfo.UpdateDefaultUpdatedAt = bidinfoDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// bidinfoDescUpdatedBy is the schema descriptor for updated_by field.
+	bidinfoDescUpdatedBy := bidinfoMixinFields0[3].Descriptor()
+	// bidinfo.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
+	bidinfo.UpdatedByValidator = bidinfoDescUpdatedBy.Validators[0].(func(string) error)
 	// bidinfoDescID is the schema descriptor for id field.
 	bidinfoDescID := bidinfoFields[0].Descriptor()
 	// bidinfo.IDValidator is a validator for the "id" field. It is called by the builders before save.
@@ -273,24 +277,24 @@ func init() {
 	bidprojectDescSourceID := bidprojectFields[9].Descriptor()
 	// bidproject.SourceIDValidator is a validator for the "source_id" field. It is called by the builders before save.
 	bidproject.SourceIDValidator = bidprojectDescSourceID.Validators[0].(func(string) error)
-	// bidprojectDescCreateAt is the schema descriptor for create_at field.
-	bidprojectDescCreateAt := bidprojectMixinFields0[0].Descriptor()
-	// bidproject.DefaultCreateAt holds the default value on creation for the create_at field.
-	bidproject.DefaultCreateAt = bidprojectDescCreateAt.Default.(func() time.Time)
-	// bidprojectDescCreateBy is the schema descriptor for create_by field.
-	bidprojectDescCreateBy := bidprojectMixinFields0[1].Descriptor()
-	// bidproject.CreateByValidator is a validator for the "create_by" field. It is called by the builders before save.
-	bidproject.CreateByValidator = bidprojectDescCreateBy.Validators[0].(func(string) error)
-	// bidprojectDescUpdateAt is the schema descriptor for update_at field.
-	bidprojectDescUpdateAt := bidprojectMixinFields0[2].Descriptor()
-	// bidproject.DefaultUpdateAt holds the default value on creation for the update_at field.
-	bidproject.DefaultUpdateAt = bidprojectDescUpdateAt.Default.(func() time.Time)
-	// bidproject.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
-	bidproject.UpdateDefaultUpdateAt = bidprojectDescUpdateAt.UpdateDefault.(func() time.Time)
-	// bidprojectDescUpdateBy is the schema descriptor for update_by field.
-	bidprojectDescUpdateBy := bidprojectMixinFields0[3].Descriptor()
-	// bidproject.UpdateByValidator is a validator for the "update_by" field. It is called by the builders before save.
-	bidproject.UpdateByValidator = bidprojectDescUpdateBy.Validators[0].(func(string) error)
+	// bidprojectDescCreatedAt is the schema descriptor for created_at field.
+	bidprojectDescCreatedAt := bidprojectMixinFields0[0].Descriptor()
+	// bidproject.DefaultCreatedAt holds the default value on creation for the created_at field.
+	bidproject.DefaultCreatedAt = bidprojectDescCreatedAt.Default.(func() time.Time)
+	// bidprojectDescCreatedBy is the schema descriptor for created_by field.
+	bidprojectDescCreatedBy := bidprojectMixinFields0[1].Descriptor()
+	// bidproject.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
+	bidproject.CreatedByValidator = bidprojectDescCreatedBy.Validators[0].(func(string) error)
+	// bidprojectDescUpdatedAt is the schema descriptor for updated_at field.
+	bidprojectDescUpdatedAt := bidprojectMixinFields0[2].Descriptor()
+	// bidproject.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	bidproject.DefaultUpdatedAt = bidprojectDescUpdatedAt.Default.(func() time.Time)
+	// bidproject.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	bidproject.UpdateDefaultUpdatedAt = bidprojectDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// bidprojectDescUpdatedBy is the schema descriptor for updated_by field.
+	bidprojectDescUpdatedBy := bidprojectMixinFields0[3].Descriptor()
+	// bidproject.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
+	bidproject.UpdatedByValidator = bidprojectDescUpdatedBy.Validators[0].(func(string) error)
 	// bidprojectDescID is the schema descriptor for id field.
 	bidprojectDescID := bidprojectFields[0].Descriptor()
 	// bidproject.IDValidator is a validator for the "id" field. It is called by the builders before save.

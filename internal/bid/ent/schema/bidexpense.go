@@ -28,6 +28,7 @@ func (BidExpense) Fields() []ent.Field {
 		field.String("project_name").Comment("项目名称").MaxRuneLen(64),
 		field.String("project_code").Comment("项目编码").MaxRuneLen(64),
 		field.String("biz_rep_name").Comment("商务代表").MaxRuneLen(16),
+
 		field.String("purchaser").Comment("采购人名称").MaxRuneLen(64).Optional().Nillable(),
 
 		field.String("fee_type_v1").Comment("费用类型").Optional().Nillable(),
@@ -55,9 +56,15 @@ func (BidExpense) Fields() []ent.Field {
 		field.Text("pay_remark").Comment("付款备注").Optional().Nillable(),
 
 		field.String("pay_method").Comment("付款方式").MaxRuneLen(64).Optional().Nillable(),
+		field.String("transfer_instructions").Comment("转账说明").MaxRuneLen(128).Optional().Nillable(),
+		field.Time("guarantee_deadline").Comment("保证期限（保函）").Optional().Nillable().
+			SchemaType(map[string]string{
+				dialect.MySQL: "datetime",
+			}),
+
 		field.Time("plan_pay_time").Comment("预计转账时间").Optional().Nillable().
 			SchemaType(map[string]string{
-				dialect.MySQL: "datetime", // 适配MySQL datetime类型
+				dialect.MySQL: "datetime",
 			}),
 		field.String("approval_status").Comment("费用审批状态"),
 		field.Bool("done").Comment("审批流程是否已结束").Default(false),

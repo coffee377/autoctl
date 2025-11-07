@@ -105,24 +105,24 @@ func Remark(v string) predicate.BidProject {
 	return predicate.BidProject(sql.FieldEQ(FieldRemark, v))
 }
 
-// CreateAt applies equality check predicate on the "create_at" field. It's identical to CreateAtEQ.
-func CreateAt(v time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldEQ(FieldCreateAt, v))
+// CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
+func CreatedAt(v time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// CreateBy applies equality check predicate on the "create_by" field. It's identical to CreateByEQ.
-func CreateBy(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldEQ(FieldCreateBy, v))
+// CreatedBy applies equality check predicate on the "created_by" field. It's identical to CreatedByEQ.
+func CreatedBy(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEQ(FieldCreatedBy, v))
 }
 
-// UpdateAt applies equality check predicate on the "update_at" field. It's identical to UpdateAtEQ.
-func UpdateAt(v time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldEQ(FieldUpdateAt, v))
+// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
+func UpdatedAt(v time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// UpdateBy applies equality check predicate on the "update_by" field. It's identical to UpdateByEQ.
-func UpdateBy(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldEQ(FieldUpdateBy, v))
+// UpdatedBy applies equality check predicate on the "updated_by" field. It's identical to UpdatedByEQ.
+func UpdatedBy(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEQ(FieldUpdatedBy, v))
 }
 
 // CodeEQ applies the EQ predicate on the "code" field.
@@ -705,234 +705,234 @@ func RemarkContainsFold(v string) predicate.BidProject {
 	return predicate.BidProject(sql.FieldContainsFold(FieldRemark, v))
 }
 
-// CreateAtEQ applies the EQ predicate on the "create_at" field.
-func CreateAtEQ(v time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldEQ(FieldCreateAt, v))
+// CreatedAtEQ applies the EQ predicate on the "created_at" field.
+func CreatedAtEQ(v time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// CreateAtNEQ applies the NEQ predicate on the "create_at" field.
-func CreateAtNEQ(v time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldNEQ(FieldCreateAt, v))
+// CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
+func CreatedAtNEQ(v time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldNEQ(FieldCreatedAt, v))
 }
 
-// CreateAtIn applies the In predicate on the "create_at" field.
-func CreateAtIn(vs ...time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldIn(FieldCreateAt, vs...))
+// CreatedAtIn applies the In predicate on the "created_at" field.
+func CreatedAtIn(vs ...time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldIn(FieldCreatedAt, vs...))
 }
 
-// CreateAtNotIn applies the NotIn predicate on the "create_at" field.
-func CreateAtNotIn(vs ...time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldNotIn(FieldCreateAt, vs...))
+// CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
+func CreatedAtNotIn(vs ...time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldNotIn(FieldCreatedAt, vs...))
 }
 
-// CreateAtGT applies the GT predicate on the "create_at" field.
-func CreateAtGT(v time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldGT(FieldCreateAt, v))
+// CreatedAtGT applies the GT predicate on the "created_at" field.
+func CreatedAtGT(v time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldGT(FieldCreatedAt, v))
 }
 
-// CreateAtGTE applies the GTE predicate on the "create_at" field.
-func CreateAtGTE(v time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldGTE(FieldCreateAt, v))
+// CreatedAtGTE applies the GTE predicate on the "created_at" field.
+func CreatedAtGTE(v time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldGTE(FieldCreatedAt, v))
 }
 
-// CreateAtLT applies the LT predicate on the "create_at" field.
-func CreateAtLT(v time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldLT(FieldCreateAt, v))
+// CreatedAtLT applies the LT predicate on the "created_at" field.
+func CreatedAtLT(v time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldLT(FieldCreatedAt, v))
 }
 
-// CreateAtLTE applies the LTE predicate on the "create_at" field.
-func CreateAtLTE(v time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldLTE(FieldCreateAt, v))
+// CreatedAtLTE applies the LTE predicate on the "created_at" field.
+func CreatedAtLTE(v time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// CreateByEQ applies the EQ predicate on the "create_by" field.
-func CreateByEQ(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldEQ(FieldCreateBy, v))
+// CreatedByEQ applies the EQ predicate on the "created_by" field.
+func CreatedByEQ(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEQ(FieldCreatedBy, v))
 }
 
-// CreateByNEQ applies the NEQ predicate on the "create_by" field.
-func CreateByNEQ(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldNEQ(FieldCreateBy, v))
+// CreatedByNEQ applies the NEQ predicate on the "created_by" field.
+func CreatedByNEQ(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldNEQ(FieldCreatedBy, v))
 }
 
-// CreateByIn applies the In predicate on the "create_by" field.
-func CreateByIn(vs ...string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldIn(FieldCreateBy, vs...))
+// CreatedByIn applies the In predicate on the "created_by" field.
+func CreatedByIn(vs ...string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldIn(FieldCreatedBy, vs...))
 }
 
-// CreateByNotIn applies the NotIn predicate on the "create_by" field.
-func CreateByNotIn(vs ...string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldNotIn(FieldCreateBy, vs...))
+// CreatedByNotIn applies the NotIn predicate on the "created_by" field.
+func CreatedByNotIn(vs ...string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldNotIn(FieldCreatedBy, vs...))
 }
 
-// CreateByGT applies the GT predicate on the "create_by" field.
-func CreateByGT(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldGT(FieldCreateBy, v))
+// CreatedByGT applies the GT predicate on the "created_by" field.
+func CreatedByGT(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldGT(FieldCreatedBy, v))
 }
 
-// CreateByGTE applies the GTE predicate on the "create_by" field.
-func CreateByGTE(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldGTE(FieldCreateBy, v))
+// CreatedByGTE applies the GTE predicate on the "created_by" field.
+func CreatedByGTE(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldGTE(FieldCreatedBy, v))
 }
 
-// CreateByLT applies the LT predicate on the "create_by" field.
-func CreateByLT(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldLT(FieldCreateBy, v))
+// CreatedByLT applies the LT predicate on the "created_by" field.
+func CreatedByLT(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldLT(FieldCreatedBy, v))
 }
 
-// CreateByLTE applies the LTE predicate on the "create_by" field.
-func CreateByLTE(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldLTE(FieldCreateBy, v))
+// CreatedByLTE applies the LTE predicate on the "created_by" field.
+func CreatedByLTE(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldLTE(FieldCreatedBy, v))
 }
 
-// CreateByContains applies the Contains predicate on the "create_by" field.
-func CreateByContains(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldContains(FieldCreateBy, v))
+// CreatedByContains applies the Contains predicate on the "created_by" field.
+func CreatedByContains(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldContains(FieldCreatedBy, v))
 }
 
-// CreateByHasPrefix applies the HasPrefix predicate on the "create_by" field.
-func CreateByHasPrefix(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldHasPrefix(FieldCreateBy, v))
+// CreatedByHasPrefix applies the HasPrefix predicate on the "created_by" field.
+func CreatedByHasPrefix(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldHasPrefix(FieldCreatedBy, v))
 }
 
-// CreateByHasSuffix applies the HasSuffix predicate on the "create_by" field.
-func CreateByHasSuffix(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldHasSuffix(FieldCreateBy, v))
+// CreatedByHasSuffix applies the HasSuffix predicate on the "created_by" field.
+func CreatedByHasSuffix(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldHasSuffix(FieldCreatedBy, v))
 }
 
-// CreateByIsNil applies the IsNil predicate on the "create_by" field.
-func CreateByIsNil() predicate.BidProject {
-	return predicate.BidProject(sql.FieldIsNull(FieldCreateBy))
+// CreatedByIsNil applies the IsNil predicate on the "created_by" field.
+func CreatedByIsNil() predicate.BidProject {
+	return predicate.BidProject(sql.FieldIsNull(FieldCreatedBy))
 }
 
-// CreateByNotNil applies the NotNil predicate on the "create_by" field.
-func CreateByNotNil() predicate.BidProject {
-	return predicate.BidProject(sql.FieldNotNull(FieldCreateBy))
+// CreatedByNotNil applies the NotNil predicate on the "created_by" field.
+func CreatedByNotNil() predicate.BidProject {
+	return predicate.BidProject(sql.FieldNotNull(FieldCreatedBy))
 }
 
-// CreateByEqualFold applies the EqualFold predicate on the "create_by" field.
-func CreateByEqualFold(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldEqualFold(FieldCreateBy, v))
+// CreatedByEqualFold applies the EqualFold predicate on the "created_by" field.
+func CreatedByEqualFold(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEqualFold(FieldCreatedBy, v))
 }
 
-// CreateByContainsFold applies the ContainsFold predicate on the "create_by" field.
-func CreateByContainsFold(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldContainsFold(FieldCreateBy, v))
+// CreatedByContainsFold applies the ContainsFold predicate on the "created_by" field.
+func CreatedByContainsFold(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldContainsFold(FieldCreatedBy, v))
 }
 
-// UpdateAtEQ applies the EQ predicate on the "update_at" field.
-func UpdateAtEQ(v time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldEQ(FieldUpdateAt, v))
+// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
+func UpdatedAtEQ(v time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// UpdateAtNEQ applies the NEQ predicate on the "update_at" field.
-func UpdateAtNEQ(v time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldNEQ(FieldUpdateAt, v))
+// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
+func UpdatedAtNEQ(v time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldNEQ(FieldUpdatedAt, v))
 }
 
-// UpdateAtIn applies the In predicate on the "update_at" field.
-func UpdateAtIn(vs ...time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldIn(FieldUpdateAt, vs...))
+// UpdatedAtIn applies the In predicate on the "updated_at" field.
+func UpdatedAtIn(vs ...time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldIn(FieldUpdatedAt, vs...))
 }
 
-// UpdateAtNotIn applies the NotIn predicate on the "update_at" field.
-func UpdateAtNotIn(vs ...time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldNotIn(FieldUpdateAt, vs...))
+// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
+func UpdatedAtNotIn(vs ...time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldNotIn(FieldUpdatedAt, vs...))
 }
 
-// UpdateAtGT applies the GT predicate on the "update_at" field.
-func UpdateAtGT(v time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldGT(FieldUpdateAt, v))
+// UpdatedAtGT applies the GT predicate on the "updated_at" field.
+func UpdatedAtGT(v time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldGT(FieldUpdatedAt, v))
 }
 
-// UpdateAtGTE applies the GTE predicate on the "update_at" field.
-func UpdateAtGTE(v time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldGTE(FieldUpdateAt, v))
+// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
+func UpdatedAtGTE(v time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldGTE(FieldUpdatedAt, v))
 }
 
-// UpdateAtLT applies the LT predicate on the "update_at" field.
-func UpdateAtLT(v time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldLT(FieldUpdateAt, v))
+// UpdatedAtLT applies the LT predicate on the "updated_at" field.
+func UpdatedAtLT(v time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldLT(FieldUpdatedAt, v))
 }
 
-// UpdateAtLTE applies the LTE predicate on the "update_at" field.
-func UpdateAtLTE(v time.Time) predicate.BidProject {
-	return predicate.BidProject(sql.FieldLTE(FieldUpdateAt, v))
+// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
+func UpdatedAtLTE(v time.Time) predicate.BidProject {
+	return predicate.BidProject(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
-// UpdateByEQ applies the EQ predicate on the "update_by" field.
-func UpdateByEQ(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldEQ(FieldUpdateBy, v))
+// UpdatedByEQ applies the EQ predicate on the "updated_by" field.
+func UpdatedByEQ(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEQ(FieldUpdatedBy, v))
 }
 
-// UpdateByNEQ applies the NEQ predicate on the "update_by" field.
-func UpdateByNEQ(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldNEQ(FieldUpdateBy, v))
+// UpdatedByNEQ applies the NEQ predicate on the "updated_by" field.
+func UpdatedByNEQ(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldNEQ(FieldUpdatedBy, v))
 }
 
-// UpdateByIn applies the In predicate on the "update_by" field.
-func UpdateByIn(vs ...string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldIn(FieldUpdateBy, vs...))
+// UpdatedByIn applies the In predicate on the "updated_by" field.
+func UpdatedByIn(vs ...string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldIn(FieldUpdatedBy, vs...))
 }
 
-// UpdateByNotIn applies the NotIn predicate on the "update_by" field.
-func UpdateByNotIn(vs ...string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldNotIn(FieldUpdateBy, vs...))
+// UpdatedByNotIn applies the NotIn predicate on the "updated_by" field.
+func UpdatedByNotIn(vs ...string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldNotIn(FieldUpdatedBy, vs...))
 }
 
-// UpdateByGT applies the GT predicate on the "update_by" field.
-func UpdateByGT(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldGT(FieldUpdateBy, v))
+// UpdatedByGT applies the GT predicate on the "updated_by" field.
+func UpdatedByGT(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldGT(FieldUpdatedBy, v))
 }
 
-// UpdateByGTE applies the GTE predicate on the "update_by" field.
-func UpdateByGTE(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldGTE(FieldUpdateBy, v))
+// UpdatedByGTE applies the GTE predicate on the "updated_by" field.
+func UpdatedByGTE(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldGTE(FieldUpdatedBy, v))
 }
 
-// UpdateByLT applies the LT predicate on the "update_by" field.
-func UpdateByLT(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldLT(FieldUpdateBy, v))
+// UpdatedByLT applies the LT predicate on the "updated_by" field.
+func UpdatedByLT(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldLT(FieldUpdatedBy, v))
 }
 
-// UpdateByLTE applies the LTE predicate on the "update_by" field.
-func UpdateByLTE(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldLTE(FieldUpdateBy, v))
+// UpdatedByLTE applies the LTE predicate on the "updated_by" field.
+func UpdatedByLTE(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldLTE(FieldUpdatedBy, v))
 }
 
-// UpdateByContains applies the Contains predicate on the "update_by" field.
-func UpdateByContains(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldContains(FieldUpdateBy, v))
+// UpdatedByContains applies the Contains predicate on the "updated_by" field.
+func UpdatedByContains(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldContains(FieldUpdatedBy, v))
 }
 
-// UpdateByHasPrefix applies the HasPrefix predicate on the "update_by" field.
-func UpdateByHasPrefix(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldHasPrefix(FieldUpdateBy, v))
+// UpdatedByHasPrefix applies the HasPrefix predicate on the "updated_by" field.
+func UpdatedByHasPrefix(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldHasPrefix(FieldUpdatedBy, v))
 }
 
-// UpdateByHasSuffix applies the HasSuffix predicate on the "update_by" field.
-func UpdateByHasSuffix(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldHasSuffix(FieldUpdateBy, v))
+// UpdatedByHasSuffix applies the HasSuffix predicate on the "updated_by" field.
+func UpdatedByHasSuffix(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldHasSuffix(FieldUpdatedBy, v))
 }
 
-// UpdateByIsNil applies the IsNil predicate on the "update_by" field.
-func UpdateByIsNil() predicate.BidProject {
-	return predicate.BidProject(sql.FieldIsNull(FieldUpdateBy))
+// UpdatedByIsNil applies the IsNil predicate on the "updated_by" field.
+func UpdatedByIsNil() predicate.BidProject {
+	return predicate.BidProject(sql.FieldIsNull(FieldUpdatedBy))
 }
 
-// UpdateByNotNil applies the NotNil predicate on the "update_by" field.
-func UpdateByNotNil() predicate.BidProject {
-	return predicate.BidProject(sql.FieldNotNull(FieldUpdateBy))
+// UpdatedByNotNil applies the NotNil predicate on the "updated_by" field.
+func UpdatedByNotNil() predicate.BidProject {
+	return predicate.BidProject(sql.FieldNotNull(FieldUpdatedBy))
 }
 
-// UpdateByEqualFold applies the EqualFold predicate on the "update_by" field.
-func UpdateByEqualFold(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldEqualFold(FieldUpdateBy, v))
+// UpdatedByEqualFold applies the EqualFold predicate on the "updated_by" field.
+func UpdatedByEqualFold(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldEqualFold(FieldUpdatedBy, v))
 }
 
-// UpdateByContainsFold applies the ContainsFold predicate on the "update_by" field.
-func UpdateByContainsFold(v string) predicate.BidProject {
-	return predicate.BidProject(sql.FieldContainsFold(FieldUpdateBy, v))
+// UpdatedByContainsFold applies the ContainsFold predicate on the "updated_by" field.
+func UpdatedByContainsFold(v string) predicate.BidProject {
+	return predicate.BidProject(sql.FieldContainsFold(FieldUpdatedBy, v))
 }
 
 // HasApply applies the HasEdge predicate on the "apply" edge.

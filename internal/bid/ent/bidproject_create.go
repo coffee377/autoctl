@@ -147,58 +147,58 @@ func (_c *BidProjectCreate) SetNillableRemark(v *string) *BidProjectCreate {
 	return _c
 }
 
-// SetCreateAt sets the "create_at" field.
-func (_c *BidProjectCreate) SetCreateAt(v time.Time) *BidProjectCreate {
-	_c.mutation.SetCreateAt(v)
+// SetCreatedAt sets the "created_at" field.
+func (_c *BidProjectCreate) SetCreatedAt(v time.Time) *BidProjectCreate {
+	_c.mutation.SetCreatedAt(v)
 	return _c
 }
 
-// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
-func (_c *BidProjectCreate) SetNillableCreateAt(v *time.Time) *BidProjectCreate {
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (_c *BidProjectCreate) SetNillableCreatedAt(v *time.Time) *BidProjectCreate {
 	if v != nil {
-		_c.SetCreateAt(*v)
+		_c.SetCreatedAt(*v)
 	}
 	return _c
 }
 
-// SetCreateBy sets the "create_by" field.
-func (_c *BidProjectCreate) SetCreateBy(v string) *BidProjectCreate {
-	_c.mutation.SetCreateBy(v)
+// SetCreatedBy sets the "created_by" field.
+func (_c *BidProjectCreate) SetCreatedBy(v string) *BidProjectCreate {
+	_c.mutation.SetCreatedBy(v)
 	return _c
 }
 
-// SetNillableCreateBy sets the "create_by" field if the given value is not nil.
-func (_c *BidProjectCreate) SetNillableCreateBy(v *string) *BidProjectCreate {
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (_c *BidProjectCreate) SetNillableCreatedBy(v *string) *BidProjectCreate {
 	if v != nil {
-		_c.SetCreateBy(*v)
+		_c.SetCreatedBy(*v)
 	}
 	return _c
 }
 
-// SetUpdateAt sets the "update_at" field.
-func (_c *BidProjectCreate) SetUpdateAt(v time.Time) *BidProjectCreate {
-	_c.mutation.SetUpdateAt(v)
+// SetUpdatedAt sets the "updated_at" field.
+func (_c *BidProjectCreate) SetUpdatedAt(v time.Time) *BidProjectCreate {
+	_c.mutation.SetUpdatedAt(v)
 	return _c
 }
 
-// SetNillableUpdateAt sets the "update_at" field if the given value is not nil.
-func (_c *BidProjectCreate) SetNillableUpdateAt(v *time.Time) *BidProjectCreate {
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
+func (_c *BidProjectCreate) SetNillableUpdatedAt(v *time.Time) *BidProjectCreate {
 	if v != nil {
-		_c.SetUpdateAt(*v)
+		_c.SetUpdatedAt(*v)
 	}
 	return _c
 }
 
-// SetUpdateBy sets the "update_by" field.
-func (_c *BidProjectCreate) SetUpdateBy(v string) *BidProjectCreate {
-	_c.mutation.SetUpdateBy(v)
+// SetUpdatedBy sets the "updated_by" field.
+func (_c *BidProjectCreate) SetUpdatedBy(v string) *BidProjectCreate {
+	_c.mutation.SetUpdatedBy(v)
 	return _c
 }
 
-// SetNillableUpdateBy sets the "update_by" field if the given value is not nil.
-func (_c *BidProjectCreate) SetNillableUpdateBy(v *string) *BidProjectCreate {
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (_c *BidProjectCreate) SetNillableUpdatedBy(v *string) *BidProjectCreate {
 	if v != nil {
-		_c.SetUpdateBy(*v)
+		_c.SetUpdatedBy(*v)
 	}
 	return _c
 }
@@ -317,13 +317,13 @@ func (_c *BidProjectCreate) defaults() {
 		v := bidproject.DefaultSource
 		_c.mutation.SetSource(v)
 	}
-	if _, ok := _c.mutation.CreateAt(); !ok {
-		v := bidproject.DefaultCreateAt()
-		_c.mutation.SetCreateAt(v)
+	if _, ok := _c.mutation.CreatedAt(); !ok {
+		v := bidproject.DefaultCreatedAt()
+		_c.mutation.SetCreatedAt(v)
 	}
-	if _, ok := _c.mutation.UpdateAt(); !ok {
-		v := bidproject.DefaultUpdateAt()
-		_c.mutation.SetUpdateAt(v)
+	if _, ok := _c.mutation.UpdatedAt(); !ok {
+		v := bidproject.DefaultUpdatedAt()
+		_c.mutation.SetUpdatedAt(v)
 	}
 }
 
@@ -398,20 +398,20 @@ func (_c *BidProjectCreate) check() error {
 			return &ValidationError{Name: "source_id", err: fmt.Errorf(`ent: validator failed for field "BidProject.source_id": %w`, err)}
 		}
 	}
-	if _, ok := _c.mutation.CreateAt(); !ok {
-		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "BidProject.create_at"`)}
+	if _, ok := _c.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "BidProject.created_at"`)}
 	}
-	if v, ok := _c.mutation.CreateBy(); ok {
-		if err := bidproject.CreateByValidator(v); err != nil {
-			return &ValidationError{Name: "create_by", err: fmt.Errorf(`ent: validator failed for field "BidProject.create_by": %w`, err)}
+	if v, ok := _c.mutation.CreatedBy(); ok {
+		if err := bidproject.CreatedByValidator(v); err != nil {
+			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "BidProject.created_by": %w`, err)}
 		}
 	}
-	if _, ok := _c.mutation.UpdateAt(); !ok {
-		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "BidProject.update_at"`)}
+	if _, ok := _c.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "BidProject.updated_at"`)}
 	}
-	if v, ok := _c.mutation.UpdateBy(); ok {
-		if err := bidproject.UpdateByValidator(v); err != nil {
-			return &ValidationError{Name: "update_by", err: fmt.Errorf(`ent: validator failed for field "BidProject.update_by": %w`, err)}
+	if v, ok := _c.mutation.UpdatedBy(); ok {
+		if err := bidproject.UpdatedByValidator(v); err != nil {
+			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "BidProject.updated_by": %w`, err)}
 		}
 	}
 	if v, ok := _c.mutation.ID(); ok {
@@ -494,21 +494,21 @@ func (_c *BidProjectCreate) createSpec() (*BidProject, *sqlgraph.CreateSpec) {
 		_spec.SetField(bidproject.FieldRemark, field.TypeString, value)
 		_node.Remark = &value
 	}
-	if value, ok := _c.mutation.CreateAt(); ok {
-		_spec.SetField(bidproject.FieldCreateAt, field.TypeTime, value)
-		_node.CreateAt = value
+	if value, ok := _c.mutation.CreatedAt(); ok {
+		_spec.SetField(bidproject.FieldCreatedAt, field.TypeTime, value)
+		_node.CreatedAt = value
 	}
-	if value, ok := _c.mutation.CreateBy(); ok {
-		_spec.SetField(bidproject.FieldCreateBy, field.TypeString, value)
-		_node.CreateBy = &value
+	if value, ok := _c.mutation.CreatedBy(); ok {
+		_spec.SetField(bidproject.FieldCreatedBy, field.TypeString, value)
+		_node.CreatedBy = &value
 	}
-	if value, ok := _c.mutation.UpdateAt(); ok {
-		_spec.SetField(bidproject.FieldUpdateAt, field.TypeTime, value)
-		_node.UpdateAt = value
+	if value, ok := _c.mutation.UpdatedAt(); ok {
+		_spec.SetField(bidproject.FieldUpdatedAt, field.TypeTime, value)
+		_node.UpdatedAt = value
 	}
-	if value, ok := _c.mutation.UpdateBy(); ok {
-		_spec.SetField(bidproject.FieldUpdateBy, field.TypeString, value)
-		_node.UpdateBy = &value
+	if value, ok := _c.mutation.UpdatedBy(); ok {
+		_spec.SetField(bidproject.FieldUpdatedBy, field.TypeString, value)
+		_node.UpdatedBy = &value
 	}
 	if nodes := _c.mutation.ApplyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

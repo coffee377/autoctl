@@ -39,10 +39,14 @@ type BidExpenseForm struct {
 	PayeeAccount     string                   // 收款方账号
 	RecipientAccount *schema.RecipientAccount // V2 收款方账号
 
-	PayRatio    *float64   // 付款比例
-	PayAmount   float64    // 付款金额（元）
-	PayRemark   *string    // 付款备注
-	PayMethod   *string    // 付款方式
+	PayRatio  *float64 // 付款比例
+	PayAmount float64  // 付款金额（元）
+	PayRemark *string  // 付款备注
+	PayMethod *string  // 付款方式
+
+	TransferInstructions *string    // v2 转账说明
+	GuaranteeDeadline    *time.Time // v2 保证期限（保函）
+
 	PlanPayTime *time.Time // 预计转账时间
 }
 
@@ -121,7 +125,11 @@ func (ef *BidExpenseForm) getApplyMappers() []oa.FieldMapper {
 
 		{ComponentId: "TextField_1YIHQLKCJLUO0", FieldName: "PayRemark", Converter: oa.StringConverter, Pointer: true},
 		{ComponentId: "MoneyField_QP9DYIENY4G0", FieldName: "PayAmount", Converter: oa.Float64Converter},
-		{ComponentId: "TextField_B9JO23R61XK0", FieldName: "PayMethod", Converter: oa.StringConverter, Pointer: true},
+
+		{ComponentId: "DDSelectField_14SG5QW6NN85C", FieldName: "PayMethod", Converter: oa.StringConverter, Pointer: true},
+		{ComponentId: "TextField_B9JO23R61XK0", FieldName: "TransferInstructions", Converter: oa.StringConverter, Pointer: true},
+		{ComponentId: "DDDateField_1OH94FAGF8OW", FieldName: "GuaranteeDeadline", Converter: oa.DateConverter(time.DateOnly, time.Local), Pointer: true},
+
 		{ComponentId: "DDDateField_10RG38623CV40", FieldName: "PlanPayTime", Converter: oa.DateConverter(time.DateOnly, time.Local), Pointer: true},
 	}
 }
@@ -187,8 +195,8 @@ func (ef *BidExpenseForm) create(ctx context.Context, tx *ent.Tx) (*ent.BidExpen
 		ef.PayeeAccount = ef.RecipientAccount.CardNo
 	}
 
-	expense.SetPayeeBank(ef.PayeeBank)
 	expense.SetPayeeName(ef.PayeeName)
+	expense.SetPayeeBank(ef.PayeeBank)
 	expense.SetPayeeAccount(ef.PayeeAccount)
 
 	if ef.PayRatio != nil {
@@ -196,24 +204,31 @@ func (ef *BidExpenseForm) create(ctx context.Context, tx *ent.Tx) (*ent.BidExpen
 	}
 
 	expense.SetPayAmount(ef.PayAmount)
-	if ef.PayRemark != nil {
+	if ef.PayRemark != nil && *ef.PayRemark != "" {
 		expense.SetPayRemark(*ef.PayRemark)
 	}
 	if ef.PayMethod != nil {
 		expense.SetPayMethod(*ef.PayMethod)
 	}
+	if ef.TransferInstructions != nil && *ef.TransferInstructions != "" {
+		expense.SetTransferInstructions(*ef.TransferInstructions)
+	}
+	if ef.GuaranteeDeadline != nil {
+		expense.SetGuaranteeDeadline(*ef.GuaranteeDeadline)
+	}
+
 	if ef.PlanPayTime != nil {
 		expense.SetPlanPayTime(*ef.PlanPayTime)
 	}
 
 	expense.SetApprovalStatus(ef.ApprovalStatus)
 	expense.SetDone(ef.Done)
-	expense.SetCreateAt(*ef.CreateAt)
-	expense.SetCreateBy(ef.CreateBy)
+	expense.SetCreatedAt(*ef.CreateAt)
+	expense.SetCreatedBy(ef.CreateBy)
 	if ef.UpdateAt == nil {
-		expense.SetUpdateAt(*ef.CreateAt)
+		expense.SetUpdatedAt(*ef.CreateAt)
 	} else {
-		expense.SetUpdateAt(*ef.UpdateAt)
+		expense.SetUpdatedAt(*ef.UpdateAt)
 	}
 
 	bidExpense, err := expense.Save(ctx)
@@ -232,7 +247,7 @@ func (ef *BidExpenseForm) update(ctx context.Context, tx *ent.Tx) (*ent.BidExpen
 
 	// 更新修改时间戳
 	if ef.UpdateAt != nil {
-		update.SetUpdateAt(*ef.UpdateAt)
+		update.SetUpdatedAt(*ef.UpdateAt)
 	}
 
 	expense, err := update.Save(ctx)

@@ -40,13 +40,13 @@ type BidProject struct {
 	// 备注信息
 	Remark *string `json:"remark,omitempty"`
 	// 创建时间
-	CreateAt time.Time `json:"create_at,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
 	// 创建人
-	CreateBy *string `json:"create_by,omitempty"`
+	CreatedBy *string `json:"created_by,omitempty"`
 	// 更新时间
-	UpdateAt time.Time `json:"update_at,omitempty"`
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// 更新人
-	UpdateBy *string `json:"update_by,omitempty"`
+	UpdatedBy *string `json:"updated_by,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the BidProjectQuery when eager-loading is set.
 	Edges        BidProjectEdges `json:"edges"`
@@ -100,9 +100,9 @@ func (*BidProject) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case bidproject.FieldID, bidproject.FieldCode, bidproject.FieldName, bidproject.FieldType, bidproject.FieldDepartmentCode, bidproject.FieldDepartmentName, bidproject.FieldBizRepNo, bidproject.FieldBizRepName, bidproject.FieldSource, bidproject.FieldSourceID, bidproject.FieldRemark, bidproject.FieldCreateBy, bidproject.FieldUpdateBy:
+		case bidproject.FieldID, bidproject.FieldCode, bidproject.FieldName, bidproject.FieldType, bidproject.FieldDepartmentCode, bidproject.FieldDepartmentName, bidproject.FieldBizRepNo, bidproject.FieldBizRepName, bidproject.FieldSource, bidproject.FieldSourceID, bidproject.FieldRemark, bidproject.FieldCreatedBy, bidproject.FieldUpdatedBy:
 			values[i] = new(sql.NullString)
-		case bidproject.FieldCreateAt, bidproject.FieldUpdateAt:
+		case bidproject.FieldCreatedAt, bidproject.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -187,31 +187,31 @@ func (_m *BidProject) assignValues(columns []string, values []any) error {
 				_m.Remark = new(string)
 				*_m.Remark = value.String
 			}
-		case bidproject.FieldCreateAt:
+		case bidproject.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field create_at", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				_m.CreateAt = value.Time
+				_m.CreatedAt = value.Time
 			}
-		case bidproject.FieldCreateBy:
+		case bidproject.FieldCreatedBy:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field create_by", values[i])
+				return fmt.Errorf("unexpected type %T for field created_by", values[i])
 			} else if value.Valid {
-				_m.CreateBy = new(string)
-				*_m.CreateBy = value.String
+				_m.CreatedBy = new(string)
+				*_m.CreatedBy = value.String
 			}
-		case bidproject.FieldUpdateAt:
+		case bidproject.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field update_at", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				_m.UpdateAt = value.Time
+				_m.UpdatedAt = value.Time
 			}
-		case bidproject.FieldUpdateBy:
+		case bidproject.FieldUpdatedBy:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field update_by", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
 			} else if value.Valid {
-				_m.UpdateBy = new(string)
-				*_m.UpdateBy = value.String
+				_m.UpdatedBy = new(string)
+				*_m.UpdatedBy = value.String
 			}
 		default:
 			_m.selectValues.Set(columns[i], values[i])
@@ -298,19 +298,19 @@ func (_m *BidProject) String() string {
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("create_at=")
-	builder.WriteString(_m.CreateAt.Format(time.ANSIC))
+	builder.WriteString("created_at=")
+	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	if v := _m.CreateBy; v != nil {
-		builder.WriteString("create_by=")
+	if v := _m.CreatedBy; v != nil {
+		builder.WriteString("created_by=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("update_at=")
-	builder.WriteString(_m.UpdateAt.Format(time.ANSIC))
+	builder.WriteString("updated_at=")
+	builder.WriteString(_m.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	if v := _m.UpdateBy; v != nil {
-		builder.WriteString("update_by=")
+	if v := _m.UpdatedBy; v != nil {
+		builder.WriteString("updated_by=")
 		builder.WriteString(*v)
 	}
 	builder.WriteByte(')')

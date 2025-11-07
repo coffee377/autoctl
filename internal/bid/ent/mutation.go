@@ -55,10 +55,10 @@ type BidApplyMutation struct {
 	appendattachments []schema.Attachment
 	approval_status   *string
 	_done             *bool
-	create_at         *time.Time
-	create_by         *string
-	update_at         *time.Time
-	update_by         *string
+	created_at        *time.Time
+	created_by        *string
+	updated_at        *time.Time
+	updated_by        *string
 	clearedFields     map[string]struct{}
 	project           *string
 	clearedproject    bool
@@ -802,174 +802,174 @@ func (m *BidApplyMutation) ResetDone() {
 	m._done = nil
 }
 
-// SetCreateAt sets the "create_at" field.
-func (m *BidApplyMutation) SetCreateAt(t time.Time) {
-	m.create_at = &t
+// SetCreatedAt sets the "created_at" field.
+func (m *BidApplyMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
 }
 
-// CreateAt returns the value of the "create_at" field in the mutation.
-func (m *BidApplyMutation) CreateAt() (r time.Time, exists bool) {
-	v := m.create_at
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *BidApplyMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreateAt returns the old "create_at" field's value of the BidApply entity.
+// OldCreatedAt returns the old "created_at" field's value of the BidApply entity.
 // If the BidApply object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidApplyMutation) OldCreateAt(ctx context.Context) (v time.Time, err error) {
+func (m *BidApplyMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreateAt is only allowed on UpdateOne operations")
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreateAt requires an ID field in the mutation")
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreateAt: %w", err)
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
 	}
-	return oldValue.CreateAt, nil
+	return oldValue.CreatedAt, nil
 }
 
-// ResetCreateAt resets all changes to the "create_at" field.
-func (m *BidApplyMutation) ResetCreateAt() {
-	m.create_at = nil
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *BidApplyMutation) ResetCreatedAt() {
+	m.created_at = nil
 }
 
-// SetCreateBy sets the "create_by" field.
-func (m *BidApplyMutation) SetCreateBy(s string) {
-	m.create_by = &s
+// SetCreatedBy sets the "created_by" field.
+func (m *BidApplyMutation) SetCreatedBy(s string) {
+	m.created_by = &s
 }
 
-// CreateBy returns the value of the "create_by" field in the mutation.
-func (m *BidApplyMutation) CreateBy() (r string, exists bool) {
-	v := m.create_by
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *BidApplyMutation) CreatedBy() (r string, exists bool) {
+	v := m.created_by
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreateBy returns the old "create_by" field's value of the BidApply entity.
+// OldCreatedBy returns the old "created_by" field's value of the BidApply entity.
 // If the BidApply object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidApplyMutation) OldCreateBy(ctx context.Context) (v *string, err error) {
+func (m *BidApplyMutation) OldCreatedBy(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreateBy is only allowed on UpdateOne operations")
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreateBy requires an ID field in the mutation")
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreateBy: %w", err)
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
 	}
-	return oldValue.CreateBy, nil
+	return oldValue.CreatedBy, nil
 }
 
-// ClearCreateBy clears the value of the "create_by" field.
-func (m *BidApplyMutation) ClearCreateBy() {
-	m.create_by = nil
-	m.clearedFields[bidapply.FieldCreateBy] = struct{}{}
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *BidApplyMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.clearedFields[bidapply.FieldCreatedBy] = struct{}{}
 }
 
-// CreateByCleared returns if the "create_by" field was cleared in this mutation.
-func (m *BidApplyMutation) CreateByCleared() bool {
-	_, ok := m.clearedFields[bidapply.FieldCreateBy]
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *BidApplyMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[bidapply.FieldCreatedBy]
 	return ok
 }
 
-// ResetCreateBy resets all changes to the "create_by" field.
-func (m *BidApplyMutation) ResetCreateBy() {
-	m.create_by = nil
-	delete(m.clearedFields, bidapply.FieldCreateBy)
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *BidApplyMutation) ResetCreatedBy() {
+	m.created_by = nil
+	delete(m.clearedFields, bidapply.FieldCreatedBy)
 }
 
-// SetUpdateAt sets the "update_at" field.
-func (m *BidApplyMutation) SetUpdateAt(t time.Time) {
-	m.update_at = &t
+// SetUpdatedAt sets the "updated_at" field.
+func (m *BidApplyMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
 }
 
-// UpdateAt returns the value of the "update_at" field in the mutation.
-func (m *BidApplyMutation) UpdateAt() (r time.Time, exists bool) {
-	v := m.update_at
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *BidApplyMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdateAt returns the old "update_at" field's value of the BidApply entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the BidApply entity.
 // If the BidApply object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidApplyMutation) OldUpdateAt(ctx context.Context) (v time.Time, err error) {
+func (m *BidApplyMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdateAt is only allowed on UpdateOne operations")
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdateAt requires an ID field in the mutation")
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdateAt: %w", err)
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
 	}
-	return oldValue.UpdateAt, nil
+	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdateAt resets all changes to the "update_at" field.
-func (m *BidApplyMutation) ResetUpdateAt() {
-	m.update_at = nil
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *BidApplyMutation) ResetUpdatedAt() {
+	m.updated_at = nil
 }
 
-// SetUpdateBy sets the "update_by" field.
-func (m *BidApplyMutation) SetUpdateBy(s string) {
-	m.update_by = &s
+// SetUpdatedBy sets the "updated_by" field.
+func (m *BidApplyMutation) SetUpdatedBy(s string) {
+	m.updated_by = &s
 }
 
-// UpdateBy returns the value of the "update_by" field in the mutation.
-func (m *BidApplyMutation) UpdateBy() (r string, exists bool) {
-	v := m.update_by
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *BidApplyMutation) UpdatedBy() (r string, exists bool) {
+	v := m.updated_by
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdateBy returns the old "update_by" field's value of the BidApply entity.
+// OldUpdatedBy returns the old "updated_by" field's value of the BidApply entity.
 // If the BidApply object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidApplyMutation) OldUpdateBy(ctx context.Context) (v *string, err error) {
+func (m *BidApplyMutation) OldUpdatedBy(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdateBy is only allowed on UpdateOne operations")
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdateBy requires an ID field in the mutation")
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdateBy: %w", err)
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
 	}
-	return oldValue.UpdateBy, nil
+	return oldValue.UpdatedBy, nil
 }
 
-// ClearUpdateBy clears the value of the "update_by" field.
-func (m *BidApplyMutation) ClearUpdateBy() {
-	m.update_by = nil
-	m.clearedFields[bidapply.FieldUpdateBy] = struct{}{}
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *BidApplyMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.clearedFields[bidapply.FieldUpdatedBy] = struct{}{}
 }
 
-// UpdateByCleared returns if the "update_by" field was cleared in this mutation.
-func (m *BidApplyMutation) UpdateByCleared() bool {
-	_, ok := m.clearedFields[bidapply.FieldUpdateBy]
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *BidApplyMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[bidapply.FieldUpdatedBy]
 	return ok
 }
 
-// ResetUpdateBy resets all changes to the "update_by" field.
-func (m *BidApplyMutation) ResetUpdateBy() {
-	m.update_by = nil
-	delete(m.clearedFields, bidapply.FieldUpdateBy)
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *BidApplyMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	delete(m.clearedFields, bidapply.FieldUpdatedBy)
 }
 
 // ClearProject clears the "project" edge to the BidProject entity.
@@ -1076,17 +1076,17 @@ func (m *BidApplyMutation) Fields() []string {
 	if m._done != nil {
 		fields = append(fields, bidapply.FieldDone)
 	}
-	if m.create_at != nil {
-		fields = append(fields, bidapply.FieldCreateAt)
+	if m.created_at != nil {
+		fields = append(fields, bidapply.FieldCreatedAt)
 	}
-	if m.create_by != nil {
-		fields = append(fields, bidapply.FieldCreateBy)
+	if m.created_by != nil {
+		fields = append(fields, bidapply.FieldCreatedBy)
 	}
-	if m.update_at != nil {
-		fields = append(fields, bidapply.FieldUpdateAt)
+	if m.updated_at != nil {
+		fields = append(fields, bidapply.FieldUpdatedAt)
 	}
-	if m.update_by != nil {
-		fields = append(fields, bidapply.FieldUpdateBy)
+	if m.updated_by != nil {
+		fields = append(fields, bidapply.FieldUpdatedBy)
 	}
 	return fields
 }
@@ -1124,14 +1124,14 @@ func (m *BidApplyMutation) Field(name string) (ent.Value, bool) {
 		return m.ApprovalStatus()
 	case bidapply.FieldDone:
 		return m.Done()
-	case bidapply.FieldCreateAt:
-		return m.CreateAt()
-	case bidapply.FieldCreateBy:
-		return m.CreateBy()
-	case bidapply.FieldUpdateAt:
-		return m.UpdateAt()
-	case bidapply.FieldUpdateBy:
-		return m.UpdateBy()
+	case bidapply.FieldCreatedAt:
+		return m.CreatedAt()
+	case bidapply.FieldCreatedBy:
+		return m.CreatedBy()
+	case bidapply.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case bidapply.FieldUpdatedBy:
+		return m.UpdatedBy()
 	}
 	return nil, false
 }
@@ -1169,14 +1169,14 @@ func (m *BidApplyMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldApprovalStatus(ctx)
 	case bidapply.FieldDone:
 		return m.OldDone(ctx)
-	case bidapply.FieldCreateAt:
-		return m.OldCreateAt(ctx)
-	case bidapply.FieldCreateBy:
-		return m.OldCreateBy(ctx)
-	case bidapply.FieldUpdateAt:
-		return m.OldUpdateAt(ctx)
-	case bidapply.FieldUpdateBy:
-		return m.OldUpdateBy(ctx)
+	case bidapply.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case bidapply.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case bidapply.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case bidapply.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
 	}
 	return nil, fmt.Errorf("unknown BidApply field %s", name)
 }
@@ -1284,33 +1284,33 @@ func (m *BidApplyMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDone(v)
 		return nil
-	case bidapply.FieldCreateAt:
+	case bidapply.FieldCreatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCreateAt(v)
+		m.SetCreatedAt(v)
 		return nil
-	case bidapply.FieldCreateBy:
+	case bidapply.FieldCreatedBy:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCreateBy(v)
+		m.SetCreatedBy(v)
 		return nil
-	case bidapply.FieldUpdateAt:
+	case bidapply.FieldUpdatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUpdateAt(v)
+		m.SetUpdatedAt(v)
 		return nil
-	case bidapply.FieldUpdateBy:
+	case bidapply.FieldUpdatedBy:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUpdateBy(v)
+		m.SetUpdatedBy(v)
 		return nil
 	}
 	return fmt.Errorf("unknown BidApply field %s", name)
@@ -1378,11 +1378,11 @@ func (m *BidApplyMutation) ClearedFields() []string {
 	if m.FieldCleared(bidapply.FieldAttachments) {
 		fields = append(fields, bidapply.FieldAttachments)
 	}
-	if m.FieldCleared(bidapply.FieldCreateBy) {
-		fields = append(fields, bidapply.FieldCreateBy)
+	if m.FieldCleared(bidapply.FieldCreatedBy) {
+		fields = append(fields, bidapply.FieldCreatedBy)
 	}
-	if m.FieldCleared(bidapply.FieldUpdateBy) {
-		fields = append(fields, bidapply.FieldUpdateBy)
+	if m.FieldCleared(bidapply.FieldUpdatedBy) {
+		fields = append(fields, bidapply.FieldUpdatedBy)
 	}
 	return fields
 }
@@ -1419,11 +1419,11 @@ func (m *BidApplyMutation) ClearField(name string) error {
 	case bidapply.FieldAttachments:
 		m.ClearAttachments()
 		return nil
-	case bidapply.FieldCreateBy:
-		m.ClearCreateBy()
+	case bidapply.FieldCreatedBy:
+		m.ClearCreatedBy()
 		return nil
-	case bidapply.FieldUpdateBy:
-		m.ClearUpdateBy()
+	case bidapply.FieldUpdatedBy:
+		m.ClearUpdatedBy()
 		return nil
 	}
 	return fmt.Errorf("unknown BidApply nullable field %s", name)
@@ -1475,17 +1475,17 @@ func (m *BidApplyMutation) ResetField(name string) error {
 	case bidapply.FieldDone:
 		m.ResetDone()
 		return nil
-	case bidapply.FieldCreateAt:
-		m.ResetCreateAt()
+	case bidapply.FieldCreatedAt:
+		m.ResetCreatedAt()
 		return nil
-	case bidapply.FieldCreateBy:
-		m.ResetCreateBy()
+	case bidapply.FieldCreatedBy:
+		m.ResetCreatedBy()
 		return nil
-	case bidapply.FieldUpdateAt:
-		m.ResetUpdateAt()
+	case bidapply.FieldUpdatedAt:
+		m.ResetUpdatedAt()
 		return nil
-	case bidapply.FieldUpdateBy:
-		m.ResetUpdateBy()
+	case bidapply.FieldUpdatedBy:
+		m.ResetUpdatedBy()
 		return nil
 	}
 	return fmt.Errorf("unknown BidApply field %s", name)
@@ -1568,42 +1568,44 @@ func (m *BidApplyMutation) ResetEdge(name string) error {
 // BidExpenseMutation represents an operation that mutates the BidExpense nodes in the graph.
 type BidExpenseMutation struct {
 	config
-	op              Op
-	typ             string
-	id              *string
-	business_id     *string
-	instance_id     *string
-	bill_no         *string
-	project_name    *string
-	project_code    *string
-	biz_rep_name    *string
-	purchaser       *string
-	fee_type_v1     *string
-	fee_type        *bidexpense.FeeType
-	pay_reason      *string
-	refunded        *bool
-	payee_bank      *string
-	payee_name      *string
-	payee_account   *string
-	pay_ratio       *float64
-	addpay_ratio    *float64
-	pay_amount      *float64
-	addpay_amount   *float64
-	pay_remark      *string
-	pay_method      *string
-	plan_pay_time   *time.Time
-	approval_status *string
-	_done           *bool
-	create_at       *time.Time
-	create_by       *string
-	update_at       *time.Time
-	update_by       *string
-	clearedFields   map[string]struct{}
-	project         *string
-	clearedproject  bool
-	done            bool
-	oldValue        func(context.Context) (*BidExpense, error)
-	predicates      []predicate.BidExpense
+	op                    Op
+	typ                   string
+	id                    *string
+	business_id           *string
+	instance_id           *string
+	bill_no               *string
+	project_name          *string
+	project_code          *string
+	biz_rep_name          *string
+	purchaser             *string
+	fee_type_v1           *string
+	fee_type              *bidexpense.FeeType
+	pay_reason            *string
+	refunded              *bool
+	payee_bank            *string
+	payee_name            *string
+	payee_account         *string
+	pay_ratio             *float64
+	addpay_ratio          *float64
+	pay_amount            *float64
+	addpay_amount         *float64
+	pay_remark            *string
+	pay_method            *string
+	transfer_instructions *string
+	guarantee_deadline    *time.Time
+	plan_pay_time         *time.Time
+	approval_status       *string
+	_done                 *bool
+	created_at            *time.Time
+	created_by            *string
+	updated_at            *time.Time
+	updated_by            *string
+	clearedFields         map[string]struct{}
+	project               *string
+	clearedproject        bool
+	done                  bool
+	oldValue              func(context.Context) (*BidExpense, error)
+	predicates            []predicate.BidExpense
 }
 
 var _ ent.Mutation = (*BidExpenseMutation)(nil)
@@ -2512,6 +2514,104 @@ func (m *BidExpenseMutation) ResetPayMethod() {
 	delete(m.clearedFields, bidexpense.FieldPayMethod)
 }
 
+// SetTransferInstructions sets the "transfer_instructions" field.
+func (m *BidExpenseMutation) SetTransferInstructions(s string) {
+	m.transfer_instructions = &s
+}
+
+// TransferInstructions returns the value of the "transfer_instructions" field in the mutation.
+func (m *BidExpenseMutation) TransferInstructions() (r string, exists bool) {
+	v := m.transfer_instructions
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTransferInstructions returns the old "transfer_instructions" field's value of the BidExpense entity.
+// If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidExpenseMutation) OldTransferInstructions(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTransferInstructions is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTransferInstructions requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTransferInstructions: %w", err)
+	}
+	return oldValue.TransferInstructions, nil
+}
+
+// ClearTransferInstructions clears the value of the "transfer_instructions" field.
+func (m *BidExpenseMutation) ClearTransferInstructions() {
+	m.transfer_instructions = nil
+	m.clearedFields[bidexpense.FieldTransferInstructions] = struct{}{}
+}
+
+// TransferInstructionsCleared returns if the "transfer_instructions" field was cleared in this mutation.
+func (m *BidExpenseMutation) TransferInstructionsCleared() bool {
+	_, ok := m.clearedFields[bidexpense.FieldTransferInstructions]
+	return ok
+}
+
+// ResetTransferInstructions resets all changes to the "transfer_instructions" field.
+func (m *BidExpenseMutation) ResetTransferInstructions() {
+	m.transfer_instructions = nil
+	delete(m.clearedFields, bidexpense.FieldTransferInstructions)
+}
+
+// SetGuaranteeDeadline sets the "guarantee_deadline" field.
+func (m *BidExpenseMutation) SetGuaranteeDeadline(t time.Time) {
+	m.guarantee_deadline = &t
+}
+
+// GuaranteeDeadline returns the value of the "guarantee_deadline" field in the mutation.
+func (m *BidExpenseMutation) GuaranteeDeadline() (r time.Time, exists bool) {
+	v := m.guarantee_deadline
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGuaranteeDeadline returns the old "guarantee_deadline" field's value of the BidExpense entity.
+// If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidExpenseMutation) OldGuaranteeDeadline(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGuaranteeDeadline is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGuaranteeDeadline requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGuaranteeDeadline: %w", err)
+	}
+	return oldValue.GuaranteeDeadline, nil
+}
+
+// ClearGuaranteeDeadline clears the value of the "guarantee_deadline" field.
+func (m *BidExpenseMutation) ClearGuaranteeDeadline() {
+	m.guarantee_deadline = nil
+	m.clearedFields[bidexpense.FieldGuaranteeDeadline] = struct{}{}
+}
+
+// GuaranteeDeadlineCleared returns if the "guarantee_deadline" field was cleared in this mutation.
+func (m *BidExpenseMutation) GuaranteeDeadlineCleared() bool {
+	_, ok := m.clearedFields[bidexpense.FieldGuaranteeDeadline]
+	return ok
+}
+
+// ResetGuaranteeDeadline resets all changes to the "guarantee_deadline" field.
+func (m *BidExpenseMutation) ResetGuaranteeDeadline() {
+	m.guarantee_deadline = nil
+	delete(m.clearedFields, bidexpense.FieldGuaranteeDeadline)
+}
+
 // SetPlanPayTime sets the "plan_pay_time" field.
 func (m *BidExpenseMutation) SetPlanPayTime(t time.Time) {
 	m.plan_pay_time = &t
@@ -2633,174 +2733,174 @@ func (m *BidExpenseMutation) ResetDone() {
 	m._done = nil
 }
 
-// SetCreateAt sets the "create_at" field.
-func (m *BidExpenseMutation) SetCreateAt(t time.Time) {
-	m.create_at = &t
+// SetCreatedAt sets the "created_at" field.
+func (m *BidExpenseMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
 }
 
-// CreateAt returns the value of the "create_at" field in the mutation.
-func (m *BidExpenseMutation) CreateAt() (r time.Time, exists bool) {
-	v := m.create_at
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *BidExpenseMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreateAt returns the old "create_at" field's value of the BidExpense entity.
+// OldCreatedAt returns the old "created_at" field's value of the BidExpense entity.
 // If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidExpenseMutation) OldCreateAt(ctx context.Context) (v time.Time, err error) {
+func (m *BidExpenseMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreateAt is only allowed on UpdateOne operations")
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreateAt requires an ID field in the mutation")
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreateAt: %w", err)
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
 	}
-	return oldValue.CreateAt, nil
+	return oldValue.CreatedAt, nil
 }
 
-// ResetCreateAt resets all changes to the "create_at" field.
-func (m *BidExpenseMutation) ResetCreateAt() {
-	m.create_at = nil
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *BidExpenseMutation) ResetCreatedAt() {
+	m.created_at = nil
 }
 
-// SetCreateBy sets the "create_by" field.
-func (m *BidExpenseMutation) SetCreateBy(s string) {
-	m.create_by = &s
+// SetCreatedBy sets the "created_by" field.
+func (m *BidExpenseMutation) SetCreatedBy(s string) {
+	m.created_by = &s
 }
 
-// CreateBy returns the value of the "create_by" field in the mutation.
-func (m *BidExpenseMutation) CreateBy() (r string, exists bool) {
-	v := m.create_by
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *BidExpenseMutation) CreatedBy() (r string, exists bool) {
+	v := m.created_by
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreateBy returns the old "create_by" field's value of the BidExpense entity.
+// OldCreatedBy returns the old "created_by" field's value of the BidExpense entity.
 // If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidExpenseMutation) OldCreateBy(ctx context.Context) (v *string, err error) {
+func (m *BidExpenseMutation) OldCreatedBy(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreateBy is only allowed on UpdateOne operations")
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreateBy requires an ID field in the mutation")
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreateBy: %w", err)
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
 	}
-	return oldValue.CreateBy, nil
+	return oldValue.CreatedBy, nil
 }
 
-// ClearCreateBy clears the value of the "create_by" field.
-func (m *BidExpenseMutation) ClearCreateBy() {
-	m.create_by = nil
-	m.clearedFields[bidexpense.FieldCreateBy] = struct{}{}
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *BidExpenseMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.clearedFields[bidexpense.FieldCreatedBy] = struct{}{}
 }
 
-// CreateByCleared returns if the "create_by" field was cleared in this mutation.
-func (m *BidExpenseMutation) CreateByCleared() bool {
-	_, ok := m.clearedFields[bidexpense.FieldCreateBy]
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *BidExpenseMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[bidexpense.FieldCreatedBy]
 	return ok
 }
 
-// ResetCreateBy resets all changes to the "create_by" field.
-func (m *BidExpenseMutation) ResetCreateBy() {
-	m.create_by = nil
-	delete(m.clearedFields, bidexpense.FieldCreateBy)
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *BidExpenseMutation) ResetCreatedBy() {
+	m.created_by = nil
+	delete(m.clearedFields, bidexpense.FieldCreatedBy)
 }
 
-// SetUpdateAt sets the "update_at" field.
-func (m *BidExpenseMutation) SetUpdateAt(t time.Time) {
-	m.update_at = &t
+// SetUpdatedAt sets the "updated_at" field.
+func (m *BidExpenseMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
 }
 
-// UpdateAt returns the value of the "update_at" field in the mutation.
-func (m *BidExpenseMutation) UpdateAt() (r time.Time, exists bool) {
-	v := m.update_at
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *BidExpenseMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdateAt returns the old "update_at" field's value of the BidExpense entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the BidExpense entity.
 // If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidExpenseMutation) OldUpdateAt(ctx context.Context) (v time.Time, err error) {
+func (m *BidExpenseMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdateAt is only allowed on UpdateOne operations")
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdateAt requires an ID field in the mutation")
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdateAt: %w", err)
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
 	}
-	return oldValue.UpdateAt, nil
+	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdateAt resets all changes to the "update_at" field.
-func (m *BidExpenseMutation) ResetUpdateAt() {
-	m.update_at = nil
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *BidExpenseMutation) ResetUpdatedAt() {
+	m.updated_at = nil
 }
 
-// SetUpdateBy sets the "update_by" field.
-func (m *BidExpenseMutation) SetUpdateBy(s string) {
-	m.update_by = &s
+// SetUpdatedBy sets the "updated_by" field.
+func (m *BidExpenseMutation) SetUpdatedBy(s string) {
+	m.updated_by = &s
 }
 
-// UpdateBy returns the value of the "update_by" field in the mutation.
-func (m *BidExpenseMutation) UpdateBy() (r string, exists bool) {
-	v := m.update_by
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *BidExpenseMutation) UpdatedBy() (r string, exists bool) {
+	v := m.updated_by
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdateBy returns the old "update_by" field's value of the BidExpense entity.
+// OldUpdatedBy returns the old "updated_by" field's value of the BidExpense entity.
 // If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidExpenseMutation) OldUpdateBy(ctx context.Context) (v *string, err error) {
+func (m *BidExpenseMutation) OldUpdatedBy(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdateBy is only allowed on UpdateOne operations")
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdateBy requires an ID field in the mutation")
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdateBy: %w", err)
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
 	}
-	return oldValue.UpdateBy, nil
+	return oldValue.UpdatedBy, nil
 }
 
-// ClearUpdateBy clears the value of the "update_by" field.
-func (m *BidExpenseMutation) ClearUpdateBy() {
-	m.update_by = nil
-	m.clearedFields[bidexpense.FieldUpdateBy] = struct{}{}
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *BidExpenseMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.clearedFields[bidexpense.FieldUpdatedBy] = struct{}{}
 }
 
-// UpdateByCleared returns if the "update_by" field was cleared in this mutation.
-func (m *BidExpenseMutation) UpdateByCleared() bool {
-	_, ok := m.clearedFields[bidexpense.FieldUpdateBy]
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *BidExpenseMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[bidexpense.FieldUpdatedBy]
 	return ok
 }
 
-// ResetUpdateBy resets all changes to the "update_by" field.
-func (m *BidExpenseMutation) ResetUpdateBy() {
-	m.update_by = nil
-	delete(m.clearedFields, bidexpense.FieldUpdateBy)
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *BidExpenseMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	delete(m.clearedFields, bidexpense.FieldUpdatedBy)
 }
 
 // ClearProject clears the "project" edge to the BidProject entity.
@@ -2864,7 +2964,7 @@ func (m *BidExpenseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *BidExpenseMutation) Fields() []string {
-	fields := make([]string, 0, 26)
+	fields := make([]string, 0, 28)
 	if m.business_id != nil {
 		fields = append(fields, bidexpense.FieldBusinessID)
 	}
@@ -2922,6 +3022,12 @@ func (m *BidExpenseMutation) Fields() []string {
 	if m.pay_method != nil {
 		fields = append(fields, bidexpense.FieldPayMethod)
 	}
+	if m.transfer_instructions != nil {
+		fields = append(fields, bidexpense.FieldTransferInstructions)
+	}
+	if m.guarantee_deadline != nil {
+		fields = append(fields, bidexpense.FieldGuaranteeDeadline)
+	}
 	if m.plan_pay_time != nil {
 		fields = append(fields, bidexpense.FieldPlanPayTime)
 	}
@@ -2931,17 +3037,17 @@ func (m *BidExpenseMutation) Fields() []string {
 	if m._done != nil {
 		fields = append(fields, bidexpense.FieldDone)
 	}
-	if m.create_at != nil {
-		fields = append(fields, bidexpense.FieldCreateAt)
+	if m.created_at != nil {
+		fields = append(fields, bidexpense.FieldCreatedAt)
 	}
-	if m.create_by != nil {
-		fields = append(fields, bidexpense.FieldCreateBy)
+	if m.created_by != nil {
+		fields = append(fields, bidexpense.FieldCreatedBy)
 	}
-	if m.update_at != nil {
-		fields = append(fields, bidexpense.FieldUpdateAt)
+	if m.updated_at != nil {
+		fields = append(fields, bidexpense.FieldUpdatedAt)
 	}
-	if m.update_by != nil {
-		fields = append(fields, bidexpense.FieldUpdateBy)
+	if m.updated_by != nil {
+		fields = append(fields, bidexpense.FieldUpdatedBy)
 	}
 	return fields
 }
@@ -2989,20 +3095,24 @@ func (m *BidExpenseMutation) Field(name string) (ent.Value, bool) {
 		return m.PayRemark()
 	case bidexpense.FieldPayMethod:
 		return m.PayMethod()
+	case bidexpense.FieldTransferInstructions:
+		return m.TransferInstructions()
+	case bidexpense.FieldGuaranteeDeadline:
+		return m.GuaranteeDeadline()
 	case bidexpense.FieldPlanPayTime:
 		return m.PlanPayTime()
 	case bidexpense.FieldApprovalStatus:
 		return m.ApprovalStatus()
 	case bidexpense.FieldDone:
 		return m.Done()
-	case bidexpense.FieldCreateAt:
-		return m.CreateAt()
-	case bidexpense.FieldCreateBy:
-		return m.CreateBy()
-	case bidexpense.FieldUpdateAt:
-		return m.UpdateAt()
-	case bidexpense.FieldUpdateBy:
-		return m.UpdateBy()
+	case bidexpense.FieldCreatedAt:
+		return m.CreatedAt()
+	case bidexpense.FieldCreatedBy:
+		return m.CreatedBy()
+	case bidexpense.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case bidexpense.FieldUpdatedBy:
+		return m.UpdatedBy()
 	}
 	return nil, false
 }
@@ -3050,20 +3160,24 @@ func (m *BidExpenseMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldPayRemark(ctx)
 	case bidexpense.FieldPayMethod:
 		return m.OldPayMethod(ctx)
+	case bidexpense.FieldTransferInstructions:
+		return m.OldTransferInstructions(ctx)
+	case bidexpense.FieldGuaranteeDeadline:
+		return m.OldGuaranteeDeadline(ctx)
 	case bidexpense.FieldPlanPayTime:
 		return m.OldPlanPayTime(ctx)
 	case bidexpense.FieldApprovalStatus:
 		return m.OldApprovalStatus(ctx)
 	case bidexpense.FieldDone:
 		return m.OldDone(ctx)
-	case bidexpense.FieldCreateAt:
-		return m.OldCreateAt(ctx)
-	case bidexpense.FieldCreateBy:
-		return m.OldCreateBy(ctx)
-	case bidexpense.FieldUpdateAt:
-		return m.OldUpdateAt(ctx)
-	case bidexpense.FieldUpdateBy:
-		return m.OldUpdateBy(ctx)
+	case bidexpense.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case bidexpense.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case bidexpense.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case bidexpense.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
 	}
 	return nil, fmt.Errorf("unknown BidExpense field %s", name)
 }
@@ -3206,6 +3320,20 @@ func (m *BidExpenseMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPayMethod(v)
 		return nil
+	case bidexpense.FieldTransferInstructions:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTransferInstructions(v)
+		return nil
+	case bidexpense.FieldGuaranteeDeadline:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGuaranteeDeadline(v)
+		return nil
 	case bidexpense.FieldPlanPayTime:
 		v, ok := value.(time.Time)
 		if !ok {
@@ -3227,33 +3355,33 @@ func (m *BidExpenseMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDone(v)
 		return nil
-	case bidexpense.FieldCreateAt:
+	case bidexpense.FieldCreatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCreateAt(v)
+		m.SetCreatedAt(v)
 		return nil
-	case bidexpense.FieldCreateBy:
+	case bidexpense.FieldCreatedBy:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCreateBy(v)
+		m.SetCreatedBy(v)
 		return nil
-	case bidexpense.FieldUpdateAt:
+	case bidexpense.FieldUpdatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUpdateAt(v)
+		m.SetUpdatedAt(v)
 		return nil
-	case bidexpense.FieldUpdateBy:
+	case bidexpense.FieldUpdatedBy:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUpdateBy(v)
+		m.SetUpdatedBy(v)
 		return nil
 	}
 	return fmt.Errorf("unknown BidExpense field %s", name)
@@ -3330,14 +3458,20 @@ func (m *BidExpenseMutation) ClearedFields() []string {
 	if m.FieldCleared(bidexpense.FieldPayMethod) {
 		fields = append(fields, bidexpense.FieldPayMethod)
 	}
+	if m.FieldCleared(bidexpense.FieldTransferInstructions) {
+		fields = append(fields, bidexpense.FieldTransferInstructions)
+	}
+	if m.FieldCleared(bidexpense.FieldGuaranteeDeadline) {
+		fields = append(fields, bidexpense.FieldGuaranteeDeadline)
+	}
 	if m.FieldCleared(bidexpense.FieldPlanPayTime) {
 		fields = append(fields, bidexpense.FieldPlanPayTime)
 	}
-	if m.FieldCleared(bidexpense.FieldCreateBy) {
-		fields = append(fields, bidexpense.FieldCreateBy)
+	if m.FieldCleared(bidexpense.FieldCreatedBy) {
+		fields = append(fields, bidexpense.FieldCreatedBy)
 	}
-	if m.FieldCleared(bidexpense.FieldUpdateBy) {
-		fields = append(fields, bidexpense.FieldUpdateBy)
+	if m.FieldCleared(bidexpense.FieldUpdatedBy) {
+		fields = append(fields, bidexpense.FieldUpdatedBy)
 	}
 	return fields
 }
@@ -3371,14 +3505,20 @@ func (m *BidExpenseMutation) ClearField(name string) error {
 	case bidexpense.FieldPayMethod:
 		m.ClearPayMethod()
 		return nil
+	case bidexpense.FieldTransferInstructions:
+		m.ClearTransferInstructions()
+		return nil
+	case bidexpense.FieldGuaranteeDeadline:
+		m.ClearGuaranteeDeadline()
+		return nil
 	case bidexpense.FieldPlanPayTime:
 		m.ClearPlanPayTime()
 		return nil
-	case bidexpense.FieldCreateBy:
-		m.ClearCreateBy()
+	case bidexpense.FieldCreatedBy:
+		m.ClearCreatedBy()
 		return nil
-	case bidexpense.FieldUpdateBy:
-		m.ClearUpdateBy()
+	case bidexpense.FieldUpdatedBy:
+		m.ClearUpdatedBy()
 		return nil
 	}
 	return fmt.Errorf("unknown BidExpense nullable field %s", name)
@@ -3445,6 +3585,12 @@ func (m *BidExpenseMutation) ResetField(name string) error {
 	case bidexpense.FieldPayMethod:
 		m.ResetPayMethod()
 		return nil
+	case bidexpense.FieldTransferInstructions:
+		m.ResetTransferInstructions()
+		return nil
+	case bidexpense.FieldGuaranteeDeadline:
+		m.ResetGuaranteeDeadline()
+		return nil
 	case bidexpense.FieldPlanPayTime:
 		m.ResetPlanPayTime()
 		return nil
@@ -3454,17 +3600,17 @@ func (m *BidExpenseMutation) ResetField(name string) error {
 	case bidexpense.FieldDone:
 		m.ResetDone()
 		return nil
-	case bidexpense.FieldCreateAt:
-		m.ResetCreateAt()
+	case bidexpense.FieldCreatedAt:
+		m.ResetCreatedAt()
 		return nil
-	case bidexpense.FieldCreateBy:
-		m.ResetCreateBy()
+	case bidexpense.FieldCreatedBy:
+		m.ResetCreatedBy()
 		return nil
-	case bidexpense.FieldUpdateAt:
-		m.ResetUpdateAt()
+	case bidexpense.FieldUpdatedAt:
+		m.ResetUpdatedAt()
 		return nil
-	case bidexpense.FieldUpdateBy:
-		m.ResetUpdateBy()
+	case bidexpense.FieldUpdatedBy:
+		m.ResetUpdatedBy()
 		return nil
 	}
 	return fmt.Errorf("unknown BidExpense field %s", name)
@@ -3567,10 +3713,10 @@ type BidInfoMutation struct {
 	contract_no         *string
 	contract_sign_date  *time.Time
 	remark              *string
-	create_at           *time.Time
-	create_by           *string
-	update_at           *time.Time
-	update_by           *string
+	created_at          *time.Time
+	created_by          *string
+	updated_at          *time.Time
+	updated_by          *string
 	clearedFields       map[string]struct{}
 	project             *string
 	clearedproject      bool
@@ -4332,174 +4478,174 @@ func (m *BidInfoMutation) ResetRemark() {
 	delete(m.clearedFields, bidinfo.FieldRemark)
 }
 
-// SetCreateAt sets the "create_at" field.
-func (m *BidInfoMutation) SetCreateAt(t time.Time) {
-	m.create_at = &t
+// SetCreatedAt sets the "created_at" field.
+func (m *BidInfoMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
 }
 
-// CreateAt returns the value of the "create_at" field in the mutation.
-func (m *BidInfoMutation) CreateAt() (r time.Time, exists bool) {
-	v := m.create_at
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *BidInfoMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreateAt returns the old "create_at" field's value of the BidInfo entity.
+// OldCreatedAt returns the old "created_at" field's value of the BidInfo entity.
 // If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidInfoMutation) OldCreateAt(ctx context.Context) (v time.Time, err error) {
+func (m *BidInfoMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreateAt is only allowed on UpdateOne operations")
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreateAt requires an ID field in the mutation")
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreateAt: %w", err)
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
 	}
-	return oldValue.CreateAt, nil
+	return oldValue.CreatedAt, nil
 }
 
-// ResetCreateAt resets all changes to the "create_at" field.
-func (m *BidInfoMutation) ResetCreateAt() {
-	m.create_at = nil
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *BidInfoMutation) ResetCreatedAt() {
+	m.created_at = nil
 }
 
-// SetCreateBy sets the "create_by" field.
-func (m *BidInfoMutation) SetCreateBy(s string) {
-	m.create_by = &s
+// SetCreatedBy sets the "created_by" field.
+func (m *BidInfoMutation) SetCreatedBy(s string) {
+	m.created_by = &s
 }
 
-// CreateBy returns the value of the "create_by" field in the mutation.
-func (m *BidInfoMutation) CreateBy() (r string, exists bool) {
-	v := m.create_by
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *BidInfoMutation) CreatedBy() (r string, exists bool) {
+	v := m.created_by
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreateBy returns the old "create_by" field's value of the BidInfo entity.
+// OldCreatedBy returns the old "created_by" field's value of the BidInfo entity.
 // If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidInfoMutation) OldCreateBy(ctx context.Context) (v *string, err error) {
+func (m *BidInfoMutation) OldCreatedBy(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreateBy is only allowed on UpdateOne operations")
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreateBy requires an ID field in the mutation")
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreateBy: %w", err)
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
 	}
-	return oldValue.CreateBy, nil
+	return oldValue.CreatedBy, nil
 }
 
-// ClearCreateBy clears the value of the "create_by" field.
-func (m *BidInfoMutation) ClearCreateBy() {
-	m.create_by = nil
-	m.clearedFields[bidinfo.FieldCreateBy] = struct{}{}
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *BidInfoMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.clearedFields[bidinfo.FieldCreatedBy] = struct{}{}
 }
 
-// CreateByCleared returns if the "create_by" field was cleared in this mutation.
-func (m *BidInfoMutation) CreateByCleared() bool {
-	_, ok := m.clearedFields[bidinfo.FieldCreateBy]
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *BidInfoMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[bidinfo.FieldCreatedBy]
 	return ok
 }
 
-// ResetCreateBy resets all changes to the "create_by" field.
-func (m *BidInfoMutation) ResetCreateBy() {
-	m.create_by = nil
-	delete(m.clearedFields, bidinfo.FieldCreateBy)
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *BidInfoMutation) ResetCreatedBy() {
+	m.created_by = nil
+	delete(m.clearedFields, bidinfo.FieldCreatedBy)
 }
 
-// SetUpdateAt sets the "update_at" field.
-func (m *BidInfoMutation) SetUpdateAt(t time.Time) {
-	m.update_at = &t
+// SetUpdatedAt sets the "updated_at" field.
+func (m *BidInfoMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
 }
 
-// UpdateAt returns the value of the "update_at" field in the mutation.
-func (m *BidInfoMutation) UpdateAt() (r time.Time, exists bool) {
-	v := m.update_at
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *BidInfoMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdateAt returns the old "update_at" field's value of the BidInfo entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the BidInfo entity.
 // If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidInfoMutation) OldUpdateAt(ctx context.Context) (v time.Time, err error) {
+func (m *BidInfoMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdateAt is only allowed on UpdateOne operations")
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdateAt requires an ID field in the mutation")
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdateAt: %w", err)
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
 	}
-	return oldValue.UpdateAt, nil
+	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdateAt resets all changes to the "update_at" field.
-func (m *BidInfoMutation) ResetUpdateAt() {
-	m.update_at = nil
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *BidInfoMutation) ResetUpdatedAt() {
+	m.updated_at = nil
 }
 
-// SetUpdateBy sets the "update_by" field.
-func (m *BidInfoMutation) SetUpdateBy(s string) {
-	m.update_by = &s
+// SetUpdatedBy sets the "updated_by" field.
+func (m *BidInfoMutation) SetUpdatedBy(s string) {
+	m.updated_by = &s
 }
 
-// UpdateBy returns the value of the "update_by" field in the mutation.
-func (m *BidInfoMutation) UpdateBy() (r string, exists bool) {
-	v := m.update_by
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *BidInfoMutation) UpdatedBy() (r string, exists bool) {
+	v := m.updated_by
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdateBy returns the old "update_by" field's value of the BidInfo entity.
+// OldUpdatedBy returns the old "updated_by" field's value of the BidInfo entity.
 // If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidInfoMutation) OldUpdateBy(ctx context.Context) (v *string, err error) {
+func (m *BidInfoMutation) OldUpdatedBy(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdateBy is only allowed on UpdateOne operations")
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdateBy requires an ID field in the mutation")
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdateBy: %w", err)
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
 	}
-	return oldValue.UpdateBy, nil
+	return oldValue.UpdatedBy, nil
 }
 
-// ClearUpdateBy clears the value of the "update_by" field.
-func (m *BidInfoMutation) ClearUpdateBy() {
-	m.update_by = nil
-	m.clearedFields[bidinfo.FieldUpdateBy] = struct{}{}
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *BidInfoMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.clearedFields[bidinfo.FieldUpdatedBy] = struct{}{}
 }
 
-// UpdateByCleared returns if the "update_by" field was cleared in this mutation.
-func (m *BidInfoMutation) UpdateByCleared() bool {
-	_, ok := m.clearedFields[bidinfo.FieldUpdateBy]
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *BidInfoMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[bidinfo.FieldUpdatedBy]
 	return ok
 }
 
-// ResetUpdateBy resets all changes to the "update_by" field.
-func (m *BidInfoMutation) ResetUpdateBy() {
-	m.update_by = nil
-	delete(m.clearedFields, bidinfo.FieldUpdateBy)
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *BidInfoMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	delete(m.clearedFields, bidinfo.FieldUpdatedBy)
 }
 
 // ClearProject clears the "project" edge to the BidProject entity.
@@ -4606,17 +4752,17 @@ func (m *BidInfoMutation) Fields() []string {
 	if m.remark != nil {
 		fields = append(fields, bidinfo.FieldRemark)
 	}
-	if m.create_at != nil {
-		fields = append(fields, bidinfo.FieldCreateAt)
+	if m.created_at != nil {
+		fields = append(fields, bidinfo.FieldCreatedAt)
 	}
-	if m.create_by != nil {
-		fields = append(fields, bidinfo.FieldCreateBy)
+	if m.created_by != nil {
+		fields = append(fields, bidinfo.FieldCreatedBy)
 	}
-	if m.update_at != nil {
-		fields = append(fields, bidinfo.FieldUpdateAt)
+	if m.updated_at != nil {
+		fields = append(fields, bidinfo.FieldUpdatedAt)
 	}
-	if m.update_by != nil {
-		fields = append(fields, bidinfo.FieldUpdateBy)
+	if m.updated_by != nil {
+		fields = append(fields, bidinfo.FieldUpdatedBy)
 	}
 	return fields
 }
@@ -4654,14 +4800,14 @@ func (m *BidInfoMutation) Field(name string) (ent.Value, bool) {
 		return m.ContractSignDate()
 	case bidinfo.FieldRemark:
 		return m.Remark()
-	case bidinfo.FieldCreateAt:
-		return m.CreateAt()
-	case bidinfo.FieldCreateBy:
-		return m.CreateBy()
-	case bidinfo.FieldUpdateAt:
-		return m.UpdateAt()
-	case bidinfo.FieldUpdateBy:
-		return m.UpdateBy()
+	case bidinfo.FieldCreatedAt:
+		return m.CreatedAt()
+	case bidinfo.FieldCreatedBy:
+		return m.CreatedBy()
+	case bidinfo.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case bidinfo.FieldUpdatedBy:
+		return m.UpdatedBy()
 	}
 	return nil, false
 }
@@ -4699,14 +4845,14 @@ func (m *BidInfoMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldContractSignDate(ctx)
 	case bidinfo.FieldRemark:
 		return m.OldRemark(ctx)
-	case bidinfo.FieldCreateAt:
-		return m.OldCreateAt(ctx)
-	case bidinfo.FieldCreateBy:
-		return m.OldCreateBy(ctx)
-	case bidinfo.FieldUpdateAt:
-		return m.OldUpdateAt(ctx)
-	case bidinfo.FieldUpdateBy:
-		return m.OldUpdateBy(ctx)
+	case bidinfo.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case bidinfo.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case bidinfo.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case bidinfo.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
 	}
 	return nil, fmt.Errorf("unknown BidInfo field %s", name)
 }
@@ -4814,33 +4960,33 @@ func (m *BidInfoMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetRemark(v)
 		return nil
-	case bidinfo.FieldCreateAt:
+	case bidinfo.FieldCreatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCreateAt(v)
+		m.SetCreatedAt(v)
 		return nil
-	case bidinfo.FieldCreateBy:
+	case bidinfo.FieldCreatedBy:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCreateBy(v)
+		m.SetCreatedBy(v)
 		return nil
-	case bidinfo.FieldUpdateAt:
+	case bidinfo.FieldUpdatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUpdateAt(v)
+		m.SetUpdatedAt(v)
 		return nil
-	case bidinfo.FieldUpdateBy:
+	case bidinfo.FieldUpdatedBy:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUpdateBy(v)
+		m.SetUpdatedBy(v)
 		return nil
 	}
 	return fmt.Errorf("unknown BidInfo field %s", name)
@@ -4938,11 +5084,11 @@ func (m *BidInfoMutation) ClearedFields() []string {
 	if m.FieldCleared(bidinfo.FieldRemark) {
 		fields = append(fields, bidinfo.FieldRemark)
 	}
-	if m.FieldCleared(bidinfo.FieldCreateBy) {
-		fields = append(fields, bidinfo.FieldCreateBy)
+	if m.FieldCleared(bidinfo.FieldCreatedBy) {
+		fields = append(fields, bidinfo.FieldCreatedBy)
 	}
-	if m.FieldCleared(bidinfo.FieldUpdateBy) {
-		fields = append(fields, bidinfo.FieldUpdateBy)
+	if m.FieldCleared(bidinfo.FieldUpdatedBy) {
+		fields = append(fields, bidinfo.FieldUpdatedBy)
 	}
 	return fields
 }
@@ -4973,11 +5119,11 @@ func (m *BidInfoMutation) ClearField(name string) error {
 	case bidinfo.FieldRemark:
 		m.ClearRemark()
 		return nil
-	case bidinfo.FieldCreateBy:
-		m.ClearCreateBy()
+	case bidinfo.FieldCreatedBy:
+		m.ClearCreatedBy()
 		return nil
-	case bidinfo.FieldUpdateBy:
-		m.ClearUpdateBy()
+	case bidinfo.FieldUpdatedBy:
+		m.ClearUpdatedBy()
 		return nil
 	}
 	return fmt.Errorf("unknown BidInfo nullable field %s", name)
@@ -5029,17 +5175,17 @@ func (m *BidInfoMutation) ResetField(name string) error {
 	case bidinfo.FieldRemark:
 		m.ResetRemark()
 		return nil
-	case bidinfo.FieldCreateAt:
-		m.ResetCreateAt()
+	case bidinfo.FieldCreatedAt:
+		m.ResetCreatedAt()
 		return nil
-	case bidinfo.FieldCreateBy:
-		m.ResetCreateBy()
+	case bidinfo.FieldCreatedBy:
+		m.ResetCreatedBy()
 		return nil
-	case bidinfo.FieldUpdateAt:
-		m.ResetUpdateAt()
+	case bidinfo.FieldUpdatedAt:
+		m.ResetUpdatedAt()
 		return nil
-	case bidinfo.FieldUpdateBy:
-		m.ResetUpdateBy()
+	case bidinfo.FieldUpdatedBy:
+		m.ResetUpdatedBy()
 		return nil
 	}
 	return fmt.Errorf("unknown BidInfo field %s", name)
@@ -5135,10 +5281,10 @@ type BidProjectMutation struct {
 	source          *bidproject.Source
 	source_id       *string
 	remark          *string
-	create_at       *time.Time
-	create_by       *string
-	update_at       *time.Time
-	update_by       *string
+	created_at      *time.Time
+	created_by      *string
+	updated_at      *time.Time
+	updated_by      *string
 	clearedFields   map[string]struct{}
 	apply           *string
 	clearedapply    bool
@@ -5643,174 +5789,174 @@ func (m *BidProjectMutation) ResetRemark() {
 	delete(m.clearedFields, bidproject.FieldRemark)
 }
 
-// SetCreateAt sets the "create_at" field.
-func (m *BidProjectMutation) SetCreateAt(t time.Time) {
-	m.create_at = &t
+// SetCreatedAt sets the "created_at" field.
+func (m *BidProjectMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
 }
 
-// CreateAt returns the value of the "create_at" field in the mutation.
-func (m *BidProjectMutation) CreateAt() (r time.Time, exists bool) {
-	v := m.create_at
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *BidProjectMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreateAt returns the old "create_at" field's value of the BidProject entity.
+// OldCreatedAt returns the old "created_at" field's value of the BidProject entity.
 // If the BidProject object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidProjectMutation) OldCreateAt(ctx context.Context) (v time.Time, err error) {
+func (m *BidProjectMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreateAt is only allowed on UpdateOne operations")
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreateAt requires an ID field in the mutation")
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreateAt: %w", err)
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
 	}
-	return oldValue.CreateAt, nil
+	return oldValue.CreatedAt, nil
 }
 
-// ResetCreateAt resets all changes to the "create_at" field.
-func (m *BidProjectMutation) ResetCreateAt() {
-	m.create_at = nil
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *BidProjectMutation) ResetCreatedAt() {
+	m.created_at = nil
 }
 
-// SetCreateBy sets the "create_by" field.
-func (m *BidProjectMutation) SetCreateBy(s string) {
-	m.create_by = &s
+// SetCreatedBy sets the "created_by" field.
+func (m *BidProjectMutation) SetCreatedBy(s string) {
+	m.created_by = &s
 }
 
-// CreateBy returns the value of the "create_by" field in the mutation.
-func (m *BidProjectMutation) CreateBy() (r string, exists bool) {
-	v := m.create_by
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *BidProjectMutation) CreatedBy() (r string, exists bool) {
+	v := m.created_by
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldCreateBy returns the old "create_by" field's value of the BidProject entity.
+// OldCreatedBy returns the old "created_by" field's value of the BidProject entity.
 // If the BidProject object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidProjectMutation) OldCreateBy(ctx context.Context) (v *string, err error) {
+func (m *BidProjectMutation) OldCreatedBy(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreateBy is only allowed on UpdateOne operations")
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreateBy requires an ID field in the mutation")
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreateBy: %w", err)
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
 	}
-	return oldValue.CreateBy, nil
+	return oldValue.CreatedBy, nil
 }
 
-// ClearCreateBy clears the value of the "create_by" field.
-func (m *BidProjectMutation) ClearCreateBy() {
-	m.create_by = nil
-	m.clearedFields[bidproject.FieldCreateBy] = struct{}{}
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *BidProjectMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.clearedFields[bidproject.FieldCreatedBy] = struct{}{}
 }
 
-// CreateByCleared returns if the "create_by" field was cleared in this mutation.
-func (m *BidProjectMutation) CreateByCleared() bool {
-	_, ok := m.clearedFields[bidproject.FieldCreateBy]
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *BidProjectMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[bidproject.FieldCreatedBy]
 	return ok
 }
 
-// ResetCreateBy resets all changes to the "create_by" field.
-func (m *BidProjectMutation) ResetCreateBy() {
-	m.create_by = nil
-	delete(m.clearedFields, bidproject.FieldCreateBy)
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *BidProjectMutation) ResetCreatedBy() {
+	m.created_by = nil
+	delete(m.clearedFields, bidproject.FieldCreatedBy)
 }
 
-// SetUpdateAt sets the "update_at" field.
-func (m *BidProjectMutation) SetUpdateAt(t time.Time) {
-	m.update_at = &t
+// SetUpdatedAt sets the "updated_at" field.
+func (m *BidProjectMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
 }
 
-// UpdateAt returns the value of the "update_at" field in the mutation.
-func (m *BidProjectMutation) UpdateAt() (r time.Time, exists bool) {
-	v := m.update_at
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *BidProjectMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdateAt returns the old "update_at" field's value of the BidProject entity.
+// OldUpdatedAt returns the old "updated_at" field's value of the BidProject entity.
 // If the BidProject object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidProjectMutation) OldUpdateAt(ctx context.Context) (v time.Time, err error) {
+func (m *BidProjectMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdateAt is only allowed on UpdateOne operations")
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdateAt requires an ID field in the mutation")
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdateAt: %w", err)
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
 	}
-	return oldValue.UpdateAt, nil
+	return oldValue.UpdatedAt, nil
 }
 
-// ResetUpdateAt resets all changes to the "update_at" field.
-func (m *BidProjectMutation) ResetUpdateAt() {
-	m.update_at = nil
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *BidProjectMutation) ResetUpdatedAt() {
+	m.updated_at = nil
 }
 
-// SetUpdateBy sets the "update_by" field.
-func (m *BidProjectMutation) SetUpdateBy(s string) {
-	m.update_by = &s
+// SetUpdatedBy sets the "updated_by" field.
+func (m *BidProjectMutation) SetUpdatedBy(s string) {
+	m.updated_by = &s
 }
 
-// UpdateBy returns the value of the "update_by" field in the mutation.
-func (m *BidProjectMutation) UpdateBy() (r string, exists bool) {
-	v := m.update_by
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *BidProjectMutation) UpdatedBy() (r string, exists bool) {
+	v := m.updated_by
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldUpdateBy returns the old "update_by" field's value of the BidProject entity.
+// OldUpdatedBy returns the old "updated_by" field's value of the BidProject entity.
 // If the BidProject object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidProjectMutation) OldUpdateBy(ctx context.Context) (v *string, err error) {
+func (m *BidProjectMutation) OldUpdatedBy(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdateBy is only allowed on UpdateOne operations")
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdateBy requires an ID field in the mutation")
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdateBy: %w", err)
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
 	}
-	return oldValue.UpdateBy, nil
+	return oldValue.UpdatedBy, nil
 }
 
-// ClearUpdateBy clears the value of the "update_by" field.
-func (m *BidProjectMutation) ClearUpdateBy() {
-	m.update_by = nil
-	m.clearedFields[bidproject.FieldUpdateBy] = struct{}{}
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *BidProjectMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.clearedFields[bidproject.FieldUpdatedBy] = struct{}{}
 }
 
-// UpdateByCleared returns if the "update_by" field was cleared in this mutation.
-func (m *BidProjectMutation) UpdateByCleared() bool {
-	_, ok := m.clearedFields[bidproject.FieldUpdateBy]
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *BidProjectMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[bidproject.FieldUpdatedBy]
 	return ok
 }
 
-// ResetUpdateBy resets all changes to the "update_by" field.
-func (m *BidProjectMutation) ResetUpdateBy() {
-	m.update_by = nil
-	delete(m.clearedFields, bidproject.FieldUpdateBy)
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *BidProjectMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	delete(m.clearedFields, bidproject.FieldUpdatedBy)
 }
 
 // SetApplyID sets the "apply" edge to the BidApply entity by id.
@@ -6025,17 +6171,17 @@ func (m *BidProjectMutation) Fields() []string {
 	if m.remark != nil {
 		fields = append(fields, bidproject.FieldRemark)
 	}
-	if m.create_at != nil {
-		fields = append(fields, bidproject.FieldCreateAt)
+	if m.created_at != nil {
+		fields = append(fields, bidproject.FieldCreatedAt)
 	}
-	if m.create_by != nil {
-		fields = append(fields, bidproject.FieldCreateBy)
+	if m.created_by != nil {
+		fields = append(fields, bidproject.FieldCreatedBy)
 	}
-	if m.update_at != nil {
-		fields = append(fields, bidproject.FieldUpdateAt)
+	if m.updated_at != nil {
+		fields = append(fields, bidproject.FieldUpdatedAt)
 	}
-	if m.update_by != nil {
-		fields = append(fields, bidproject.FieldUpdateBy)
+	if m.updated_by != nil {
+		fields = append(fields, bidproject.FieldUpdatedBy)
 	}
 	return fields
 }
@@ -6065,14 +6211,14 @@ func (m *BidProjectMutation) Field(name string) (ent.Value, bool) {
 		return m.SourceID()
 	case bidproject.FieldRemark:
 		return m.Remark()
-	case bidproject.FieldCreateAt:
-		return m.CreateAt()
-	case bidproject.FieldCreateBy:
-		return m.CreateBy()
-	case bidproject.FieldUpdateAt:
-		return m.UpdateAt()
-	case bidproject.FieldUpdateBy:
-		return m.UpdateBy()
+	case bidproject.FieldCreatedAt:
+		return m.CreatedAt()
+	case bidproject.FieldCreatedBy:
+		return m.CreatedBy()
+	case bidproject.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case bidproject.FieldUpdatedBy:
+		return m.UpdatedBy()
 	}
 	return nil, false
 }
@@ -6102,14 +6248,14 @@ func (m *BidProjectMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldSourceID(ctx)
 	case bidproject.FieldRemark:
 		return m.OldRemark(ctx)
-	case bidproject.FieldCreateAt:
-		return m.OldCreateAt(ctx)
-	case bidproject.FieldCreateBy:
-		return m.OldCreateBy(ctx)
-	case bidproject.FieldUpdateAt:
-		return m.OldUpdateAt(ctx)
-	case bidproject.FieldUpdateBy:
-		return m.OldUpdateBy(ctx)
+	case bidproject.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case bidproject.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case bidproject.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case bidproject.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
 	}
 	return nil, fmt.Errorf("unknown BidProject field %s", name)
 }
@@ -6189,33 +6335,33 @@ func (m *BidProjectMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetRemark(v)
 		return nil
-	case bidproject.FieldCreateAt:
+	case bidproject.FieldCreatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCreateAt(v)
+		m.SetCreatedAt(v)
 		return nil
-	case bidproject.FieldCreateBy:
+	case bidproject.FieldCreatedBy:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCreateBy(v)
+		m.SetCreatedBy(v)
 		return nil
-	case bidproject.FieldUpdateAt:
+	case bidproject.FieldUpdatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUpdateAt(v)
+		m.SetUpdatedAt(v)
 		return nil
-	case bidproject.FieldUpdateBy:
+	case bidproject.FieldUpdatedBy:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetUpdateBy(v)
+		m.SetUpdatedBy(v)
 		return nil
 	}
 	return fmt.Errorf("unknown BidProject field %s", name)
@@ -6253,11 +6399,11 @@ func (m *BidProjectMutation) ClearedFields() []string {
 	if m.FieldCleared(bidproject.FieldRemark) {
 		fields = append(fields, bidproject.FieldRemark)
 	}
-	if m.FieldCleared(bidproject.FieldCreateBy) {
-		fields = append(fields, bidproject.FieldCreateBy)
+	if m.FieldCleared(bidproject.FieldCreatedBy) {
+		fields = append(fields, bidproject.FieldCreatedBy)
 	}
-	if m.FieldCleared(bidproject.FieldUpdateBy) {
-		fields = append(fields, bidproject.FieldUpdateBy)
+	if m.FieldCleared(bidproject.FieldUpdatedBy) {
+		fields = append(fields, bidproject.FieldUpdatedBy)
 	}
 	return fields
 }
@@ -6279,11 +6425,11 @@ func (m *BidProjectMutation) ClearField(name string) error {
 	case bidproject.FieldRemark:
 		m.ClearRemark()
 		return nil
-	case bidproject.FieldCreateBy:
-		m.ClearCreateBy()
+	case bidproject.FieldCreatedBy:
+		m.ClearCreatedBy()
 		return nil
-	case bidproject.FieldUpdateBy:
-		m.ClearUpdateBy()
+	case bidproject.FieldUpdatedBy:
+		m.ClearUpdatedBy()
 		return nil
 	}
 	return fmt.Errorf("unknown BidProject nullable field %s", name)
@@ -6323,17 +6469,17 @@ func (m *BidProjectMutation) ResetField(name string) error {
 	case bidproject.FieldRemark:
 		m.ResetRemark()
 		return nil
-	case bidproject.FieldCreateAt:
-		m.ResetCreateAt()
+	case bidproject.FieldCreatedAt:
+		m.ResetCreatedAt()
 		return nil
-	case bidproject.FieldCreateBy:
-		m.ResetCreateBy()
+	case bidproject.FieldCreatedBy:
+		m.ResetCreatedBy()
 		return nil
-	case bidproject.FieldUpdateAt:
-		m.ResetUpdateAt()
+	case bidproject.FieldUpdatedAt:
+		m.ResetUpdatedAt()
 		return nil
-	case bidproject.FieldUpdateBy:
-		m.ResetUpdateBy()
+	case bidproject.FieldUpdatedBy:
+		m.ResetUpdatedBy()
 		return nil
 	}
 	return fmt.Errorf("unknown BidProject field %s", name)

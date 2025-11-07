@@ -53,20 +53,24 @@ const (
 	FieldPayRemark = "pay_remark"
 	// FieldPayMethod holds the string denoting the pay_method field in the database.
 	FieldPayMethod = "pay_method"
+	// FieldTransferInstructions holds the string denoting the transfer_instructions field in the database.
+	FieldTransferInstructions = "transfer_instructions"
+	// FieldGuaranteeDeadline holds the string denoting the guarantee_deadline field in the database.
+	FieldGuaranteeDeadline = "guarantee_deadline"
 	// FieldPlanPayTime holds the string denoting the plan_pay_time field in the database.
 	FieldPlanPayTime = "plan_pay_time"
 	// FieldApprovalStatus holds the string denoting the approval_status field in the database.
 	FieldApprovalStatus = "approval_status"
 	// FieldDone holds the string denoting the done field in the database.
 	FieldDone = "done"
-	// FieldCreateAt holds the string denoting the create_at field in the database.
-	FieldCreateAt = "create_at"
-	// FieldCreateBy holds the string denoting the create_by field in the database.
-	FieldCreateBy = "create_by"
-	// FieldUpdateAt holds the string denoting the update_at field in the database.
-	FieldUpdateAt = "update_at"
-	// FieldUpdateBy holds the string denoting the update_by field in the database.
-	FieldUpdateBy = "update_by"
+	// FieldCreatedAt holds the string denoting the created_at field in the database.
+	FieldCreatedAt = "created_at"
+	// FieldCreatedBy holds the string denoting the created_by field in the database.
+	FieldCreatedBy = "created_by"
+	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
+	FieldUpdatedAt = "updated_at"
+	// FieldUpdatedBy holds the string denoting the updated_by field in the database.
+	FieldUpdatedBy = "updated_by"
 	// EdgeProject holds the string denoting the project edge name in mutations.
 	EdgeProject = "project"
 	// Table holds the table name of the bidexpense in the database.
@@ -102,13 +106,15 @@ var Columns = []string{
 	FieldPayAmount,
 	FieldPayRemark,
 	FieldPayMethod,
+	FieldTransferInstructions,
+	FieldGuaranteeDeadline,
 	FieldPlanPayTime,
 	FieldApprovalStatus,
 	FieldDone,
-	FieldCreateAt,
-	FieldCreateBy,
-	FieldUpdateAt,
-	FieldUpdateBy,
+	FieldCreatedAt,
+	FieldCreatedBy,
+	FieldUpdatedAt,
+	FieldUpdatedBy,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -154,18 +160,20 @@ var (
 	DefaultPayAmount float64
 	// PayMethodValidator is a validator for the "pay_method" field. It is called by the builders before save.
 	PayMethodValidator func(string) error
+	// TransferInstructionsValidator is a validator for the "transfer_instructions" field. It is called by the builders before save.
+	TransferInstructionsValidator func(string) error
 	// DefaultDone holds the default value on creation for the "done" field.
 	DefaultDone bool
-	// DefaultCreateAt holds the default value on creation for the "create_at" field.
-	DefaultCreateAt func() time.Time
-	// CreateByValidator is a validator for the "create_by" field. It is called by the builders before save.
-	CreateByValidator func(string) error
-	// DefaultUpdateAt holds the default value on creation for the "update_at" field.
-	DefaultUpdateAt func() time.Time
-	// UpdateDefaultUpdateAt holds the default value on update for the "update_at" field.
-	UpdateDefaultUpdateAt func() time.Time
-	// UpdateByValidator is a validator for the "update_by" field. It is called by the builders before save.
-	UpdateByValidator func(string) error
+	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
+	DefaultCreatedAt func() time.Time
+	// CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
+	CreatedByValidator func(string) error
+	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
+	DefaultUpdatedAt func() time.Time
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
+	UpdateDefaultUpdatedAt func() time.Time
+	// UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
+	UpdatedByValidator func(string) error
 	// IDValidator is a validator for the "id" field. It is called by the builders before save.
 	IDValidator func(string) error
 )
@@ -307,6 +315,16 @@ func ByPayMethod(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPayMethod, opts...).ToFunc()
 }
 
+// ByTransferInstructions orders the results by the transfer_instructions field.
+func ByTransferInstructions(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldTransferInstructions, opts...).ToFunc()
+}
+
+// ByGuaranteeDeadline orders the results by the guarantee_deadline field.
+func ByGuaranteeDeadline(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldGuaranteeDeadline, opts...).ToFunc()
+}
+
 // ByPlanPayTime orders the results by the plan_pay_time field.
 func ByPlanPayTime(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPlanPayTime, opts...).ToFunc()
@@ -322,24 +340,24 @@ func ByDone(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDone, opts...).ToFunc()
 }
 
-// ByCreateAt orders the results by the create_at field.
-func ByCreateAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreateAt, opts...).ToFunc()
+// ByCreatedAt orders the results by the created_at field.
+func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByCreateBy orders the results by the create_by field.
-func ByCreateBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreateBy, opts...).ToFunc()
+// ByCreatedBy orders the results by the created_by field.
+func ByCreatedBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreatedBy, opts...).ToFunc()
 }
 
-// ByUpdateAt orders the results by the update_at field.
-func ByUpdateAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdateAt, opts...).ToFunc()
+// ByUpdatedAt orders the results by the updated_at field.
+func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByUpdateBy orders the results by the update_by field.
-func ByUpdateBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdateBy, opts...).ToFunc()
+// ByUpdatedBy orders the results by the updated_by field.
+func ByUpdatedBy(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdatedBy, opts...).ToFunc()
 }
 
 // ByProjectField orders the results by project field.

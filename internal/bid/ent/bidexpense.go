@@ -57,6 +57,10 @@ type BidExpense struct {
 	PayRemark *string `json:"pay_remark,omitempty"`
 	// 付款方式
 	PayMethod *string `json:"pay_method,omitempty"`
+	// 转账说明
+	TransferInstructions *string `json:"transfer_instructions,omitempty"`
+	// 保证期限（保函）
+	GuaranteeDeadline *time.Time `json:"guarantee_deadline,omitempty"`
 	// 预计转账时间
 	PlanPayTime *time.Time `json:"plan_pay_time,omitempty"`
 	// 费用审批状态
@@ -64,13 +68,13 @@ type BidExpense struct {
 	// 审批流程是否已结束
 	Done bool `json:"done,omitempty"`
 	// 创建时间
-	CreateAt time.Time `json:"create_at,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
 	// 创建人
-	CreateBy *string `json:"create_by,omitempty"`
+	CreatedBy *string `json:"created_by,omitempty"`
 	// 更新时间
-	UpdateAt time.Time `json:"update_at,omitempty"`
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// 更新人
-	UpdateBy *string `json:"update_by,omitempty"`
+	UpdatedBy *string `json:"updated_by,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the BidExpenseQuery when eager-loading is set.
 	Edges        BidExpenseEdges `json:"edges"`
@@ -106,9 +110,9 @@ func (*BidExpense) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case bidexpense.FieldPayRatio, bidexpense.FieldPayAmount:
 			values[i] = new(sql.NullFloat64)
-		case bidexpense.FieldID, bidexpense.FieldBusinessID, bidexpense.FieldInstanceID, bidexpense.FieldBillNo, bidexpense.FieldProjectID, bidexpense.FieldProjectName, bidexpense.FieldProjectCode, bidexpense.FieldBizRepName, bidexpense.FieldPurchaser, bidexpense.FieldFeeTypeV1, bidexpense.FieldFeeType, bidexpense.FieldPayReason, bidexpense.FieldPayeeBank, bidexpense.FieldPayeeName, bidexpense.FieldPayeeAccount, bidexpense.FieldPayRemark, bidexpense.FieldPayMethod, bidexpense.FieldApprovalStatus, bidexpense.FieldCreateBy, bidexpense.FieldUpdateBy:
+		case bidexpense.FieldID, bidexpense.FieldBusinessID, bidexpense.FieldInstanceID, bidexpense.FieldBillNo, bidexpense.FieldProjectID, bidexpense.FieldProjectName, bidexpense.FieldProjectCode, bidexpense.FieldBizRepName, bidexpense.FieldPurchaser, bidexpense.FieldFeeTypeV1, bidexpense.FieldFeeType, bidexpense.FieldPayReason, bidexpense.FieldPayeeBank, bidexpense.FieldPayeeName, bidexpense.FieldPayeeAccount, bidexpense.FieldPayRemark, bidexpense.FieldPayMethod, bidexpense.FieldTransferInstructions, bidexpense.FieldApprovalStatus, bidexpense.FieldCreatedBy, bidexpense.FieldUpdatedBy:
 			values[i] = new(sql.NullString)
-		case bidexpense.FieldPlanPayTime, bidexpense.FieldCreateAt, bidexpense.FieldUpdateAt:
+		case bidexpense.FieldGuaranteeDeadline, bidexpense.FieldPlanPayTime, bidexpense.FieldCreatedAt, bidexpense.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -251,6 +255,20 @@ func (_m *BidExpense) assignValues(columns []string, values []any) error {
 				_m.PayMethod = new(string)
 				*_m.PayMethod = value.String
 			}
+		case bidexpense.FieldTransferInstructions:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field transfer_instructions", values[i])
+			} else if value.Valid {
+				_m.TransferInstructions = new(string)
+				*_m.TransferInstructions = value.String
+			}
+		case bidexpense.FieldGuaranteeDeadline:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field guarantee_deadline", values[i])
+			} else if value.Valid {
+				_m.GuaranteeDeadline = new(time.Time)
+				*_m.GuaranteeDeadline = value.Time
+			}
 		case bidexpense.FieldPlanPayTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field plan_pay_time", values[i])
@@ -270,31 +288,31 @@ func (_m *BidExpense) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.Done = value.Bool
 			}
-		case bidexpense.FieldCreateAt:
+		case bidexpense.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field create_at", values[i])
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				_m.CreateAt = value.Time
+				_m.CreatedAt = value.Time
 			}
-		case bidexpense.FieldCreateBy:
+		case bidexpense.FieldCreatedBy:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field create_by", values[i])
+				return fmt.Errorf("unexpected type %T for field created_by", values[i])
 			} else if value.Valid {
-				_m.CreateBy = new(string)
-				*_m.CreateBy = value.String
+				_m.CreatedBy = new(string)
+				*_m.CreatedBy = value.String
 			}
-		case bidexpense.FieldUpdateAt:
+		case bidexpense.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field update_at", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				_m.UpdateAt = value.Time
+				_m.UpdatedAt = value.Time
 			}
-		case bidexpense.FieldUpdateBy:
+		case bidexpense.FieldUpdatedBy:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field update_by", values[i])
+				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
 			} else if value.Valid {
-				_m.UpdateBy = new(string)
-				*_m.UpdateBy = value.String
+				_m.UpdatedBy = new(string)
+				*_m.UpdatedBy = value.String
 			}
 		default:
 			_m.selectValues.Set(columns[i], values[i])
@@ -406,6 +424,16 @@ func (_m *BidExpense) String() string {
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
+	if v := _m.TransferInstructions; v != nil {
+		builder.WriteString("transfer_instructions=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := _m.GuaranteeDeadline; v != nil {
+		builder.WriteString("guarantee_deadline=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
 	if v := _m.PlanPayTime; v != nil {
 		builder.WriteString("plan_pay_time=")
 		builder.WriteString(v.Format(time.ANSIC))
@@ -417,19 +445,19 @@ func (_m *BidExpense) String() string {
 	builder.WriteString("done=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Done))
 	builder.WriteString(", ")
-	builder.WriteString("create_at=")
-	builder.WriteString(_m.CreateAt.Format(time.ANSIC))
+	builder.WriteString("created_at=")
+	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	if v := _m.CreateBy; v != nil {
-		builder.WriteString("create_by=")
+	if v := _m.CreatedBy; v != nil {
+		builder.WriteString("created_by=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	builder.WriteString("update_at=")
-	builder.WriteString(_m.UpdateAt.Format(time.ANSIC))
+	builder.WriteString("updated_at=")
+	builder.WriteString(_m.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	if v := _m.UpdateBy; v != nil {
-		builder.WriteString("update_by=")
+	if v := _m.UpdatedBy; v != nil {
+		builder.WriteString("updated_by=")
 		builder.WriteString(*v)
 	}
 	builder.WriteByte(')')

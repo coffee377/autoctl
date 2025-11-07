@@ -215,6 +215,34 @@ func (_c *BidExpenseCreate) SetNillablePayMethod(v *string) *BidExpenseCreate {
 	return _c
 }
 
+// SetTransferInstructions sets the "transfer_instructions" field.
+func (_c *BidExpenseCreate) SetTransferInstructions(v string) *BidExpenseCreate {
+	_c.mutation.SetTransferInstructions(v)
+	return _c
+}
+
+// SetNillableTransferInstructions sets the "transfer_instructions" field if the given value is not nil.
+func (_c *BidExpenseCreate) SetNillableTransferInstructions(v *string) *BidExpenseCreate {
+	if v != nil {
+		_c.SetTransferInstructions(*v)
+	}
+	return _c
+}
+
+// SetGuaranteeDeadline sets the "guarantee_deadline" field.
+func (_c *BidExpenseCreate) SetGuaranteeDeadline(v time.Time) *BidExpenseCreate {
+	_c.mutation.SetGuaranteeDeadline(v)
+	return _c
+}
+
+// SetNillableGuaranteeDeadline sets the "guarantee_deadline" field if the given value is not nil.
+func (_c *BidExpenseCreate) SetNillableGuaranteeDeadline(v *time.Time) *BidExpenseCreate {
+	if v != nil {
+		_c.SetGuaranteeDeadline(*v)
+	}
+	return _c
+}
+
 // SetPlanPayTime sets the "plan_pay_time" field.
 func (_c *BidExpenseCreate) SetPlanPayTime(v time.Time) *BidExpenseCreate {
 	_c.mutation.SetPlanPayTime(v)
@@ -249,58 +277,58 @@ func (_c *BidExpenseCreate) SetNillableDone(v *bool) *BidExpenseCreate {
 	return _c
 }
 
-// SetCreateAt sets the "create_at" field.
-func (_c *BidExpenseCreate) SetCreateAt(v time.Time) *BidExpenseCreate {
-	_c.mutation.SetCreateAt(v)
+// SetCreatedAt sets the "created_at" field.
+func (_c *BidExpenseCreate) SetCreatedAt(v time.Time) *BidExpenseCreate {
+	_c.mutation.SetCreatedAt(v)
 	return _c
 }
 
-// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
-func (_c *BidExpenseCreate) SetNillableCreateAt(v *time.Time) *BidExpenseCreate {
+// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
+func (_c *BidExpenseCreate) SetNillableCreatedAt(v *time.Time) *BidExpenseCreate {
 	if v != nil {
-		_c.SetCreateAt(*v)
+		_c.SetCreatedAt(*v)
 	}
 	return _c
 }
 
-// SetCreateBy sets the "create_by" field.
-func (_c *BidExpenseCreate) SetCreateBy(v string) *BidExpenseCreate {
-	_c.mutation.SetCreateBy(v)
+// SetCreatedBy sets the "created_by" field.
+func (_c *BidExpenseCreate) SetCreatedBy(v string) *BidExpenseCreate {
+	_c.mutation.SetCreatedBy(v)
 	return _c
 }
 
-// SetNillableCreateBy sets the "create_by" field if the given value is not nil.
-func (_c *BidExpenseCreate) SetNillableCreateBy(v *string) *BidExpenseCreate {
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (_c *BidExpenseCreate) SetNillableCreatedBy(v *string) *BidExpenseCreate {
 	if v != nil {
-		_c.SetCreateBy(*v)
+		_c.SetCreatedBy(*v)
 	}
 	return _c
 }
 
-// SetUpdateAt sets the "update_at" field.
-func (_c *BidExpenseCreate) SetUpdateAt(v time.Time) *BidExpenseCreate {
-	_c.mutation.SetUpdateAt(v)
+// SetUpdatedAt sets the "updated_at" field.
+func (_c *BidExpenseCreate) SetUpdatedAt(v time.Time) *BidExpenseCreate {
+	_c.mutation.SetUpdatedAt(v)
 	return _c
 }
 
-// SetNillableUpdateAt sets the "update_at" field if the given value is not nil.
-func (_c *BidExpenseCreate) SetNillableUpdateAt(v *time.Time) *BidExpenseCreate {
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
+func (_c *BidExpenseCreate) SetNillableUpdatedAt(v *time.Time) *BidExpenseCreate {
 	if v != nil {
-		_c.SetUpdateAt(*v)
+		_c.SetUpdatedAt(*v)
 	}
 	return _c
 }
 
-// SetUpdateBy sets the "update_by" field.
-func (_c *BidExpenseCreate) SetUpdateBy(v string) *BidExpenseCreate {
-	_c.mutation.SetUpdateBy(v)
+// SetUpdatedBy sets the "updated_by" field.
+func (_c *BidExpenseCreate) SetUpdatedBy(v string) *BidExpenseCreate {
+	_c.mutation.SetUpdatedBy(v)
 	return _c
 }
 
-// SetNillableUpdateBy sets the "update_by" field if the given value is not nil.
-func (_c *BidExpenseCreate) SetNillableUpdateBy(v *string) *BidExpenseCreate {
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (_c *BidExpenseCreate) SetNillableUpdatedBy(v *string) *BidExpenseCreate {
 	if v != nil {
-		_c.SetUpdateBy(*v)
+		_c.SetUpdatedBy(*v)
 	}
 	return _c
 }
@@ -371,13 +399,13 @@ func (_c *BidExpenseCreate) defaults() {
 		v := bidexpense.DefaultDone
 		_c.mutation.SetDone(v)
 	}
-	if _, ok := _c.mutation.CreateAt(); !ok {
-		v := bidexpense.DefaultCreateAt()
-		_c.mutation.SetCreateAt(v)
+	if _, ok := _c.mutation.CreatedAt(); !ok {
+		v := bidexpense.DefaultCreatedAt()
+		_c.mutation.SetCreatedAt(v)
 	}
-	if _, ok := _c.mutation.UpdateAt(); !ok {
-		v := bidexpense.DefaultUpdateAt()
-		_c.mutation.SetUpdateAt(v)
+	if _, ok := _c.mutation.UpdatedAt(); !ok {
+		v := bidexpense.DefaultUpdatedAt()
+		_c.mutation.SetUpdatedAt(v)
 	}
 }
 
@@ -492,26 +520,31 @@ func (_c *BidExpenseCreate) check() error {
 			return &ValidationError{Name: "pay_method", err: fmt.Errorf(`ent: validator failed for field "BidExpense.pay_method": %w`, err)}
 		}
 	}
+	if v, ok := _c.mutation.TransferInstructions(); ok {
+		if err := bidexpense.TransferInstructionsValidator(v); err != nil {
+			return &ValidationError{Name: "transfer_instructions", err: fmt.Errorf(`ent: validator failed for field "BidExpense.transfer_instructions": %w`, err)}
+		}
+	}
 	if _, ok := _c.mutation.ApprovalStatus(); !ok {
 		return &ValidationError{Name: "approval_status", err: errors.New(`ent: missing required field "BidExpense.approval_status"`)}
 	}
 	if _, ok := _c.mutation.Done(); !ok {
 		return &ValidationError{Name: "done", err: errors.New(`ent: missing required field "BidExpense.done"`)}
 	}
-	if _, ok := _c.mutation.CreateAt(); !ok {
-		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "BidExpense.create_at"`)}
+	if _, ok := _c.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "BidExpense.created_at"`)}
 	}
-	if v, ok := _c.mutation.CreateBy(); ok {
-		if err := bidexpense.CreateByValidator(v); err != nil {
-			return &ValidationError{Name: "create_by", err: fmt.Errorf(`ent: validator failed for field "BidExpense.create_by": %w`, err)}
+	if v, ok := _c.mutation.CreatedBy(); ok {
+		if err := bidexpense.CreatedByValidator(v); err != nil {
+			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "BidExpense.created_by": %w`, err)}
 		}
 	}
-	if _, ok := _c.mutation.UpdateAt(); !ok {
-		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "BidExpense.update_at"`)}
+	if _, ok := _c.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "BidExpense.updated_at"`)}
 	}
-	if v, ok := _c.mutation.UpdateBy(); ok {
-		if err := bidexpense.UpdateByValidator(v); err != nil {
-			return &ValidationError{Name: "update_by", err: fmt.Errorf(`ent: validator failed for field "BidExpense.update_by": %w`, err)}
+	if v, ok := _c.mutation.UpdatedBy(); ok {
+		if err := bidexpense.UpdatedByValidator(v); err != nil {
+			return &ValidationError{Name: "updated_by", err: fmt.Errorf(`ent: validator failed for field "BidExpense.updated_by": %w`, err)}
 		}
 	}
 	if v, ok := _c.mutation.ID(); ok {
@@ -626,6 +659,14 @@ func (_c *BidExpenseCreate) createSpec() (*BidExpense, *sqlgraph.CreateSpec) {
 		_spec.SetField(bidexpense.FieldPayMethod, field.TypeString, value)
 		_node.PayMethod = &value
 	}
+	if value, ok := _c.mutation.TransferInstructions(); ok {
+		_spec.SetField(bidexpense.FieldTransferInstructions, field.TypeString, value)
+		_node.TransferInstructions = &value
+	}
+	if value, ok := _c.mutation.GuaranteeDeadline(); ok {
+		_spec.SetField(bidexpense.FieldGuaranteeDeadline, field.TypeTime, value)
+		_node.GuaranteeDeadline = &value
+	}
 	if value, ok := _c.mutation.PlanPayTime(); ok {
 		_spec.SetField(bidexpense.FieldPlanPayTime, field.TypeTime, value)
 		_node.PlanPayTime = &value
@@ -638,21 +679,21 @@ func (_c *BidExpenseCreate) createSpec() (*BidExpense, *sqlgraph.CreateSpec) {
 		_spec.SetField(bidexpense.FieldDone, field.TypeBool, value)
 		_node.Done = value
 	}
-	if value, ok := _c.mutation.CreateAt(); ok {
-		_spec.SetField(bidexpense.FieldCreateAt, field.TypeTime, value)
-		_node.CreateAt = value
+	if value, ok := _c.mutation.CreatedAt(); ok {
+		_spec.SetField(bidexpense.FieldCreatedAt, field.TypeTime, value)
+		_node.CreatedAt = value
 	}
-	if value, ok := _c.mutation.CreateBy(); ok {
-		_spec.SetField(bidexpense.FieldCreateBy, field.TypeString, value)
-		_node.CreateBy = &value
+	if value, ok := _c.mutation.CreatedBy(); ok {
+		_spec.SetField(bidexpense.FieldCreatedBy, field.TypeString, value)
+		_node.CreatedBy = &value
 	}
-	if value, ok := _c.mutation.UpdateAt(); ok {
-		_spec.SetField(bidexpense.FieldUpdateAt, field.TypeTime, value)
-		_node.UpdateAt = value
+	if value, ok := _c.mutation.UpdatedAt(); ok {
+		_spec.SetField(bidexpense.FieldUpdatedAt, field.TypeTime, value)
+		_node.UpdatedAt = value
 	}
-	if value, ok := _c.mutation.UpdateBy(); ok {
-		_spec.SetField(bidexpense.FieldUpdateBy, field.TypeString, value)
-		_node.UpdateBy = &value
+	if value, ok := _c.mutation.UpdatedBy(); ok {
+		_spec.SetField(bidexpense.FieldUpdatedBy, field.TypeString, value)
+		_node.UpdatedBy = &value
 	}
 	if nodes := _c.mutation.ProjectIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
