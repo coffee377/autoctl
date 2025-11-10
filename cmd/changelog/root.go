@@ -1,10 +1,11 @@
 package changelog
 
 import (
+	"os"
+
 	"github.com/coffee377/autoctl/pkg/git"
 	"github.com/coffee377/autoctl/pkg/log"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 const (

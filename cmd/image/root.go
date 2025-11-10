@@ -2,13 +2,14 @@ package image
 
 import (
 	"fmt"
+	"os"
+	"path"
+	"path/filepath"
+
 	"github.com/coffee377/autoctl/pkg/log"
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"os"
-	"path"
-	"path/filepath"
 )
 
 type RootOptions struct {

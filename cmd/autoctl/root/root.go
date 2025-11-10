@@ -2,13 +2,14 @@ package root
 
 import (
 	"fmt"
+	"os"
+	"path"
+
 	"github.com/coffee377/autoctl/internal/cmd"
 	"github.com/coffee377/autoctl/pkg/log"
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"os"
-	"path"
 )
 
 // GetRootCommand returns the root cobra command to be executed by main.
