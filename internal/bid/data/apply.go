@@ -67,6 +67,9 @@ func NewBidApply(instId string, res *dingtalkworkflow10.GetProcessInstanceRespon
 
 	// 处理项目类型编码
 	if code, ok := apply.ExtraDictCode(apply.ProjectType); ok {
+		if code == "I" {
+			code = "SH"
+		}
 		apply.ProjectType = &code
 	}
 
