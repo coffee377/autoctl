@@ -1,21 +1,43 @@
 package main
 
 import (
+	"cds/dingtalk/es"
+	"cds/dingtalk/es/process"
+	"context"
 	"encoding/json"
 	"net/http"
 	"strings"
+
+	"github.com/open-dingtalk/dingtalk-stream-sdk-go/event"
+	"github.com/open-dingtalk/dingtalk-stream-sdk-go/logger"
 )
 
-func main() {
-	//dingtalk.Run()
-	// 注册路由，指定访问路径和处理函数
-	http.HandleFunc("/dict/", dictHandler)
+const testCode = "PROC-BDBD627A-7E7F-4EBC-B80A-EC2A9E777D97"
 
-	// 启动 HTTP 服务器，监听 8080 端口
-	err := http.ListenAndServe(":8080", nil)
+func main() {
+	subscription := es.DingTalkEventSubscription(
+		es.WithClient("dingygs46ockvmysbjlu", "t_o5NiKOA8Dy7wTtZ-wakzZ5-9Z-8u_JDH5hpXp7itk4cNouBfESswIp3-BuuffP"),
+		es.WithProcessInstanceEvent(func(ctx context.Context, header event.EventHeader, message *process.InstanceMessage) error {
+			logger.GetLogger().Infof("process instance event: %v", message)
+			return nil
+		}),
+		es.WithProcessTaskEvent(func(ctx context.Context, header event.EventHeader, message *process.TaskMessage) error {
+			logger.GetLogger().Infof("process task event: %v", message)
+			return nil
+		}),
+	)
+	err := subscription.Run(context.Background())
 	if err != nil {
-		panic("服务器启动失败: " + err.Error())
+		panic(err)
 	}
+	// 注册路由，指定访问路径和处理函数
+	//http.HandleFunc("/dict/", dictHandler)
+	//
+	//// 启动 HTTP 服务器，监听 8080 端口
+	//err := http.ListenAndServe(":8080", nil)
+	//if err != nil {
+	//	panic("服务器启动失败: " + err.Error())
+	//}
 }
 
 // DictItem 定义字典项结构体，与返回数据结构对应
