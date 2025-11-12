@@ -148,11 +148,11 @@ const DefaultType = TypeUP
 
 // Type values.
 const (
-	TypeUP Type = "UP"
 	TypeS  Type = "S"
 	TypeH  Type = "H"
-	TypeSH Type = "SH"
+	TypeI  Type = "I"
 	TypeOM Type = "OM"
+	TypeUP Type = "UP"
 )
 
 func (_type Type) String() string {
@@ -162,7 +162,7 @@ func (_type Type) String() string {
 // TypeValidator is a validator for the "type" field enum values. It is called by the builders before save.
 func TypeValidator(_type Type) error {
 	switch _type {
-	case TypeUP, TypeS, TypeH, TypeSH, TypeOM:
+	case TypeS, TypeH, TypeI, TypeOM, TypeUP:
 		return nil
 	default:
 		return fmt.Errorf("bidproject: invalid enum value for type field: %q", _type)

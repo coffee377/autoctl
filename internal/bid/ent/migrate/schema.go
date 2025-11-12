@@ -166,7 +166,7 @@ var (
 		{Name: "id", Type: field.TypeString, Unique: true, Size: 32, Comment: "项目 ID"},
 		{Name: "code", Type: field.TypeString, Size: 64, Comment: "项目编码", Default: ""},
 		{Name: "name", Type: field.TypeString, Size: 64, Comment: "项目名称"},
-		{Name: "type", Type: field.TypeEnum, Comment: "项目类型 UP:未知 S:软件 H:硬件 SH:软硬件集成 OM:运维", Enums: []string{"UP", "S", "H", "SH", "OM"}, Default: "UP"},
+		{Name: "type", Type: field.TypeEnum, Comment: "项目类型 S:软件 H:硬件 I:软硬件集成 OM:运维服务 UP:其他", Enums: []string{"S", "H", "I", "OM", "UP"}, Default: "UP"},
 		{Name: "department_code", Type: field.TypeString, Size: 64, Comment: "所属部门编码", Default: ""},
 		{Name: "department_name", Type: field.TypeString, Size: 64, Comment: "所属部门名称"},
 		{Name: "biz_rep_no", Type: field.TypeString, Size: 8, Comment: "商务代表工号", Default: ""},

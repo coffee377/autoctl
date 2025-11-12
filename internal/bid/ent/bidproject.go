@@ -23,7 +23,7 @@ type BidProject struct {
 	Code string `json:"code,omitempty"`
 	// 项目名称
 	Name string `json:"name,omitempty"`
-	// 项目类型 UP:未知 S:软件 H:硬件 SH:软硬件集成 OM:运维
+	// 项目类型 S:软件 H:硬件 I:软硬件集成 OM:运维服务 UP:其他
 	Type bidproject.Type `json:"type,omitempty"`
 	// 所属部门编码
 	DepartmentCode string `json:"department_code,omitempty"`
