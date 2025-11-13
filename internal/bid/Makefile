@@ -28,8 +28,30 @@ diff: hash
 apply:
 	@atlas migrate apply --env dev
 
+apply-local:
+	@atlas migrate apply --env dev --var db_name=ccl_base
+
+apply-test:
+	@atlas migrate apply 1 --env "test" --allow-dirty \
+	    --var db_host=10.1.83.26 \
+	    --var db_port='3306' \
+	    --var db_user=teamwork \
+	    --var db_password='jqkj5350**)' \
+	    --var db_name=teamwork
+
 status:
 	atlas migrate status --env dev
+
+status-local:
+	atlas migrate status --env dev --var db_name=ccl_base
+
+status-test:
+	@atlas migrate status --env 'test' \
+	    --var db_host=10.1.83.26 \
+	    --var db_port='3306' \
+	    --var db_user=teamwork \
+	    --var db_password='jqkj5350**)' \
+	    --var db_name=teamwork
 
 hash:
 	@atlas migrate hash --dir file://migrations

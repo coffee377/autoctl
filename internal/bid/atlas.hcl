@@ -21,7 +21,7 @@ variable "db_port" {
 
 variable "db_name" {
   type    = string
-  default = "ccl_base"
+  default = "cds_infra"
 }
 
 locals {
@@ -32,22 +32,22 @@ locals {
   # db2_url  = "${local.base_url}/db2"
 }
 
-# diff {
+diff {
 #   skip {
 #     // By default, none of the changes are skipped.
 #     drop_schema = true
 #     drop_table  = true
 #   }
-#   concurrent_index {
-#     create = true
-#     drop   = true
-#   }
-# }
+  concurrent_index {
+    create = true
+    drop   = true
+  }
+}
 
-# env {
-#   # name = atlas.env
-#   # url = "${local.mysql_url}"
-#
+env {
+  name = atlas.env
+  url = "${local.mysql_url}"
+
 #   format {
 #     migrate {
 #       # apply = format(
@@ -60,7 +60,7 @@ locals {
 #       # )
 #     }
 #   }
-# }
+}
 
 # 开发环境（允许自动修复小变更）
 env "dev" {
