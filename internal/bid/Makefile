@@ -18,7 +18,7 @@ dump-opts:
 		bid_apply_opts bid_expense_opts bid_info_opts \
 		> bid_opts.sql
 
-clean:
+clean-local:
 	@atlas schema clean --env dev --var db_name=ccl_base
 
 diff: hash
@@ -39,6 +39,14 @@ apply-test:
 	    --var db_password='jqkj5350**)' \
 	    --var db_name=teamwork
 
+apply-prod:
+	@atlas migrate apply 1 --env prod --allow-dirty \
+	    --var db_host=192.168.44.82 \
+	    --var db_port='3306' \
+	    --var db_user=teamwork \
+	    --var db_password='teamwork_jqkj5350**)123' \
+	    --var db_name=teamwork
+
 status:
 	atlas migrate status --env dev
 
@@ -51,6 +59,14 @@ status-test:
 	    --var db_port='3306' \
 	    --var db_user=teamwork \
 	    --var db_password='jqkj5350**)' \
+	    --var db_name=teamwork
+
+status-prod:
+	@atlas migrate status --env prod \
+	    --var db_host=192.168.44.82 \
+	    --var db_port='3306' \
+	    --var db_user=teamwork \
+	    --var db_password='teamwork_jqkj5350**)123' \
 	    --var db_name=teamwork
 
 hash:

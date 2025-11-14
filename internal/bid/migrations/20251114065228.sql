@@ -1,5 +1,5 @@
 -- 设置时区
-SET time_zone = 'Asia/Shanghai';
+SET time_zone = '+08:00';
 
 -- 1. 更新支出信息项目 ID
 update bid_expense e

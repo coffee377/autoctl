@@ -26,10 +26,6 @@ variable "db_name" {
 
 locals {
   mysql_url = "mysql://${var.db_user}:${var.db_password}@${var.db_host}:${var.db_port}/${var.db_name}?parseTime=True&loc=Asia%2FShanghai"
-
-  // Reference local values.
-  # db1_url  = "${local.base_url}/db1"
-  # db2_url  = "${local.base_url}/db2"
 }
 
 diff {
@@ -48,18 +44,18 @@ env {
   name = atlas.env
   url = "${local.mysql_url}"
 
-#   format {
-#     migrate {
-#       # apply = format(
-#       #   "{{ json . | json_merge %q }}",
-#       #   jsonencode({
-#       #     EnvName : atlas.env
-#       #   })
-#       # )
-#       # diff = format(
-#       # )
-#     }
-#   }
+  format {
+    migrate {
+      # apply = format(
+      #   "{{ json . | json_merge %q }}",
+      #   jsonencode({
+      #     EnvName : atlas.env
+      #   })
+      # )
+      # diff = format(
+      # )
+    }
+  }
 }
 
 # 开发环境（允许自动修复小变更）
@@ -82,20 +78,14 @@ env "dev" {
 env "test" {
   src = "file://sql/migrations"
   url = "${local.mysql_url}"
-  dev = "docker://mysql/8/dev"
-  # dest = "postgres://user:pass@host:port/dbname?search_path=ccl_base"
-  # migration {
-  #   table = "atlas_schema_revisions" # 与数据库中已存在的表名一致
-  # }
 }
 
 # atlas migrate diff create_blog_posts --dir "file://migrations" --to "file://schema.hcl"  --dev-url "mysql://dev:dev@localhost:3306/cds_infra"
 # 生产环境（严格校验，禁止删表）
 env "prod" {
-#   src  = data.ent_schema.main.url
-#   dst  = "mysql://${var.db_user}:${env.DB_PASS}@prod-db:3306/myapp_prod"
-#   dev  = false
-#   lint = {
-#     deny = ["DROP TABLE", "DROP COLUMN"]  # 禁止危险操作
-#   }
+  src = "file://sql/migrations"
+  url = "${local.mysql_url}"
+  lint = {
+    # deny = ["DROP TABLE", "DROP COLUMN"]  # 禁止危险操作
+  }
 }
