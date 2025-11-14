@@ -19,7 +19,7 @@ dump-opts:
 		> bid_opts.sql
 
 clean:
-	@atlas schema clean --env dev
+	@atlas schema clean --env dev --var db_name=ccl_base
 
 diff: hash
 	@export GOWORK=off; \
@@ -29,7 +29,7 @@ apply:
 	@atlas migrate apply --env dev
 
 apply-local:
-	@atlas migrate apply --env dev --var db_name=ccl_base
+	@atlas migrate apply 1 --env dev --var db_name=ccl_base
 
 apply-test:
 	@atlas migrate apply 1 --env "test" --allow-dirty \
