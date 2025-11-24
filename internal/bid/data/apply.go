@@ -79,6 +79,9 @@ func NewBidApply(instId string, res *dingtalkworkflow10.GetProcessInstanceRespon
 }
 
 func (af *BidApplyForm) Save(ctx context.Context, client *ent.Client, projectUpdatable bool) error {
+	//if af.InvalidData {
+	//	return nil
+	//}
 	return ds.WithEntTx(ctx, client, func(tx *ent.Tx) error {
 		count, _ := tx.BidApply.Query().Where(bidapply.ID(af.ID)).Count(ctx)
 		projectDone := false

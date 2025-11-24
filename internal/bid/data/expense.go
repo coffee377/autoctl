@@ -79,6 +79,9 @@ func NewBidExpense(instId string, res *dingtalkworkflow10.GetProcessInstanceResp
 }
 
 func (ef *BidExpenseForm) Save(ctx context.Context, client *ent.Client) error {
+	//if ef.InvalidData {
+	//	return nil
+	//}
 	return ds.WithEntTx(ctx, client, func(tx *ent.Tx) error {
 		// 申请信息
 		_, err := ef.saveExpense(ctx, tx)

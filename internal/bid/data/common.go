@@ -19,6 +19,7 @@ type DingTalkWorkflowData struct {
 
 	ApprovalStatus string // 审批状态
 	Done           bool   // 审批是否结束
+	InvalidData    bool   // 无效数据
 
 	res *dingtalkworkflow10.GetProcessInstanceResponseBodyResult
 
@@ -92,12 +93,14 @@ func (receiver *DingTalkWorkflowData) Extract(instId string, res *dingtalkworkfl
 	case "TERMINATED":
 		receiver.Done = true
 		receiver.ApprovalStatus = "已撤销"
+		receiver.InvalidData = true
 	case "COMPLETED":
 		receiver.Done = true
 		if *res.Result == "agree" {
 			receiver.ApprovalStatus = "审批通过"
 		} else if *res.Result == "refuse" {
 			receiver.ApprovalStatus = "审批拒绝"
+			receiver.InvalidData = true
 		}
 	}
 }

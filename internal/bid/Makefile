@@ -28,10 +28,10 @@ diff: hash
 apply:
 	@atlas migrate apply --env dev
 
-apply-local:
+local-apply:
 	@atlas migrate apply 1 --env dev --var db_name=ccl_base
 
-apply-test:
+test-apply:
 	@atlas migrate apply 1 --env "test" --allow-dirty \
 	    --var db_host=10.1.83.26 \
 	    --var db_port='3306' \
@@ -39,7 +39,7 @@ apply-test:
 	    --var db_password='jqkj5350**)' \
 	    --var db_name=teamwork
 
-apply-prod:
+prod-apply:
 	@atlas migrate apply 1 --env prod --allow-dirty \
 	    --var db_host=192.168.44.82 \
 	    --var db_port='3306' \
@@ -50,10 +50,10 @@ apply-prod:
 status:
 	atlas migrate status --env dev
 
-status-local:
+local-status:
 	atlas migrate status --env dev --var db_name=ccl_base
 
-status-test:
+test-status:
 	@atlas migrate status --env 'test' \
 	    --var db_host=10.1.83.26 \
 	    --var db_port='3306' \
@@ -61,7 +61,7 @@ status-test:
 	    --var db_password='jqkj5350**)' \
 	    --var db_name=teamwork
 
-status-prod:
+prod-status:
 	@atlas migrate status --env prod \
 	    --var db_host=192.168.44.82 \
 	    --var db_port='3306' \
