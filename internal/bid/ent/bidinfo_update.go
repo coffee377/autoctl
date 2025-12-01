@@ -44,6 +44,34 @@ func (_u *BidInfoUpdate) SetNillableProjectID(v *string) *BidInfoUpdate {
 	return _u
 }
 
+// SetGroupLeader sets the "group_leader" field.
+func (_u *BidInfoUpdate) SetGroupLeader(v string) *BidInfoUpdate {
+	_u.mutation.SetGroupLeader(v)
+	return _u
+}
+
+// SetNillableGroupLeader sets the "group_leader" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableGroupLeader(v *string) *BidInfoUpdate {
+	if v != nil {
+		_u.SetGroupLeader(*v)
+	}
+	return _u
+}
+
+// SetGroupLeaderName sets the "group_leader_name" field.
+func (_u *BidInfoUpdate) SetGroupLeaderName(v string) *BidInfoUpdate {
+	_u.mutation.SetGroupLeaderName(v)
+	return _u
+}
+
+// SetNillableGroupLeaderName sets the "group_leader_name" field if the given value is not nil.
+func (_u *BidInfoUpdate) SetNillableGroupLeaderName(v *string) *BidInfoUpdate {
+	if v != nil {
+		_u.SetGroupLeaderName(*v)
+	}
+	return _u
+}
+
 // SetBidSubjectCode sets the "bid_subject_code" field.
 func (_u *BidInfoUpdate) SetBidSubjectCode(v string) *BidInfoUpdate {
 	_u.mutation.SetBidSubjectCode(v)
@@ -58,6 +86,12 @@ func (_u *BidInfoUpdate) SetNillableBidSubjectCode(v *string) *BidInfoUpdate {
 	return _u
 }
 
+// ClearBidSubjectCode clears the value of the "bid_subject_code" field.
+func (_u *BidInfoUpdate) ClearBidSubjectCode() *BidInfoUpdate {
+	_u.mutation.ClearBidSubjectCode()
+	return _u
+}
+
 // SetBidSubjectName sets the "bid_subject_name" field.
 func (_u *BidInfoUpdate) SetBidSubjectName(v string) *BidInfoUpdate {
 	_u.mutation.SetBidSubjectName(v)
@@ -69,6 +103,12 @@ func (_u *BidInfoUpdate) SetNillableBidSubjectName(v *string) *BidInfoUpdate {
 	if v != nil {
 		_u.SetBidSubjectName(*v)
 	}
+	return _u
+}
+
+// ClearBidSubjectName clears the value of the "bid_subject_name" field.
+func (_u *BidInfoUpdate) ClearBidSubjectName() *BidInfoUpdate {
+	_u.mutation.ClearBidSubjectName()
 	return _u
 }
 
@@ -403,6 +443,16 @@ func (_u *BidInfoUpdate) check() error {
 			return &ValidationError{Name: "project_id", err: fmt.Errorf(`ent: validator failed for field "BidInfo.project_id": %w`, err)}
 		}
 	}
+	if v, ok := _u.mutation.GroupLeader(); ok {
+		if err := bidinfo.GroupLeaderValidator(v); err != nil {
+			return &ValidationError{Name: "group_leader", err: fmt.Errorf(`ent: validator failed for field "BidInfo.group_leader": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.GroupLeaderName(); ok {
+		if err := bidinfo.GroupLeaderNameValidator(v); err != nil {
+			return &ValidationError{Name: "group_leader_name", err: fmt.Errorf(`ent: validator failed for field "BidInfo.group_leader_name": %w`, err)}
+		}
+	}
 	if v, ok := _u.mutation.BidSubjectCode(); ok {
 		if err := bidinfo.BidSubjectCodeValidator(v); err != nil {
 			return &ValidationError{Name: "bid_subject_code", err: fmt.Errorf(`ent: validator failed for field "BidInfo.bid_subject_code": %w`, err)}
@@ -457,11 +507,23 @@ func (_u *BidInfoUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 			}
 		}
 	}
+	if value, ok := _u.mutation.GroupLeader(); ok {
+		_spec.SetField(bidinfo.FieldGroupLeader, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.GroupLeaderName(); ok {
+		_spec.SetField(bidinfo.FieldGroupLeaderName, field.TypeString, value)
+	}
 	if value, ok := _u.mutation.BidSubjectCode(); ok {
 		_spec.SetField(bidinfo.FieldBidSubjectCode, field.TypeString, value)
 	}
+	if _u.mutation.BidSubjectCodeCleared() {
+		_spec.ClearField(bidinfo.FieldBidSubjectCode, field.TypeString)
+	}
 	if value, ok := _u.mutation.BidSubjectName(); ok {
 		_spec.SetField(bidinfo.FieldBidSubjectName, field.TypeString, value)
+	}
+	if _u.mutation.BidSubjectNameCleared() {
+		_spec.ClearField(bidinfo.FieldBidSubjectName, field.TypeString)
 	}
 	if value, ok := _u.mutation.BidAmount(); ok {
 		_spec.SetField(bidinfo.FieldBidAmount, field.TypeFloat64, value)
@@ -606,6 +668,34 @@ func (_u *BidInfoUpdateOne) SetNillableProjectID(v *string) *BidInfoUpdateOne {
 	return _u
 }
 
+// SetGroupLeader sets the "group_leader" field.
+func (_u *BidInfoUpdateOne) SetGroupLeader(v string) *BidInfoUpdateOne {
+	_u.mutation.SetGroupLeader(v)
+	return _u
+}
+
+// SetNillableGroupLeader sets the "group_leader" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableGroupLeader(v *string) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetGroupLeader(*v)
+	}
+	return _u
+}
+
+// SetGroupLeaderName sets the "group_leader_name" field.
+func (_u *BidInfoUpdateOne) SetGroupLeaderName(v string) *BidInfoUpdateOne {
+	_u.mutation.SetGroupLeaderName(v)
+	return _u
+}
+
+// SetNillableGroupLeaderName sets the "group_leader_name" field if the given value is not nil.
+func (_u *BidInfoUpdateOne) SetNillableGroupLeaderName(v *string) *BidInfoUpdateOne {
+	if v != nil {
+		_u.SetGroupLeaderName(*v)
+	}
+	return _u
+}
+
 // SetBidSubjectCode sets the "bid_subject_code" field.
 func (_u *BidInfoUpdateOne) SetBidSubjectCode(v string) *BidInfoUpdateOne {
 	_u.mutation.SetBidSubjectCode(v)
@@ -620,6 +710,12 @@ func (_u *BidInfoUpdateOne) SetNillableBidSubjectCode(v *string) *BidInfoUpdateO
 	return _u
 }
 
+// ClearBidSubjectCode clears the value of the "bid_subject_code" field.
+func (_u *BidInfoUpdateOne) ClearBidSubjectCode() *BidInfoUpdateOne {
+	_u.mutation.ClearBidSubjectCode()
+	return _u
+}
+
 // SetBidSubjectName sets the "bid_subject_name" field.
 func (_u *BidInfoUpdateOne) SetBidSubjectName(v string) *BidInfoUpdateOne {
 	_u.mutation.SetBidSubjectName(v)
@@ -631,6 +727,12 @@ func (_u *BidInfoUpdateOne) SetNillableBidSubjectName(v *string) *BidInfoUpdateO
 	if v != nil {
 		_u.SetBidSubjectName(*v)
 	}
+	return _u
+}
+
+// ClearBidSubjectName clears the value of the "bid_subject_name" field.
+func (_u *BidInfoUpdateOne) ClearBidSubjectName() *BidInfoUpdateOne {
+	_u.mutation.ClearBidSubjectName()
 	return _u
 }
 
@@ -978,6 +1080,16 @@ func (_u *BidInfoUpdateOne) check() error {
 			return &ValidationError{Name: "project_id", err: fmt.Errorf(`ent: validator failed for field "BidInfo.project_id": %w`, err)}
 		}
 	}
+	if v, ok := _u.mutation.GroupLeader(); ok {
+		if err := bidinfo.GroupLeaderValidator(v); err != nil {
+			return &ValidationError{Name: "group_leader", err: fmt.Errorf(`ent: validator failed for field "BidInfo.group_leader": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.GroupLeaderName(); ok {
+		if err := bidinfo.GroupLeaderNameValidator(v); err != nil {
+			return &ValidationError{Name: "group_leader_name", err: fmt.Errorf(`ent: validator failed for field "BidInfo.group_leader_name": %w`, err)}
+		}
+	}
 	if v, ok := _u.mutation.BidSubjectCode(); ok {
 		if err := bidinfo.BidSubjectCodeValidator(v); err != nil {
 			return &ValidationError{Name: "bid_subject_code", err: fmt.Errorf(`ent: validator failed for field "BidInfo.bid_subject_code": %w`, err)}
@@ -1049,11 +1161,23 @@ func (_u *BidInfoUpdateOne) sqlSave(ctx context.Context) (_node *BidInfo, err er
 			}
 		}
 	}
+	if value, ok := _u.mutation.GroupLeader(); ok {
+		_spec.SetField(bidinfo.FieldGroupLeader, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.GroupLeaderName(); ok {
+		_spec.SetField(bidinfo.FieldGroupLeaderName, field.TypeString, value)
+	}
 	if value, ok := _u.mutation.BidSubjectCode(); ok {
 		_spec.SetField(bidinfo.FieldBidSubjectCode, field.TypeString, value)
 	}
+	if _u.mutation.BidSubjectCodeCleared() {
+		_spec.ClearField(bidinfo.FieldBidSubjectCode, field.TypeString)
+	}
 	if value, ok := _u.mutation.BidSubjectName(); ok {
 		_spec.SetField(bidinfo.FieldBidSubjectName, field.TypeString, value)
+	}
+	if _u.mutation.BidSubjectNameCleared() {
+		_spec.ClearField(bidinfo.FieldBidSubjectName, field.TypeString)
 	}
 	if value, ok := _u.mutation.BidAmount(); ok {
 		_spec.SetField(bidinfo.FieldBidAmount, field.TypeFloat64, value)

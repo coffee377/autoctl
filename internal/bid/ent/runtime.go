@@ -182,36 +182,44 @@ func init() {
 	bidinfoDescProjectID := bidinfoFields[1].Descriptor()
 	// bidinfo.ProjectIDValidator is a validator for the "project_id" field. It is called by the builders before save.
 	bidinfo.ProjectIDValidator = bidinfoDescProjectID.Validators[0].(func(string) error)
+	// bidinfoDescGroupLeader is the schema descriptor for group_leader field.
+	bidinfoDescGroupLeader := bidinfoFields[2].Descriptor()
+	// bidinfo.GroupLeaderValidator is a validator for the "group_leader" field. It is called by the builders before save.
+	bidinfo.GroupLeaderValidator = bidinfoDescGroupLeader.Validators[0].(func(string) error)
+	// bidinfoDescGroupLeaderName is the schema descriptor for group_leader_name field.
+	bidinfoDescGroupLeaderName := bidinfoFields[3].Descriptor()
+	// bidinfo.GroupLeaderNameValidator is a validator for the "group_leader_name" field. It is called by the builders before save.
+	bidinfo.GroupLeaderNameValidator = bidinfoDescGroupLeaderName.Validators[0].(func(string) error)
 	// bidinfoDescBidSubjectCode is the schema descriptor for bid_subject_code field.
-	bidinfoDescBidSubjectCode := bidinfoFields[2].Descriptor()
+	bidinfoDescBidSubjectCode := bidinfoFields[4].Descriptor()
 	// bidinfo.BidSubjectCodeValidator is a validator for the "bid_subject_code" field. It is called by the builders before save.
 	bidinfo.BidSubjectCodeValidator = bidinfoDescBidSubjectCode.Validators[0].(func(string) error)
 	// bidinfoDescBidSubjectName is the schema descriptor for bid_subject_name field.
-	bidinfoDescBidSubjectName := bidinfoFields[3].Descriptor()
+	bidinfoDescBidSubjectName := bidinfoFields[5].Descriptor()
 	// bidinfo.BidSubjectNameValidator is a validator for the "bid_subject_name" field. It is called by the builders before save.
 	bidinfo.BidSubjectNameValidator = bidinfoDescBidSubjectName.Validators[0].(func(string) error)
 	// bidinfoDescBidAmount is the schema descriptor for bid_amount field.
-	bidinfoDescBidAmount := bidinfoFields[4].Descriptor()
+	bidinfoDescBidAmount := bidinfoFields[6].Descriptor()
 	// bidinfo.DefaultBidAmount holds the default value on creation for the bid_amount field.
 	bidinfo.DefaultBidAmount = bidinfoDescBidAmount.Default.(float64)
 	// bidinfoDescSoftwareAmount is the schema descriptor for software_amount field.
-	bidinfoDescSoftwareAmount := bidinfoFields[7].Descriptor()
+	bidinfoDescSoftwareAmount := bidinfoFields[9].Descriptor()
 	// bidinfo.DefaultSoftwareAmount holds the default value on creation for the software_amount field.
 	bidinfo.DefaultSoftwareAmount = bidinfoDescSoftwareAmount.Default.(float64)
 	// bidinfoDescHardwareAmount is the schema descriptor for hardware_amount field.
-	bidinfoDescHardwareAmount := bidinfoFields[8].Descriptor()
+	bidinfoDescHardwareAmount := bidinfoFields[10].Descriptor()
 	// bidinfo.DefaultHardwareAmount holds the default value on creation for the hardware_amount field.
 	bidinfo.DefaultHardwareAmount = bidinfoDescHardwareAmount.Default.(float64)
 	// bidinfoDescOperationAmount is the schema descriptor for operation_amount field.
-	bidinfoDescOperationAmount := bidinfoFields[9].Descriptor()
+	bidinfoDescOperationAmount := bidinfoFields[11].Descriptor()
 	// bidinfo.DefaultOperationAmount holds the default value on creation for the operation_amount field.
 	bidinfo.DefaultOperationAmount = bidinfoDescOperationAmount.Default.(float64)
 	// bidinfoDescContractSigned is the schema descriptor for contract_signed field.
-	bidinfoDescContractSigned := bidinfoFields[11].Descriptor()
+	bidinfoDescContractSigned := bidinfoFields[13].Descriptor()
 	// bidinfo.DefaultContractSigned holds the default value on creation for the contract_signed field.
 	bidinfo.DefaultContractSigned = bidinfoDescContractSigned.Default.(bool)
 	// bidinfoDescContractNo is the schema descriptor for contract_no field.
-	bidinfoDescContractNo := bidinfoFields[12].Descriptor()
+	bidinfoDescContractNo := bidinfoFields[14].Descriptor()
 	// bidinfo.ContractNoValidator is a validator for the "contract_no" field. It is called by the builders before save.
 	bidinfo.ContractNoValidator = bidinfoDescContractNo.Validators[0].(func(string) error)
 	// bidinfoDescCreatedAt is the schema descriptor for created_at field.

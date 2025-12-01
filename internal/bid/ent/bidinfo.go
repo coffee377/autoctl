@@ -21,10 +21,14 @@ type BidInfo struct {
 	ID string `json:"id,omitempty"`
 	// 项目 ID
 	ProjectID string `json:"project_id,omitempty"`
+	// 投标组长工号
+	GroupLeader string `json:"group_leader,omitempty"`
+	// 投标组长
+	GroupLeaderName string `json:"group_leader_name,omitempty"`
 	// 投标主体编码
-	BidSubjectCode string `json:"bid_subject_code,omitempty"`
+	BidSubjectCode *string `json:"bid_subject_code,omitempty"`
 	// 投标主体名称
-	BidSubjectName string `json:"bid_subject_name,omitempty"`
+	BidSubjectName *string `json:"bid_subject_name,omitempty"`
 	// 投标金额
 	BidAmount float64 `json:"bid_amount,omitempty"`
 	// 投标状态 RP:待报名 RO:报名中 RS:报名成功 RF:报名失败 DP:标书编制中 B:投标中 W:已中标 L:未中标 F:流标 0:-
@@ -90,7 +94,7 @@ func (*BidInfo) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case bidinfo.FieldBidAmount, bidinfo.FieldSoftwareAmount, bidinfo.FieldHardwareAmount, bidinfo.FieldOperationAmount:
 			values[i] = new(sql.NullFloat64)
-		case bidinfo.FieldID, bidinfo.FieldProjectID, bidinfo.FieldBidSubjectCode, bidinfo.FieldBidSubjectName, bidinfo.FieldBidStatus, bidinfo.FieldResultURL, bidinfo.FieldContractNo, bidinfo.FieldRemark, bidinfo.FieldCreatedBy, bidinfo.FieldUpdatedBy:
+		case bidinfo.FieldID, bidinfo.FieldProjectID, bidinfo.FieldGroupLeader, bidinfo.FieldGroupLeaderName, bidinfo.FieldBidSubjectCode, bidinfo.FieldBidSubjectName, bidinfo.FieldBidStatus, bidinfo.FieldResultURL, bidinfo.FieldContractNo, bidinfo.FieldRemark, bidinfo.FieldCreatedBy, bidinfo.FieldUpdatedBy:
 			values[i] = new(sql.NullString)
 		case bidinfo.FieldBidDate, bidinfo.FieldContractSignDate, bidinfo.FieldCreatedAt, bidinfo.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -121,17 +125,31 @@ func (_m *BidInfo) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.ProjectID = value.String
 			}
+		case bidinfo.FieldGroupLeader:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field group_leader", values[i])
+			} else if value.Valid {
+				_m.GroupLeader = value.String
+			}
+		case bidinfo.FieldGroupLeaderName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field group_leader_name", values[i])
+			} else if value.Valid {
+				_m.GroupLeaderName = value.String
+			}
 		case bidinfo.FieldBidSubjectCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field bid_subject_code", values[i])
 			} else if value.Valid {
-				_m.BidSubjectCode = value.String
+				_m.BidSubjectCode = new(string)
+				*_m.BidSubjectCode = value.String
 			}
 		case bidinfo.FieldBidSubjectName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field bid_subject_name", values[i])
 			} else if value.Valid {
-				_m.BidSubjectName = value.String
+				_m.BidSubjectName = new(string)
+				*_m.BidSubjectName = value.String
 			}
 		case bidinfo.FieldBidAmount:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
@@ -274,11 +292,21 @@ func (_m *BidInfo) String() string {
 	builder.WriteString("project_id=")
 	builder.WriteString(_m.ProjectID)
 	builder.WriteString(", ")
-	builder.WriteString("bid_subject_code=")
-	builder.WriteString(_m.BidSubjectCode)
+	builder.WriteString("group_leader=")
+	builder.WriteString(_m.GroupLeader)
 	builder.WriteString(", ")
-	builder.WriteString("bid_subject_name=")
-	builder.WriteString(_m.BidSubjectName)
+	builder.WriteString("group_leader_name=")
+	builder.WriteString(_m.GroupLeaderName)
+	builder.WriteString(", ")
+	if v := _m.BidSubjectCode; v != nil {
+		builder.WriteString("bid_subject_code=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := _m.BidSubjectName; v != nil {
+		builder.WriteString("bid_subject_name=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
 	builder.WriteString("bid_amount=")
 	builder.WriteString(fmt.Sprintf("%v", _m.BidAmount))

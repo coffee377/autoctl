@@ -3696,6 +3696,8 @@ type BidInfoMutation struct {
 	op                  Op
 	typ                 string
 	id                  *string
+	group_leader        *string
+	group_leader_name   *string
 	bid_subject_code    *string
 	bid_subject_name    *string
 	bid_amount          *float64
@@ -3865,6 +3867,78 @@ func (m *BidInfoMutation) ResetProjectID() {
 	m.project = nil
 }
 
+// SetGroupLeader sets the "group_leader" field.
+func (m *BidInfoMutation) SetGroupLeader(s string) {
+	m.group_leader = &s
+}
+
+// GroupLeader returns the value of the "group_leader" field in the mutation.
+func (m *BidInfoMutation) GroupLeader() (r string, exists bool) {
+	v := m.group_leader
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGroupLeader returns the old "group_leader" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldGroupLeader(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGroupLeader is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGroupLeader requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGroupLeader: %w", err)
+	}
+	return oldValue.GroupLeader, nil
+}
+
+// ResetGroupLeader resets all changes to the "group_leader" field.
+func (m *BidInfoMutation) ResetGroupLeader() {
+	m.group_leader = nil
+}
+
+// SetGroupLeaderName sets the "group_leader_name" field.
+func (m *BidInfoMutation) SetGroupLeaderName(s string) {
+	m.group_leader_name = &s
+}
+
+// GroupLeaderName returns the value of the "group_leader_name" field in the mutation.
+func (m *BidInfoMutation) GroupLeaderName() (r string, exists bool) {
+	v := m.group_leader_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGroupLeaderName returns the old "group_leader_name" field's value of the BidInfo entity.
+// If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidInfoMutation) OldGroupLeaderName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGroupLeaderName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGroupLeaderName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGroupLeaderName: %w", err)
+	}
+	return oldValue.GroupLeaderName, nil
+}
+
+// ResetGroupLeaderName resets all changes to the "group_leader_name" field.
+func (m *BidInfoMutation) ResetGroupLeaderName() {
+	m.group_leader_name = nil
+}
+
 // SetBidSubjectCode sets the "bid_subject_code" field.
 func (m *BidInfoMutation) SetBidSubjectCode(s string) {
 	m.bid_subject_code = &s
@@ -3882,7 +3956,7 @@ func (m *BidInfoMutation) BidSubjectCode() (r string, exists bool) {
 // OldBidSubjectCode returns the old "bid_subject_code" field's value of the BidInfo entity.
 // If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidInfoMutation) OldBidSubjectCode(ctx context.Context) (v string, err error) {
+func (m *BidInfoMutation) OldBidSubjectCode(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldBidSubjectCode is only allowed on UpdateOne operations")
 	}
@@ -3896,9 +3970,22 @@ func (m *BidInfoMutation) OldBidSubjectCode(ctx context.Context) (v string, err 
 	return oldValue.BidSubjectCode, nil
 }
 
+// ClearBidSubjectCode clears the value of the "bid_subject_code" field.
+func (m *BidInfoMutation) ClearBidSubjectCode() {
+	m.bid_subject_code = nil
+	m.clearedFields[bidinfo.FieldBidSubjectCode] = struct{}{}
+}
+
+// BidSubjectCodeCleared returns if the "bid_subject_code" field was cleared in this mutation.
+func (m *BidInfoMutation) BidSubjectCodeCleared() bool {
+	_, ok := m.clearedFields[bidinfo.FieldBidSubjectCode]
+	return ok
+}
+
 // ResetBidSubjectCode resets all changes to the "bid_subject_code" field.
 func (m *BidInfoMutation) ResetBidSubjectCode() {
 	m.bid_subject_code = nil
+	delete(m.clearedFields, bidinfo.FieldBidSubjectCode)
 }
 
 // SetBidSubjectName sets the "bid_subject_name" field.
@@ -3918,7 +4005,7 @@ func (m *BidInfoMutation) BidSubjectName() (r string, exists bool) {
 // OldBidSubjectName returns the old "bid_subject_name" field's value of the BidInfo entity.
 // If the BidInfo object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidInfoMutation) OldBidSubjectName(ctx context.Context) (v string, err error) {
+func (m *BidInfoMutation) OldBidSubjectName(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldBidSubjectName is only allowed on UpdateOne operations")
 	}
@@ -3932,9 +4019,22 @@ func (m *BidInfoMutation) OldBidSubjectName(ctx context.Context) (v string, err 
 	return oldValue.BidSubjectName, nil
 }
 
+// ClearBidSubjectName clears the value of the "bid_subject_name" field.
+func (m *BidInfoMutation) ClearBidSubjectName() {
+	m.bid_subject_name = nil
+	m.clearedFields[bidinfo.FieldBidSubjectName] = struct{}{}
+}
+
+// BidSubjectNameCleared returns if the "bid_subject_name" field was cleared in this mutation.
+func (m *BidInfoMutation) BidSubjectNameCleared() bool {
+	_, ok := m.clearedFields[bidinfo.FieldBidSubjectName]
+	return ok
+}
+
 // ResetBidSubjectName resets all changes to the "bid_subject_name" field.
 func (m *BidInfoMutation) ResetBidSubjectName() {
 	m.bid_subject_name = nil
+	delete(m.clearedFields, bidinfo.FieldBidSubjectName)
 }
 
 // SetBidAmount sets the "bid_amount" field.
@@ -4709,9 +4809,15 @@ func (m *BidInfoMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *BidInfoMutation) Fields() []string {
-	fields := make([]string, 0, 18)
+	fields := make([]string, 0, 20)
 	if m.project != nil {
 		fields = append(fields, bidinfo.FieldProjectID)
+	}
+	if m.group_leader != nil {
+		fields = append(fields, bidinfo.FieldGroupLeader)
+	}
+	if m.group_leader_name != nil {
+		fields = append(fields, bidinfo.FieldGroupLeaderName)
 	}
 	if m.bid_subject_code != nil {
 		fields = append(fields, bidinfo.FieldBidSubjectCode)
@@ -4774,6 +4880,10 @@ func (m *BidInfoMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case bidinfo.FieldProjectID:
 		return m.ProjectID()
+	case bidinfo.FieldGroupLeader:
+		return m.GroupLeader()
+	case bidinfo.FieldGroupLeaderName:
+		return m.GroupLeaderName()
 	case bidinfo.FieldBidSubjectCode:
 		return m.BidSubjectCode()
 	case bidinfo.FieldBidSubjectName:
@@ -4819,6 +4929,10 @@ func (m *BidInfoMutation) OldField(ctx context.Context, name string) (ent.Value,
 	switch name {
 	case bidinfo.FieldProjectID:
 		return m.OldProjectID(ctx)
+	case bidinfo.FieldGroupLeader:
+		return m.OldGroupLeader(ctx)
+	case bidinfo.FieldGroupLeaderName:
+		return m.OldGroupLeaderName(ctx)
 	case bidinfo.FieldBidSubjectCode:
 		return m.OldBidSubjectCode(ctx)
 	case bidinfo.FieldBidSubjectName:
@@ -4868,6 +4982,20 @@ func (m *BidInfoMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetProjectID(v)
+		return nil
+	case bidinfo.FieldGroupLeader:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGroupLeader(v)
+		return nil
+	case bidinfo.FieldGroupLeaderName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGroupLeaderName(v)
 		return nil
 	case bidinfo.FieldBidSubjectCode:
 		v, ok := value.(string)
@@ -5069,6 +5197,12 @@ func (m *BidInfoMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *BidInfoMutation) ClearedFields() []string {
 	var fields []string
+	if m.FieldCleared(bidinfo.FieldBidSubjectCode) {
+		fields = append(fields, bidinfo.FieldBidSubjectCode)
+	}
+	if m.FieldCleared(bidinfo.FieldBidSubjectName) {
+		fields = append(fields, bidinfo.FieldBidSubjectName)
+	}
 	if m.FieldCleared(bidinfo.FieldBidDate) {
 		fields = append(fields, bidinfo.FieldBidDate)
 	}
@@ -5104,6 +5238,12 @@ func (m *BidInfoMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *BidInfoMutation) ClearField(name string) error {
 	switch name {
+	case bidinfo.FieldBidSubjectCode:
+		m.ClearBidSubjectCode()
+		return nil
+	case bidinfo.FieldBidSubjectName:
+		m.ClearBidSubjectName()
+		return nil
 	case bidinfo.FieldBidDate:
 		m.ClearBidDate()
 		return nil
@@ -5135,6 +5275,12 @@ func (m *BidInfoMutation) ResetField(name string) error {
 	switch name {
 	case bidinfo.FieldProjectID:
 		m.ResetProjectID()
+		return nil
+	case bidinfo.FieldGroupLeader:
+		m.ResetGroupLeader()
+		return nil
+	case bidinfo.FieldGroupLeaderName:
+		m.ResetGroupLeaderName()
 		return nil
 	case bidinfo.FieldBidSubjectCode:
 		m.ResetBidSubjectCode()

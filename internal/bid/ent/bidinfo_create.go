@@ -27,15 +27,43 @@ func (_c *BidInfoCreate) SetProjectID(v string) *BidInfoCreate {
 	return _c
 }
 
+// SetGroupLeader sets the "group_leader" field.
+func (_c *BidInfoCreate) SetGroupLeader(v string) *BidInfoCreate {
+	_c.mutation.SetGroupLeader(v)
+	return _c
+}
+
+// SetGroupLeaderName sets the "group_leader_name" field.
+func (_c *BidInfoCreate) SetGroupLeaderName(v string) *BidInfoCreate {
+	_c.mutation.SetGroupLeaderName(v)
+	return _c
+}
+
 // SetBidSubjectCode sets the "bid_subject_code" field.
 func (_c *BidInfoCreate) SetBidSubjectCode(v string) *BidInfoCreate {
 	_c.mutation.SetBidSubjectCode(v)
 	return _c
 }
 
+// SetNillableBidSubjectCode sets the "bid_subject_code" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableBidSubjectCode(v *string) *BidInfoCreate {
+	if v != nil {
+		_c.SetBidSubjectCode(*v)
+	}
+	return _c
+}
+
 // SetBidSubjectName sets the "bid_subject_name" field.
 func (_c *BidInfoCreate) SetBidSubjectName(v string) *BidInfoCreate {
 	_c.mutation.SetBidSubjectName(v)
+	return _c
+}
+
+// SetNillableBidSubjectName sets the "bid_subject_name" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableBidSubjectName(v *string) *BidInfoCreate {
+	if v != nil {
+		_c.SetBidSubjectName(*v)
+	}
 	return _c
 }
 
@@ -339,16 +367,26 @@ func (_c *BidInfoCreate) check() error {
 			return &ValidationError{Name: "project_id", err: fmt.Errorf(`ent: validator failed for field "BidInfo.project_id": %w`, err)}
 		}
 	}
-	if _, ok := _c.mutation.BidSubjectCode(); !ok {
-		return &ValidationError{Name: "bid_subject_code", err: errors.New(`ent: missing required field "BidInfo.bid_subject_code"`)}
+	if _, ok := _c.mutation.GroupLeader(); !ok {
+		return &ValidationError{Name: "group_leader", err: errors.New(`ent: missing required field "BidInfo.group_leader"`)}
+	}
+	if v, ok := _c.mutation.GroupLeader(); ok {
+		if err := bidinfo.GroupLeaderValidator(v); err != nil {
+			return &ValidationError{Name: "group_leader", err: fmt.Errorf(`ent: validator failed for field "BidInfo.group_leader": %w`, err)}
+		}
+	}
+	if _, ok := _c.mutation.GroupLeaderName(); !ok {
+		return &ValidationError{Name: "group_leader_name", err: errors.New(`ent: missing required field "BidInfo.group_leader_name"`)}
+	}
+	if v, ok := _c.mutation.GroupLeaderName(); ok {
+		if err := bidinfo.GroupLeaderNameValidator(v); err != nil {
+			return &ValidationError{Name: "group_leader_name", err: fmt.Errorf(`ent: validator failed for field "BidInfo.group_leader_name": %w`, err)}
+		}
 	}
 	if v, ok := _c.mutation.BidSubjectCode(); ok {
 		if err := bidinfo.BidSubjectCodeValidator(v); err != nil {
 			return &ValidationError{Name: "bid_subject_code", err: fmt.Errorf(`ent: validator failed for field "BidInfo.bid_subject_code": %w`, err)}
 		}
-	}
-	if _, ok := _c.mutation.BidSubjectName(); !ok {
-		return &ValidationError{Name: "bid_subject_name", err: errors.New(`ent: missing required field "BidInfo.bid_subject_name"`)}
 	}
 	if v, ok := _c.mutation.BidSubjectName(); ok {
 		if err := bidinfo.BidSubjectNameValidator(v); err != nil {
@@ -442,13 +480,21 @@ func (_c *BidInfoCreate) createSpec() (*BidInfo, *sqlgraph.CreateSpec) {
 		_node.ID = id
 		_spec.ID.Value = id
 	}
+	if value, ok := _c.mutation.GroupLeader(); ok {
+		_spec.SetField(bidinfo.FieldGroupLeader, field.TypeString, value)
+		_node.GroupLeader = value
+	}
+	if value, ok := _c.mutation.GroupLeaderName(); ok {
+		_spec.SetField(bidinfo.FieldGroupLeaderName, field.TypeString, value)
+		_node.GroupLeaderName = value
+	}
 	if value, ok := _c.mutation.BidSubjectCode(); ok {
 		_spec.SetField(bidinfo.FieldBidSubjectCode, field.TypeString, value)
-		_node.BidSubjectCode = value
+		_node.BidSubjectCode = &value
 	}
 	if value, ok := _c.mutation.BidSubjectName(); ok {
 		_spec.SetField(bidinfo.FieldBidSubjectName, field.TypeString, value)
-		_node.BidSubjectName = value
+		_node.BidSubjectName = &value
 	}
 	if value, ok := _c.mutation.BidAmount(); ok {
 		_spec.SetField(bidinfo.FieldBidAmount, field.TypeFloat64, value)

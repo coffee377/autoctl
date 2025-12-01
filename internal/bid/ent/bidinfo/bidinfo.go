@@ -17,6 +17,10 @@ const (
 	FieldID = "id"
 	// FieldProjectID holds the string denoting the project_id field in the database.
 	FieldProjectID = "project_id"
+	// FieldGroupLeader holds the string denoting the group_leader field in the database.
+	FieldGroupLeader = "group_leader"
+	// FieldGroupLeaderName holds the string denoting the group_leader_name field in the database.
+	FieldGroupLeaderName = "group_leader_name"
 	// FieldBidSubjectCode holds the string denoting the bid_subject_code field in the database.
 	FieldBidSubjectCode = "bid_subject_code"
 	// FieldBidSubjectName holds the string denoting the bid_subject_name field in the database.
@@ -68,6 +72,8 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldProjectID,
+	FieldGroupLeader,
+	FieldGroupLeaderName,
 	FieldBidSubjectCode,
 	FieldBidSubjectName,
 	FieldBidAmount,
@@ -100,6 +106,10 @@ func ValidColumn(column string) bool {
 var (
 	// ProjectIDValidator is a validator for the "project_id" field. It is called by the builders before save.
 	ProjectIDValidator func(string) error
+	// GroupLeaderValidator is a validator for the "group_leader" field. It is called by the builders before save.
+	GroupLeaderValidator func(string) error
+	// GroupLeaderNameValidator is a validator for the "group_leader_name" field. It is called by the builders before save.
+	GroupLeaderNameValidator func(string) error
 	// BidSubjectCodeValidator is a validator for the "bid_subject_code" field. It is called by the builders before save.
 	BidSubjectCodeValidator func(string) error
 	// BidSubjectNameValidator is a validator for the "bid_subject_name" field. It is called by the builders before save.
@@ -175,6 +185,16 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 // ByProjectID orders the results by the project_id field.
 func ByProjectID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldProjectID, opts...).ToFunc()
+}
+
+// ByGroupLeader orders the results by the group_leader field.
+func ByGroupLeader(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldGroupLeader, opts...).ToFunc()
+}
+
+// ByGroupLeaderName orders the results by the group_leader_name field.
+func ByGroupLeaderName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldGroupLeaderName, opts...).ToFunc()
 }
 
 // ByBidSubjectCode orders the results by the bid_subject_code field.

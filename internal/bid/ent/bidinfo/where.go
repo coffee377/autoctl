@@ -70,6 +70,16 @@ func ProjectID(v string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldEQ(FieldProjectID, v))
 }
 
+// GroupLeader applies equality check predicate on the "group_leader" field. It's identical to GroupLeaderEQ.
+func GroupLeader(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldGroupLeader, v))
+}
+
+// GroupLeaderName applies equality check predicate on the "group_leader_name" field. It's identical to GroupLeaderNameEQ.
+func GroupLeaderName(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldGroupLeaderName, v))
+}
+
 // BidSubjectCode applies equality check predicate on the "bid_subject_code" field. It's identical to BidSubjectCodeEQ.
 func BidSubjectCode(v string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldEQ(FieldBidSubjectCode, v))
@@ -215,6 +225,136 @@ func ProjectIDContainsFold(v string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldContainsFold(FieldProjectID, v))
 }
 
+// GroupLeaderEQ applies the EQ predicate on the "group_leader" field.
+func GroupLeaderEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldGroupLeader, v))
+}
+
+// GroupLeaderNEQ applies the NEQ predicate on the "group_leader" field.
+func GroupLeaderNEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldGroupLeader, v))
+}
+
+// GroupLeaderIn applies the In predicate on the "group_leader" field.
+func GroupLeaderIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldGroupLeader, vs...))
+}
+
+// GroupLeaderNotIn applies the NotIn predicate on the "group_leader" field.
+func GroupLeaderNotIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldGroupLeader, vs...))
+}
+
+// GroupLeaderGT applies the GT predicate on the "group_leader" field.
+func GroupLeaderGT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGT(FieldGroupLeader, v))
+}
+
+// GroupLeaderGTE applies the GTE predicate on the "group_leader" field.
+func GroupLeaderGTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGTE(FieldGroupLeader, v))
+}
+
+// GroupLeaderLT applies the LT predicate on the "group_leader" field.
+func GroupLeaderLT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLT(FieldGroupLeader, v))
+}
+
+// GroupLeaderLTE applies the LTE predicate on the "group_leader" field.
+func GroupLeaderLTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLTE(FieldGroupLeader, v))
+}
+
+// GroupLeaderContains applies the Contains predicate on the "group_leader" field.
+func GroupLeaderContains(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContains(FieldGroupLeader, v))
+}
+
+// GroupLeaderHasPrefix applies the HasPrefix predicate on the "group_leader" field.
+func GroupLeaderHasPrefix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasPrefix(FieldGroupLeader, v))
+}
+
+// GroupLeaderHasSuffix applies the HasSuffix predicate on the "group_leader" field.
+func GroupLeaderHasSuffix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasSuffix(FieldGroupLeader, v))
+}
+
+// GroupLeaderEqualFold applies the EqualFold predicate on the "group_leader" field.
+func GroupLeaderEqualFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEqualFold(FieldGroupLeader, v))
+}
+
+// GroupLeaderContainsFold applies the ContainsFold predicate on the "group_leader" field.
+func GroupLeaderContainsFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContainsFold(FieldGroupLeader, v))
+}
+
+// GroupLeaderNameEQ applies the EQ predicate on the "group_leader_name" field.
+func GroupLeaderNameEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEQ(FieldGroupLeaderName, v))
+}
+
+// GroupLeaderNameNEQ applies the NEQ predicate on the "group_leader_name" field.
+func GroupLeaderNameNEQ(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNEQ(FieldGroupLeaderName, v))
+}
+
+// GroupLeaderNameIn applies the In predicate on the "group_leader_name" field.
+func GroupLeaderNameIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIn(FieldGroupLeaderName, vs...))
+}
+
+// GroupLeaderNameNotIn applies the NotIn predicate on the "group_leader_name" field.
+func GroupLeaderNameNotIn(vs ...string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotIn(FieldGroupLeaderName, vs...))
+}
+
+// GroupLeaderNameGT applies the GT predicate on the "group_leader_name" field.
+func GroupLeaderNameGT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGT(FieldGroupLeaderName, v))
+}
+
+// GroupLeaderNameGTE applies the GTE predicate on the "group_leader_name" field.
+func GroupLeaderNameGTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldGTE(FieldGroupLeaderName, v))
+}
+
+// GroupLeaderNameLT applies the LT predicate on the "group_leader_name" field.
+func GroupLeaderNameLT(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLT(FieldGroupLeaderName, v))
+}
+
+// GroupLeaderNameLTE applies the LTE predicate on the "group_leader_name" field.
+func GroupLeaderNameLTE(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldLTE(FieldGroupLeaderName, v))
+}
+
+// GroupLeaderNameContains applies the Contains predicate on the "group_leader_name" field.
+func GroupLeaderNameContains(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContains(FieldGroupLeaderName, v))
+}
+
+// GroupLeaderNameHasPrefix applies the HasPrefix predicate on the "group_leader_name" field.
+func GroupLeaderNameHasPrefix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasPrefix(FieldGroupLeaderName, v))
+}
+
+// GroupLeaderNameHasSuffix applies the HasSuffix predicate on the "group_leader_name" field.
+func GroupLeaderNameHasSuffix(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldHasSuffix(FieldGroupLeaderName, v))
+}
+
+// GroupLeaderNameEqualFold applies the EqualFold predicate on the "group_leader_name" field.
+func GroupLeaderNameEqualFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldEqualFold(FieldGroupLeaderName, v))
+}
+
+// GroupLeaderNameContainsFold applies the ContainsFold predicate on the "group_leader_name" field.
+func GroupLeaderNameContainsFold(v string) predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldContainsFold(FieldGroupLeaderName, v))
+}
+
 // BidSubjectCodeEQ applies the EQ predicate on the "bid_subject_code" field.
 func BidSubjectCodeEQ(v string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldEQ(FieldBidSubjectCode, v))
@@ -268,6 +408,16 @@ func BidSubjectCodeHasPrefix(v string) predicate.BidInfo {
 // BidSubjectCodeHasSuffix applies the HasSuffix predicate on the "bid_subject_code" field.
 func BidSubjectCodeHasSuffix(v string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldHasSuffix(FieldBidSubjectCode, v))
+}
+
+// BidSubjectCodeIsNil applies the IsNil predicate on the "bid_subject_code" field.
+func BidSubjectCodeIsNil() predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIsNull(FieldBidSubjectCode))
+}
+
+// BidSubjectCodeNotNil applies the NotNil predicate on the "bid_subject_code" field.
+func BidSubjectCodeNotNil() predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotNull(FieldBidSubjectCode))
 }
 
 // BidSubjectCodeEqualFold applies the EqualFold predicate on the "bid_subject_code" field.
@@ -333,6 +483,16 @@ func BidSubjectNameHasPrefix(v string) predicate.BidInfo {
 // BidSubjectNameHasSuffix applies the HasSuffix predicate on the "bid_subject_name" field.
 func BidSubjectNameHasSuffix(v string) predicate.BidInfo {
 	return predicate.BidInfo(sql.FieldHasSuffix(FieldBidSubjectName, v))
+}
+
+// BidSubjectNameIsNil applies the IsNil predicate on the "bid_subject_name" field.
+func BidSubjectNameIsNil() predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldIsNull(FieldBidSubjectName))
+}
+
+// BidSubjectNameNotNil applies the NotNil predicate on the "bid_subject_name" field.
+func BidSubjectNameNotNil() predicate.BidInfo {
+	return predicate.BidInfo(sql.FieldNotNull(FieldBidSubjectName))
 }
 
 // BidSubjectNameEqualFold applies the EqualFold predicate on the "bid_subject_name" field.
