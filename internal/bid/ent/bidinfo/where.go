@@ -1255,7 +1255,7 @@ func HasProject() predicate.BidInfo {
 	return predicate.BidInfo(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, ProjectTable, ProjectColumn),
+			sqlgraph.Edge(sqlgraph.O2O, true, ProjectTable, ProjectColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})

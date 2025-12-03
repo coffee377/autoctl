@@ -124,7 +124,7 @@ func (_q *BidProjectQuery) QueryInfo() *BidInfoQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(bidproject.Table, bidproject.FieldID, selector),
 			sqlgraph.To(bidinfo.Table, bidinfo.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, bidproject.InfoTable, bidproject.InfoColumn),
+			sqlgraph.Edge(sqlgraph.O2O, false, bidproject.InfoTable, bidproject.InfoColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil
@@ -486,9 +486,8 @@ func (_q *BidProjectQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*B
 		}
 	}
 	if query := _q.withInfo; query != nil {
-		if err := _q.loadInfo(ctx, query, nodes,
-			func(n *BidProject) { n.Edges.Info = []*BidInfo{} },
-			func(n *BidProject, e *BidInfo) { n.Edges.Info = append(n.Edges.Info, e) }); err != nil {
+		if err := _q.loadInfo(ctx, query, nodes, nil,
+			func(n *BidProject, e *BidInfo) { n.Edges.Info = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -561,9 +560,6 @@ func (_q *BidProjectQuery) loadInfo(ctx context.Context, query *BidInfoQuery, no
 	for i := range nodes {
 		fks = append(fks, nodes[i].ID)
 		nodeids[nodes[i].ID] = nodes[i]
-		if init != nil {
-			init(nodes[i])
-		}
 	}
 	if len(query.ctx.Fields) > 0 {
 		query.ctx.AppendFieldOnce(bidinfo.FieldProjectID)

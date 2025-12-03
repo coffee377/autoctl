@@ -605,7 +605,7 @@ func (_u *BidInfoUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	}
 	if _u.mutation.ProjectCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
+			Rel:     sqlgraph.O2O,
 			Inverse: true,
 			Table:   bidinfo.ProjectTable,
 			Columns: []string{bidinfo.ProjectColumn},
@@ -618,7 +618,7 @@ func (_u *BidInfoUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	}
 	if nodes := _u.mutation.ProjectIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
+			Rel:     sqlgraph.O2O,
 			Inverse: true,
 			Table:   bidinfo.ProjectTable,
 			Columns: []string{bidinfo.ProjectColumn},
@@ -1259,7 +1259,7 @@ func (_u *BidInfoUpdateOne) sqlSave(ctx context.Context) (_node *BidInfo, err er
 	}
 	if _u.mutation.ProjectCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
+			Rel:     sqlgraph.O2O,
 			Inverse: true,
 			Table:   bidinfo.ProjectTable,
 			Columns: []string{bidinfo.ProjectColumn},
@@ -1272,7 +1272,7 @@ func (_u *BidInfoUpdateOne) sqlSave(ctx context.Context) (_node *BidInfo, err er
 	}
 	if nodes := _u.mutation.ProjectIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
+			Rel:     sqlgraph.O2O,
 			Inverse: true,
 			Table:   bidinfo.ProjectTable,
 			Columns: []string{bidinfo.ProjectColumn},

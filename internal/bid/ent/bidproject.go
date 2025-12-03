@@ -4,6 +4,7 @@ package ent
 
 import (
 	"cds/bid/ent/bidapply"
+	"cds/bid/ent/bidinfo"
 	"cds/bid/ent/bidproject"
 	"fmt"
 	"strings"
@@ -60,7 +61,7 @@ type BidProjectEdges struct {
 	// Expense holds the value of the expense edge.
 	Expense []*BidExpense `json:"expense,omitempty"`
 	// Info holds the value of the info edge.
-	Info []*BidInfo `json:"info,omitempty"`
+	Info *BidInfo `json:"info,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [3]bool
@@ -87,10 +88,12 @@ func (e BidProjectEdges) ExpenseOrErr() ([]*BidExpense, error) {
 }
 
 // InfoOrErr returns the Info value or an error if the edge
-// was not loaded in eager-loading.
-func (e BidProjectEdges) InfoOrErr() ([]*BidInfo, error) {
-	if e.loadedTypes[2] {
+// was not loaded in eager-loading, or loaded but was not found.
+func (e BidProjectEdges) InfoOrErr() (*BidInfo, error) {
+	if e.Info != nil {
 		return e.Info, nil
+	} else if e.loadedTypes[2] {
+		return nil, &NotFoundError{label: bidinfo.Label}
 	}
 	return nil, &NotLoadedError{edge: "info"}
 }

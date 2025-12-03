@@ -139,7 +139,7 @@ var (
 		{Name: "created_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
 		{Name: "updated_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
 		{Name: "updated_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "更新人"},
-		{Name: "project_id", Type: field.TypeString, Size: 32, Comment: "项目 ID"},
+		{Name: "project_id", Type: field.TypeString, Unique: true, Size: 32, Comment: "项目 ID"},
 	}
 	// BidInfoTable holds the schema information for the "bid_info" table.
 	BidInfoTable = &schema.Table{

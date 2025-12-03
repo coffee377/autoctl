@@ -558,7 +558,7 @@ func (_c *BidInfoCreate) createSpec() (*BidInfo, *sqlgraph.CreateSpec) {
 	}
 	if nodes := _c.mutation.ProjectIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
+			Rel:     sqlgraph.O2O,
 			Inverse: true,
 			Table:   bidinfo.ProjectTable,
 			Columns: []string{bidinfo.ProjectColumn},

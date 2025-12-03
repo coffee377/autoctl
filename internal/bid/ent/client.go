@@ -642,7 +642,7 @@ func (c *BidInfoClient) QueryProject(_m *BidInfo) *BidProjectQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(bidinfo.Table, bidinfo.FieldID, id),
 			sqlgraph.To(bidproject.Table, bidproject.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, bidinfo.ProjectTable, bidinfo.ProjectColumn),
+			sqlgraph.Edge(sqlgraph.O2O, true, bidinfo.ProjectTable, bidinfo.ProjectColumn),
 		)
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
@@ -823,7 +823,7 @@ func (c *BidProjectClient) QueryInfo(_m *BidProject) *BidInfoQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(bidproject.Table, bidproject.FieldID, id),
 			sqlgraph.To(bidinfo.Table, bidinfo.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, bidproject.InfoTable, bidproject.InfoColumn),
+			sqlgraph.Edge(sqlgraph.O2O, false, bidproject.InfoTable, bidproject.InfoColumn),
 		)
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil

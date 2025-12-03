@@ -986,7 +986,7 @@ func HasInfo() predicate.BidProject {
 	return predicate.BidProject(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, InfoTable, InfoColumn),
+			sqlgraph.Edge(sqlgraph.O2O, false, InfoTable, InfoColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})

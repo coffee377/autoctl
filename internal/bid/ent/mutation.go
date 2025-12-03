@@ -5437,8 +5437,7 @@ type BidProjectMutation struct {
 	expense         map[string]struct{}
 	removedexpense  map[string]struct{}
 	clearedexpense  bool
-	info            map[string]struct{}
-	removedinfo     map[string]struct{}
+	info            *string
 	clearedinfo     bool
 	done            bool
 	oldValue        func(context.Context) (*BidProject, error)
@@ -6198,14 +6197,9 @@ func (m *BidProjectMutation) ResetExpense() {
 	m.removedexpense = nil
 }
 
-// AddInfoIDs adds the "info" edge to the BidInfo entity by ids.
-func (m *BidProjectMutation) AddInfoIDs(ids ...string) {
-	if m.info == nil {
-		m.info = make(map[string]struct{})
-	}
-	for i := range ids {
-		m.info[ids[i]] = struct{}{}
-	}
+// SetInfoID sets the "info" edge to the BidInfo entity by id.
+func (m *BidProjectMutation) SetInfoID(id string) {
+	m.info = &id
 }
 
 // ClearInfo clears the "info" edge to the BidInfo entity.
@@ -6218,29 +6212,20 @@ func (m *BidProjectMutation) InfoCleared() bool {
 	return m.clearedinfo
 }
 
-// RemoveInfoIDs removes the "info" edge to the BidInfo entity by IDs.
-func (m *BidProjectMutation) RemoveInfoIDs(ids ...string) {
-	if m.removedinfo == nil {
-		m.removedinfo = make(map[string]struct{})
-	}
-	for i := range ids {
-		delete(m.info, ids[i])
-		m.removedinfo[ids[i]] = struct{}{}
-	}
-}
-
-// RemovedInfo returns the removed IDs of the "info" edge to the BidInfo entity.
-func (m *BidProjectMutation) RemovedInfoIDs() (ids []string) {
-	for id := range m.removedinfo {
-		ids = append(ids, id)
+// InfoID returns the "info" edge ID in the mutation.
+func (m *BidProjectMutation) InfoID() (id string, exists bool) {
+	if m.info != nil {
+		return *m.info, true
 	}
 	return
 }
 
 // InfoIDs returns the "info" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// InfoID instead. It exists only for internal usage by the builders.
 func (m *BidProjectMutation) InfoIDs() (ids []string) {
-	for id := range m.info {
-		ids = append(ids, id)
+	if id := m.info; id != nil {
+		ids = append(ids, *id)
 	}
 	return
 }
@@ -6249,7 +6234,6 @@ func (m *BidProjectMutation) InfoIDs() (ids []string) {
 func (m *BidProjectMutation) ResetInfo() {
 	m.info = nil
 	m.clearedinfo = false
-	m.removedinfo = nil
 }
 
 // Where appends a list predicates to the BidProjectMutation builder.
@@ -6661,11 +6645,9 @@ func (m *BidProjectMutation) AddedIDs(name string) []ent.Value {
 		}
 		return ids
 	case bidproject.EdgeInfo:
-		ids := make([]ent.Value, 0, len(m.info))
-		for id := range m.info {
-			ids = append(ids, id)
+		if id := m.info; id != nil {
+			return []ent.Value{*id}
 		}
-		return ids
 	}
 	return nil
 }
@@ -6675,9 +6657,6 @@ func (m *BidProjectMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 3)
 	if m.removedexpense != nil {
 		edges = append(edges, bidproject.EdgeExpense)
-	}
-	if m.removedinfo != nil {
-		edges = append(edges, bidproject.EdgeInfo)
 	}
 	return edges
 }
@@ -6689,12 +6668,6 @@ func (m *BidProjectMutation) RemovedIDs(name string) []ent.Value {
 	case bidproject.EdgeExpense:
 		ids := make([]ent.Value, 0, len(m.removedexpense))
 		for id := range m.removedexpense {
-			ids = append(ids, id)
-		}
-		return ids
-	case bidproject.EdgeInfo:
-		ids := make([]ent.Value, 0, len(m.removedinfo))
-		for id := range m.removedinfo {
 			ids = append(ids, id)
 		}
 		return ids
@@ -6737,6 +6710,9 @@ func (m *BidProjectMutation) ClearEdge(name string) error {
 	switch name {
 	case bidproject.EdgeApply:
 		m.ClearApply()
+		return nil
+	case bidproject.EdgeInfo:
+		m.ClearInfo()
 		return nil
 	}
 	return fmt.Errorf("unknown BidProject unique edge %s", name)

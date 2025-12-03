@@ -243,19 +243,23 @@ func (_c *BidProjectCreate) AddExpense(v ...*BidExpense) *BidProjectCreate {
 	return _c.AddExpenseIDs(ids...)
 }
 
-// AddInfoIDs adds the "info" edge to the BidInfo entity by IDs.
-func (_c *BidProjectCreate) AddInfoIDs(ids ...string) *BidProjectCreate {
-	_c.mutation.AddInfoIDs(ids...)
+// SetInfoID sets the "info" edge to the BidInfo entity by ID.
+func (_c *BidProjectCreate) SetInfoID(id string) *BidProjectCreate {
+	_c.mutation.SetInfoID(id)
 	return _c
 }
 
-// AddInfo adds the "info" edges to the BidInfo entity.
-func (_c *BidProjectCreate) AddInfo(v ...*BidInfo) *BidProjectCreate {
-	ids := make([]string, len(v))
-	for i := range v {
-		ids[i] = v[i].ID
+// SetNillableInfoID sets the "info" edge to the BidInfo entity by ID if the given value is not nil.
+func (_c *BidProjectCreate) SetNillableInfoID(id *string) *BidProjectCreate {
+	if id != nil {
+		_c = _c.SetInfoID(*id)
 	}
-	return _c.AddInfoIDs(ids...)
+	return _c
+}
+
+// SetInfo sets the "info" edge to the BidInfo entity.
+func (_c *BidProjectCreate) SetInfo(v *BidInfo) *BidProjectCreate {
+	return _c.SetInfoID(v.ID)
 }
 
 // Mutation returns the BidProjectMutation object of the builder.
@@ -544,7 +548,7 @@ func (_c *BidProjectCreate) createSpec() (*BidProject, *sqlgraph.CreateSpec) {
 	}
 	if nodes := _c.mutation.InfoIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2M,
+			Rel:     sqlgraph.O2O,
 			Inverse: false,
 			Table:   bidproject.InfoTable,
 			Columns: []string{bidproject.InfoColumn},

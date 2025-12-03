@@ -75,7 +75,7 @@ func (_q *BidInfoQuery) QueryProject() *BidProjectQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(bidinfo.Table, bidinfo.FieldID, selector),
 			sqlgraph.To(bidproject.Table, bidproject.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, bidinfo.ProjectTable, bidinfo.ProjectColumn),
+			sqlgraph.Edge(sqlgraph.O2O, true, bidinfo.ProjectTable, bidinfo.ProjectColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil

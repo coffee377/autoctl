@@ -295,17 +295,10 @@ func ByExpense(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
-// ByInfoCount orders the results by info count.
-func ByInfoCount(opts ...sql.OrderTermOption) OrderOption {
+// ByInfoField orders the results by info field.
+func ByInfoField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newInfoStep(), opts...)
-	}
-}
-
-// ByInfo orders the results by info terms.
-func ByInfo(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
-	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newInfoStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newInfoStep(), sql.OrderByField(field, opts...))
 	}
 }
 func newApplyStep() *sqlgraph.Step {
@@ -326,6 +319,6 @@ func newInfoStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(InfoInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, InfoTable, InfoColumn),
+		sqlgraph.Edge(sqlgraph.O2O, false, InfoTable, InfoColumn),
 	)
 }
