@@ -1,0 +1,7 @@
+
+# redis 配置
+redis:
+  host: 192.168.44.82
+  port: 6379
+  password: jqkj5350**)
+  db: 5

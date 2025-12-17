@@ -30,6 +30,7 @@ type Options struct {
 	cwd       string // 当前工作目录
 	directory string // 子目录
 	config    string // 配置文件名称
+	env       string // 环境名称
 	verbose   bool   // 输出详细信息
 }
 
@@ -48,6 +49,8 @@ func init() {
 		"change execution directory into submodule path")
 	rootCmd.PersistentFlags().BoolVarP(&rooOpts.verbose, "verbose", "v", false,
 		"verbose output")
+
+	//rootCmd.PersistentFlags().s
 
 	//image.RegisterCommandRecursive(rootCmd, image.RootOptions{})
 	//version.RegisterCommandRecursive(rootCmd)
