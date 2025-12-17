@@ -39,7 +39,7 @@ func TestExpense(t *testing.T) {
 func TestExpenseBatch(t *testing.T) {
 	approval, err := oa.New(app.New("a57e9681-79cb-4242-96df-952be2dc3af7", app.WithRedis()))
 	assert.Nil(t, err)
-	ids, err := approval.GetProcessInstanceIds(oa.BidExpenseProcessCode, "2025-11-05", "", nil)
+	ids, err := approval.GetProcessInstanceIds(oa.BidExpenseProcessCode, "2025-12-16", "", nil)
 	assert.Nil(t, err)
 
 	client, ok := ds.Mysql()
