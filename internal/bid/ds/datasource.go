@@ -93,6 +93,7 @@ var (
 	}
 	dsProd = DS{
 		mysql: DataSource{
+			typ:      MySQL,
 			username: "teamwork",
 			password: "teamwork_jqkj5350**)123",
 			host:     "192.168.44.82",
@@ -100,6 +101,7 @@ var (
 			database: "teamwork",
 		},
 		sqlserver: DataSource{
+			typ:      SQLServer,
 			username: "buzhidaomingzi",
 			password: "154sjk08123$%^",
 			host:     "192.168.44.154",
