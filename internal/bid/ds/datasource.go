@@ -73,6 +73,24 @@ var (
 			database: "JQMSDB_main_220726",
 		},
 	}
+	dsTest = DS{
+		mysql: DataSource{
+			typ:      MySQL,
+			username: "teamwork",
+			password: "jqkj5350**)",
+			host:     "10.1.83.26",
+			port:     "3306",
+			database: "teamwork",
+		},
+		sqlserver: DataSource{
+			typ:      SQLServer,
+			username: "sa",
+			password: "sa123$%^",
+			host:     "192.168.45.150",
+			port:     "1433",
+			database: "JQMSDB_main_220726",
+		},
+	}
 	dsProd = DS{
 		mysql: DataSource{
 			username: "teamwork",
@@ -109,7 +127,7 @@ func initClients() error {
 	cacheMu.Lock()
 	defer cacheMu.Unlock()
 
-	mysql := dsDev.mysql
+	mysql := dsTest.mysql
 	// 创建 Ent Client
 	client, err := ent.Open(mysql.typ, mysql.DSN())
 	if err != nil {
