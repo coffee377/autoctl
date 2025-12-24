@@ -3,6 +3,7 @@ module cds/bid
 go 1.24.9
 
 require (
+	ariga.io/atlas v0.37.0
 	entgo.io/ent v0.14.5
 	github.com/alibabacloud-go/dingtalk v1.6.91
 	github.com/coffee377/entcc v0.0.0-20251021095116-5bb324334584
@@ -14,7 +15,6 @@ require (
 )
 
 require (
-	ariga.io/atlas v0.37.0 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.5 // indirect

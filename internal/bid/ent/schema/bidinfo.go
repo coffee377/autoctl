@@ -18,7 +18,7 @@ type BidInfo struct {
 // Fields of the BidInfo.
 func (BidInfo) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("id").Comment("投标信息ID").MaxLen(32),
+		field.String("id").Comment("投标信息 ID").MaxLen(32),
 		field.String("project_id").Comment("项目 ID").MaxLen(32),
 		field.String("group_leader").Comment("投标组长工号").MaxRuneLen(8),
 		field.String("group_leader_name").Comment("投标组长").MaxRuneLen(8),
@@ -29,8 +29,8 @@ func (BidInfo) Fields() []ent.Field {
 				dialect.MySQL: "decimal(16,2)",
 			},
 		),
-		field.Enum("bid_status").Comment("投标状态 RP:待报名 RO:报名中 RS:报名成功 RF:报名失败 DP:标书编制中 B:投标中 W:已中标 L:未中标 F:流标 0:-").
-			Values("RP", "RO", "RS", "RF", "DP", "B", "W", "L", "F", "0").Default("0"),
+		field.Enum("bid_status").Comment("投标状态 RP:待报名 RO:报名中 RS:报名成功 RF:报名失败 DP:标书编制中 B:投标中 W:已中标 L:未中标 F:流标 A:弃标 0:-").
+			Values("RP", "RO", "RS", "RF", "DP", "B", "W", "L", "F", "A", "0").Default("0"),
 		field.Time("bid_date").Comment("中标时间").Optional().Nillable().
 			SchemaType(map[string]string{
 				dialect.MySQL: "datetime",
