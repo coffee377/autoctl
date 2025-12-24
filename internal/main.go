@@ -2,34 +2,41 @@ package main
 
 import (
 	"cds/dingtalk/es"
-	"cds/dingtalk/es/process"
 	"context"
 	"encoding/json"
 	"net/http"
 	"strings"
 
-	"github.com/open-dingtalk/dingtalk-stream-sdk-go/event"
-	"github.com/open-dingtalk/dingtalk-stream-sdk-go/logger"
+	"github.com/redis/go-redis/v9"
 )
 
 const testCode = "PROC-BDBD627A-7E7F-4EBC-B80A-EC2A9E777D97"
 
 func main() {
 	subscription := es.DingTalkEventSubscription(
+		// 晶奇网关代理应用
 		es.WithClient("dingygs46ockvmysbjlu", "t_o5NiKOA8Dy7wTtZ-wakzZ5-9Z-8u_JDH5hpXp7itk4cNouBfESswIp3-BuuffP"),
-		es.WithProcessInstanceEvent(func(ctx context.Context, header event.EventHeader, message *process.InstanceMessage) error {
-			logger.GetLogger().Infof("process instance event: %v", message)
-			return nil
+		// redis
+		es.WithRedis(redis.Options{
+			Addr:     "localhost:6379", // Redis 服务器地址
+			Password: "redis!@@&",      // Redis 服务器密码
+			DB:       2,                // Redis 数据库索引
 		}),
-		es.WithProcessTaskEvent(func(ctx context.Context, header event.EventHeader, message *process.TaskMessage) error {
-			logger.GetLogger().Infof("process task event: %v", message)
-			return nil
-		}),
+
+		//es.WithProcessInstanceEvent(func(ctx context.Context, header event.EventHeader, message *process.InstanceMessage) error {
+		//	logger.GetLogger().Infof("process instance event: %v", message)
+		//	return nil
+		//}),
+		//es.WithProcessTaskEvent(func(ctx context.Context, header event.EventHeader, message *process.TaskMessage) error {
+		//	logger.GetLogger().Infof("process task event: %v", message)
+		//	return nil
+		//}),
 	)
 	err := subscription.Run(context.Background())
 	if err != nil {
 		panic(err)
 	}
+
 	// 注册路由，指定访问路径和处理函数
 	//http.HandleFunc("/dict/", dictHandler)
 	//
@@ -38,6 +45,8 @@ func main() {
 	//if err != nil {
 	//	panic("服务器启动失败: " + err.Error())
 	//}
+
+	//redis.Run()
 }
 
 // DictItem 定义字典项结构体，与返回数据结构对应

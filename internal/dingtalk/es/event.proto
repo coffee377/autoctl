@@ -1,0 +1,121 @@
+edition = "2023";
+
+package ccl.dingtalk;
+
+option go_package = "github.com/code-crafters-lab/ccl/pkg/grpc;es";
+
+// 事件头部（钉钉回调通用字段）
+message EventHeader {
+  // 事件唯一标识
+  string event_id = 1 [json_name = "eventId"];
+  // 事件生成时间（时间戳，单位毫秒）
+  int64 event_born_time = 2 [json_name = "eventBornTime"];
+  // 企业 ID
+  string event_corp_id = 3 [json_name = "eventCorpId"];
+  // 事件类型（如 bpms_instance_change/bpms_task_change）
+  string event_type = 4 [json_name = "eventType"];
+  // 应用统一 ID
+  string event_unified_app_id = 5 [json_name = "eventUnifiedAppId"];
+}
+
+// 审批实例状态变更类型枚举
+enum InstanceChangeType {
+  INSTANCE_CHANGE_TYPE_UNSPECIFIED = 0; // 未指定（默认值）
+  INSTANCE_CHANGE_TYPE_START = 1;         // 审批实例开始
+  INSTANCE_CHANGE_TYPE_FINISH = 2;       // 审批正常结束
+  INSTANCE_CHANGE_TYPE_TERMINATE = 3; // 审批终止
+  INSTANCE_CHANGE_TYPE_DELETE = 4;       // 审批实例删除
+}
+
+// 审批实例状态变更消息
+// 文档参考：https://open.dingtalk.com/document/development/event-bpms-instance-change
+message ProcessInstance {
+  // 审批实例 id
+  string instance_id = 1 [json_name = "processInstanceId"];
+  // 结束审批实例时间。时间戳，单位毫秒
+  int64 finish_time = 2 [json_name = "finishTime"];
+  // 创建审批实例时间。时间戳，单位毫秒
+  int64 create_time = 3 [json_name = "createTime"];
+  // 审批模板的唯一码
+  string process_code = 4 [json_name = "processCode"];
+  // 业务分类标识
+  string biz_category_id = 5 [json_name = "bizCategoryId"];
+  // 流程实例业务标识
+  string business_id = 6 [json_name = "businessId"];
+  // 实例状态变更类型：
+  // start：审批实例开始
+  // finish：审批正常结束（同意或拒绝）
+  // terminate：审批终止（发起人撤销审批单）
+  // delete：审批实例删除
+  string type = 7 [json_name = "type"];
+  // 审批实例标题
+  string title = 8 [json_name = "title"];
+  // 业务身份
+  string business_type = 9 [json_name = "businessType"];
+  // 审批实例详情页 URL
+  string url = 10 [json_name = "url"];
+  // 发起审批实例的员工 userId
+  string staff_id = 11 [json_name = "staffId"];
+  // 审批结果(审批终止时无此参数)：
+  // agree：同意
+  // refuse：拒绝
+  string result = 12 [json_name = "result"];
+
+  string event_id = 13 [json_name = "eventId"];
+  string resource = 14 [json_name = "resource"];
+}
+
+// 审批任务状态变更类型枚举
+enum TaskChangeType {
+  TASK_CHANGE_TYPE_UNSPECIFIED = 0; // 未指定（默认值）
+  TASK_CHANGE_TYPE_START = 1;       // 审批任务开始
+  TASK_CHANGE_TYPE_FINISH = 2;     // 审批任务正常结束（完成或转交）
+  TASK_CHANGE_TYPE_CANCEL = 3;     // 审批任务取消（或签场景）
+  TASK_CHANGE_TYPE_COMMENT = 4;   // 审批任务评论
+}
+
+// 审批任务状态变更消息
+// 文档参考：https://open.dingtalk.com/document/development/event-bpms-task-change
+message ProcessTask {
+  // 审批实例 id
+  string process_instance_id = 1 [json_name = "processInstanceId"];
+  // 结束任务的时间。时间戳，单位毫秒
+  int64 finish_time = 2 [json_name = "finishTime"];
+  // 创建任务的时间。时间戳，单位毫秒
+  int64 create_time = 3 [json_name = "createTime"];
+  // 审批模板的唯一码
+  string process_code = 4 [json_name = "processCode"];
+  // 业务分类标识
+  string biz_category_id = 5 [json_name = "bizCategoryId"];
+  // 流程实例业务标识
+  string business_id = 6 [json_name = "businessId"];
+  // 操作时写的评论内容
+  string remark = 7 [json_name = "remark"];
+  // 任务类型：
+  // start：审批任务开始
+  // finish：审批任务正常结束（完成或转交）
+  // cancel：当前节点多审批人或签，一人审批后其他审批人推送此类型
+  // comment：审批任务评论
+  string type = 8 [json_name = "type"];
+  // 审批实例标题
+  string title = 9 [json_name = "title"];
+  // 任务 id
+  int64 task_id = 10 [json_name = "taskId"];
+  // 用户 userId
+  string staff_id = 11 [json_name = "staffId"];
+  // 审批结果：
+  // agree：同意
+  // refuse：拒绝
+  // redirect：表示审批任务转交
+  // audit：表示当前节点为办理人节点，audit为办理结果
+  string result = 12 [json_name = "result"];
+
+  string event_id = 13 [json_name = "eventId"];
+  string resource = 14 [json_name = "resource"];
+  string activity_id = 15 [json_name = "activityId"];
+  string activity_name = 16 [json_name = "activityName"];
+}
+
+
+
+
