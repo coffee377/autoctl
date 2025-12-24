@@ -106,8 +106,12 @@ func ValidColumn(column string) bool {
 var (
 	// ProjectIDValidator is a validator for the "project_id" field. It is called by the builders before save.
 	ProjectIDValidator func(string) error
+	// DefaultGroupLeader holds the default value on creation for the "group_leader" field.
+	DefaultGroupLeader string
 	// GroupLeaderValidator is a validator for the "group_leader" field. It is called by the builders before save.
 	GroupLeaderValidator func(string) error
+	// DefaultGroupLeaderName holds the default value on creation for the "group_leader_name" field.
+	DefaultGroupLeaderName string
 	// GroupLeaderNameValidator is a validator for the "group_leader_name" field. It is called by the builders before save.
 	GroupLeaderNameValidator func(string) error
 	// BidSubjectCodeValidator is a validator for the "bid_subject_code" field. It is called by the builders before save.

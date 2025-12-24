@@ -120,8 +120,8 @@ var (
 	// BidInfoColumns holds the columns for the "bid_info" table.
 	BidInfoColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeString, Size: 32, Comment: "投标信息 ID"},
-		{Name: "group_leader", Type: field.TypeString, Size: 8, Comment: "投标组长工号"},
-		{Name: "group_leader_name", Type: field.TypeString, Size: 8, Comment: "投标组长"},
+		{Name: "group_leader", Type: field.TypeString, Size: 8, Comment: "投标组长工号", Default: ""},
+		{Name: "group_leader_name", Type: field.TypeString, Size: 8, Comment: "投标组长", Default: ""},
 		{Name: "bid_subject_code", Type: field.TypeString, Nullable: true, Size: 32, Comment: "投标主体编码"},
 		{Name: "bid_subject_name", Type: field.TypeString, Nullable: true, Size: 32, Comment: "投标主体名称"},
 		{Name: "bid_amount", Type: field.TypeFloat64, Comment: "投标金额", Default: 0, SchemaType: map[string]string{"mysql": "decimal(16,2)"}},

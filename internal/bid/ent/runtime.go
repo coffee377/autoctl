@@ -184,10 +184,14 @@ func init() {
 	bidinfo.ProjectIDValidator = bidinfoDescProjectID.Validators[0].(func(string) error)
 	// bidinfoDescGroupLeader is the schema descriptor for group_leader field.
 	bidinfoDescGroupLeader := bidinfoFields[2].Descriptor()
+	// bidinfo.DefaultGroupLeader holds the default value on creation for the group_leader field.
+	bidinfo.DefaultGroupLeader = bidinfoDescGroupLeader.Default.(string)
 	// bidinfo.GroupLeaderValidator is a validator for the "group_leader" field. It is called by the builders before save.
 	bidinfo.GroupLeaderValidator = bidinfoDescGroupLeader.Validators[0].(func(string) error)
 	// bidinfoDescGroupLeaderName is the schema descriptor for group_leader_name field.
 	bidinfoDescGroupLeaderName := bidinfoFields[3].Descriptor()
+	// bidinfo.DefaultGroupLeaderName holds the default value on creation for the group_leader_name field.
+	bidinfo.DefaultGroupLeaderName = bidinfoDescGroupLeaderName.Default.(string)
 	// bidinfo.GroupLeaderNameValidator is a validator for the "group_leader_name" field. It is called by the builders before save.
 	bidinfo.GroupLeaderNameValidator = bidinfoDescGroupLeaderName.Validators[0].(func(string) error)
 	// bidinfoDescBidSubjectCode is the schema descriptor for bid_subject_code field.

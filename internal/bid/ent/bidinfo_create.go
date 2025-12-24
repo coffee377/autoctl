@@ -33,9 +33,25 @@ func (_c *BidInfoCreate) SetGroupLeader(v string) *BidInfoCreate {
 	return _c
 }
 
+// SetNillableGroupLeader sets the "group_leader" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableGroupLeader(v *string) *BidInfoCreate {
+	if v != nil {
+		_c.SetGroupLeader(*v)
+	}
+	return _c
+}
+
 // SetGroupLeaderName sets the "group_leader_name" field.
 func (_c *BidInfoCreate) SetGroupLeaderName(v string) *BidInfoCreate {
 	_c.mutation.SetGroupLeaderName(v)
+	return _c
+}
+
+// SetNillableGroupLeaderName sets the "group_leader_name" field if the given value is not nil.
+func (_c *BidInfoCreate) SetNillableGroupLeaderName(v *string) *BidInfoCreate {
+	if v != nil {
+		_c.SetGroupLeaderName(*v)
+	}
 	return _c
 }
 
@@ -323,6 +339,14 @@ func (_c *BidInfoCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (_c *BidInfoCreate) defaults() {
+	if _, ok := _c.mutation.GroupLeader(); !ok {
+		v := bidinfo.DefaultGroupLeader
+		_c.mutation.SetGroupLeader(v)
+	}
+	if _, ok := _c.mutation.GroupLeaderName(); !ok {
+		v := bidinfo.DefaultGroupLeaderName
+		_c.mutation.SetGroupLeaderName(v)
+	}
 	if _, ok := _c.mutation.BidAmount(); !ok {
 		v := bidinfo.DefaultBidAmount
 		_c.mutation.SetBidAmount(v)

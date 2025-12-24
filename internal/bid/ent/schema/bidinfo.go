@@ -20,10 +20,10 @@ func (BidInfo) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("id").Comment("投标信息 ID").MaxLen(32),
 		field.String("project_id").Comment("项目 ID").MaxLen(32),
-		field.String("group_leader").Comment("投标组长工号").MaxRuneLen(8),
-		field.String("group_leader_name").Comment("投标组长").MaxRuneLen(8),
-		field.String("bid_subject_code").Comment("投标主体编码").MaxLen(32).Optional().Nillable(),
-		field.String("bid_subject_name").Comment("投标主体名称").MaxLen(32).Optional().Nillable(),
+		field.String("group_leader").Comment("投标组长工号").MaxRuneLen(8).Default(""),
+		field.String("group_leader_name").Comment("投标组长").MaxRuneLen(8).Default(""),
+		field.String("bid_subject_code").Comment("投标主体编码").MaxRuneLen(32).Optional().Nillable(),
+		field.String("bid_subject_name").Comment("投标主体名称").MaxRuneLen(32).Optional().Nillable(),
 		field.Float("bid_amount").Comment("投标金额").Default(0).SchemaType(
 			map[string]string{
 				dialect.MySQL: "decimal(16,2)",
