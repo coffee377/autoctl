@@ -275,6 +275,8 @@ func init() {
 	bidproject.DepartmentCodeValidator = bidprojectDescDepartmentCode.Validators[0].(func(string) error)
 	// bidprojectDescDepartmentName is the schema descriptor for department_name field.
 	bidprojectDescDepartmentName := bidprojectFields[5].Descriptor()
+	// bidproject.DefaultDepartmentName holds the default value on creation for the department_name field.
+	bidproject.DefaultDepartmentName = bidprojectDescDepartmentName.Default.(string)
 	// bidproject.DepartmentNameValidator is a validator for the "department_name" field. It is called by the builders before save.
 	bidproject.DepartmentNameValidator = bidprojectDescDepartmentName.Validators[0].(func(string) error)
 	// bidprojectDescBizRepNo is the schema descriptor for biz_rep_no field.

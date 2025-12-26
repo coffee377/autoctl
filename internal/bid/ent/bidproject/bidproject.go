@@ -114,6 +114,8 @@ var (
 	DefaultDepartmentCode string
 	// DepartmentCodeValidator is a validator for the "department_code" field. It is called by the builders before save.
 	DepartmentCodeValidator func(string) error
+	// DefaultDepartmentName holds the default value on creation for the "department_name" field.
+	DefaultDepartmentName string
 	// DepartmentNameValidator is a validator for the "department_name" field. It is called by the builders before save.
 	DepartmentNameValidator func(string) error
 	// DefaultBizRepNo holds the default value on creation for the "biz_rep_no" field.

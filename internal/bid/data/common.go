@@ -143,9 +143,8 @@ func (receiver *DingTalkWorkflowData) ExtraDictCode(text *string) (string, bool)
 	match := codeReg.FindStringSubmatch(*text)
 	if len(match) < 2 {
 		return *text, false
-	} else {
-		return match[1], true
 	}
+	return match[1], true
 }
 
 func WithUserHook(hook app.UserHook) WorkflowOption {

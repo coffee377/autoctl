@@ -5,12 +5,14 @@ import (
 	"cds/bid/ent"
 	"cds/bid/ent/bidapply"
 	"cds/bid/ent/bidexpense"
+	"cds/bid/ent/bidproject"
 	"cds/bid/ent/schema"
 	"cds/dingtalk/oa"
 	"context"
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
+	"strings"
 	"time"
 
 	dingtalkworkflow10 "github.com/alibabacloud-go/dingtalk/workflow_1_0"
@@ -44,10 +46,12 @@ type BidExpenseForm struct {
 	PayRemark *string  // 付款备注
 	PayMethod *string  // 付款方式
 
-	TransferInstructions *string    // v2 转账说明
-	GuaranteeDeadline    *time.Time // v2 保证期限（保函）
+	TransferInstructions  *string    // v2 转账说明
+	GuaranteeDeadline     *time.Time // v2 保证期限（保函）
+	GuaranteeDenomination *float64   // v2 保证面额
 
-	PlanPayTime *time.Time // 预计转账时间
+	PlanPayTime *time.Time // 计划转账时间
+	PayTime     *time.Time // 付款时间
 }
 
 func NewBidExpense(instId string, res *dingtalkworkflow10.GetProcessInstanceResponseBodyResult, opts ...WorkflowOption) (*BidExpenseForm, error) {
@@ -171,6 +175,26 @@ func (ef *BidExpenseForm) create(ctx context.Context, tx *ent.Tx) (*ent.BidExpen
 			return nil, err
 		}
 		ef.ProjectId = &applyInstance.ProjectID
+	} else {
+		idHash := md5.Sum([]byte(strings.Join([]string{
+			strings.TrimSpace(ef.ProjectCode),
+			strings.TrimSpace(ef.ProjectName),
+			strings.TrimSpace(ef.BizRepName),
+		}, "|")))
+		id := hex.EncodeToString(idHash[:])
+		_, err := tx.BidProject.Query().Where(bidproject.ID(id)).Only(ctx)
+		if ent.IsNotFound(err) {
+			project := tx.BidProject.Create()
+			project.SetID(id)
+			project.SetCode(ef.ProjectCode)
+			project.SetName(ef.ProjectName)
+			project.SetBizRepName(ef.BizRepName)
+			_, err := project.Save(ctx)
+			if err != nil {
+				return nil, err
+			}
+		}
+		ef.ProjectId = &id
 	}
 	expense.SetNillableProjectID(ef.ProjectId) // 项目关联
 
@@ -210,18 +234,17 @@ func (ef *BidExpenseForm) create(ctx context.Context, tx *ent.Tx) (*ent.BidExpen
 	if ef.PayRemark != nil && *ef.PayRemark != "" {
 		expense.SetPayRemark(*ef.PayRemark)
 	}
-	if ef.PayMethod != nil {
-		expense.SetPayMethod(*ef.PayMethod)
-	}
+	expense.SetNillablePayMethod(ef.PayMethod)
 	if ef.TransferInstructions != nil && *ef.TransferInstructions != "" {
 		expense.SetTransferInstructions(*ef.TransferInstructions)
 	}
-	if ef.GuaranteeDeadline != nil {
-		expense.SetGuaranteeDeadline(*ef.GuaranteeDeadline)
-	}
+	expense.SetNillableGuaranteeDeadline(ef.GuaranteeDeadline)
 
-	if ef.PlanPayTime != nil {
-		expense.SetPlanPayTime(*ef.PlanPayTime)
+	expense.SetNillablePlanPayTime(ef.PlanPayTime)
+	if ef.PlanPayTime != nil && ef.PayTime == nil {
+		expense.SetNillablePayTime(ef.PlanPayTime)
+	} else {
+		expense.SetNillablePayTime(ef.PayTime)
 	}
 
 	expense.SetApprovalStatus(ef.ApprovalStatus)

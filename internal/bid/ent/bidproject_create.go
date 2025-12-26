@@ -77,6 +77,14 @@ func (_c *BidProjectCreate) SetDepartmentName(v string) *BidProjectCreate {
 	return _c
 }
 
+// SetNillableDepartmentName sets the "department_name" field if the given value is not nil.
+func (_c *BidProjectCreate) SetNillableDepartmentName(v *string) *BidProjectCreate {
+	if v != nil {
+		_c.SetDepartmentName(*v)
+	}
+	return _c
+}
+
 // SetBizRepNo sets the "biz_rep_no" field.
 func (_c *BidProjectCreate) SetBizRepNo(v string) *BidProjectCreate {
 	_c.mutation.SetBizRepNo(v)
@@ -308,6 +316,10 @@ func (_c *BidProjectCreate) defaults() {
 	if _, ok := _c.mutation.DepartmentCode(); !ok {
 		v := bidproject.DefaultDepartmentCode
 		_c.mutation.SetDepartmentCode(v)
+	}
+	if _, ok := _c.mutation.DepartmentName(); !ok {
+		v := bidproject.DefaultDepartmentName
+		_c.mutation.SetDepartmentName(v)
 	}
 	if _, ok := _c.mutation.BizRepNo(); !ok {
 		v := bidproject.DefaultBizRepNo
