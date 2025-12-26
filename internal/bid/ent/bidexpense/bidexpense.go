@@ -37,6 +37,12 @@ const (
 	FieldFeeType = "fee_type"
 	// FieldPayReason holds the string denoting the pay_reason field in the database.
 	FieldPayReason = "pay_reason"
+	// FieldPayMethod holds the string denoting the pay_method field in the database.
+	FieldPayMethod = "pay_method"
+	// FieldGuaranteeDenomination holds the string denoting the guarantee_denomination field in the database.
+	FieldGuaranteeDenomination = "guarantee_denomination"
+	// FieldGuaranteeDeadline holds the string denoting the guarantee_deadline field in the database.
+	FieldGuaranteeDeadline = "guarantee_deadline"
 	// FieldRefunded holds the string denoting the refunded field in the database.
 	FieldRefunded = "refunded"
 	// FieldPayeeBank holds the string denoting the payee_bank field in the database.
@@ -49,16 +55,14 @@ const (
 	FieldPayRatio = "pay_ratio"
 	// FieldPayAmount holds the string denoting the pay_amount field in the database.
 	FieldPayAmount = "pay_amount"
-	// FieldPayRemark holds the string denoting the pay_remark field in the database.
-	FieldPayRemark = "pay_remark"
-	// FieldPayMethod holds the string denoting the pay_method field in the database.
-	FieldPayMethod = "pay_method"
 	// FieldTransferInstructions holds the string denoting the transfer_instructions field in the database.
 	FieldTransferInstructions = "transfer_instructions"
-	// FieldGuaranteeDeadline holds the string denoting the guarantee_deadline field in the database.
-	FieldGuaranteeDeadline = "guarantee_deadline"
+	// FieldPayRemark holds the string denoting the pay_remark field in the database.
+	FieldPayRemark = "pay_remark"
 	// FieldPlanPayTime holds the string denoting the plan_pay_time field in the database.
 	FieldPlanPayTime = "plan_pay_time"
+	// FieldPayTime holds the string denoting the pay_time field in the database.
+	FieldPayTime = "pay_time"
 	// FieldApprovalStatus holds the string denoting the approval_status field in the database.
 	FieldApprovalStatus = "approval_status"
 	// FieldDone holds the string denoting the done field in the database.
@@ -98,17 +102,19 @@ var Columns = []string{
 	FieldFeeTypeV1,
 	FieldFeeType,
 	FieldPayReason,
+	FieldPayMethod,
+	FieldGuaranteeDenomination,
+	FieldGuaranteeDeadline,
 	FieldRefunded,
 	FieldPayeeBank,
 	FieldPayeeName,
 	FieldPayeeAccount,
 	FieldPayRatio,
 	FieldPayAmount,
-	FieldPayRemark,
-	FieldPayMethod,
 	FieldTransferInstructions,
-	FieldGuaranteeDeadline,
+	FieldPayRemark,
 	FieldPlanPayTime,
+	FieldPayTime,
 	FieldApprovalStatus,
 	FieldDone,
 	FieldCreatedAt,
@@ -146,6 +152,10 @@ var (
 	PurchaserValidator func(string) error
 	// PayReasonValidator is a validator for the "pay_reason" field. It is called by the builders before save.
 	PayReasonValidator func(string) error
+	// PayMethodValidator is a validator for the "pay_method" field. It is called by the builders before save.
+	PayMethodValidator func(string) error
+	// DefaultGuaranteeDenomination holds the default value on creation for the "guarantee_denomination" field.
+	DefaultGuaranteeDenomination float64
 	// DefaultRefunded holds the default value on creation for the "refunded" field.
 	DefaultRefunded bool
 	// PayeeBankValidator is a validator for the "payee_bank" field. It is called by the builders before save.
@@ -158,8 +168,6 @@ var (
 	DefaultPayRatio float64
 	// DefaultPayAmount holds the default value on creation for the "pay_amount" field.
 	DefaultPayAmount float64
-	// PayMethodValidator is a validator for the "pay_method" field. It is called by the builders before save.
-	PayMethodValidator func(string) error
 	// TransferInstructionsValidator is a validator for the "transfer_instructions" field. It is called by the builders before save.
 	TransferInstructionsValidator func(string) error
 	// DefaultDone holds the default value on creation for the "done" field.
@@ -275,6 +283,21 @@ func ByPayReason(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPayReason, opts...).ToFunc()
 }
 
+// ByPayMethod orders the results by the pay_method field.
+func ByPayMethod(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPayMethod, opts...).ToFunc()
+}
+
+// ByGuaranteeDenomination orders the results by the guarantee_denomination field.
+func ByGuaranteeDenomination(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldGuaranteeDenomination, opts...).ToFunc()
+}
+
+// ByGuaranteeDeadline orders the results by the guarantee_deadline field.
+func ByGuaranteeDeadline(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldGuaranteeDeadline, opts...).ToFunc()
+}
+
 // ByRefunded orders the results by the refunded field.
 func ByRefunded(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRefunded, opts...).ToFunc()
@@ -305,29 +328,24 @@ func ByPayAmount(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPayAmount, opts...).ToFunc()
 }
 
-// ByPayRemark orders the results by the pay_remark field.
-func ByPayRemark(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPayRemark, opts...).ToFunc()
-}
-
-// ByPayMethod orders the results by the pay_method field.
-func ByPayMethod(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPayMethod, opts...).ToFunc()
-}
-
 // ByTransferInstructions orders the results by the transfer_instructions field.
 func ByTransferInstructions(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTransferInstructions, opts...).ToFunc()
 }
 
-// ByGuaranteeDeadline orders the results by the guarantee_deadline field.
-func ByGuaranteeDeadline(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldGuaranteeDeadline, opts...).ToFunc()
+// ByPayRemark orders the results by the pay_remark field.
+func ByPayRemark(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPayRemark, opts...).ToFunc()
 }
 
 // ByPlanPayTime orders the results by the plan_pay_time field.
 func ByPlanPayTime(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPlanPayTime, opts...).ToFunc()
+}
+
+// ByPayTime orders the results by the pay_time field.
+func ByPayTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPayTime, opts...).ToFunc()
 }
 
 // ByApprovalStatus orders the results by the approval_status field.

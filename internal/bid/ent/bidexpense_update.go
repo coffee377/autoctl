@@ -208,6 +208,67 @@ func (_u *BidExpenseUpdate) ClearPayReason() *BidExpenseUpdate {
 	return _u
 }
 
+// SetPayMethod sets the "pay_method" field.
+func (_u *BidExpenseUpdate) SetPayMethod(v string) *BidExpenseUpdate {
+	_u.mutation.SetPayMethod(v)
+	return _u
+}
+
+// SetNillablePayMethod sets the "pay_method" field if the given value is not nil.
+func (_u *BidExpenseUpdate) SetNillablePayMethod(v *string) *BidExpenseUpdate {
+	if v != nil {
+		_u.SetPayMethod(*v)
+	}
+	return _u
+}
+
+// ClearPayMethod clears the value of the "pay_method" field.
+func (_u *BidExpenseUpdate) ClearPayMethod() *BidExpenseUpdate {
+	_u.mutation.ClearPayMethod()
+	return _u
+}
+
+// SetGuaranteeDenomination sets the "guarantee_denomination" field.
+func (_u *BidExpenseUpdate) SetGuaranteeDenomination(v float64) *BidExpenseUpdate {
+	_u.mutation.ResetGuaranteeDenomination()
+	_u.mutation.SetGuaranteeDenomination(v)
+	return _u
+}
+
+// SetNillableGuaranteeDenomination sets the "guarantee_denomination" field if the given value is not nil.
+func (_u *BidExpenseUpdate) SetNillableGuaranteeDenomination(v *float64) *BidExpenseUpdate {
+	if v != nil {
+		_u.SetGuaranteeDenomination(*v)
+	}
+	return _u
+}
+
+// AddGuaranteeDenomination adds value to the "guarantee_denomination" field.
+func (_u *BidExpenseUpdate) AddGuaranteeDenomination(v float64) *BidExpenseUpdate {
+	_u.mutation.AddGuaranteeDenomination(v)
+	return _u
+}
+
+// SetGuaranteeDeadline sets the "guarantee_deadline" field.
+func (_u *BidExpenseUpdate) SetGuaranteeDeadline(v time.Time) *BidExpenseUpdate {
+	_u.mutation.SetGuaranteeDeadline(v)
+	return _u
+}
+
+// SetNillableGuaranteeDeadline sets the "guarantee_deadline" field if the given value is not nil.
+func (_u *BidExpenseUpdate) SetNillableGuaranteeDeadline(v *time.Time) *BidExpenseUpdate {
+	if v != nil {
+		_u.SetGuaranteeDeadline(*v)
+	}
+	return _u
+}
+
+// ClearGuaranteeDeadline clears the value of the "guarantee_deadline" field.
+func (_u *BidExpenseUpdate) ClearGuaranteeDeadline() *BidExpenseUpdate {
+	_u.mutation.ClearGuaranteeDeadline()
+	return _u
+}
+
 // SetRefunded sets the "refunded" field.
 func (_u *BidExpenseUpdate) SetRefunded(v bool) *BidExpenseUpdate {
 	_u.mutation.SetRefunded(v)
@@ -306,46 +367,6 @@ func (_u *BidExpenseUpdate) AddPayAmount(v float64) *BidExpenseUpdate {
 	return _u
 }
 
-// SetPayRemark sets the "pay_remark" field.
-func (_u *BidExpenseUpdate) SetPayRemark(v string) *BidExpenseUpdate {
-	_u.mutation.SetPayRemark(v)
-	return _u
-}
-
-// SetNillablePayRemark sets the "pay_remark" field if the given value is not nil.
-func (_u *BidExpenseUpdate) SetNillablePayRemark(v *string) *BidExpenseUpdate {
-	if v != nil {
-		_u.SetPayRemark(*v)
-	}
-	return _u
-}
-
-// ClearPayRemark clears the value of the "pay_remark" field.
-func (_u *BidExpenseUpdate) ClearPayRemark() *BidExpenseUpdate {
-	_u.mutation.ClearPayRemark()
-	return _u
-}
-
-// SetPayMethod sets the "pay_method" field.
-func (_u *BidExpenseUpdate) SetPayMethod(v string) *BidExpenseUpdate {
-	_u.mutation.SetPayMethod(v)
-	return _u
-}
-
-// SetNillablePayMethod sets the "pay_method" field if the given value is not nil.
-func (_u *BidExpenseUpdate) SetNillablePayMethod(v *string) *BidExpenseUpdate {
-	if v != nil {
-		_u.SetPayMethod(*v)
-	}
-	return _u
-}
-
-// ClearPayMethod clears the value of the "pay_method" field.
-func (_u *BidExpenseUpdate) ClearPayMethod() *BidExpenseUpdate {
-	_u.mutation.ClearPayMethod()
-	return _u
-}
-
 // SetTransferInstructions sets the "transfer_instructions" field.
 func (_u *BidExpenseUpdate) SetTransferInstructions(v string) *BidExpenseUpdate {
 	_u.mutation.SetTransferInstructions(v)
@@ -366,23 +387,23 @@ func (_u *BidExpenseUpdate) ClearTransferInstructions() *BidExpenseUpdate {
 	return _u
 }
 
-// SetGuaranteeDeadline sets the "guarantee_deadline" field.
-func (_u *BidExpenseUpdate) SetGuaranteeDeadline(v time.Time) *BidExpenseUpdate {
-	_u.mutation.SetGuaranteeDeadline(v)
+// SetPayRemark sets the "pay_remark" field.
+func (_u *BidExpenseUpdate) SetPayRemark(v string) *BidExpenseUpdate {
+	_u.mutation.SetPayRemark(v)
 	return _u
 }
 
-// SetNillableGuaranteeDeadline sets the "guarantee_deadline" field if the given value is not nil.
-func (_u *BidExpenseUpdate) SetNillableGuaranteeDeadline(v *time.Time) *BidExpenseUpdate {
+// SetNillablePayRemark sets the "pay_remark" field if the given value is not nil.
+func (_u *BidExpenseUpdate) SetNillablePayRemark(v *string) *BidExpenseUpdate {
 	if v != nil {
-		_u.SetGuaranteeDeadline(*v)
+		_u.SetPayRemark(*v)
 	}
 	return _u
 }
 
-// ClearGuaranteeDeadline clears the value of the "guarantee_deadline" field.
-func (_u *BidExpenseUpdate) ClearGuaranteeDeadline() *BidExpenseUpdate {
-	_u.mutation.ClearGuaranteeDeadline()
+// ClearPayRemark clears the value of the "pay_remark" field.
+func (_u *BidExpenseUpdate) ClearPayRemark() *BidExpenseUpdate {
+	_u.mutation.ClearPayRemark()
 	return _u
 }
 
@@ -403,6 +424,26 @@ func (_u *BidExpenseUpdate) SetNillablePlanPayTime(v *time.Time) *BidExpenseUpda
 // ClearPlanPayTime clears the value of the "plan_pay_time" field.
 func (_u *BidExpenseUpdate) ClearPlanPayTime() *BidExpenseUpdate {
 	_u.mutation.ClearPlanPayTime()
+	return _u
+}
+
+// SetPayTime sets the "pay_time" field.
+func (_u *BidExpenseUpdate) SetPayTime(v time.Time) *BidExpenseUpdate {
+	_u.mutation.SetPayTime(v)
+	return _u
+}
+
+// SetNillablePayTime sets the "pay_time" field if the given value is not nil.
+func (_u *BidExpenseUpdate) SetNillablePayTime(v *time.Time) *BidExpenseUpdate {
+	if v != nil {
+		_u.SetPayTime(*v)
+	}
+	return _u
+}
+
+// ClearPayTime clears the value of the "pay_time" field.
+func (_u *BidExpenseUpdate) ClearPayTime() *BidExpenseUpdate {
+	_u.mutation.ClearPayTime()
 	return _u
 }
 
@@ -598,6 +639,11 @@ func (_u *BidExpenseUpdate) check() error {
 			return &ValidationError{Name: "pay_reason", err: fmt.Errorf(`ent: validator failed for field "BidExpense.pay_reason": %w`, err)}
 		}
 	}
+	if v, ok := _u.mutation.PayMethod(); ok {
+		if err := bidexpense.PayMethodValidator(v); err != nil {
+			return &ValidationError{Name: "pay_method", err: fmt.Errorf(`ent: validator failed for field "BidExpense.pay_method": %w`, err)}
+		}
+	}
 	if v, ok := _u.mutation.PayeeBank(); ok {
 		if err := bidexpense.PayeeBankValidator(v); err != nil {
 			return &ValidationError{Name: "payee_bank", err: fmt.Errorf(`ent: validator failed for field "BidExpense.payee_bank": %w`, err)}
@@ -611,11 +657,6 @@ func (_u *BidExpenseUpdate) check() error {
 	if v, ok := _u.mutation.PayeeAccount(); ok {
 		if err := bidexpense.PayeeAccountValidator(v); err != nil {
 			return &ValidationError{Name: "payee_account", err: fmt.Errorf(`ent: validator failed for field "BidExpense.payee_account": %w`, err)}
-		}
-	}
-	if v, ok := _u.mutation.PayMethod(); ok {
-		if err := bidexpense.PayMethodValidator(v); err != nil {
-			return &ValidationError{Name: "pay_method", err: fmt.Errorf(`ent: validator failed for field "BidExpense.pay_method": %w`, err)}
 		}
 	}
 	if v, ok := _u.mutation.TransferInstructions(); ok {
@@ -693,6 +734,24 @@ func (_u *BidExpenseUpdate) sqlSave(ctx context.Context) (_node int, err error) 
 	if _u.mutation.PayReasonCleared() {
 		_spec.ClearField(bidexpense.FieldPayReason, field.TypeString)
 	}
+	if value, ok := _u.mutation.PayMethod(); ok {
+		_spec.SetField(bidexpense.FieldPayMethod, field.TypeString, value)
+	}
+	if _u.mutation.PayMethodCleared() {
+		_spec.ClearField(bidexpense.FieldPayMethod, field.TypeString)
+	}
+	if value, ok := _u.mutation.GuaranteeDenomination(); ok {
+		_spec.SetField(bidexpense.FieldGuaranteeDenomination, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.AddedGuaranteeDenomination(); ok {
+		_spec.AddField(bidexpense.FieldGuaranteeDenomination, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.GuaranteeDeadline(); ok {
+		_spec.SetField(bidexpense.FieldGuaranteeDeadline, field.TypeTime, value)
+	}
+	if _u.mutation.GuaranteeDeadlineCleared() {
+		_spec.ClearField(bidexpense.FieldGuaranteeDeadline, field.TypeTime)
+	}
 	if value, ok := _u.mutation.Refunded(); ok {
 		_spec.SetField(bidexpense.FieldRefunded, field.TypeBool, value)
 	}
@@ -717,35 +776,29 @@ func (_u *BidExpenseUpdate) sqlSave(ctx context.Context) (_node int, err error) 
 	if value, ok := _u.mutation.AddedPayAmount(); ok {
 		_spec.AddField(bidexpense.FieldPayAmount, field.TypeFloat64, value)
 	}
-	if value, ok := _u.mutation.PayRemark(); ok {
-		_spec.SetField(bidexpense.FieldPayRemark, field.TypeString, value)
-	}
-	if _u.mutation.PayRemarkCleared() {
-		_spec.ClearField(bidexpense.FieldPayRemark, field.TypeString)
-	}
-	if value, ok := _u.mutation.PayMethod(); ok {
-		_spec.SetField(bidexpense.FieldPayMethod, field.TypeString, value)
-	}
-	if _u.mutation.PayMethodCleared() {
-		_spec.ClearField(bidexpense.FieldPayMethod, field.TypeString)
-	}
 	if value, ok := _u.mutation.TransferInstructions(); ok {
 		_spec.SetField(bidexpense.FieldTransferInstructions, field.TypeString, value)
 	}
 	if _u.mutation.TransferInstructionsCleared() {
 		_spec.ClearField(bidexpense.FieldTransferInstructions, field.TypeString)
 	}
-	if value, ok := _u.mutation.GuaranteeDeadline(); ok {
-		_spec.SetField(bidexpense.FieldGuaranteeDeadline, field.TypeTime, value)
+	if value, ok := _u.mutation.PayRemark(); ok {
+		_spec.SetField(bidexpense.FieldPayRemark, field.TypeString, value)
 	}
-	if _u.mutation.GuaranteeDeadlineCleared() {
-		_spec.ClearField(bidexpense.FieldGuaranteeDeadline, field.TypeTime)
+	if _u.mutation.PayRemarkCleared() {
+		_spec.ClearField(bidexpense.FieldPayRemark, field.TypeString)
 	}
 	if value, ok := _u.mutation.PlanPayTime(); ok {
 		_spec.SetField(bidexpense.FieldPlanPayTime, field.TypeTime, value)
 	}
 	if _u.mutation.PlanPayTimeCleared() {
 		_spec.ClearField(bidexpense.FieldPlanPayTime, field.TypeTime)
+	}
+	if value, ok := _u.mutation.PayTime(); ok {
+		_spec.SetField(bidexpense.FieldPayTime, field.TypeTime, value)
+	}
+	if _u.mutation.PayTimeCleared() {
+		_spec.ClearField(bidexpense.FieldPayTime, field.TypeTime)
 	}
 	if value, ok := _u.mutation.ApprovalStatus(); ok {
 		_spec.SetField(bidexpense.FieldApprovalStatus, field.TypeString, value)
@@ -1000,6 +1053,67 @@ func (_u *BidExpenseUpdateOne) ClearPayReason() *BidExpenseUpdateOne {
 	return _u
 }
 
+// SetPayMethod sets the "pay_method" field.
+func (_u *BidExpenseUpdateOne) SetPayMethod(v string) *BidExpenseUpdateOne {
+	_u.mutation.SetPayMethod(v)
+	return _u
+}
+
+// SetNillablePayMethod sets the "pay_method" field if the given value is not nil.
+func (_u *BidExpenseUpdateOne) SetNillablePayMethod(v *string) *BidExpenseUpdateOne {
+	if v != nil {
+		_u.SetPayMethod(*v)
+	}
+	return _u
+}
+
+// ClearPayMethod clears the value of the "pay_method" field.
+func (_u *BidExpenseUpdateOne) ClearPayMethod() *BidExpenseUpdateOne {
+	_u.mutation.ClearPayMethod()
+	return _u
+}
+
+// SetGuaranteeDenomination sets the "guarantee_denomination" field.
+func (_u *BidExpenseUpdateOne) SetGuaranteeDenomination(v float64) *BidExpenseUpdateOne {
+	_u.mutation.ResetGuaranteeDenomination()
+	_u.mutation.SetGuaranteeDenomination(v)
+	return _u
+}
+
+// SetNillableGuaranteeDenomination sets the "guarantee_denomination" field if the given value is not nil.
+func (_u *BidExpenseUpdateOne) SetNillableGuaranteeDenomination(v *float64) *BidExpenseUpdateOne {
+	if v != nil {
+		_u.SetGuaranteeDenomination(*v)
+	}
+	return _u
+}
+
+// AddGuaranteeDenomination adds value to the "guarantee_denomination" field.
+func (_u *BidExpenseUpdateOne) AddGuaranteeDenomination(v float64) *BidExpenseUpdateOne {
+	_u.mutation.AddGuaranteeDenomination(v)
+	return _u
+}
+
+// SetGuaranteeDeadline sets the "guarantee_deadline" field.
+func (_u *BidExpenseUpdateOne) SetGuaranteeDeadline(v time.Time) *BidExpenseUpdateOne {
+	_u.mutation.SetGuaranteeDeadline(v)
+	return _u
+}
+
+// SetNillableGuaranteeDeadline sets the "guarantee_deadline" field if the given value is not nil.
+func (_u *BidExpenseUpdateOne) SetNillableGuaranteeDeadline(v *time.Time) *BidExpenseUpdateOne {
+	if v != nil {
+		_u.SetGuaranteeDeadline(*v)
+	}
+	return _u
+}
+
+// ClearGuaranteeDeadline clears the value of the "guarantee_deadline" field.
+func (_u *BidExpenseUpdateOne) ClearGuaranteeDeadline() *BidExpenseUpdateOne {
+	_u.mutation.ClearGuaranteeDeadline()
+	return _u
+}
+
 // SetRefunded sets the "refunded" field.
 func (_u *BidExpenseUpdateOne) SetRefunded(v bool) *BidExpenseUpdateOne {
 	_u.mutation.SetRefunded(v)
@@ -1098,46 +1212,6 @@ func (_u *BidExpenseUpdateOne) AddPayAmount(v float64) *BidExpenseUpdateOne {
 	return _u
 }
 
-// SetPayRemark sets the "pay_remark" field.
-func (_u *BidExpenseUpdateOne) SetPayRemark(v string) *BidExpenseUpdateOne {
-	_u.mutation.SetPayRemark(v)
-	return _u
-}
-
-// SetNillablePayRemark sets the "pay_remark" field if the given value is not nil.
-func (_u *BidExpenseUpdateOne) SetNillablePayRemark(v *string) *BidExpenseUpdateOne {
-	if v != nil {
-		_u.SetPayRemark(*v)
-	}
-	return _u
-}
-
-// ClearPayRemark clears the value of the "pay_remark" field.
-func (_u *BidExpenseUpdateOne) ClearPayRemark() *BidExpenseUpdateOne {
-	_u.mutation.ClearPayRemark()
-	return _u
-}
-
-// SetPayMethod sets the "pay_method" field.
-func (_u *BidExpenseUpdateOne) SetPayMethod(v string) *BidExpenseUpdateOne {
-	_u.mutation.SetPayMethod(v)
-	return _u
-}
-
-// SetNillablePayMethod sets the "pay_method" field if the given value is not nil.
-func (_u *BidExpenseUpdateOne) SetNillablePayMethod(v *string) *BidExpenseUpdateOne {
-	if v != nil {
-		_u.SetPayMethod(*v)
-	}
-	return _u
-}
-
-// ClearPayMethod clears the value of the "pay_method" field.
-func (_u *BidExpenseUpdateOne) ClearPayMethod() *BidExpenseUpdateOne {
-	_u.mutation.ClearPayMethod()
-	return _u
-}
-
 // SetTransferInstructions sets the "transfer_instructions" field.
 func (_u *BidExpenseUpdateOne) SetTransferInstructions(v string) *BidExpenseUpdateOne {
 	_u.mutation.SetTransferInstructions(v)
@@ -1158,23 +1232,23 @@ func (_u *BidExpenseUpdateOne) ClearTransferInstructions() *BidExpenseUpdateOne 
 	return _u
 }
 
-// SetGuaranteeDeadline sets the "guarantee_deadline" field.
-func (_u *BidExpenseUpdateOne) SetGuaranteeDeadline(v time.Time) *BidExpenseUpdateOne {
-	_u.mutation.SetGuaranteeDeadline(v)
+// SetPayRemark sets the "pay_remark" field.
+func (_u *BidExpenseUpdateOne) SetPayRemark(v string) *BidExpenseUpdateOne {
+	_u.mutation.SetPayRemark(v)
 	return _u
 }
 
-// SetNillableGuaranteeDeadline sets the "guarantee_deadline" field if the given value is not nil.
-func (_u *BidExpenseUpdateOne) SetNillableGuaranteeDeadline(v *time.Time) *BidExpenseUpdateOne {
+// SetNillablePayRemark sets the "pay_remark" field if the given value is not nil.
+func (_u *BidExpenseUpdateOne) SetNillablePayRemark(v *string) *BidExpenseUpdateOne {
 	if v != nil {
-		_u.SetGuaranteeDeadline(*v)
+		_u.SetPayRemark(*v)
 	}
 	return _u
 }
 
-// ClearGuaranteeDeadline clears the value of the "guarantee_deadline" field.
-func (_u *BidExpenseUpdateOne) ClearGuaranteeDeadline() *BidExpenseUpdateOne {
-	_u.mutation.ClearGuaranteeDeadline()
+// ClearPayRemark clears the value of the "pay_remark" field.
+func (_u *BidExpenseUpdateOne) ClearPayRemark() *BidExpenseUpdateOne {
+	_u.mutation.ClearPayRemark()
 	return _u
 }
 
@@ -1195,6 +1269,26 @@ func (_u *BidExpenseUpdateOne) SetNillablePlanPayTime(v *time.Time) *BidExpenseU
 // ClearPlanPayTime clears the value of the "plan_pay_time" field.
 func (_u *BidExpenseUpdateOne) ClearPlanPayTime() *BidExpenseUpdateOne {
 	_u.mutation.ClearPlanPayTime()
+	return _u
+}
+
+// SetPayTime sets the "pay_time" field.
+func (_u *BidExpenseUpdateOne) SetPayTime(v time.Time) *BidExpenseUpdateOne {
+	_u.mutation.SetPayTime(v)
+	return _u
+}
+
+// SetNillablePayTime sets the "pay_time" field if the given value is not nil.
+func (_u *BidExpenseUpdateOne) SetNillablePayTime(v *time.Time) *BidExpenseUpdateOne {
+	if v != nil {
+		_u.SetPayTime(*v)
+	}
+	return _u
+}
+
+// ClearPayTime clears the value of the "pay_time" field.
+func (_u *BidExpenseUpdateOne) ClearPayTime() *BidExpenseUpdateOne {
+	_u.mutation.ClearPayTime()
 	return _u
 }
 
@@ -1403,6 +1497,11 @@ func (_u *BidExpenseUpdateOne) check() error {
 			return &ValidationError{Name: "pay_reason", err: fmt.Errorf(`ent: validator failed for field "BidExpense.pay_reason": %w`, err)}
 		}
 	}
+	if v, ok := _u.mutation.PayMethod(); ok {
+		if err := bidexpense.PayMethodValidator(v); err != nil {
+			return &ValidationError{Name: "pay_method", err: fmt.Errorf(`ent: validator failed for field "BidExpense.pay_method": %w`, err)}
+		}
+	}
 	if v, ok := _u.mutation.PayeeBank(); ok {
 		if err := bidexpense.PayeeBankValidator(v); err != nil {
 			return &ValidationError{Name: "payee_bank", err: fmt.Errorf(`ent: validator failed for field "BidExpense.payee_bank": %w`, err)}
@@ -1416,11 +1515,6 @@ func (_u *BidExpenseUpdateOne) check() error {
 	if v, ok := _u.mutation.PayeeAccount(); ok {
 		if err := bidexpense.PayeeAccountValidator(v); err != nil {
 			return &ValidationError{Name: "payee_account", err: fmt.Errorf(`ent: validator failed for field "BidExpense.payee_account": %w`, err)}
-		}
-	}
-	if v, ok := _u.mutation.PayMethod(); ok {
-		if err := bidexpense.PayMethodValidator(v); err != nil {
-			return &ValidationError{Name: "pay_method", err: fmt.Errorf(`ent: validator failed for field "BidExpense.pay_method": %w`, err)}
 		}
 	}
 	if v, ok := _u.mutation.TransferInstructions(); ok {
@@ -1515,6 +1609,24 @@ func (_u *BidExpenseUpdateOne) sqlSave(ctx context.Context) (_node *BidExpense, 
 	if _u.mutation.PayReasonCleared() {
 		_spec.ClearField(bidexpense.FieldPayReason, field.TypeString)
 	}
+	if value, ok := _u.mutation.PayMethod(); ok {
+		_spec.SetField(bidexpense.FieldPayMethod, field.TypeString, value)
+	}
+	if _u.mutation.PayMethodCleared() {
+		_spec.ClearField(bidexpense.FieldPayMethod, field.TypeString)
+	}
+	if value, ok := _u.mutation.GuaranteeDenomination(); ok {
+		_spec.SetField(bidexpense.FieldGuaranteeDenomination, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.AddedGuaranteeDenomination(); ok {
+		_spec.AddField(bidexpense.FieldGuaranteeDenomination, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.GuaranteeDeadline(); ok {
+		_spec.SetField(bidexpense.FieldGuaranteeDeadline, field.TypeTime, value)
+	}
+	if _u.mutation.GuaranteeDeadlineCleared() {
+		_spec.ClearField(bidexpense.FieldGuaranteeDeadline, field.TypeTime)
+	}
 	if value, ok := _u.mutation.Refunded(); ok {
 		_spec.SetField(bidexpense.FieldRefunded, field.TypeBool, value)
 	}
@@ -1539,35 +1651,29 @@ func (_u *BidExpenseUpdateOne) sqlSave(ctx context.Context) (_node *BidExpense, 
 	if value, ok := _u.mutation.AddedPayAmount(); ok {
 		_spec.AddField(bidexpense.FieldPayAmount, field.TypeFloat64, value)
 	}
-	if value, ok := _u.mutation.PayRemark(); ok {
-		_spec.SetField(bidexpense.FieldPayRemark, field.TypeString, value)
-	}
-	if _u.mutation.PayRemarkCleared() {
-		_spec.ClearField(bidexpense.FieldPayRemark, field.TypeString)
-	}
-	if value, ok := _u.mutation.PayMethod(); ok {
-		_spec.SetField(bidexpense.FieldPayMethod, field.TypeString, value)
-	}
-	if _u.mutation.PayMethodCleared() {
-		_spec.ClearField(bidexpense.FieldPayMethod, field.TypeString)
-	}
 	if value, ok := _u.mutation.TransferInstructions(); ok {
 		_spec.SetField(bidexpense.FieldTransferInstructions, field.TypeString, value)
 	}
 	if _u.mutation.TransferInstructionsCleared() {
 		_spec.ClearField(bidexpense.FieldTransferInstructions, field.TypeString)
 	}
-	if value, ok := _u.mutation.GuaranteeDeadline(); ok {
-		_spec.SetField(bidexpense.FieldGuaranteeDeadline, field.TypeTime, value)
+	if value, ok := _u.mutation.PayRemark(); ok {
+		_spec.SetField(bidexpense.FieldPayRemark, field.TypeString, value)
 	}
-	if _u.mutation.GuaranteeDeadlineCleared() {
-		_spec.ClearField(bidexpense.FieldGuaranteeDeadline, field.TypeTime)
+	if _u.mutation.PayRemarkCleared() {
+		_spec.ClearField(bidexpense.FieldPayRemark, field.TypeString)
 	}
 	if value, ok := _u.mutation.PlanPayTime(); ok {
 		_spec.SetField(bidexpense.FieldPlanPayTime, field.TypeTime, value)
 	}
 	if _u.mutation.PlanPayTimeCleared() {
 		_spec.ClearField(bidexpense.FieldPlanPayTime, field.TypeTime)
+	}
+	if value, ok := _u.mutation.PayTime(); ok {
+		_spec.SetField(bidexpense.FieldPayTime, field.TypeTime, value)
+	}
+	if _u.mutation.PayTimeCleared() {
+		_spec.ClearField(bidexpense.FieldPayTime, field.TypeTime)
 	}
 	if value, ok := _u.mutation.ApprovalStatus(); ok {
 		_spec.SetField(bidexpense.FieldApprovalStatus, field.TypeString, value)

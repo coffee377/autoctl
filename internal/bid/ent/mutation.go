@@ -1568,44 +1568,47 @@ func (m *BidApplyMutation) ResetEdge(name string) error {
 // BidExpenseMutation represents an operation that mutates the BidExpense nodes in the graph.
 type BidExpenseMutation struct {
 	config
-	op                    Op
-	typ                   string
-	id                    *string
-	business_id           *string
-	instance_id           *string
-	bill_no               *string
-	project_name          *string
-	project_code          *string
-	biz_rep_name          *string
-	purchaser             *string
-	fee_type_v1           *string
-	fee_type              *bidexpense.FeeType
-	pay_reason            *string
-	refunded              *bool
-	payee_bank            *string
-	payee_name            *string
-	payee_account         *string
-	pay_ratio             *float64
-	addpay_ratio          *float64
-	pay_amount            *float64
-	addpay_amount         *float64
-	pay_remark            *string
-	pay_method            *string
-	transfer_instructions *string
-	guarantee_deadline    *time.Time
-	plan_pay_time         *time.Time
-	approval_status       *string
-	_done                 *bool
-	created_at            *time.Time
-	created_by            *string
-	updated_at            *time.Time
-	updated_by            *string
-	clearedFields         map[string]struct{}
-	project               *string
-	clearedproject        bool
-	done                  bool
-	oldValue              func(context.Context) (*BidExpense, error)
-	predicates            []predicate.BidExpense
+	op                        Op
+	typ                       string
+	id                        *string
+	business_id               *string
+	instance_id               *string
+	bill_no                   *string
+	project_name              *string
+	project_code              *string
+	biz_rep_name              *string
+	purchaser                 *string
+	fee_type_v1               *string
+	fee_type                  *bidexpense.FeeType
+	pay_reason                *string
+	pay_method                *string
+	guarantee_denomination    *float64
+	addguarantee_denomination *float64
+	guarantee_deadline        *time.Time
+	refunded                  *bool
+	payee_bank                *string
+	payee_name                *string
+	payee_account             *string
+	pay_ratio                 *float64
+	addpay_ratio              *float64
+	pay_amount                *float64
+	addpay_amount             *float64
+	transfer_instructions     *string
+	pay_remark                *string
+	plan_pay_time             *time.Time
+	pay_time                  *time.Time
+	approval_status           *string
+	_done                     *bool
+	created_at                *time.Time
+	created_by                *string
+	updated_at                *time.Time
+	updated_by                *string
+	clearedFields             map[string]struct{}
+	project                   *string
+	clearedproject            bool
+	done                      bool
+	oldValue                  func(context.Context) (*BidExpense, error)
+	predicates                []predicate.BidExpense
 }
 
 var _ ent.Mutation = (*BidExpenseMutation)(nil)
@@ -2160,6 +2163,160 @@ func (m *BidExpenseMutation) ResetPayReason() {
 	delete(m.clearedFields, bidexpense.FieldPayReason)
 }
 
+// SetPayMethod sets the "pay_method" field.
+func (m *BidExpenseMutation) SetPayMethod(s string) {
+	m.pay_method = &s
+}
+
+// PayMethod returns the value of the "pay_method" field in the mutation.
+func (m *BidExpenseMutation) PayMethod() (r string, exists bool) {
+	v := m.pay_method
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPayMethod returns the old "pay_method" field's value of the BidExpense entity.
+// If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidExpenseMutation) OldPayMethod(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPayMethod is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPayMethod requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPayMethod: %w", err)
+	}
+	return oldValue.PayMethod, nil
+}
+
+// ClearPayMethod clears the value of the "pay_method" field.
+func (m *BidExpenseMutation) ClearPayMethod() {
+	m.pay_method = nil
+	m.clearedFields[bidexpense.FieldPayMethod] = struct{}{}
+}
+
+// PayMethodCleared returns if the "pay_method" field was cleared in this mutation.
+func (m *BidExpenseMutation) PayMethodCleared() bool {
+	_, ok := m.clearedFields[bidexpense.FieldPayMethod]
+	return ok
+}
+
+// ResetPayMethod resets all changes to the "pay_method" field.
+func (m *BidExpenseMutation) ResetPayMethod() {
+	m.pay_method = nil
+	delete(m.clearedFields, bidexpense.FieldPayMethod)
+}
+
+// SetGuaranteeDenomination sets the "guarantee_denomination" field.
+func (m *BidExpenseMutation) SetGuaranteeDenomination(f float64) {
+	m.guarantee_denomination = &f
+	m.addguarantee_denomination = nil
+}
+
+// GuaranteeDenomination returns the value of the "guarantee_denomination" field in the mutation.
+func (m *BidExpenseMutation) GuaranteeDenomination() (r float64, exists bool) {
+	v := m.guarantee_denomination
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGuaranteeDenomination returns the old "guarantee_denomination" field's value of the BidExpense entity.
+// If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidExpenseMutation) OldGuaranteeDenomination(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGuaranteeDenomination is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGuaranteeDenomination requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGuaranteeDenomination: %w", err)
+	}
+	return oldValue.GuaranteeDenomination, nil
+}
+
+// AddGuaranteeDenomination adds f to the "guarantee_denomination" field.
+func (m *BidExpenseMutation) AddGuaranteeDenomination(f float64) {
+	if m.addguarantee_denomination != nil {
+		*m.addguarantee_denomination += f
+	} else {
+		m.addguarantee_denomination = &f
+	}
+}
+
+// AddedGuaranteeDenomination returns the value that was added to the "guarantee_denomination" field in this mutation.
+func (m *BidExpenseMutation) AddedGuaranteeDenomination() (r float64, exists bool) {
+	v := m.addguarantee_denomination
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetGuaranteeDenomination resets all changes to the "guarantee_denomination" field.
+func (m *BidExpenseMutation) ResetGuaranteeDenomination() {
+	m.guarantee_denomination = nil
+	m.addguarantee_denomination = nil
+}
+
+// SetGuaranteeDeadline sets the "guarantee_deadline" field.
+func (m *BidExpenseMutation) SetGuaranteeDeadline(t time.Time) {
+	m.guarantee_deadline = &t
+}
+
+// GuaranteeDeadline returns the value of the "guarantee_deadline" field in the mutation.
+func (m *BidExpenseMutation) GuaranteeDeadline() (r time.Time, exists bool) {
+	v := m.guarantee_deadline
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGuaranteeDeadline returns the old "guarantee_deadline" field's value of the BidExpense entity.
+// If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidExpenseMutation) OldGuaranteeDeadline(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGuaranteeDeadline is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGuaranteeDeadline requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGuaranteeDeadline: %w", err)
+	}
+	return oldValue.GuaranteeDeadline, nil
+}
+
+// ClearGuaranteeDeadline clears the value of the "guarantee_deadline" field.
+func (m *BidExpenseMutation) ClearGuaranteeDeadline() {
+	m.guarantee_deadline = nil
+	m.clearedFields[bidexpense.FieldGuaranteeDeadline] = struct{}{}
+}
+
+// GuaranteeDeadlineCleared returns if the "guarantee_deadline" field was cleared in this mutation.
+func (m *BidExpenseMutation) GuaranteeDeadlineCleared() bool {
+	_, ok := m.clearedFields[bidexpense.FieldGuaranteeDeadline]
+	return ok
+}
+
+// ResetGuaranteeDeadline resets all changes to the "guarantee_deadline" field.
+func (m *BidExpenseMutation) ResetGuaranteeDeadline() {
+	m.guarantee_deadline = nil
+	delete(m.clearedFields, bidexpense.FieldGuaranteeDeadline)
+}
+
 // SetRefunded sets the "refunded" field.
 func (m *BidExpenseMutation) SetRefunded(b bool) {
 	m.refunded = &b
@@ -2416,104 +2573,6 @@ func (m *BidExpenseMutation) ResetPayAmount() {
 	m.addpay_amount = nil
 }
 
-// SetPayRemark sets the "pay_remark" field.
-func (m *BidExpenseMutation) SetPayRemark(s string) {
-	m.pay_remark = &s
-}
-
-// PayRemark returns the value of the "pay_remark" field in the mutation.
-func (m *BidExpenseMutation) PayRemark() (r string, exists bool) {
-	v := m.pay_remark
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPayRemark returns the old "pay_remark" field's value of the BidExpense entity.
-// If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidExpenseMutation) OldPayRemark(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPayRemark is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPayRemark requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPayRemark: %w", err)
-	}
-	return oldValue.PayRemark, nil
-}
-
-// ClearPayRemark clears the value of the "pay_remark" field.
-func (m *BidExpenseMutation) ClearPayRemark() {
-	m.pay_remark = nil
-	m.clearedFields[bidexpense.FieldPayRemark] = struct{}{}
-}
-
-// PayRemarkCleared returns if the "pay_remark" field was cleared in this mutation.
-func (m *BidExpenseMutation) PayRemarkCleared() bool {
-	_, ok := m.clearedFields[bidexpense.FieldPayRemark]
-	return ok
-}
-
-// ResetPayRemark resets all changes to the "pay_remark" field.
-func (m *BidExpenseMutation) ResetPayRemark() {
-	m.pay_remark = nil
-	delete(m.clearedFields, bidexpense.FieldPayRemark)
-}
-
-// SetPayMethod sets the "pay_method" field.
-func (m *BidExpenseMutation) SetPayMethod(s string) {
-	m.pay_method = &s
-}
-
-// PayMethod returns the value of the "pay_method" field in the mutation.
-func (m *BidExpenseMutation) PayMethod() (r string, exists bool) {
-	v := m.pay_method
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPayMethod returns the old "pay_method" field's value of the BidExpense entity.
-// If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidExpenseMutation) OldPayMethod(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPayMethod is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPayMethod requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPayMethod: %w", err)
-	}
-	return oldValue.PayMethod, nil
-}
-
-// ClearPayMethod clears the value of the "pay_method" field.
-func (m *BidExpenseMutation) ClearPayMethod() {
-	m.pay_method = nil
-	m.clearedFields[bidexpense.FieldPayMethod] = struct{}{}
-}
-
-// PayMethodCleared returns if the "pay_method" field was cleared in this mutation.
-func (m *BidExpenseMutation) PayMethodCleared() bool {
-	_, ok := m.clearedFields[bidexpense.FieldPayMethod]
-	return ok
-}
-
-// ResetPayMethod resets all changes to the "pay_method" field.
-func (m *BidExpenseMutation) ResetPayMethod() {
-	m.pay_method = nil
-	delete(m.clearedFields, bidexpense.FieldPayMethod)
-}
-
 // SetTransferInstructions sets the "transfer_instructions" field.
 func (m *BidExpenseMutation) SetTransferInstructions(s string) {
 	m.transfer_instructions = &s
@@ -2563,53 +2622,53 @@ func (m *BidExpenseMutation) ResetTransferInstructions() {
 	delete(m.clearedFields, bidexpense.FieldTransferInstructions)
 }
 
-// SetGuaranteeDeadline sets the "guarantee_deadline" field.
-func (m *BidExpenseMutation) SetGuaranteeDeadline(t time.Time) {
-	m.guarantee_deadline = &t
+// SetPayRemark sets the "pay_remark" field.
+func (m *BidExpenseMutation) SetPayRemark(s string) {
+	m.pay_remark = &s
 }
 
-// GuaranteeDeadline returns the value of the "guarantee_deadline" field in the mutation.
-func (m *BidExpenseMutation) GuaranteeDeadline() (r time.Time, exists bool) {
-	v := m.guarantee_deadline
+// PayRemark returns the value of the "pay_remark" field in the mutation.
+func (m *BidExpenseMutation) PayRemark() (r string, exists bool) {
+	v := m.pay_remark
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldGuaranteeDeadline returns the old "guarantee_deadline" field's value of the BidExpense entity.
+// OldPayRemark returns the old "pay_remark" field's value of the BidExpense entity.
 // If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidExpenseMutation) OldGuaranteeDeadline(ctx context.Context) (v *time.Time, err error) {
+func (m *BidExpenseMutation) OldPayRemark(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldGuaranteeDeadline is only allowed on UpdateOne operations")
+		return v, errors.New("OldPayRemark is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldGuaranteeDeadline requires an ID field in the mutation")
+		return v, errors.New("OldPayRemark requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldGuaranteeDeadline: %w", err)
+		return v, fmt.Errorf("querying old value for OldPayRemark: %w", err)
 	}
-	return oldValue.GuaranteeDeadline, nil
+	return oldValue.PayRemark, nil
 }
 
-// ClearGuaranteeDeadline clears the value of the "guarantee_deadline" field.
-func (m *BidExpenseMutation) ClearGuaranteeDeadline() {
-	m.guarantee_deadline = nil
-	m.clearedFields[bidexpense.FieldGuaranteeDeadline] = struct{}{}
+// ClearPayRemark clears the value of the "pay_remark" field.
+func (m *BidExpenseMutation) ClearPayRemark() {
+	m.pay_remark = nil
+	m.clearedFields[bidexpense.FieldPayRemark] = struct{}{}
 }
 
-// GuaranteeDeadlineCleared returns if the "guarantee_deadline" field was cleared in this mutation.
-func (m *BidExpenseMutation) GuaranteeDeadlineCleared() bool {
-	_, ok := m.clearedFields[bidexpense.FieldGuaranteeDeadline]
+// PayRemarkCleared returns if the "pay_remark" field was cleared in this mutation.
+func (m *BidExpenseMutation) PayRemarkCleared() bool {
+	_, ok := m.clearedFields[bidexpense.FieldPayRemark]
 	return ok
 }
 
-// ResetGuaranteeDeadline resets all changes to the "guarantee_deadline" field.
-func (m *BidExpenseMutation) ResetGuaranteeDeadline() {
-	m.guarantee_deadline = nil
-	delete(m.clearedFields, bidexpense.FieldGuaranteeDeadline)
+// ResetPayRemark resets all changes to the "pay_remark" field.
+func (m *BidExpenseMutation) ResetPayRemark() {
+	m.pay_remark = nil
+	delete(m.clearedFields, bidexpense.FieldPayRemark)
 }
 
 // SetPlanPayTime sets the "plan_pay_time" field.
@@ -2659,6 +2718,55 @@ func (m *BidExpenseMutation) PlanPayTimeCleared() bool {
 func (m *BidExpenseMutation) ResetPlanPayTime() {
 	m.plan_pay_time = nil
 	delete(m.clearedFields, bidexpense.FieldPlanPayTime)
+}
+
+// SetPayTime sets the "pay_time" field.
+func (m *BidExpenseMutation) SetPayTime(t time.Time) {
+	m.pay_time = &t
+}
+
+// PayTime returns the value of the "pay_time" field in the mutation.
+func (m *BidExpenseMutation) PayTime() (r time.Time, exists bool) {
+	v := m.pay_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPayTime returns the old "pay_time" field's value of the BidExpense entity.
+// If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidExpenseMutation) OldPayTime(ctx context.Context) (v *time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPayTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPayTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPayTime: %w", err)
+	}
+	return oldValue.PayTime, nil
+}
+
+// ClearPayTime clears the value of the "pay_time" field.
+func (m *BidExpenseMutation) ClearPayTime() {
+	m.pay_time = nil
+	m.clearedFields[bidexpense.FieldPayTime] = struct{}{}
+}
+
+// PayTimeCleared returns if the "pay_time" field was cleared in this mutation.
+func (m *BidExpenseMutation) PayTimeCleared() bool {
+	_, ok := m.clearedFields[bidexpense.FieldPayTime]
+	return ok
+}
+
+// ResetPayTime resets all changes to the "pay_time" field.
+func (m *BidExpenseMutation) ResetPayTime() {
+	m.pay_time = nil
+	delete(m.clearedFields, bidexpense.FieldPayTime)
 }
 
 // SetApprovalStatus sets the "approval_status" field.
@@ -2964,7 +3072,7 @@ func (m *BidExpenseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *BidExpenseMutation) Fields() []string {
-	fields := make([]string, 0, 28)
+	fields := make([]string, 0, 30)
 	if m.business_id != nil {
 		fields = append(fields, bidexpense.FieldBusinessID)
 	}
@@ -2998,6 +3106,15 @@ func (m *BidExpenseMutation) Fields() []string {
 	if m.pay_reason != nil {
 		fields = append(fields, bidexpense.FieldPayReason)
 	}
+	if m.pay_method != nil {
+		fields = append(fields, bidexpense.FieldPayMethod)
+	}
+	if m.guarantee_denomination != nil {
+		fields = append(fields, bidexpense.FieldGuaranteeDenomination)
+	}
+	if m.guarantee_deadline != nil {
+		fields = append(fields, bidexpense.FieldGuaranteeDeadline)
+	}
 	if m.refunded != nil {
 		fields = append(fields, bidexpense.FieldRefunded)
 	}
@@ -3016,20 +3133,17 @@ func (m *BidExpenseMutation) Fields() []string {
 	if m.pay_amount != nil {
 		fields = append(fields, bidexpense.FieldPayAmount)
 	}
-	if m.pay_remark != nil {
-		fields = append(fields, bidexpense.FieldPayRemark)
-	}
-	if m.pay_method != nil {
-		fields = append(fields, bidexpense.FieldPayMethod)
-	}
 	if m.transfer_instructions != nil {
 		fields = append(fields, bidexpense.FieldTransferInstructions)
 	}
-	if m.guarantee_deadline != nil {
-		fields = append(fields, bidexpense.FieldGuaranteeDeadline)
+	if m.pay_remark != nil {
+		fields = append(fields, bidexpense.FieldPayRemark)
 	}
 	if m.plan_pay_time != nil {
 		fields = append(fields, bidexpense.FieldPlanPayTime)
+	}
+	if m.pay_time != nil {
+		fields = append(fields, bidexpense.FieldPayTime)
 	}
 	if m.approval_status != nil {
 		fields = append(fields, bidexpense.FieldApprovalStatus)
@@ -3079,6 +3193,12 @@ func (m *BidExpenseMutation) Field(name string) (ent.Value, bool) {
 		return m.FeeType()
 	case bidexpense.FieldPayReason:
 		return m.PayReason()
+	case bidexpense.FieldPayMethod:
+		return m.PayMethod()
+	case bidexpense.FieldGuaranteeDenomination:
+		return m.GuaranteeDenomination()
+	case bidexpense.FieldGuaranteeDeadline:
+		return m.GuaranteeDeadline()
 	case bidexpense.FieldRefunded:
 		return m.Refunded()
 	case bidexpense.FieldPayeeBank:
@@ -3091,16 +3211,14 @@ func (m *BidExpenseMutation) Field(name string) (ent.Value, bool) {
 		return m.PayRatio()
 	case bidexpense.FieldPayAmount:
 		return m.PayAmount()
-	case bidexpense.FieldPayRemark:
-		return m.PayRemark()
-	case bidexpense.FieldPayMethod:
-		return m.PayMethod()
 	case bidexpense.FieldTransferInstructions:
 		return m.TransferInstructions()
-	case bidexpense.FieldGuaranteeDeadline:
-		return m.GuaranteeDeadline()
+	case bidexpense.FieldPayRemark:
+		return m.PayRemark()
 	case bidexpense.FieldPlanPayTime:
 		return m.PlanPayTime()
+	case bidexpense.FieldPayTime:
+		return m.PayTime()
 	case bidexpense.FieldApprovalStatus:
 		return m.ApprovalStatus()
 	case bidexpense.FieldDone:
@@ -3144,6 +3262,12 @@ func (m *BidExpenseMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldFeeType(ctx)
 	case bidexpense.FieldPayReason:
 		return m.OldPayReason(ctx)
+	case bidexpense.FieldPayMethod:
+		return m.OldPayMethod(ctx)
+	case bidexpense.FieldGuaranteeDenomination:
+		return m.OldGuaranteeDenomination(ctx)
+	case bidexpense.FieldGuaranteeDeadline:
+		return m.OldGuaranteeDeadline(ctx)
 	case bidexpense.FieldRefunded:
 		return m.OldRefunded(ctx)
 	case bidexpense.FieldPayeeBank:
@@ -3156,16 +3280,14 @@ func (m *BidExpenseMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldPayRatio(ctx)
 	case bidexpense.FieldPayAmount:
 		return m.OldPayAmount(ctx)
-	case bidexpense.FieldPayRemark:
-		return m.OldPayRemark(ctx)
-	case bidexpense.FieldPayMethod:
-		return m.OldPayMethod(ctx)
 	case bidexpense.FieldTransferInstructions:
 		return m.OldTransferInstructions(ctx)
-	case bidexpense.FieldGuaranteeDeadline:
-		return m.OldGuaranteeDeadline(ctx)
+	case bidexpense.FieldPayRemark:
+		return m.OldPayRemark(ctx)
 	case bidexpense.FieldPlanPayTime:
 		return m.OldPlanPayTime(ctx)
+	case bidexpense.FieldPayTime:
+		return m.OldPayTime(ctx)
 	case bidexpense.FieldApprovalStatus:
 		return m.OldApprovalStatus(ctx)
 	case bidexpense.FieldDone:
@@ -3264,6 +3386,27 @@ func (m *BidExpenseMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPayReason(v)
 		return nil
+	case bidexpense.FieldPayMethod:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPayMethod(v)
+		return nil
+	case bidexpense.FieldGuaranteeDenomination:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGuaranteeDenomination(v)
+		return nil
+	case bidexpense.FieldGuaranteeDeadline:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGuaranteeDeadline(v)
+		return nil
 	case bidexpense.FieldRefunded:
 		v, ok := value.(bool)
 		if !ok {
@@ -3306,20 +3449,6 @@ func (m *BidExpenseMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPayAmount(v)
 		return nil
-	case bidexpense.FieldPayRemark:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPayRemark(v)
-		return nil
-	case bidexpense.FieldPayMethod:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPayMethod(v)
-		return nil
 	case bidexpense.FieldTransferInstructions:
 		v, ok := value.(string)
 		if !ok {
@@ -3327,12 +3456,12 @@ func (m *BidExpenseMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetTransferInstructions(v)
 		return nil
-	case bidexpense.FieldGuaranteeDeadline:
-		v, ok := value.(time.Time)
+	case bidexpense.FieldPayRemark:
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetGuaranteeDeadline(v)
+		m.SetPayRemark(v)
 		return nil
 	case bidexpense.FieldPlanPayTime:
 		v, ok := value.(time.Time)
@@ -3340,6 +3469,13 @@ func (m *BidExpenseMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetPlanPayTime(v)
+		return nil
+	case bidexpense.FieldPayTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPayTime(v)
 		return nil
 	case bidexpense.FieldApprovalStatus:
 		v, ok := value.(string)
@@ -3391,6 +3527,9 @@ func (m *BidExpenseMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *BidExpenseMutation) AddedFields() []string {
 	var fields []string
+	if m.addguarantee_denomination != nil {
+		fields = append(fields, bidexpense.FieldGuaranteeDenomination)
+	}
 	if m.addpay_ratio != nil {
 		fields = append(fields, bidexpense.FieldPayRatio)
 	}
@@ -3405,6 +3544,8 @@ func (m *BidExpenseMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *BidExpenseMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
+	case bidexpense.FieldGuaranteeDenomination:
+		return m.AddedGuaranteeDenomination()
 	case bidexpense.FieldPayRatio:
 		return m.AddedPayRatio()
 	case bidexpense.FieldPayAmount:
@@ -3418,6 +3559,13 @@ func (m *BidExpenseMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *BidExpenseMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case bidexpense.FieldGuaranteeDenomination:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddGuaranteeDenomination(v)
+		return nil
 	case bidexpense.FieldPayRatio:
 		v, ok := value.(float64)
 		if !ok {
@@ -3452,20 +3600,23 @@ func (m *BidExpenseMutation) ClearedFields() []string {
 	if m.FieldCleared(bidexpense.FieldPayReason) {
 		fields = append(fields, bidexpense.FieldPayReason)
 	}
-	if m.FieldCleared(bidexpense.FieldPayRemark) {
-		fields = append(fields, bidexpense.FieldPayRemark)
-	}
 	if m.FieldCleared(bidexpense.FieldPayMethod) {
 		fields = append(fields, bidexpense.FieldPayMethod)
-	}
-	if m.FieldCleared(bidexpense.FieldTransferInstructions) {
-		fields = append(fields, bidexpense.FieldTransferInstructions)
 	}
 	if m.FieldCleared(bidexpense.FieldGuaranteeDeadline) {
 		fields = append(fields, bidexpense.FieldGuaranteeDeadline)
 	}
+	if m.FieldCleared(bidexpense.FieldTransferInstructions) {
+		fields = append(fields, bidexpense.FieldTransferInstructions)
+	}
+	if m.FieldCleared(bidexpense.FieldPayRemark) {
+		fields = append(fields, bidexpense.FieldPayRemark)
+	}
 	if m.FieldCleared(bidexpense.FieldPlanPayTime) {
 		fields = append(fields, bidexpense.FieldPlanPayTime)
+	}
+	if m.FieldCleared(bidexpense.FieldPayTime) {
+		fields = append(fields, bidexpense.FieldPayTime)
 	}
 	if m.FieldCleared(bidexpense.FieldCreatedBy) {
 		fields = append(fields, bidexpense.FieldCreatedBy)
@@ -3499,20 +3650,23 @@ func (m *BidExpenseMutation) ClearField(name string) error {
 	case bidexpense.FieldPayReason:
 		m.ClearPayReason()
 		return nil
-	case bidexpense.FieldPayRemark:
-		m.ClearPayRemark()
-		return nil
 	case bidexpense.FieldPayMethod:
 		m.ClearPayMethod()
-		return nil
-	case bidexpense.FieldTransferInstructions:
-		m.ClearTransferInstructions()
 		return nil
 	case bidexpense.FieldGuaranteeDeadline:
 		m.ClearGuaranteeDeadline()
 		return nil
+	case bidexpense.FieldTransferInstructions:
+		m.ClearTransferInstructions()
+		return nil
+	case bidexpense.FieldPayRemark:
+		m.ClearPayRemark()
+		return nil
 	case bidexpense.FieldPlanPayTime:
 		m.ClearPlanPayTime()
+		return nil
+	case bidexpense.FieldPayTime:
+		m.ClearPayTime()
 		return nil
 	case bidexpense.FieldCreatedBy:
 		m.ClearCreatedBy()
@@ -3561,6 +3715,15 @@ func (m *BidExpenseMutation) ResetField(name string) error {
 	case bidexpense.FieldPayReason:
 		m.ResetPayReason()
 		return nil
+	case bidexpense.FieldPayMethod:
+		m.ResetPayMethod()
+		return nil
+	case bidexpense.FieldGuaranteeDenomination:
+		m.ResetGuaranteeDenomination()
+		return nil
+	case bidexpense.FieldGuaranteeDeadline:
+		m.ResetGuaranteeDeadline()
+		return nil
 	case bidexpense.FieldRefunded:
 		m.ResetRefunded()
 		return nil
@@ -3579,20 +3742,17 @@ func (m *BidExpenseMutation) ResetField(name string) error {
 	case bidexpense.FieldPayAmount:
 		m.ResetPayAmount()
 		return nil
-	case bidexpense.FieldPayRemark:
-		m.ResetPayRemark()
-		return nil
-	case bidexpense.FieldPayMethod:
-		m.ResetPayMethod()
-		return nil
 	case bidexpense.FieldTransferInstructions:
 		m.ResetTransferInstructions()
 		return nil
-	case bidexpense.FieldGuaranteeDeadline:
-		m.ResetGuaranteeDeadline()
+	case bidexpense.FieldPayRemark:
+		m.ResetPayRemark()
 		return nil
 	case bidexpense.FieldPlanPayTime:
 		m.ResetPlanPayTime()
+		return nil
+	case bidexpense.FieldPayTime:
+		m.ResetPayTime()
 		return nil
 	case bidexpense.FieldApprovalStatus:
 		m.ResetApprovalStatus()

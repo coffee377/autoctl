@@ -41,6 +41,12 @@ type BidExpense struct {
 	FeeType bidexpense.FeeType `json:"fee_type,omitempty"`
 	// 付款事由
 	PayReason *string `json:"pay_reason,omitempty"`
+	// 付款方式
+	PayMethod *string `json:"pay_method,omitempty"`
+	// 保函面额（元）
+	GuaranteeDenomination float64 `json:"guarantee_denomination,omitempty"`
+	// 保函期限
+	GuaranteeDeadline *time.Time `json:"guarantee_deadline,omitempty"`
 	// 是否（保证金）退还金额
 	Refunded bool `json:"refunded,omitempty"`
 	// 收款方开户银行
@@ -53,16 +59,14 @@ type BidExpense struct {
 	PayRatio float64 `json:"pay_ratio,omitempty"`
 	// 付款金额（元）
 	PayAmount float64 `json:"pay_amount,omitempty"`
-	// 付款备注
-	PayRemark *string `json:"pay_remark,omitempty"`
-	// 付款方式
-	PayMethod *string `json:"pay_method,omitempty"`
 	// 转账说明
 	TransferInstructions *string `json:"transfer_instructions,omitempty"`
-	// 保证期限（保函）
-	GuaranteeDeadline *time.Time `json:"guarantee_deadline,omitempty"`
-	// 预计转账时间
+	// 付款备注
+	PayRemark *string `json:"pay_remark,omitempty"`
+	// 计划（最迟）转账时间
 	PlanPayTime *time.Time `json:"plan_pay_time,omitempty"`
+	// 付款时间
+	PayTime *time.Time `json:"pay_time,omitempty"`
 	// 费用审批状态
 	ApprovalStatus string `json:"approval_status,omitempty"`
 	// 审批流程是否已结束
@@ -108,11 +112,11 @@ func (*BidExpense) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case bidexpense.FieldRefunded, bidexpense.FieldDone:
 			values[i] = new(sql.NullBool)
-		case bidexpense.FieldPayRatio, bidexpense.FieldPayAmount:
+		case bidexpense.FieldGuaranteeDenomination, bidexpense.FieldPayRatio, bidexpense.FieldPayAmount:
 			values[i] = new(sql.NullFloat64)
-		case bidexpense.FieldID, bidexpense.FieldBusinessID, bidexpense.FieldInstanceID, bidexpense.FieldBillNo, bidexpense.FieldProjectID, bidexpense.FieldProjectName, bidexpense.FieldProjectCode, bidexpense.FieldBizRepName, bidexpense.FieldPurchaser, bidexpense.FieldFeeTypeV1, bidexpense.FieldFeeType, bidexpense.FieldPayReason, bidexpense.FieldPayeeBank, bidexpense.FieldPayeeName, bidexpense.FieldPayeeAccount, bidexpense.FieldPayRemark, bidexpense.FieldPayMethod, bidexpense.FieldTransferInstructions, bidexpense.FieldApprovalStatus, bidexpense.FieldCreatedBy, bidexpense.FieldUpdatedBy:
+		case bidexpense.FieldID, bidexpense.FieldBusinessID, bidexpense.FieldInstanceID, bidexpense.FieldBillNo, bidexpense.FieldProjectID, bidexpense.FieldProjectName, bidexpense.FieldProjectCode, bidexpense.FieldBizRepName, bidexpense.FieldPurchaser, bidexpense.FieldFeeTypeV1, bidexpense.FieldFeeType, bidexpense.FieldPayReason, bidexpense.FieldPayMethod, bidexpense.FieldPayeeBank, bidexpense.FieldPayeeName, bidexpense.FieldPayeeAccount, bidexpense.FieldTransferInstructions, bidexpense.FieldPayRemark, bidexpense.FieldApprovalStatus, bidexpense.FieldCreatedBy, bidexpense.FieldUpdatedBy:
 			values[i] = new(sql.NullString)
-		case bidexpense.FieldGuaranteeDeadline, bidexpense.FieldPlanPayTime, bidexpense.FieldCreatedAt, bidexpense.FieldUpdatedAt:
+		case bidexpense.FieldGuaranteeDeadline, bidexpense.FieldPlanPayTime, bidexpense.FieldPayTime, bidexpense.FieldCreatedAt, bidexpense.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -205,6 +209,26 @@ func (_m *BidExpense) assignValues(columns []string, values []any) error {
 				_m.PayReason = new(string)
 				*_m.PayReason = value.String
 			}
+		case bidexpense.FieldPayMethod:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field pay_method", values[i])
+			} else if value.Valid {
+				_m.PayMethod = new(string)
+				*_m.PayMethod = value.String
+			}
+		case bidexpense.FieldGuaranteeDenomination:
+			if value, ok := values[i].(*sql.NullFloat64); !ok {
+				return fmt.Errorf("unexpected type %T for field guarantee_denomination", values[i])
+			} else if value.Valid {
+				_m.GuaranteeDenomination = value.Float64
+			}
+		case bidexpense.FieldGuaranteeDeadline:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field guarantee_deadline", values[i])
+			} else if value.Valid {
+				_m.GuaranteeDeadline = new(time.Time)
+				*_m.GuaranteeDeadline = value.Time
+			}
 		case bidexpense.FieldRefunded:
 			if value, ok := values[i].(*sql.NullBool); !ok {
 				return fmt.Errorf("unexpected type %T for field refunded", values[i])
@@ -241,20 +265,6 @@ func (_m *BidExpense) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.PayAmount = value.Float64
 			}
-		case bidexpense.FieldPayRemark:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field pay_remark", values[i])
-			} else if value.Valid {
-				_m.PayRemark = new(string)
-				*_m.PayRemark = value.String
-			}
-		case bidexpense.FieldPayMethod:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field pay_method", values[i])
-			} else if value.Valid {
-				_m.PayMethod = new(string)
-				*_m.PayMethod = value.String
-			}
 		case bidexpense.FieldTransferInstructions:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field transfer_instructions", values[i])
@@ -262,12 +272,12 @@ func (_m *BidExpense) assignValues(columns []string, values []any) error {
 				_m.TransferInstructions = new(string)
 				*_m.TransferInstructions = value.String
 			}
-		case bidexpense.FieldGuaranteeDeadline:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field guarantee_deadline", values[i])
+		case bidexpense.FieldPayRemark:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field pay_remark", values[i])
 			} else if value.Valid {
-				_m.GuaranteeDeadline = new(time.Time)
-				*_m.GuaranteeDeadline = value.Time
+				_m.PayRemark = new(string)
+				*_m.PayRemark = value.String
 			}
 		case bidexpense.FieldPlanPayTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -275,6 +285,13 @@ func (_m *BidExpense) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.PlanPayTime = new(time.Time)
 				*_m.PlanPayTime = value.Time
+			}
+		case bidexpense.FieldPayTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field pay_time", values[i])
+			} else if value.Valid {
+				_m.PayTime = new(time.Time)
+				*_m.PayTime = value.Time
 			}
 		case bidexpense.FieldApprovalStatus:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -396,6 +413,19 @@ func (_m *BidExpense) String() string {
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
+	if v := _m.PayMethod; v != nil {
+		builder.WriteString("pay_method=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	builder.WriteString("guarantee_denomination=")
+	builder.WriteString(fmt.Sprintf("%v", _m.GuaranteeDenomination))
+	builder.WriteString(", ")
+	if v := _m.GuaranteeDeadline; v != nil {
+		builder.WriteString("guarantee_deadline=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
 	builder.WriteString("refunded=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Refunded))
 	builder.WriteString(", ")
@@ -414,28 +444,23 @@ func (_m *BidExpense) String() string {
 	builder.WriteString("pay_amount=")
 	builder.WriteString(fmt.Sprintf("%v", _m.PayAmount))
 	builder.WriteString(", ")
-	if v := _m.PayRemark; v != nil {
-		builder.WriteString("pay_remark=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
-	if v := _m.PayMethod; v != nil {
-		builder.WriteString("pay_method=")
-		builder.WriteString(*v)
-	}
-	builder.WriteString(", ")
 	if v := _m.TransferInstructions; v != nil {
 		builder.WriteString("transfer_instructions=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
-	if v := _m.GuaranteeDeadline; v != nil {
-		builder.WriteString("guarantee_deadline=")
-		builder.WriteString(v.Format(time.ANSIC))
+	if v := _m.PayRemark; v != nil {
+		builder.WriteString("pay_remark=")
+		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")
 	if v := _m.PlanPayTime; v != nil {
 		builder.WriteString("plan_pay_time=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
+	builder.WriteString(", ")
+	if v := _m.PayTime; v != nil {
+		builder.WriteString("pay_time=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteString(", ")

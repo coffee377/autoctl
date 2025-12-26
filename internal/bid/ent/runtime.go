@@ -115,40 +115,44 @@ func init() {
 	bidexpenseDescPayReason := bidexpenseFields[11].Descriptor()
 	// bidexpense.PayReasonValidator is a validator for the "pay_reason" field. It is called by the builders before save.
 	bidexpense.PayReasonValidator = bidexpenseDescPayReason.Validators[0].(func(string) error)
+	// bidexpenseDescPayMethod is the schema descriptor for pay_method field.
+	bidexpenseDescPayMethod := bidexpenseFields[12].Descriptor()
+	// bidexpense.PayMethodValidator is a validator for the "pay_method" field. It is called by the builders before save.
+	bidexpense.PayMethodValidator = bidexpenseDescPayMethod.Validators[0].(func(string) error)
+	// bidexpenseDescGuaranteeDenomination is the schema descriptor for guarantee_denomination field.
+	bidexpenseDescGuaranteeDenomination := bidexpenseFields[13].Descriptor()
+	// bidexpense.DefaultGuaranteeDenomination holds the default value on creation for the guarantee_denomination field.
+	bidexpense.DefaultGuaranteeDenomination = bidexpenseDescGuaranteeDenomination.Default.(float64)
 	// bidexpenseDescRefunded is the schema descriptor for refunded field.
-	bidexpenseDescRefunded := bidexpenseFields[12].Descriptor()
+	bidexpenseDescRefunded := bidexpenseFields[15].Descriptor()
 	// bidexpense.DefaultRefunded holds the default value on creation for the refunded field.
 	bidexpense.DefaultRefunded = bidexpenseDescRefunded.Default.(bool)
 	// bidexpenseDescPayeeBank is the schema descriptor for payee_bank field.
-	bidexpenseDescPayeeBank := bidexpenseFields[13].Descriptor()
+	bidexpenseDescPayeeBank := bidexpenseFields[16].Descriptor()
 	// bidexpense.PayeeBankValidator is a validator for the "payee_bank" field. It is called by the builders before save.
 	bidexpense.PayeeBankValidator = bidexpenseDescPayeeBank.Validators[0].(func(string) error)
 	// bidexpenseDescPayeeName is the schema descriptor for payee_name field.
-	bidexpenseDescPayeeName := bidexpenseFields[14].Descriptor()
+	bidexpenseDescPayeeName := bidexpenseFields[17].Descriptor()
 	// bidexpense.PayeeNameValidator is a validator for the "payee_name" field. It is called by the builders before save.
 	bidexpense.PayeeNameValidator = bidexpenseDescPayeeName.Validators[0].(func(string) error)
 	// bidexpenseDescPayeeAccount is the schema descriptor for payee_account field.
-	bidexpenseDescPayeeAccount := bidexpenseFields[15].Descriptor()
+	bidexpenseDescPayeeAccount := bidexpenseFields[18].Descriptor()
 	// bidexpense.PayeeAccountValidator is a validator for the "payee_account" field. It is called by the builders before save.
 	bidexpense.PayeeAccountValidator = bidexpenseDescPayeeAccount.Validators[0].(func(string) error)
 	// bidexpenseDescPayRatio is the schema descriptor for pay_ratio field.
-	bidexpenseDescPayRatio := bidexpenseFields[16].Descriptor()
+	bidexpenseDescPayRatio := bidexpenseFields[19].Descriptor()
 	// bidexpense.DefaultPayRatio holds the default value on creation for the pay_ratio field.
 	bidexpense.DefaultPayRatio = bidexpenseDescPayRatio.Default.(float64)
 	// bidexpenseDescPayAmount is the schema descriptor for pay_amount field.
-	bidexpenseDescPayAmount := bidexpenseFields[17].Descriptor()
+	bidexpenseDescPayAmount := bidexpenseFields[20].Descriptor()
 	// bidexpense.DefaultPayAmount holds the default value on creation for the pay_amount field.
 	bidexpense.DefaultPayAmount = bidexpenseDescPayAmount.Default.(float64)
-	// bidexpenseDescPayMethod is the schema descriptor for pay_method field.
-	bidexpenseDescPayMethod := bidexpenseFields[19].Descriptor()
-	// bidexpense.PayMethodValidator is a validator for the "pay_method" field. It is called by the builders before save.
-	bidexpense.PayMethodValidator = bidexpenseDescPayMethod.Validators[0].(func(string) error)
 	// bidexpenseDescTransferInstructions is the schema descriptor for transfer_instructions field.
-	bidexpenseDescTransferInstructions := bidexpenseFields[20].Descriptor()
+	bidexpenseDescTransferInstructions := bidexpenseFields[21].Descriptor()
 	// bidexpense.TransferInstructionsValidator is a validator for the "transfer_instructions" field. It is called by the builders before save.
 	bidexpense.TransferInstructionsValidator = bidexpenseDescTransferInstructions.Validators[0].(func(string) error)
 	// bidexpenseDescDone is the schema descriptor for done field.
-	bidexpenseDescDone := bidexpenseFields[24].Descriptor()
+	bidexpenseDescDone := bidexpenseFields[26].Descriptor()
 	// bidexpense.DefaultDone holds the default value on creation for the done field.
 	bidexpense.DefaultDone = bidexpenseDescDone.Default.(bool)
 	// bidexpenseDescCreatedAt is the schema descriptor for created_at field.

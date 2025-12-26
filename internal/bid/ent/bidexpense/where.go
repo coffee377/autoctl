@@ -115,6 +115,21 @@ func PayReason(v string) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldPayReason, v))
 }
 
+// PayMethod applies equality check predicate on the "pay_method" field. It's identical to PayMethodEQ.
+func PayMethod(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldPayMethod, v))
+}
+
+// GuaranteeDenomination applies equality check predicate on the "guarantee_denomination" field. It's identical to GuaranteeDenominationEQ.
+func GuaranteeDenomination(v float64) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldGuaranteeDenomination, v))
+}
+
+// GuaranteeDeadline applies equality check predicate on the "guarantee_deadline" field. It's identical to GuaranteeDeadlineEQ.
+func GuaranteeDeadline(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldGuaranteeDeadline, v))
+}
+
 // Refunded applies equality check predicate on the "refunded" field. It's identical to RefundedEQ.
 func Refunded(v bool) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldRefunded, v))
@@ -145,29 +160,24 @@ func PayAmount(v float64) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldPayAmount, v))
 }
 
-// PayRemark applies equality check predicate on the "pay_remark" field. It's identical to PayRemarkEQ.
-func PayRemark(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEQ(FieldPayRemark, v))
-}
-
-// PayMethod applies equality check predicate on the "pay_method" field. It's identical to PayMethodEQ.
-func PayMethod(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEQ(FieldPayMethod, v))
-}
-
 // TransferInstructions applies equality check predicate on the "transfer_instructions" field. It's identical to TransferInstructionsEQ.
 func TransferInstructions(v string) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldTransferInstructions, v))
 }
 
-// GuaranteeDeadline applies equality check predicate on the "guarantee_deadline" field. It's identical to GuaranteeDeadlineEQ.
-func GuaranteeDeadline(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEQ(FieldGuaranteeDeadline, v))
+// PayRemark applies equality check predicate on the "pay_remark" field. It's identical to PayRemarkEQ.
+func PayRemark(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldPayRemark, v))
 }
 
 // PlanPayTime applies equality check predicate on the "plan_pay_time" field. It's identical to PlanPayTimeEQ.
 func PlanPayTime(v time.Time) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldPlanPayTime, v))
+}
+
+// PayTime applies equality check predicate on the "pay_time" field. It's identical to PayTimeEQ.
+func PayTime(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldPayTime, v))
 }
 
 // ApprovalStatus applies equality check predicate on the "approval_status" field. It's identical to ApprovalStatusEQ.
@@ -910,6 +920,171 @@ func PayReasonContainsFold(v string) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldContainsFold(FieldPayReason, v))
 }
 
+// PayMethodEQ applies the EQ predicate on the "pay_method" field.
+func PayMethodEQ(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldPayMethod, v))
+}
+
+// PayMethodNEQ applies the NEQ predicate on the "pay_method" field.
+func PayMethodNEQ(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNEQ(FieldPayMethod, v))
+}
+
+// PayMethodIn applies the In predicate on the "pay_method" field.
+func PayMethodIn(vs ...string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIn(FieldPayMethod, vs...))
+}
+
+// PayMethodNotIn applies the NotIn predicate on the "pay_method" field.
+func PayMethodNotIn(vs ...string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotIn(FieldPayMethod, vs...))
+}
+
+// PayMethodGT applies the GT predicate on the "pay_method" field.
+func PayMethodGT(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGT(FieldPayMethod, v))
+}
+
+// PayMethodGTE applies the GTE predicate on the "pay_method" field.
+func PayMethodGTE(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGTE(FieldPayMethod, v))
+}
+
+// PayMethodLT applies the LT predicate on the "pay_method" field.
+func PayMethodLT(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLT(FieldPayMethod, v))
+}
+
+// PayMethodLTE applies the LTE predicate on the "pay_method" field.
+func PayMethodLTE(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLTE(FieldPayMethod, v))
+}
+
+// PayMethodContains applies the Contains predicate on the "pay_method" field.
+func PayMethodContains(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldContains(FieldPayMethod, v))
+}
+
+// PayMethodHasPrefix applies the HasPrefix predicate on the "pay_method" field.
+func PayMethodHasPrefix(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldHasPrefix(FieldPayMethod, v))
+}
+
+// PayMethodHasSuffix applies the HasSuffix predicate on the "pay_method" field.
+func PayMethodHasSuffix(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldHasSuffix(FieldPayMethod, v))
+}
+
+// PayMethodIsNil applies the IsNil predicate on the "pay_method" field.
+func PayMethodIsNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIsNull(FieldPayMethod))
+}
+
+// PayMethodNotNil applies the NotNil predicate on the "pay_method" field.
+func PayMethodNotNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotNull(FieldPayMethod))
+}
+
+// PayMethodEqualFold applies the EqualFold predicate on the "pay_method" field.
+func PayMethodEqualFold(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEqualFold(FieldPayMethod, v))
+}
+
+// PayMethodContainsFold applies the ContainsFold predicate on the "pay_method" field.
+func PayMethodContainsFold(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldContainsFold(FieldPayMethod, v))
+}
+
+// GuaranteeDenominationEQ applies the EQ predicate on the "guarantee_denomination" field.
+func GuaranteeDenominationEQ(v float64) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldGuaranteeDenomination, v))
+}
+
+// GuaranteeDenominationNEQ applies the NEQ predicate on the "guarantee_denomination" field.
+func GuaranteeDenominationNEQ(v float64) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNEQ(FieldGuaranteeDenomination, v))
+}
+
+// GuaranteeDenominationIn applies the In predicate on the "guarantee_denomination" field.
+func GuaranteeDenominationIn(vs ...float64) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIn(FieldGuaranteeDenomination, vs...))
+}
+
+// GuaranteeDenominationNotIn applies the NotIn predicate on the "guarantee_denomination" field.
+func GuaranteeDenominationNotIn(vs ...float64) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotIn(FieldGuaranteeDenomination, vs...))
+}
+
+// GuaranteeDenominationGT applies the GT predicate on the "guarantee_denomination" field.
+func GuaranteeDenominationGT(v float64) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGT(FieldGuaranteeDenomination, v))
+}
+
+// GuaranteeDenominationGTE applies the GTE predicate on the "guarantee_denomination" field.
+func GuaranteeDenominationGTE(v float64) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGTE(FieldGuaranteeDenomination, v))
+}
+
+// GuaranteeDenominationLT applies the LT predicate on the "guarantee_denomination" field.
+func GuaranteeDenominationLT(v float64) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLT(FieldGuaranteeDenomination, v))
+}
+
+// GuaranteeDenominationLTE applies the LTE predicate on the "guarantee_denomination" field.
+func GuaranteeDenominationLTE(v float64) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLTE(FieldGuaranteeDenomination, v))
+}
+
+// GuaranteeDeadlineEQ applies the EQ predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineEQ(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldGuaranteeDeadline, v))
+}
+
+// GuaranteeDeadlineNEQ applies the NEQ predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineNEQ(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNEQ(FieldGuaranteeDeadline, v))
+}
+
+// GuaranteeDeadlineIn applies the In predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineIn(vs ...time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIn(FieldGuaranteeDeadline, vs...))
+}
+
+// GuaranteeDeadlineNotIn applies the NotIn predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineNotIn(vs ...time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotIn(FieldGuaranteeDeadline, vs...))
+}
+
+// GuaranteeDeadlineGT applies the GT predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineGT(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGT(FieldGuaranteeDeadline, v))
+}
+
+// GuaranteeDeadlineGTE applies the GTE predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineGTE(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGTE(FieldGuaranteeDeadline, v))
+}
+
+// GuaranteeDeadlineLT applies the LT predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineLT(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLT(FieldGuaranteeDeadline, v))
+}
+
+// GuaranteeDeadlineLTE applies the LTE predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineLTE(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLTE(FieldGuaranteeDeadline, v))
+}
+
+// GuaranteeDeadlineIsNil applies the IsNil predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineIsNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIsNull(FieldGuaranteeDeadline))
+}
+
+// GuaranteeDeadlineNotNil applies the NotNil predicate on the "guarantee_deadline" field.
+func GuaranteeDeadlineNotNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotNull(FieldGuaranteeDeadline))
+}
+
 // RefundedEQ applies the EQ predicate on the "refunded" field.
 func RefundedEQ(v bool) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldRefunded, v))
@@ -1195,156 +1370,6 @@ func PayAmountLTE(v float64) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldLTE(FieldPayAmount, v))
 }
 
-// PayRemarkEQ applies the EQ predicate on the "pay_remark" field.
-func PayRemarkEQ(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEQ(FieldPayRemark, v))
-}
-
-// PayRemarkNEQ applies the NEQ predicate on the "pay_remark" field.
-func PayRemarkNEQ(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNEQ(FieldPayRemark, v))
-}
-
-// PayRemarkIn applies the In predicate on the "pay_remark" field.
-func PayRemarkIn(vs ...string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldIn(FieldPayRemark, vs...))
-}
-
-// PayRemarkNotIn applies the NotIn predicate on the "pay_remark" field.
-func PayRemarkNotIn(vs ...string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNotIn(FieldPayRemark, vs...))
-}
-
-// PayRemarkGT applies the GT predicate on the "pay_remark" field.
-func PayRemarkGT(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldGT(FieldPayRemark, v))
-}
-
-// PayRemarkGTE applies the GTE predicate on the "pay_remark" field.
-func PayRemarkGTE(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldGTE(FieldPayRemark, v))
-}
-
-// PayRemarkLT applies the LT predicate on the "pay_remark" field.
-func PayRemarkLT(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldLT(FieldPayRemark, v))
-}
-
-// PayRemarkLTE applies the LTE predicate on the "pay_remark" field.
-func PayRemarkLTE(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldLTE(FieldPayRemark, v))
-}
-
-// PayRemarkContains applies the Contains predicate on the "pay_remark" field.
-func PayRemarkContains(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldContains(FieldPayRemark, v))
-}
-
-// PayRemarkHasPrefix applies the HasPrefix predicate on the "pay_remark" field.
-func PayRemarkHasPrefix(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldHasPrefix(FieldPayRemark, v))
-}
-
-// PayRemarkHasSuffix applies the HasSuffix predicate on the "pay_remark" field.
-func PayRemarkHasSuffix(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldHasSuffix(FieldPayRemark, v))
-}
-
-// PayRemarkIsNil applies the IsNil predicate on the "pay_remark" field.
-func PayRemarkIsNil() predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldIsNull(FieldPayRemark))
-}
-
-// PayRemarkNotNil applies the NotNil predicate on the "pay_remark" field.
-func PayRemarkNotNil() predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNotNull(FieldPayRemark))
-}
-
-// PayRemarkEqualFold applies the EqualFold predicate on the "pay_remark" field.
-func PayRemarkEqualFold(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEqualFold(FieldPayRemark, v))
-}
-
-// PayRemarkContainsFold applies the ContainsFold predicate on the "pay_remark" field.
-func PayRemarkContainsFold(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldContainsFold(FieldPayRemark, v))
-}
-
-// PayMethodEQ applies the EQ predicate on the "pay_method" field.
-func PayMethodEQ(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEQ(FieldPayMethod, v))
-}
-
-// PayMethodNEQ applies the NEQ predicate on the "pay_method" field.
-func PayMethodNEQ(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNEQ(FieldPayMethod, v))
-}
-
-// PayMethodIn applies the In predicate on the "pay_method" field.
-func PayMethodIn(vs ...string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldIn(FieldPayMethod, vs...))
-}
-
-// PayMethodNotIn applies the NotIn predicate on the "pay_method" field.
-func PayMethodNotIn(vs ...string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNotIn(FieldPayMethod, vs...))
-}
-
-// PayMethodGT applies the GT predicate on the "pay_method" field.
-func PayMethodGT(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldGT(FieldPayMethod, v))
-}
-
-// PayMethodGTE applies the GTE predicate on the "pay_method" field.
-func PayMethodGTE(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldGTE(FieldPayMethod, v))
-}
-
-// PayMethodLT applies the LT predicate on the "pay_method" field.
-func PayMethodLT(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldLT(FieldPayMethod, v))
-}
-
-// PayMethodLTE applies the LTE predicate on the "pay_method" field.
-func PayMethodLTE(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldLTE(FieldPayMethod, v))
-}
-
-// PayMethodContains applies the Contains predicate on the "pay_method" field.
-func PayMethodContains(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldContains(FieldPayMethod, v))
-}
-
-// PayMethodHasPrefix applies the HasPrefix predicate on the "pay_method" field.
-func PayMethodHasPrefix(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldHasPrefix(FieldPayMethod, v))
-}
-
-// PayMethodHasSuffix applies the HasSuffix predicate on the "pay_method" field.
-func PayMethodHasSuffix(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldHasSuffix(FieldPayMethod, v))
-}
-
-// PayMethodIsNil applies the IsNil predicate on the "pay_method" field.
-func PayMethodIsNil() predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldIsNull(FieldPayMethod))
-}
-
-// PayMethodNotNil applies the NotNil predicate on the "pay_method" field.
-func PayMethodNotNil() predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNotNull(FieldPayMethod))
-}
-
-// PayMethodEqualFold applies the EqualFold predicate on the "pay_method" field.
-func PayMethodEqualFold(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEqualFold(FieldPayMethod, v))
-}
-
-// PayMethodContainsFold applies the ContainsFold predicate on the "pay_method" field.
-func PayMethodContainsFold(v string) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldContainsFold(FieldPayMethod, v))
-}
-
 // TransferInstructionsEQ applies the EQ predicate on the "transfer_instructions" field.
 func TransferInstructionsEQ(v string) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldTransferInstructions, v))
@@ -1420,54 +1445,79 @@ func TransferInstructionsContainsFold(v string) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldContainsFold(FieldTransferInstructions, v))
 }
 
-// GuaranteeDeadlineEQ applies the EQ predicate on the "guarantee_deadline" field.
-func GuaranteeDeadlineEQ(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldEQ(FieldGuaranteeDeadline, v))
+// PayRemarkEQ applies the EQ predicate on the "pay_remark" field.
+func PayRemarkEQ(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldPayRemark, v))
 }
 
-// GuaranteeDeadlineNEQ applies the NEQ predicate on the "guarantee_deadline" field.
-func GuaranteeDeadlineNEQ(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNEQ(FieldGuaranteeDeadline, v))
+// PayRemarkNEQ applies the NEQ predicate on the "pay_remark" field.
+func PayRemarkNEQ(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNEQ(FieldPayRemark, v))
 }
 
-// GuaranteeDeadlineIn applies the In predicate on the "guarantee_deadline" field.
-func GuaranteeDeadlineIn(vs ...time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldIn(FieldGuaranteeDeadline, vs...))
+// PayRemarkIn applies the In predicate on the "pay_remark" field.
+func PayRemarkIn(vs ...string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIn(FieldPayRemark, vs...))
 }
 
-// GuaranteeDeadlineNotIn applies the NotIn predicate on the "guarantee_deadline" field.
-func GuaranteeDeadlineNotIn(vs ...time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNotIn(FieldGuaranteeDeadline, vs...))
+// PayRemarkNotIn applies the NotIn predicate on the "pay_remark" field.
+func PayRemarkNotIn(vs ...string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotIn(FieldPayRemark, vs...))
 }
 
-// GuaranteeDeadlineGT applies the GT predicate on the "guarantee_deadline" field.
-func GuaranteeDeadlineGT(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldGT(FieldGuaranteeDeadline, v))
+// PayRemarkGT applies the GT predicate on the "pay_remark" field.
+func PayRemarkGT(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGT(FieldPayRemark, v))
 }
 
-// GuaranteeDeadlineGTE applies the GTE predicate on the "guarantee_deadline" field.
-func GuaranteeDeadlineGTE(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldGTE(FieldGuaranteeDeadline, v))
+// PayRemarkGTE applies the GTE predicate on the "pay_remark" field.
+func PayRemarkGTE(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGTE(FieldPayRemark, v))
 }
 
-// GuaranteeDeadlineLT applies the LT predicate on the "guarantee_deadline" field.
-func GuaranteeDeadlineLT(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldLT(FieldGuaranteeDeadline, v))
+// PayRemarkLT applies the LT predicate on the "pay_remark" field.
+func PayRemarkLT(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLT(FieldPayRemark, v))
 }
 
-// GuaranteeDeadlineLTE applies the LTE predicate on the "guarantee_deadline" field.
-func GuaranteeDeadlineLTE(v time.Time) predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldLTE(FieldGuaranteeDeadline, v))
+// PayRemarkLTE applies the LTE predicate on the "pay_remark" field.
+func PayRemarkLTE(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLTE(FieldPayRemark, v))
 }
 
-// GuaranteeDeadlineIsNil applies the IsNil predicate on the "guarantee_deadline" field.
-func GuaranteeDeadlineIsNil() predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldIsNull(FieldGuaranteeDeadline))
+// PayRemarkContains applies the Contains predicate on the "pay_remark" field.
+func PayRemarkContains(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldContains(FieldPayRemark, v))
 }
 
-// GuaranteeDeadlineNotNil applies the NotNil predicate on the "guarantee_deadline" field.
-func GuaranteeDeadlineNotNil() predicate.BidExpense {
-	return predicate.BidExpense(sql.FieldNotNull(FieldGuaranteeDeadline))
+// PayRemarkHasPrefix applies the HasPrefix predicate on the "pay_remark" field.
+func PayRemarkHasPrefix(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldHasPrefix(FieldPayRemark, v))
+}
+
+// PayRemarkHasSuffix applies the HasSuffix predicate on the "pay_remark" field.
+func PayRemarkHasSuffix(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldHasSuffix(FieldPayRemark, v))
+}
+
+// PayRemarkIsNil applies the IsNil predicate on the "pay_remark" field.
+func PayRemarkIsNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIsNull(FieldPayRemark))
+}
+
+// PayRemarkNotNil applies the NotNil predicate on the "pay_remark" field.
+func PayRemarkNotNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotNull(FieldPayRemark))
+}
+
+// PayRemarkEqualFold applies the EqualFold predicate on the "pay_remark" field.
+func PayRemarkEqualFold(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEqualFold(FieldPayRemark, v))
+}
+
+// PayRemarkContainsFold applies the ContainsFold predicate on the "pay_remark" field.
+func PayRemarkContainsFold(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldContainsFold(FieldPayRemark, v))
 }
 
 // PlanPayTimeEQ applies the EQ predicate on the "plan_pay_time" field.
@@ -1518,6 +1568,56 @@ func PlanPayTimeIsNil() predicate.BidExpense {
 // PlanPayTimeNotNil applies the NotNil predicate on the "plan_pay_time" field.
 func PlanPayTimeNotNil() predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldNotNull(FieldPlanPayTime))
+}
+
+// PayTimeEQ applies the EQ predicate on the "pay_time" field.
+func PayTimeEQ(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldPayTime, v))
+}
+
+// PayTimeNEQ applies the NEQ predicate on the "pay_time" field.
+func PayTimeNEQ(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNEQ(FieldPayTime, v))
+}
+
+// PayTimeIn applies the In predicate on the "pay_time" field.
+func PayTimeIn(vs ...time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIn(FieldPayTime, vs...))
+}
+
+// PayTimeNotIn applies the NotIn predicate on the "pay_time" field.
+func PayTimeNotIn(vs ...time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotIn(FieldPayTime, vs...))
+}
+
+// PayTimeGT applies the GT predicate on the "pay_time" field.
+func PayTimeGT(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGT(FieldPayTime, v))
+}
+
+// PayTimeGTE applies the GTE predicate on the "pay_time" field.
+func PayTimeGTE(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGTE(FieldPayTime, v))
+}
+
+// PayTimeLT applies the LT predicate on the "pay_time" field.
+func PayTimeLT(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLT(FieldPayTime, v))
+}
+
+// PayTimeLTE applies the LTE predicate on the "pay_time" field.
+func PayTimeLTE(v time.Time) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLTE(FieldPayTime, v))
+}
+
+// PayTimeIsNil applies the IsNil predicate on the "pay_time" field.
+func PayTimeIsNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIsNull(FieldPayTime))
+}
+
+// PayTimeNotNil applies the NotNil predicate on the "pay_time" field.
+func PayTimeNotNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotNull(FieldPayTime))
 }
 
 // ApprovalStatusEQ applies the EQ predicate on the "approval_status" field.
