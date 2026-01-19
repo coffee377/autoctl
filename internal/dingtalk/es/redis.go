@@ -14,9 +14,9 @@ type RedisEventFrameHandler struct {
 	defaultHandler EventHandler
 }
 
-func NewRedisEventFrameHandler(rdb *redis.Client) *RedisEventFrameHandler {
+func NewRedisEventFrameHandler(rdb *redis.Client, instance InstanceMessageHandler, task TaskMessageHandler) *RedisEventFrameHandler {
 	return &RedisEventFrameHandler{
-		defaultHandler: RedisEventHandler(rdb),
+		defaultHandler: RedisEventHandler(rdb, instance, task),
 	}
 }
 

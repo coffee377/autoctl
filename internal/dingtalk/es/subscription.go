@@ -1,6 +1,9 @@
 package es
 
 import (
+	"cds/bid/data"
+	"cds/bid/ent"
+	"cds/dingtalk/oa"
 	"context"
 	"encoding/json"
 	"errors"
@@ -35,7 +38,7 @@ func DingTalkEventSubscription(options ...SubscriptionOption) Subscription {
 		})
 	}
 	if s.eventFrameHandler == nil {
-		s.eventFrameHandler = NewRedisEventFrameHandler(s.rdb)
+		s.eventFrameHandler = NewRedisEventFrameHandler(s.rdb, s.instanceMessageHandler, s.taskMessageHandler)
 	}
 	return s
 }
@@ -44,8 +47,13 @@ type subscription struct {
 	clientId     string
 	clientSecret string
 
-	rdb               *redis.Client
-	eventFrameHandler *RedisEventFrameHandler
+	rdb                    *redis.Client
+	eventFrameHandler      *RedisEventFrameHandler
+	instanceMessageHandler InstanceMessageHandler
+	taskMessageHandler     TaskMessageHandler
+
+	approval  *oa.Approval
+	entClient *ent.Client
 }
 
 const (
@@ -83,8 +91,8 @@ func (s *subscription) Run(ctx context.Context) error {
 	bpmsInstanceChangeStream := fmt.Sprintf("dingtalk:%s:event:%s", corpId, bpmsInstanceChange)
 	bpmsTaskChangeStream := fmt.Sprintf("dingtalk:%s:event:%s", corpId, bpmsTaskChange)
 	// 创建主消费组
-	s.createConsumerGroup(ctx, bpmsInstanceChangeStream, 2)
-	s.createConsumerGroup(ctx, bpmsTaskChangeStream, 2)
+	s.createConsumerGroup(ctx, bpmsInstanceChangeStream, 1)
+	s.createConsumerGroup(ctx, bpmsTaskChangeStream, 1)
 
 	// 创建死信队列消费组
 	//s.createConsumerGroup(ctx, fmt.Sprintf("dingtalk:dlq:%s:%s", corpId, bpmsInstanceChange), bpmsInstanceChange)
@@ -93,7 +101,7 @@ func (s *subscription) Run(ctx context.Context) error {
 	go s.cleanupStreamMessages(context.Background(), cleanupInterval, bpmsInstanceChangeStream, bpmsTaskChangeStream)
 
 	go s.consumeMessage(context.Background(), bpmsInstanceChangeStream, "group_1", "consumer_01")
-	go s.consumeMessage(context.Background(), bpmsTaskChangeStream, "group_2", "consumer_02")
+	go s.consumeMessage(context.Background(), bpmsTaskChangeStream, "group_1", "consumer_01")
 
 	select {}
 }
@@ -121,7 +129,7 @@ func (s *subscription) createConsumerGroup(ctx context.Context, stream string, g
 
 // 3. 消费组消费（XREADGROUP）：多个消费者分摊消费，需 ACK 确认
 func (s *subscription) consumeMessage(ctx context.Context, streamName, groupName, consumerName string) {
-	fmt.Printf("\n消费者 %s 开始监听消息...\n", consumerName)
+	fmt.Printf("消费者 %s 开始监听消息...\n", consumerName)
 	for {
 		// 1. 消费未处理的消息（">"）
 		// > 表示消费组中未被消费的消息；若要处理 Pending 消息，可替换为具体消息ID或0
@@ -158,9 +166,9 @@ func (s *subscription) consumeMessage(ctx context.Context, streamName, groupName
 }
 
 const (
-	maxRetryCount   = 3               // 最大重试次数
-	cleanupInterval = 5 * time.Minute // 消息清理间隔（5分钟）
-	retainHours     = 24              // 保留消息时长（超过24小时则清理）
+	maxRetryCount   = 3             // 最大重试次数
+	cleanupInterval = 2 * time.Hour // 消息清理间隔（5分钟）
+	retainHours     = 24            // 保留消息时长（超过24小时则清理）
 )
 
 // 处理单条消息（核心：重试逻辑 + 死信队列）
@@ -168,11 +176,17 @@ func (s *subscription) processSingleMsg(ctx context.Context, streamName, groupNa
 	// 解析消息内容
 	var (
 		header   event.EventHeader
-		data     interface{}
+		msgData  interface{}
 		retryCnt int
 	)
 	e1 := json.NewDecoder(strings.NewReader(msg.Values["header"].(string))).Decode(&header)
-	e2 := json.NewDecoder(strings.NewReader(msg.Values["data"].(string))).Decode(&data)
+	switch header.EventType {
+	case bpmsInstanceChange:
+		msgData = &InstanceMessage{}
+	case bpmsTaskChange:
+		msgData = &TaskMessage{}
+	}
+	e2 := json.NewDecoder(strings.NewReader(msg.Values["data"].(string))).Decode(&msgData)
 	if e1 != nil || e2 != nil {
 		return
 	}
@@ -186,26 +200,54 @@ func (s *subscription) processSingleMsg(ctx context.Context, streamName, groupNa
 	msgID := msg.ID
 
 	fmt.Printf("消费者 %s 接收消息 | 消息ID：%s | 重试次数：%d\n", consumerName, msgID, retryCnt)
-	//fmt.Printf("Header => %v \n", msg.Values["header"])
-	//fmt.Printf("Data => %v \n", msg.Values["data"])
 
-	bid := false
-	switch d := data.(type) {
-	case InstanceMessage:
-		bid = d.ProcessCode == BidApplyProcessCode || d.ProcessCode == BidExpenseProcessCode
-	case TaskMessage:
-		bid = d.ProcessCode == BidApplyProcessCode || d.ProcessCode == BidExpenseProcessCode
+	failed := false
+	switch d := msgData.(type) {
+	case *InstanceMessage:
+		switch d.ProcessCode {
+		case BidApplyProcessCode:
+			id := d.InstanceId
+			res, err := s.approval.GetProcessInstance(id)
+			if err != nil {
+				return
+			}
+			applyData, err := data.NewBidApply(id, res, data.WithUserHook(s.approval.GetUserHook()), data.WithDepartmentHook(data.DepartmentHook))
+			if err != nil {
+				return
+			}
+			err = applyData.Save(ctx, s.entClient, false)
+			if err != nil {
+				return
+			}
+		case BidExpenseProcessCode:
+			id := d.InstanceId
+			res, err := s.approval.GetProcessInstance(id)
+			if err != nil {
+				return
+			}
+			expenseData, err := data.NewBidExpense(id, res, data.WithUserHook(s.approval.GetUserHook()))
+			if err != nil {
+				return
+			}
+			err = expenseData.Save(ctx, s.entClient)
+			if err != nil {
+				return
+			}
+		case TestProcessCode:
+			logger.GetLogger().Infof("测试数据处理: %s => %s", d.InstanceId, d.Title)
+		}
+	case *TaskMessage:
 	}
 
-	// 模拟不处理投标数据（故意让部分消息失败，测试重试）
-	if bid {
+	// 模拟不处标数据（故意让部分消息失败，测试重试）
+	if failed {
 		fmt.Printf("消费者 %s 处理消息失败（ID：%s），进入重试\n", consumerName, msgID)
 		// 重试次数+1，更新消息元数据（通过 XADD 重新加入Pending列表，原消息需删除）
 		retryCnt++
 		if retryCnt > maxRetryCount {
 			// 超过最大重试次数，移至死信队列
 			//		moveToDeadLetter(msg)
-			//fmt.Printf("消息ID：%s 重试超过上限（%d次），移至死信队列\n", msgID, maxRetryCount)
+			fmt.Printf("消息ID：%s 重试超过上限（%d次），移至死信队列\n", msgID, maxRetryCount)
 			// ACK 原消息（从主流Pending列表移除）
 			//s.rdb.XAck(ctx, streamName, groupName, msgID)
 		} else {
@@ -302,10 +344,10 @@ func (s *subscription) cleanupStreamMessages(ctx context.Context, cleanupInterva
 		}
 	}
 
-	fmt.Printf("\n消息清理任务启动，每 %v 执行一次\n", cleanupInterval)
+	fmt.Printf("消息清理任务启动，每 %v 执行一次\n", cleanupInterval)
 
 	for range ticker.C {
-		fmt.Println("\n=== 开始执行消息清理 ===")
+		//fmt.Println("=== 开始执行消息清理 ===")
 		// 2. 按时间清理：保留最近 retainHours 小时的消息
 		// 计算截止时间戳（当前时间 - retainHours 小时），单位：毫秒
 		//cutoffTimestamp := time.Now().Add(-5 * time.Minute).UnixMilli()
@@ -314,7 +356,7 @@ func (s *subscription) cleanupStreamMessages(ctx context.Context, cleanupInterva
 		for _, name := range streamNames {
 			cleanup(ctx, name)
 		}
-		fmt.Println("=== 消息清理执行结束 ===")
+		//fmt.Println("=== 消息清理执行结束 ===")
 	}
 }
 

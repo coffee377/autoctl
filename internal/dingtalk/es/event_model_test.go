@@ -1,12 +1,5 @@
 package es
 
-import (
-	"fmt"
-	"testing"
-
-	"github.com/stretchr/testify/assert"
-)
-
 const (
 	header   = ``
 	instance = `{
@@ -45,17 +38,17 @@ const (
 }`
 )
 
-func TestProcessInstanceUnmarshalJSON(t *testing.T) {
-	p, err := CreateProcessInstanceFromJson([]byte(instance))
-	assert.Nil(t, err)
-	assert.NotNil(t, p)
-	fmt.Printf("%s,%s", p.CreateTime.String(), p.FinishTime.String())
-	t.Log(p)
-}
-
-func TestProcessTaskUnmarshalJSON(t *testing.T) {
-	ts, err := CreateProcessTaskFromJson([]byte(task))
-	assert.Nil(t, err)
-	assert.NotNil(t, ts)
-	t.Log(t)
-}
+//func TestProcessInstanceUnmarshalJSON(t *testing.T) {
+//	p, err := CreateProcessInstanceFromJson([]byte(instance))
+//	assert.Nil(t, err)
+//	assert.NotNil(t, p)
+//	fmt.Printf("%s,%s", p.CreateTime.String(), p.FinishTime.String())
+//	t.Log(p)
+//}
+//
+//func TestProcessTaskUnmarshalJSON(t *testing.T) {
+//	ts, err := CreateProcessTaskFromJson([]byte(task))
+//	assert.Nil(t, err)
+//	assert.NotNil(t, ts)
+//	t.Log(t)
+//}

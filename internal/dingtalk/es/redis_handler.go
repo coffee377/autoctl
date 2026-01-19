@@ -18,8 +18,6 @@ type redisEventHandler struct {
 	rdb                    *redis.Client
 	instanceMessageHandler InstanceMessageHandler
 	taskMessageHandler     TaskMessageHandler
-
-	maps map[string][]string
 }
 
 const (
@@ -57,14 +55,12 @@ func (reh *redisEventHandler) isSupport(header event.EventHeader, rawData []byte
 		if reh.instanceMessageHandler != nil {
 			return reh.instanceMessageHandler(header, instanceMessage)
 		}
-		return true
 	case "bpms_task_change":
 		taskMessage := TaskMessage{}
 		_ = json.Unmarshal(rawData, &taskMessage)
 		if reh.taskMessageHandler != nil {
 			return reh.taskMessageHandler(header, taskMessage)
 		}
-		return true
 	}
 	return false
 }
@@ -87,14 +83,12 @@ func (reh *redisEventHandler) produceMessage(ctx context.Context, header event.E
 	return nil
 }
 
-func RedisEventHandler(rdb *redis.Client) EventHandler {
+func RedisEventHandler(rdb *redis.Client, instance InstanceMessageHandler, task TaskMessageHandler) EventHandler {
 	handler := &redisEventHandler{
-		rdb: rdb,
-		maps: map[string][]string{
-			BidApplyProcessCode:   {"start", "finish", "terminate"},
-			BidExpenseProcessCode: {"start", "finish", "terminate"},
-			TestProcessCode:       {},
-		}}
+		rdb:                    rdb,
+		instanceMessageHandler: instance,
+		taskMessageHandler:     task,
+	}
 	return handler.defaultHandler()
 }
 

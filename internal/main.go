@@ -7,12 +7,18 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/open-dingtalk/dingtalk-stream-sdk-go/event"
+	"github.com/open-dingtalk/dingtalk-stream-sdk-go/logger"
 	"github.com/redis/go-redis/v9"
 )
 
-const testCode = "PROC-BDBD627A-7E7F-4EBC-B80A-EC2A9E777D97"
-
 func main() {
+	maps := map[string][]string{
+		es.BidApplyProcessCode:   {"start", "finish", "terminate"},
+		es.BidExpenseProcessCode: {"start", "finish", "terminate"},
+		es.TestProcessCode:       {"start", "finish", "terminate", "delete"},
+	}
+
 	subscription := es.DingTalkEventSubscription(
 		// 晶奇网关代理应用
 		es.WithClient("dingygs46ockvmysbjlu", "t_o5NiKOA8Dy7wTtZ-wakzZ5-9Z-8u_JDH5hpXp7itk4cNouBfESswIp3-BuuffP"),
@@ -22,16 +28,26 @@ func main() {
 			Password: "redis!@@&",      // Redis 服务器密码
 			DB:       2,                // Redis 数据库索引
 		}),
-
-		//es.WithProcessInstanceEvent(func(ctx context.Context, header event.EventHeader, message *process.InstanceMessage) error {
-		//	logger.GetLogger().Infof("process instance event: %v", message)
-		//	return nil
-		//}),
-		//es.WithProcessTaskEvent(func(ctx context.Context, header event.EventHeader, message *process.TaskMessage) error {
-		//	logger.GetLogger().Infof("process task event: %v", message)
-		//	return nil
-		//}),
+		// 审批事件处理
+		es.WithProcessInstanceEvent(func(header event.EventHeader, message es.InstanceMessage) bool {
+			if val, ok := maps[message.ProcessCode]; ok {
+				for _, v := range val {
+					if strings.EqualFold(v, message.Type) {
+						logger.GetLogger().Infof("process instance event: %v", message)
+						return true
+					}
+				}
+			}
+			return false
+		}),
+		// 审批任务事件处理
+		es.WithProcessTaskEvent(func(header event.EventHeader, message es.TaskMessage) bool {
+			return false
+		}),
+		es.WithApproval(),
+		es.WithEnt(),
 	)
+
 	err := subscription.Run(context.Background())
 	if err != nil {
 		panic(err)
