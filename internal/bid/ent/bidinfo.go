@@ -31,7 +31,7 @@ type BidInfo struct {
 	BidSubjectName *string `json:"bid_subject_name,omitempty"`
 	// 投标金额
 	BidAmount float64 `json:"bid_amount,omitempty"`
-	// 投标状态 RP:待报名 RO:报名中 RS:报名成功 RF:报名失败 DP:标书编制中 B:投标中 W:已中标 L:未中标 F:流标 A:弃标 0:-
+	// 投标状态 RP:待报名 RO:报名中 RF:报名失败 RS:报名成功 DP:标书编制中 B:投标中 E:项目入围 W:已中标 L:未中标 F:流标 A:弃标 0:-
 	BidStatus bidinfo.BidStatus `json:"bid_status,omitempty"`
 	// 中标时间
 	BidDate *time.Time `json:"bid_date,omitempty"`

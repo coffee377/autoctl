@@ -127,7 +127,7 @@ var (
 		{Name: "bid_subject_code", Type: field.TypeString, Nullable: true, Size: 32, Comment: "投标主体编码"},
 		{Name: "bid_subject_name", Type: field.TypeString, Nullable: true, Size: 32, Comment: "投标主体名称"},
 		{Name: "bid_amount", Type: field.TypeFloat64, Comment: "投标金额", Default: 0, SchemaType: map[string]string{"mysql": "decimal(16,2)"}},
-		{Name: "bid_status", Type: field.TypeEnum, Comment: "投标状态 RP:待报名 RO:报名中 RS:报名成功 RF:报名失败 DP:标书编制中 B:投标中 W:已中标 L:未中标 F:流标 A:弃标 0:-", Enums: []string{"RP", "RO", "RS", "RF", "DP", "B", "W", "L", "F", "A", "0"}, Default: "0"},
+		{Name: "bid_status", Type: field.TypeEnum, Comment: "投标状态 RP:待报名 RO:报名中 RF:报名失败 RS:报名成功 DP:标书编制中 B:投标中 E:项目入围 W:已中标 L:未中标 F:流标 A:弃标 0:-", Enums: []string{"RP", "RO", "RF", "RS", "DP", "B", "E", "W", "L", "F", "A", "0"}, Default: "0"},
 		{Name: "bid_date", Type: field.TypeTime, Nullable: true, Comment: "中标时间", SchemaType: map[string]string{"mysql": "datetime"}},
 		{Name: "software_amount", Type: field.TypeFloat64, Comment: "中标软件金额", Default: 0, SchemaType: map[string]string{"mysql": "decimal(16,2)"}},
 		{Name: "hardware_amount", Type: field.TypeFloat64, Comment: "中标硬件金额", Default: 0, SchemaType: map[string]string{"mysql": "decimal(16,2)"}},

@@ -154,10 +154,11 @@ const DefaultBidStatus = BidStatus0
 const (
 	BidStatusRP BidStatus = "RP"
 	BidStatusRO BidStatus = "RO"
-	BidStatusRS BidStatus = "RS"
 	BidStatusRF BidStatus = "RF"
+	BidStatusRS BidStatus = "RS"
 	BidStatusDP BidStatus = "DP"
 	BidStatusB  BidStatus = "B"
+	BidStatusE  BidStatus = "E"
 	BidStatusW  BidStatus = "W"
 	BidStatusL  BidStatus = "L"
 	BidStatusF  BidStatus = "F"
@@ -172,7 +173,7 @@ func (bs BidStatus) String() string {
 // BidStatusValidator is a validator for the "bid_status" field enum values. It is called by the builders before save.
 func BidStatusValidator(bs BidStatus) error {
 	switch bs {
-	case BidStatusRP, BidStatusRO, BidStatusRS, BidStatusRF, BidStatusDP, BidStatusB, BidStatusW, BidStatusL, BidStatusF, BidStatusA, BidStatus0:
+	case BidStatusRP, BidStatusRO, BidStatusRF, BidStatusRS, BidStatusDP, BidStatusB, BidStatusE, BidStatusW, BidStatusL, BidStatusF, BidStatusA, BidStatus0:
 		return nil
 	default:
 		return fmt.Errorf("bidinfo: invalid enum value for bid_status field: %q", bs)
