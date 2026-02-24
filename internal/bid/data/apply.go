@@ -163,7 +163,11 @@ func (af *BidApplyForm) createProject(ctx context.Context, tx *ent.Tx) (*ent.Bid
 	create := tx.BidProject.Create()
 	create.SetID(af.ProjectID)
 
-	create.SetNillableCode(af.ProjectCode)
+	if af.ProjectCode == nil {
+		create.SetCode("/")
+	} else {
+		create.SetNillableCode(af.ProjectCode)
+	}
 	create.SetName(af.ProjectName)
 	if af.ProjectType != nil {
 		create.SetType(bidproject.Type(*af.ProjectType))
