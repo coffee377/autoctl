@@ -31,10 +31,13 @@ apply:
          --var db_password='root!@@&'
 
 local-apply:
-	@atlas migrate apply 1 --env dev --var db_name=ccl_base
+	@atlas migrate apply --env dev \
+		--var db_name=ccl_base \
+		--var db_user=root \
+        --var db_password='root!@@&'
 
 test-apply:
-	@atlas migrate apply 1 --env "test" --allow-dirty \
+	@atlas migrate apply --env "test" --allow-dirty \
 	    --var db_host=10.1.83.26 \
 	    --var db_port='3306' \
 	    --var db_user=teamwork \
@@ -42,7 +45,7 @@ test-apply:
 	    --var db_name=teamwork
 
 prod-apply:
-	@atlas migrate apply 1 --env prod --allow-dirty \
+	@atlas migrate apply --env prod --allow-dirty \
 	    --var db_host=192.168.44.82 \
 	    --var db_port='3306' \
 	    --var db_user=teamwork \
