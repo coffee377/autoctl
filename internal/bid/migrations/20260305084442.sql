@@ -11,7 +11,7 @@ begin
     -- 查询当前请购单的最大序号（无需 FOR UPDATE，BEFORE INSERT 天然避免并发重复）
     SELECT IFNULL(MAX(assign_seq), 0)
     INTO max_seq
-    FROM cg_purchase_task
+    FROM sys_task_log
     WHERE biz_type = NEW.biz_type
       and biz_id = NEW.biz_id;
 
