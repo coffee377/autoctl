@@ -26,7 +26,9 @@ diff: hash
 	 atlas migrate diff --env dev
 
 apply:
-	@atlas migrate apply --env dev
+	@atlas migrate apply --env dev \
+	     --var db_user=root \
+         --var db_password='root!@@&'
 
 local-apply:
 	@atlas migrate apply 1 --env dev --var db_name=ccl_base
