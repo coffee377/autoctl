@@ -15,6 +15,7 @@ import (
 	"cds/bid/ent/bidexpense"
 	"cds/bid/ent/bidinfo"
 	"cds/bid/ent/bidproject"
+	"cds/bid/ent/tasklog"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
@@ -35,6 +36,8 @@ type Client struct {
 	BidInfo *BidInfoClient
 	// BidProject is the client for interacting with the BidProject builders.
 	BidProject *BidProjectClient
+	// TaskLog is the client for interacting with the TaskLog builders.
+	TaskLog *TaskLogClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -50,6 +53,7 @@ func (c *Client) init() {
 	c.BidExpense = NewBidExpenseClient(c.config)
 	c.BidInfo = NewBidInfoClient(c.config)
 	c.BidProject = NewBidProjectClient(c.config)
+	c.TaskLog = NewTaskLogClient(c.config)
 }
 
 type (
@@ -146,6 +150,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		BidExpense: NewBidExpenseClient(cfg),
 		BidInfo:    NewBidInfoClient(cfg),
 		BidProject: NewBidProjectClient(cfg),
+		TaskLog:    NewTaskLogClient(cfg),
 	}, nil
 }
 
@@ -169,6 +174,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		BidExpense: NewBidExpenseClient(cfg),
 		BidInfo:    NewBidInfoClient(cfg),
 		BidProject: NewBidProjectClient(cfg),
+		TaskLog:    NewTaskLogClient(cfg),
 	}, nil
 }
 
@@ -201,6 +207,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.BidExpense.Use(hooks...)
 	c.BidInfo.Use(hooks...)
 	c.BidProject.Use(hooks...)
+	c.TaskLog.Use(hooks...)
 }
 
 // Intercept adds the query interceptors to all the entity clients.
@@ -210,6 +217,7 @@ func (c *Client) Intercept(interceptors ...Interceptor) {
 	c.BidExpense.Intercept(interceptors...)
 	c.BidInfo.Intercept(interceptors...)
 	c.BidProject.Intercept(interceptors...)
+	c.TaskLog.Intercept(interceptors...)
 }
 
 // Mutate implements the ent.Mutator interface.
@@ -223,6 +231,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.BidInfo.mutate(ctx, m)
 	case *BidProjectMutation:
 		return c.BidProject.mutate(ctx, m)
+	case *TaskLogMutation:
+		return c.TaskLog.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("ent: unknown mutation type %T", m)
 	}
@@ -856,12 +866,145 @@ func (c *BidProjectClient) mutate(ctx context.Context, m *BidProjectMutation) (V
 	}
 }
 
+// TaskLogClient is a client for the TaskLog schema.
+type TaskLogClient struct {
+	config
+}
+
+// NewTaskLogClient returns a client for the TaskLog from the given config.
+func NewTaskLogClient(c config) *TaskLogClient {
+	return &TaskLogClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `tasklog.Hooks(f(g(h())))`.
+func (c *TaskLogClient) Use(hooks ...Hook) {
+	c.hooks.TaskLog = append(c.hooks.TaskLog, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `tasklog.Intercept(f(g(h())))`.
+func (c *TaskLogClient) Intercept(interceptors ...Interceptor) {
+	c.inters.TaskLog = append(c.inters.TaskLog, interceptors...)
+}
+
+// Create returns a builder for creating a TaskLog entity.
+func (c *TaskLogClient) Create() *TaskLogCreate {
+	mutation := newTaskLogMutation(c.config, OpCreate)
+	return &TaskLogCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of TaskLog entities.
+func (c *TaskLogClient) CreateBulk(builders ...*TaskLogCreate) *TaskLogCreateBulk {
+	return &TaskLogCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *TaskLogClient) MapCreateBulk(slice any, setFunc func(*TaskLogCreate, int)) *TaskLogCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &TaskLogCreateBulk{err: fmt.Errorf("calling to TaskLogClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*TaskLogCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &TaskLogCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for TaskLog.
+func (c *TaskLogClient) Update() *TaskLogUpdate {
+	mutation := newTaskLogMutation(c.config, OpUpdate)
+	return &TaskLogUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *TaskLogClient) UpdateOne(_m *TaskLog) *TaskLogUpdateOne {
+	mutation := newTaskLogMutation(c.config, OpUpdateOne, withTaskLog(_m))
+	return &TaskLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *TaskLogClient) UpdateOneID(id int) *TaskLogUpdateOne {
+	mutation := newTaskLogMutation(c.config, OpUpdateOne, withTaskLogID(id))
+	return &TaskLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for TaskLog.
+func (c *TaskLogClient) Delete() *TaskLogDelete {
+	mutation := newTaskLogMutation(c.config, OpDelete)
+	return &TaskLogDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *TaskLogClient) DeleteOne(_m *TaskLog) *TaskLogDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *TaskLogClient) DeleteOneID(id int) *TaskLogDeleteOne {
+	builder := c.Delete().Where(tasklog.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &TaskLogDeleteOne{builder}
+}
+
+// Query returns a query builder for TaskLog.
+func (c *TaskLogClient) Query() *TaskLogQuery {
+	return &TaskLogQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeTaskLog},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a TaskLog entity by its id.
+func (c *TaskLogClient) Get(ctx context.Context, id int) (*TaskLog, error) {
+	return c.Query().Where(tasklog.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *TaskLogClient) GetX(ctx context.Context, id int) *TaskLog {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *TaskLogClient) Hooks() []Hook {
+	return c.hooks.TaskLog
+}
+
+// Interceptors returns the client interceptors.
+func (c *TaskLogClient) Interceptors() []Interceptor {
+	return c.inters.TaskLog
+}
+
+func (c *TaskLogClient) mutate(ctx context.Context, m *TaskLogMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&TaskLogCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&TaskLogUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&TaskLogUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&TaskLogDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown TaskLog mutation op: %q", m.Op())
+	}
+}
+
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		BidApply, BidExpense, BidInfo, BidProject []ent.Hook
+		BidApply, BidExpense, BidInfo, BidProject, TaskLog []ent.Hook
 	}
 	inters struct {
-		BidApply, BidExpense, BidInfo, BidProject []ent.Interceptor
+		BidApply, BidExpense, BidInfo, BidProject, TaskLog []ent.Interceptor
 	}
 )

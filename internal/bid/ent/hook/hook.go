@@ -56,6 +56,18 @@ func (f BidProjectFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, 
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.BidProjectMutation", m)
 }
 
+// The TaskLogFunc type is an adapter to allow the use of ordinary
+// function as TaskLog mutator.
+type TaskLogFunc func(context.Context, *ent.TaskLogMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f TaskLogFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.TaskLogMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.TaskLogMutation", m)
+}
+
 // Condition is a hook condition function.
 type Condition func(context.Context, ent.Mutation) bool
 

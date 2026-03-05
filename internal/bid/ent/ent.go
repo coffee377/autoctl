@@ -7,6 +7,7 @@ import (
 	"cds/bid/ent/bidexpense"
 	"cds/bid/ent/bidinfo"
 	"cds/bid/ent/bidproject"
+	"cds/bid/ent/tasklog"
 	"context"
 	"errors"
 	"fmt"
@@ -80,6 +81,7 @@ func checkColumn(t, c string) error {
 			bidexpense.Table: bidexpense.ValidColumn,
 			bidinfo.Table:    bidinfo.ValidColumn,
 			bidproject.Table: bidproject.ValidColumn,
+			tasklog.Table:    tasklog.ValidColumn,
 		})
 	})
 	return columnCheck(t, c)

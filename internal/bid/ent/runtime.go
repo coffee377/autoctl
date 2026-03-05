@@ -8,6 +8,7 @@ import (
 	"cds/bid/ent/bidinfo"
 	"cds/bid/ent/bidproject"
 	"cds/bid/ent/schema"
+	"cds/bid/ent/tasklog"
 	"time"
 )
 
@@ -317,4 +318,35 @@ func init() {
 	bidprojectDescID := bidprojectFields[0].Descriptor()
 	// bidproject.IDValidator is a validator for the "id" field. It is called by the builders before save.
 	bidproject.IDValidator = bidprojectDescID.Validators[0].(func(string) error)
+	tasklogMixin := schema.TaskLog{}.Mixin()
+	tasklogMixinFields0 := tasklogMixin[0].Fields()
+	_ = tasklogMixinFields0
+	tasklogFields := schema.TaskLog{}.Fields()
+	_ = tasklogFields
+	// tasklogDescBizID is the schema descriptor for biz_id field.
+	tasklogDescBizID := tasklogFields[1].Descriptor()
+	// tasklog.BizIDValidator is a validator for the "biz_id" field. It is called by the builders before save.
+	tasklog.BizIDValidator = tasklogDescBizID.Validators[0].(func(string) error)
+	// tasklogDescHandlerNo is the schema descriptor for handler_no field.
+	tasklogDescHandlerNo := tasklogFields[4].Descriptor()
+	// tasklog.HandlerNoValidator is a validator for the "handler_no" field. It is called by the builders before save.
+	tasklog.HandlerNoValidator = tasklogDescHandlerNo.Validators[0].(func(string) error)
+	// tasklogDescCreatedAt is the schema descriptor for created_at field.
+	tasklogDescCreatedAt := tasklogMixinFields0[0].Descriptor()
+	// tasklog.DefaultCreatedAt holds the default value on creation for the created_at field.
+	tasklog.DefaultCreatedAt = tasklogDescCreatedAt.Default.(func() time.Time)
+	// tasklogDescCreatedBy is the schema descriptor for created_by field.
+	tasklogDescCreatedBy := tasklogMixinFields0[1].Descriptor()
+	// tasklog.CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
+	tasklog.CreatedByValidator = tasklogDescCreatedBy.Validators[0].(func(string) error)
+	// tasklogDescUpdatedAt is the schema descriptor for updated_at field.
+	tasklogDescUpdatedAt := tasklogMixinFields0[2].Descriptor()
+	// tasklog.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	tasklog.DefaultUpdatedAt = tasklogDescUpdatedAt.Default.(func() time.Time)
+	// tasklog.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	tasklog.UpdateDefaultUpdatedAt = tasklogDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// tasklogDescUpdatedBy is the schema descriptor for updated_by field.
+	tasklogDescUpdatedBy := tasklogMixinFields0[3].Descriptor()
+	// tasklog.UpdatedByValidator is a validator for the "updated_by" field. It is called by the builders before save.
+	tasklog.UpdatedByValidator = tasklogDescUpdatedBy.Validators[0].(func(string) error)
 }

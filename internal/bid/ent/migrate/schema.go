@@ -202,12 +202,43 @@ var (
 			},
 		},
 	}
+	// SysTaskLogColumns holds the columns for the "sys_task_log" table.
+	SysTaskLogColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "biz_type", Type: field.TypeEnum, Comment: "任务流转业务类型 1:商品采购 2:项目投标 0:其他", Enums: []string{"1", "2", "0"}, Default: "0"},
+		{Name: "biz_id", Type: field.TypeString, Size: 32, Comment: "业务标识"},
+		{Name: "assign_seq", Type: field.TypeUint32, Comment: "同一业务标识下的指派序号（从1开始递增）"},
+		{Name: "assign_time", Type: field.TypeTime, Nullable: true, Comment: "任务指派时间", SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "handler_no", Type: field.TypeString, Nullable: true, Size: 8, Comment: "受理人工号"},
+		{Name: "start_time", Type: field.TypeTime, Nullable: true, Comment: "任务开始时间", SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "end_time", Type: field.TypeTime, Nullable: true, Comment: "任务结束时间（任务完成/终止的时间）", SchemaType: map[string]string{"mysql": "datetime"}},
+		{Name: "remark", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "备注（如重新指派原因、任务终止说明等）"},
+		{Name: "created_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "created_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "updated_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "更新人"},
+	}
+	// SysTaskLogTable holds the schema information for the "sys_task_log" table.
+	SysTaskLogTable = &schema.Table{
+		Name:       "sys_task_log",
+		Comment:    "任务流转记录",
+		Columns:    SysTaskLogColumns,
+		PrimaryKey: []*schema.Column{SysTaskLogColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "uk_bti_as",
+				Unique:  true,
+				Columns: []*schema.Column{SysTaskLogColumns[1], SysTaskLogColumns[2], SysTaskLogColumns[3]},
+			},
+		},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		BidApplyTable,
 		BidExpenseTable,
 		BidInfoTable,
 		BidProjectTable,
+		SysTaskLogTable,
 	}
 )
 
@@ -230,5 +261,9 @@ func init() {
 	BidProjectTable.Annotation = &entsql.Annotation{
 		Table:          "bid_project",
 		IncrementStart: func(i int) *int { return &i }(12884901888),
+	}
+	SysTaskLogTable.Annotation = &entsql.Annotation{
+		Table:          "sys_task_log",
+		IncrementStart: func(i int) *int { return &i }(17179869184),
 	}
 }

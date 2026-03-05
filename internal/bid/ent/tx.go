@@ -20,6 +20,8 @@ type Tx struct {
 	BidInfo *BidInfoClient
 	// BidProject is the client for interacting with the BidProject builders.
 	BidProject *BidProjectClient
+	// TaskLog is the client for interacting with the TaskLog builders.
+	TaskLog *TaskLogClient
 
 	// lazily loaded.
 	client     *Client
@@ -155,6 +157,7 @@ func (tx *Tx) init() {
 	tx.BidExpense = NewBidExpenseClient(tx.config)
 	tx.BidInfo = NewBidInfoClient(tx.config)
 	tx.BidProject = NewBidProjectClient(tx.config)
+	tx.TaskLog = NewTaskLogClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

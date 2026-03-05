@@ -17,3 +17,6 @@ type BidInfo func(*sql.Selector)
 
 // BidProject is the predicate function for bidproject builders.
 type BidProject func(*sql.Selector)
+
+// TaskLog is the predicate function for tasklog builders.
+type TaskLog func(*sql.Selector)
