@@ -64,11 +64,6 @@ func AssignSeq(v uint32) predicate.TaskLog {
 	return predicate.TaskLog(sql.FieldEQ(FieldAssignSeq, v))
 }
 
-// AssignTime applies equality check predicate on the "assign_time" field. It's identical to AssignTimeEQ.
-func AssignTime(v time.Time) predicate.TaskLog {
-	return predicate.TaskLog(sql.FieldEQ(FieldAssignTime, v))
-}
-
 // HandlerNo applies equality check predicate on the "handler_no" field. It's identical to HandlerNoEQ.
 func HandlerNo(v string) predicate.TaskLog {
 	return predicate.TaskLog(sql.FieldEQ(FieldHandlerNo, v))
@@ -232,56 +227,6 @@ func AssignSeqLT(v uint32) predicate.TaskLog {
 // AssignSeqLTE applies the LTE predicate on the "assign_seq" field.
 func AssignSeqLTE(v uint32) predicate.TaskLog {
 	return predicate.TaskLog(sql.FieldLTE(FieldAssignSeq, v))
-}
-
-// AssignTimeEQ applies the EQ predicate on the "assign_time" field.
-func AssignTimeEQ(v time.Time) predicate.TaskLog {
-	return predicate.TaskLog(sql.FieldEQ(FieldAssignTime, v))
-}
-
-// AssignTimeNEQ applies the NEQ predicate on the "assign_time" field.
-func AssignTimeNEQ(v time.Time) predicate.TaskLog {
-	return predicate.TaskLog(sql.FieldNEQ(FieldAssignTime, v))
-}
-
-// AssignTimeIn applies the In predicate on the "assign_time" field.
-func AssignTimeIn(vs ...time.Time) predicate.TaskLog {
-	return predicate.TaskLog(sql.FieldIn(FieldAssignTime, vs...))
-}
-
-// AssignTimeNotIn applies the NotIn predicate on the "assign_time" field.
-func AssignTimeNotIn(vs ...time.Time) predicate.TaskLog {
-	return predicate.TaskLog(sql.FieldNotIn(FieldAssignTime, vs...))
-}
-
-// AssignTimeGT applies the GT predicate on the "assign_time" field.
-func AssignTimeGT(v time.Time) predicate.TaskLog {
-	return predicate.TaskLog(sql.FieldGT(FieldAssignTime, v))
-}
-
-// AssignTimeGTE applies the GTE predicate on the "assign_time" field.
-func AssignTimeGTE(v time.Time) predicate.TaskLog {
-	return predicate.TaskLog(sql.FieldGTE(FieldAssignTime, v))
-}
-
-// AssignTimeLT applies the LT predicate on the "assign_time" field.
-func AssignTimeLT(v time.Time) predicate.TaskLog {
-	return predicate.TaskLog(sql.FieldLT(FieldAssignTime, v))
-}
-
-// AssignTimeLTE applies the LTE predicate on the "assign_time" field.
-func AssignTimeLTE(v time.Time) predicate.TaskLog {
-	return predicate.TaskLog(sql.FieldLTE(FieldAssignTime, v))
-}
-
-// AssignTimeIsNil applies the IsNil predicate on the "assign_time" field.
-func AssignTimeIsNil() predicate.TaskLog {
-	return predicate.TaskLog(sql.FieldIsNull(FieldAssignTime))
-}
-
-// AssignTimeNotNil applies the NotNil predicate on the "assign_time" field.
-func AssignTimeNotNil() predicate.TaskLog {
-	return predicate.TaskLog(sql.FieldNotNull(FieldAssignTime))
 }
 
 // HandlerNoEQ applies the EQ predicate on the "handler_no" field.

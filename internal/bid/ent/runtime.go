@@ -328,7 +328,7 @@ func init() {
 	// tasklog.BizIDValidator is a validator for the "biz_id" field. It is called by the builders before save.
 	tasklog.BizIDValidator = tasklogDescBizID.Validators[0].(func(string) error)
 	// tasklogDescHandlerNo is the schema descriptor for handler_no field.
-	tasklogDescHandlerNo := tasklogFields[4].Descriptor()
+	tasklogDescHandlerNo := tasklogFields[3].Descriptor()
 	// tasklog.HandlerNoValidator is a validator for the "handler_no" field. It is called by the builders before save.
 	tasklog.HandlerNoValidator = tasklogDescHandlerNo.Validators[0].(func(string) error)
 	// tasklogDescCreatedAt is the schema descriptor for created_at field.

@@ -20,8 +20,6 @@ const (
 	FieldBizID = "biz_id"
 	// FieldAssignSeq holds the string denoting the assign_seq field in the database.
 	FieldAssignSeq = "assign_seq"
-	// FieldAssignTime holds the string denoting the assign_time field in the database.
-	FieldAssignTime = "assign_time"
 	// FieldHandlerNo holds the string denoting the handler_no field in the database.
 	FieldHandlerNo = "handler_no"
 	// FieldStartTime holds the string denoting the start_time field in the database.
@@ -48,7 +46,6 @@ var Columns = []string{
 	FieldBizType,
 	FieldBizID,
 	FieldAssignSeq,
-	FieldAssignTime,
 	FieldHandlerNo,
 	FieldStartTime,
 	FieldEndTime,
@@ -134,11 +131,6 @@ func ByBizID(opts ...sql.OrderTermOption) OrderOption {
 // ByAssignSeq orders the results by the assign_seq field.
 func ByAssignSeq(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAssignSeq, opts...).ToFunc()
-}
-
-// ByAssignTime orders the results by the assign_time field.
-func ByAssignTime(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAssignTime, opts...).ToFunc()
 }
 
 // ByHandlerNo orders the results by the handler_no field.

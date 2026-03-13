@@ -78,26 +78,6 @@ func (_u *TaskLogUpdate) AddAssignSeq(v int32) *TaskLogUpdate {
 	return _u
 }
 
-// SetAssignTime sets the "assign_time" field.
-func (_u *TaskLogUpdate) SetAssignTime(v time.Time) *TaskLogUpdate {
-	_u.mutation.SetAssignTime(v)
-	return _u
-}
-
-// SetNillableAssignTime sets the "assign_time" field if the given value is not nil.
-func (_u *TaskLogUpdate) SetNillableAssignTime(v *time.Time) *TaskLogUpdate {
-	if v != nil {
-		_u.SetAssignTime(*v)
-	}
-	return _u
-}
-
-// ClearAssignTime clears the value of the "assign_time" field.
-func (_u *TaskLogUpdate) ClearAssignTime() *TaskLogUpdate {
-	_u.mutation.ClearAssignTime()
-	return _u
-}
-
 // SetHandlerNo sets the "handler_no" field.
 func (_u *TaskLogUpdate) SetHandlerNo(v string) *TaskLogUpdate {
 	_u.mutation.SetHandlerNo(v)
@@ -339,12 +319,6 @@ func (_u *TaskLogUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if value, ok := _u.mutation.AddedAssignSeq(); ok {
 		_spec.AddField(tasklog.FieldAssignSeq, field.TypeUint32, value)
 	}
-	if value, ok := _u.mutation.AssignTime(); ok {
-		_spec.SetField(tasklog.FieldAssignTime, field.TypeTime, value)
-	}
-	if _u.mutation.AssignTimeCleared() {
-		_spec.ClearField(tasklog.FieldAssignTime, field.TypeTime)
-	}
 	if value, ok := _u.mutation.HandlerNo(); ok {
 		_spec.SetField(tasklog.FieldHandlerNo, field.TypeString, value)
 	}
@@ -455,26 +429,6 @@ func (_u *TaskLogUpdateOne) SetNillableAssignSeq(v *uint32) *TaskLogUpdateOne {
 // AddAssignSeq adds value to the "assign_seq" field.
 func (_u *TaskLogUpdateOne) AddAssignSeq(v int32) *TaskLogUpdateOne {
 	_u.mutation.AddAssignSeq(v)
-	return _u
-}
-
-// SetAssignTime sets the "assign_time" field.
-func (_u *TaskLogUpdateOne) SetAssignTime(v time.Time) *TaskLogUpdateOne {
-	_u.mutation.SetAssignTime(v)
-	return _u
-}
-
-// SetNillableAssignTime sets the "assign_time" field if the given value is not nil.
-func (_u *TaskLogUpdateOne) SetNillableAssignTime(v *time.Time) *TaskLogUpdateOne {
-	if v != nil {
-		_u.SetAssignTime(*v)
-	}
-	return _u
-}
-
-// ClearAssignTime clears the value of the "assign_time" field.
-func (_u *TaskLogUpdateOne) ClearAssignTime() *TaskLogUpdateOne {
-	_u.mutation.ClearAssignTime()
 	return _u
 }
 
@@ -748,12 +702,6 @@ func (_u *TaskLogUpdateOne) sqlSave(ctx context.Context) (_node *TaskLog, err er
 	}
 	if value, ok := _u.mutation.AddedAssignSeq(); ok {
 		_spec.AddField(tasklog.FieldAssignSeq, field.TypeUint32, value)
-	}
-	if value, ok := _u.mutation.AssignTime(); ok {
-		_spec.SetField(tasklog.FieldAssignTime, field.TypeTime, value)
-	}
-	if _u.mutation.AssignTimeCleared() {
-		_spec.ClearField(tasklog.FieldAssignTime, field.TypeTime)
 	}
 	if value, ok := _u.mutation.HandlerNo(); ok {
 		_spec.SetField(tasklog.FieldHandlerNo, field.TypeString, value)

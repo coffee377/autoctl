@@ -23,8 +23,6 @@ type TaskLog struct {
 	BizID string `json:"biz_id,omitempty"`
 	// 同一业务标识下的指派序号（从1开始递增）
 	AssignSeq uint32 `json:"assign_seq,omitempty"`
-	// 任务指派时间
-	AssignTime *time.Time `json:"assign_time,omitempty"`
 	// 受理人工号
 	HandlerNo *string `json:"handler_no,omitempty"`
 	// 任务开始时间
@@ -53,7 +51,7 @@ func (*TaskLog) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case tasklog.FieldBizType, tasklog.FieldBizID, tasklog.FieldHandlerNo, tasklog.FieldRemark, tasklog.FieldCreatedBy, tasklog.FieldUpdatedBy:
 			values[i] = new(sql.NullString)
-		case tasklog.FieldAssignTime, tasklog.FieldStartTime, tasklog.FieldEndTime, tasklog.FieldCreatedAt, tasklog.FieldUpdatedAt:
+		case tasklog.FieldStartTime, tasklog.FieldEndTime, tasklog.FieldCreatedAt, tasklog.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -93,13 +91,6 @@ func (_m *TaskLog) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field assign_seq", values[i])
 			} else if value.Valid {
 				_m.AssignSeq = uint32(value.Int64)
-			}
-		case tasklog.FieldAssignTime:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field assign_time", values[i])
-			} else if value.Valid {
-				_m.AssignTime = new(time.Time)
-				*_m.AssignTime = value.Time
 			}
 		case tasklog.FieldHandlerNo:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -199,11 +190,6 @@ func (_m *TaskLog) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("assign_seq=")
 	builder.WriteString(fmt.Sprintf("%v", _m.AssignSeq))
-	builder.WriteString(", ")
-	if v := _m.AssignTime; v != nil {
-		builder.WriteString("assign_time=")
-		builder.WriteString(v.Format(time.ANSIC))
-	}
 	builder.WriteString(", ")
 	if v := _m.HandlerNo; v != nil {
 		builder.WriteString("handler_no=")

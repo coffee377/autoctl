@@ -46,20 +46,6 @@ func (_c *TaskLogCreate) SetAssignSeq(v uint32) *TaskLogCreate {
 	return _c
 }
 
-// SetAssignTime sets the "assign_time" field.
-func (_c *TaskLogCreate) SetAssignTime(v time.Time) *TaskLogCreate {
-	_c.mutation.SetAssignTime(v)
-	return _c
-}
-
-// SetNillableAssignTime sets the "assign_time" field if the given value is not nil.
-func (_c *TaskLogCreate) SetNillableAssignTime(v *time.Time) *TaskLogCreate {
-	if v != nil {
-		_c.SetAssignTime(*v)
-	}
-	return _c
-}
-
 // SetHandlerNo sets the "handler_no" field.
 func (_c *TaskLogCreate) SetHandlerNo(v string) *TaskLogCreate {
 	_c.mutation.SetHandlerNo(v)
@@ -300,10 +286,6 @@ func (_c *TaskLogCreate) createSpec() (*TaskLog, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.AssignSeq(); ok {
 		_spec.SetField(tasklog.FieldAssignSeq, field.TypeUint32, value)
 		_node.AssignSeq = value
-	}
-	if value, ok := _c.mutation.AssignTime(); ok {
-		_spec.SetField(tasklog.FieldAssignTime, field.TypeTime, value)
-		_node.AssignTime = &value
 	}
 	if value, ok := _c.mutation.HandlerNo(); ok {
 		_spec.SetField(tasklog.FieldHandlerNo, field.TypeString, value)

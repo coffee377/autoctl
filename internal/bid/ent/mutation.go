@@ -6907,7 +6907,6 @@ type TaskLogMutation struct {
 	biz_id        *string
 	assign_seq    *uint32
 	addassign_seq *int32
-	assign_time   *time.Time
 	handler_no    *string
 	start_time    *time.Time
 	end_time      *time.Time
@@ -7146,55 +7145,6 @@ func (m *TaskLogMutation) AddedAssignSeq() (r int32, exists bool) {
 func (m *TaskLogMutation) ResetAssignSeq() {
 	m.assign_seq = nil
 	m.addassign_seq = nil
-}
-
-// SetAssignTime sets the "assign_time" field.
-func (m *TaskLogMutation) SetAssignTime(t time.Time) {
-	m.assign_time = &t
-}
-
-// AssignTime returns the value of the "assign_time" field in the mutation.
-func (m *TaskLogMutation) AssignTime() (r time.Time, exists bool) {
-	v := m.assign_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAssignTime returns the old "assign_time" field's value of the TaskLog entity.
-// If the TaskLog object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TaskLogMutation) OldAssignTime(ctx context.Context) (v *time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAssignTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAssignTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAssignTime: %w", err)
-	}
-	return oldValue.AssignTime, nil
-}
-
-// ClearAssignTime clears the value of the "assign_time" field.
-func (m *TaskLogMutation) ClearAssignTime() {
-	m.assign_time = nil
-	m.clearedFields[tasklog.FieldAssignTime] = struct{}{}
-}
-
-// AssignTimeCleared returns if the "assign_time" field was cleared in this mutation.
-func (m *TaskLogMutation) AssignTimeCleared() bool {
-	_, ok := m.clearedFields[tasklog.FieldAssignTime]
-	return ok
-}
-
-// ResetAssignTime resets all changes to the "assign_time" field.
-func (m *TaskLogMutation) ResetAssignTime() {
-	m.assign_time = nil
-	delete(m.clearedFields, tasklog.FieldAssignTime)
 }
 
 // SetHandlerNo sets the "handler_no" field.
@@ -7597,7 +7547,7 @@ func (m *TaskLogMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TaskLogMutation) Fields() []string {
-	fields := make([]string, 0, 12)
+	fields := make([]string, 0, 11)
 	if m.biz_type != nil {
 		fields = append(fields, tasklog.FieldBizType)
 	}
@@ -7606,9 +7556,6 @@ func (m *TaskLogMutation) Fields() []string {
 	}
 	if m.assign_seq != nil {
 		fields = append(fields, tasklog.FieldAssignSeq)
-	}
-	if m.assign_time != nil {
-		fields = append(fields, tasklog.FieldAssignTime)
 	}
 	if m.handler_no != nil {
 		fields = append(fields, tasklog.FieldHandlerNo)
@@ -7648,8 +7595,6 @@ func (m *TaskLogMutation) Field(name string) (ent.Value, bool) {
 		return m.BizID()
 	case tasklog.FieldAssignSeq:
 		return m.AssignSeq()
-	case tasklog.FieldAssignTime:
-		return m.AssignTime()
 	case tasklog.FieldHandlerNo:
 		return m.HandlerNo()
 	case tasklog.FieldStartTime:
@@ -7681,8 +7626,6 @@ func (m *TaskLogMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldBizID(ctx)
 	case tasklog.FieldAssignSeq:
 		return m.OldAssignSeq(ctx)
-	case tasklog.FieldAssignTime:
-		return m.OldAssignTime(ctx)
 	case tasklog.FieldHandlerNo:
 		return m.OldHandlerNo(ctx)
 	case tasklog.FieldStartTime:
@@ -7728,13 +7671,6 @@ func (m *TaskLogMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetAssignSeq(v)
-		return nil
-	case tasklog.FieldAssignTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAssignTime(v)
 		return nil
 	case tasklog.FieldHandlerNo:
 		v, ok := value.(string)
@@ -7837,9 +7773,6 @@ func (m *TaskLogMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *TaskLogMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(tasklog.FieldAssignTime) {
-		fields = append(fields, tasklog.FieldAssignTime)
-	}
 	if m.FieldCleared(tasklog.FieldHandlerNo) {
 		fields = append(fields, tasklog.FieldHandlerNo)
 	}
@@ -7872,9 +7805,6 @@ func (m *TaskLogMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *TaskLogMutation) ClearField(name string) error {
 	switch name {
-	case tasklog.FieldAssignTime:
-		m.ClearAssignTime()
-		return nil
 	case tasklog.FieldHandlerNo:
 		m.ClearHandlerNo()
 		return nil
@@ -7909,9 +7839,6 @@ func (m *TaskLogMutation) ResetField(name string) error {
 		return nil
 	case tasklog.FieldAssignSeq:
 		m.ResetAssignSeq()
-		return nil
-	case tasklog.FieldAssignTime:
-		m.ResetAssignTime()
 		return nil
 	case tasklog.FieldHandlerNo:
 		m.ResetHandlerNo()

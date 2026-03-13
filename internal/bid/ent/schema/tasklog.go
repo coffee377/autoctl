@@ -22,10 +22,6 @@ func (TaskLog) Fields() []ent.Field {
 		field.String("biz_id").Comment("业务标识").MaxRuneLen(32),
 		field.Uint32("assign_seq").Comment("同一业务标识下的指派序号（从1开始递增）"),
 
-		field.Time("assign_time").Comment("任务指派时间").Optional().Nillable().
-			SchemaType(map[string]string{
-				dialect.MySQL: "datetime",
-			}),
 		field.String("handler_no").Comment("受理人工号").Optional().Nillable().MaxRuneLen(8),
 
 		field.Time("start_time").Comment("任务开始时间").Optional().Nillable().
