@@ -3,10 +3,14 @@
 package ent
 
 import (
+	"cds/bid/ent/bidaccountrelation"
 	"cds/bid/ent/bidapply"
+	"cds/bid/ent/bidcacertificate"
 	"cds/bid/ent/bidexpense"
 	"cds/bid/ent/bidinfo"
+	"cds/bid/ent/bidmemberaccount"
 	"cds/bid/ent/bidproject"
+	"cds/bid/ent/bidwebsite"
 	"cds/bid/ent/tasklog"
 	"context"
 	"errors"
@@ -77,11 +81,15 @@ var (
 func checkColumn(t, c string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			bidapply.Table:   bidapply.ValidColumn,
-			bidexpense.Table: bidexpense.ValidColumn,
-			bidinfo.Table:    bidinfo.ValidColumn,
-			bidproject.Table: bidproject.ValidColumn,
-			tasklog.Table:    tasklog.ValidColumn,
+			bidaccountrelation.Table: bidaccountrelation.ValidColumn,
+			bidapply.Table:           bidapply.ValidColumn,
+			bidcacertificate.Table:   bidcacertificate.ValidColumn,
+			bidexpense.Table:         bidexpense.ValidColumn,
+			bidinfo.Table:            bidinfo.ValidColumn,
+			bidmemberaccount.Table:   bidmemberaccount.ValidColumn,
+			bidproject.Table:         bidproject.ValidColumn,
+			bidwebsite.Table:         bidwebsite.ValidColumn,
+			tasklog.Table:            tasklog.ValidColumn,
 		})
 	})
 	return columnCheck(t, c)

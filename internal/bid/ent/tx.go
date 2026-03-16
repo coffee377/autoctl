@@ -12,14 +12,22 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
+	// BidAccountRelation is the client for interacting with the BidAccountRelation builders.
+	BidAccountRelation *BidAccountRelationClient
 	// BidApply is the client for interacting with the BidApply builders.
 	BidApply *BidApplyClient
+	// BidCACertificate is the client for interacting with the BidCACertificate builders.
+	BidCACertificate *BidCACertificateClient
 	// BidExpense is the client for interacting with the BidExpense builders.
 	BidExpense *BidExpenseClient
 	// BidInfo is the client for interacting with the BidInfo builders.
 	BidInfo *BidInfoClient
+	// BidMemberAccount is the client for interacting with the BidMemberAccount builders.
+	BidMemberAccount *BidMemberAccountClient
 	// BidProject is the client for interacting with the BidProject builders.
 	BidProject *BidProjectClient
+	// BidWebSite is the client for interacting with the BidWebSite builders.
+	BidWebSite *BidWebSiteClient
 	// TaskLog is the client for interacting with the TaskLog builders.
 	TaskLog *TaskLogClient
 
@@ -153,10 +161,14 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
+	tx.BidAccountRelation = NewBidAccountRelationClient(tx.config)
 	tx.BidApply = NewBidApplyClient(tx.config)
+	tx.BidCACertificate = NewBidCACertificateClient(tx.config)
 	tx.BidExpense = NewBidExpenseClient(tx.config)
 	tx.BidInfo = NewBidInfoClient(tx.config)
+	tx.BidMemberAccount = NewBidMemberAccountClient(tx.config)
 	tx.BidProject = NewBidProjectClient(tx.config)
+	tx.BidWebSite = NewBidWebSiteClient(tx.config)
 	tx.TaskLog = NewTaskLogClient(tx.config)
 }
 
@@ -167,7 +179,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: BidApply.QueryXXX(), the query will be executed
+// applies a query, for example: BidAccountRelation.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.

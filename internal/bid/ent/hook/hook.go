@@ -8,6 +8,18 @@ import (
 	"fmt"
 )
 
+// The BidAccountRelationFunc type is an adapter to allow the use of ordinary
+// function as BidAccountRelation mutator.
+type BidAccountRelationFunc func(context.Context, *ent.BidAccountRelationMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f BidAccountRelationFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.BidAccountRelationMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.BidAccountRelationMutation", m)
+}
+
 // The BidApplyFunc type is an adapter to allow the use of ordinary
 // function as BidApply mutator.
 type BidApplyFunc func(context.Context, *ent.BidApplyMutation) (ent.Value, error)
@@ -18,6 +30,18 @@ func (f BidApplyFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, er
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.BidApplyMutation", m)
+}
+
+// The BidCACertificateFunc type is an adapter to allow the use of ordinary
+// function as BidCACertificate mutator.
+type BidCACertificateFunc func(context.Context, *ent.BidCACertificateMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f BidCACertificateFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.BidCACertificateMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.BidCACertificateMutation", m)
 }
 
 // The BidExpenseFunc type is an adapter to allow the use of ordinary
@@ -44,6 +68,18 @@ func (f BidInfoFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, err
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.BidInfoMutation", m)
 }
 
+// The BidMemberAccountFunc type is an adapter to allow the use of ordinary
+// function as BidMemberAccount mutator.
+type BidMemberAccountFunc func(context.Context, *ent.BidMemberAccountMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f BidMemberAccountFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.BidMemberAccountMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.BidMemberAccountMutation", m)
+}
+
 // The BidProjectFunc type is an adapter to allow the use of ordinary
 // function as BidProject mutator.
 type BidProjectFunc func(context.Context, *ent.BidProjectMutation) (ent.Value, error)
@@ -54,6 +90,18 @@ func (f BidProjectFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, 
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.BidProjectMutation", m)
+}
+
+// The BidWebSiteFunc type is an adapter to allow the use of ordinary
+// function as BidWebSite mutator.
+type BidWebSiteFunc func(context.Context, *ent.BidWebSiteMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f BidWebSiteFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.BidWebSiteMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.BidWebSiteMutation", m)
 }
 
 // The TaskLogFunc type is an adapter to allow the use of ordinary

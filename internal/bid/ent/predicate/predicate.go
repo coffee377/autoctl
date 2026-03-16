@@ -6,8 +6,14 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
+// BidAccountRelation is the predicate function for bidaccountrelation builders.
+type BidAccountRelation func(*sql.Selector)
+
 // BidApply is the predicate function for bidapply builders.
 type BidApply func(*sql.Selector)
+
+// BidCACertificate is the predicate function for bidcacertificate builders.
+type BidCACertificate func(*sql.Selector)
 
 // BidExpense is the predicate function for bidexpense builders.
 type BidExpense func(*sql.Selector)
@@ -15,8 +21,14 @@ type BidExpense func(*sql.Selector)
 // BidInfo is the predicate function for bidinfo builders.
 type BidInfo func(*sql.Selector)
 
+// BidMemberAccount is the predicate function for bidmemberaccount builders.
+type BidMemberAccount func(*sql.Selector)
+
 // BidProject is the predicate function for bidproject builders.
 type BidProject func(*sql.Selector)
+
+// BidWebSite is the predicate function for bidwebsite builders.
+type BidWebSite func(*sql.Selector)
 
 // TaskLog is the predicate function for tasklog builders.
 type TaskLog func(*sql.Selector)

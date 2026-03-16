@@ -3,10 +3,14 @@
 package ent
 
 import (
+	"cds/bid/ent/bidaccountrelation"
 	"cds/bid/ent/bidapply"
+	"cds/bid/ent/bidcacertificate"
 	"cds/bid/ent/bidexpense"
 	"cds/bid/ent/bidinfo"
+	"cds/bid/ent/bidmemberaccount"
 	"cds/bid/ent/bidproject"
+	"cds/bid/ent/bidwebsite"
 	"cds/bid/ent/predicate"
 	"cds/bid/ent/schema"
 	"cds/bid/ent/tasklog"
@@ -29,12 +33,639 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeBidApply   = "BidApply"
-	TypeBidExpense = "BidExpense"
-	TypeBidInfo    = "BidInfo"
-	TypeBidProject = "BidProject"
-	TypeTaskLog    = "TaskLog"
+	TypeBidAccountRelation = "BidAccountRelation"
+	TypeBidApply           = "BidApply"
+	TypeBidCACertificate   = "BidCACertificate"
+	TypeBidExpense         = "BidExpense"
+	TypeBidInfo            = "BidInfo"
+	TypeBidMemberAccount   = "BidMemberAccount"
+	TypeBidProject         = "BidProject"
+	TypeBidWebSite         = "BidWebSite"
+	TypeTaskLog            = "TaskLog"
 )
+
+// BidAccountRelationMutation represents an operation that mutates the BidAccountRelation nodes in the graph.
+type BidAccountRelationMutation struct {
+	config
+	op                    Op
+	typ                   string
+	id                    *int
+	remark                *string
+	bind_at               *time.Time
+	clearedFields         map[string]struct{}
+	account               *string
+	clearedaccount        bool
+	ca_certificate        *string
+	clearedca_certificate bool
+	done                  bool
+	oldValue              func(context.Context) (*BidAccountRelation, error)
+	predicates            []predicate.BidAccountRelation
+}
+
+var _ ent.Mutation = (*BidAccountRelationMutation)(nil)
+
+// bidaccountrelationOption allows management of the mutation configuration using functional options.
+type bidaccountrelationOption func(*BidAccountRelationMutation)
+
+// newBidAccountRelationMutation creates new mutation for the BidAccountRelation entity.
+func newBidAccountRelationMutation(c config, op Op, opts ...bidaccountrelationOption) *BidAccountRelationMutation {
+	m := &BidAccountRelationMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeBidAccountRelation,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withBidAccountRelationID sets the ID field of the mutation.
+func withBidAccountRelationID(id int) bidaccountrelationOption {
+	return func(m *BidAccountRelationMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *BidAccountRelation
+		)
+		m.oldValue = func(ctx context.Context) (*BidAccountRelation, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().BidAccountRelation.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withBidAccountRelation sets the old BidAccountRelation of the mutation.
+func withBidAccountRelation(node *BidAccountRelation) bidaccountrelationOption {
+	return func(m *BidAccountRelationMutation) {
+		m.oldValue = func(context.Context) (*BidAccountRelation, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m BidAccountRelationMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m BidAccountRelationMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *BidAccountRelationMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *BidAccountRelationMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().BidAccountRelation.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetAccountID sets the "account_id" field.
+func (m *BidAccountRelationMutation) SetAccountID(s string) {
+	m.account = &s
+}
+
+// AccountID returns the value of the "account_id" field in the mutation.
+func (m *BidAccountRelationMutation) AccountID() (r string, exists bool) {
+	v := m.account
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAccountID returns the old "account_id" field's value of the BidAccountRelation entity.
+// If the BidAccountRelation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidAccountRelationMutation) OldAccountID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAccountID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAccountID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAccountID: %w", err)
+	}
+	return oldValue.AccountID, nil
+}
+
+// ResetAccountID resets all changes to the "account_id" field.
+func (m *BidAccountRelationMutation) ResetAccountID() {
+	m.account = nil
+}
+
+// SetCaID sets the "ca_id" field.
+func (m *BidAccountRelationMutation) SetCaID(s string) {
+	m.ca_certificate = &s
+}
+
+// CaID returns the value of the "ca_id" field in the mutation.
+func (m *BidAccountRelationMutation) CaID() (r string, exists bool) {
+	v := m.ca_certificate
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCaID returns the old "ca_id" field's value of the BidAccountRelation entity.
+// If the BidAccountRelation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidAccountRelationMutation) OldCaID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCaID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCaID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCaID: %w", err)
+	}
+	return oldValue.CaID, nil
+}
+
+// ResetCaID resets all changes to the "ca_id" field.
+func (m *BidAccountRelationMutation) ResetCaID() {
+	m.ca_certificate = nil
+}
+
+// SetRemark sets the "remark" field.
+func (m *BidAccountRelationMutation) SetRemark(s string) {
+	m.remark = &s
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *BidAccountRelationMutation) Remark() (r string, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the BidAccountRelation entity.
+// If the BidAccountRelation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidAccountRelationMutation) OldRemark(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *BidAccountRelationMutation) ClearRemark() {
+	m.remark = nil
+	m.clearedFields[bidaccountrelation.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *BidAccountRelationMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[bidaccountrelation.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *BidAccountRelationMutation) ResetRemark() {
+	m.remark = nil
+	delete(m.clearedFields, bidaccountrelation.FieldRemark)
+}
+
+// SetBindAt sets the "bind_at" field.
+func (m *BidAccountRelationMutation) SetBindAt(t time.Time) {
+	m.bind_at = &t
+}
+
+// BindAt returns the value of the "bind_at" field in the mutation.
+func (m *BidAccountRelationMutation) BindAt() (r time.Time, exists bool) {
+	v := m.bind_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBindAt returns the old "bind_at" field's value of the BidAccountRelation entity.
+// If the BidAccountRelation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidAccountRelationMutation) OldBindAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBindAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBindAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBindAt: %w", err)
+	}
+	return oldValue.BindAt, nil
+}
+
+// ResetBindAt resets all changes to the "bind_at" field.
+func (m *BidAccountRelationMutation) ResetBindAt() {
+	m.bind_at = nil
+}
+
+// ClearAccount clears the "account" edge to the BidMemberAccount entity.
+func (m *BidAccountRelationMutation) ClearAccount() {
+	m.clearedaccount = true
+	m.clearedFields[bidaccountrelation.FieldAccountID] = struct{}{}
+}
+
+// AccountCleared reports if the "account" edge to the BidMemberAccount entity was cleared.
+func (m *BidAccountRelationMutation) AccountCleared() bool {
+	return m.clearedaccount
+}
+
+// AccountIDs returns the "account" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// AccountID instead. It exists only for internal usage by the builders.
+func (m *BidAccountRelationMutation) AccountIDs() (ids []string) {
+	if id := m.account; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetAccount resets all changes to the "account" edge.
+func (m *BidAccountRelationMutation) ResetAccount() {
+	m.account = nil
+	m.clearedaccount = false
+}
+
+// SetCaCertificateID sets the "ca_certificate" edge to the BidCACertificate entity by id.
+func (m *BidAccountRelationMutation) SetCaCertificateID(id string) {
+	m.ca_certificate = &id
+}
+
+// ClearCaCertificate clears the "ca_certificate" edge to the BidCACertificate entity.
+func (m *BidAccountRelationMutation) ClearCaCertificate() {
+	m.clearedca_certificate = true
+	m.clearedFields[bidaccountrelation.FieldCaID] = struct{}{}
+}
+
+// CaCertificateCleared reports if the "ca_certificate" edge to the BidCACertificate entity was cleared.
+func (m *BidAccountRelationMutation) CaCertificateCleared() bool {
+	return m.clearedca_certificate
+}
+
+// CaCertificateID returns the "ca_certificate" edge ID in the mutation.
+func (m *BidAccountRelationMutation) CaCertificateID() (id string, exists bool) {
+	if m.ca_certificate != nil {
+		return *m.ca_certificate, true
+	}
+	return
+}
+
+// CaCertificateIDs returns the "ca_certificate" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// CaCertificateID instead. It exists only for internal usage by the builders.
+func (m *BidAccountRelationMutation) CaCertificateIDs() (ids []string) {
+	if id := m.ca_certificate; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetCaCertificate resets all changes to the "ca_certificate" edge.
+func (m *BidAccountRelationMutation) ResetCaCertificate() {
+	m.ca_certificate = nil
+	m.clearedca_certificate = false
+}
+
+// Where appends a list predicates to the BidAccountRelationMutation builder.
+func (m *BidAccountRelationMutation) Where(ps ...predicate.BidAccountRelation) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the BidAccountRelationMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *BidAccountRelationMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.BidAccountRelation, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *BidAccountRelationMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *BidAccountRelationMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (BidAccountRelation).
+func (m *BidAccountRelationMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *BidAccountRelationMutation) Fields() []string {
+	fields := make([]string, 0, 4)
+	if m.account != nil {
+		fields = append(fields, bidaccountrelation.FieldAccountID)
+	}
+	if m.ca_certificate != nil {
+		fields = append(fields, bidaccountrelation.FieldCaID)
+	}
+	if m.remark != nil {
+		fields = append(fields, bidaccountrelation.FieldRemark)
+	}
+	if m.bind_at != nil {
+		fields = append(fields, bidaccountrelation.FieldBindAt)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *BidAccountRelationMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case bidaccountrelation.FieldAccountID:
+		return m.AccountID()
+	case bidaccountrelation.FieldCaID:
+		return m.CaID()
+	case bidaccountrelation.FieldRemark:
+		return m.Remark()
+	case bidaccountrelation.FieldBindAt:
+		return m.BindAt()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *BidAccountRelationMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case bidaccountrelation.FieldAccountID:
+		return m.OldAccountID(ctx)
+	case bidaccountrelation.FieldCaID:
+		return m.OldCaID(ctx)
+	case bidaccountrelation.FieldRemark:
+		return m.OldRemark(ctx)
+	case bidaccountrelation.FieldBindAt:
+		return m.OldBindAt(ctx)
+	}
+	return nil, fmt.Errorf("unknown BidAccountRelation field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *BidAccountRelationMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case bidaccountrelation.FieldAccountID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAccountID(v)
+		return nil
+	case bidaccountrelation.FieldCaID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCaID(v)
+		return nil
+	case bidaccountrelation.FieldRemark:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
+		return nil
+	case bidaccountrelation.FieldBindAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBindAt(v)
+		return nil
+	}
+	return fmt.Errorf("unknown BidAccountRelation field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *BidAccountRelationMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *BidAccountRelationMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *BidAccountRelationMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown BidAccountRelation numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *BidAccountRelationMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(bidaccountrelation.FieldRemark) {
+		fields = append(fields, bidaccountrelation.FieldRemark)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *BidAccountRelationMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *BidAccountRelationMutation) ClearField(name string) error {
+	switch name {
+	case bidaccountrelation.FieldRemark:
+		m.ClearRemark()
+		return nil
+	}
+	return fmt.Errorf("unknown BidAccountRelation nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *BidAccountRelationMutation) ResetField(name string) error {
+	switch name {
+	case bidaccountrelation.FieldAccountID:
+		m.ResetAccountID()
+		return nil
+	case bidaccountrelation.FieldCaID:
+		m.ResetCaID()
+		return nil
+	case bidaccountrelation.FieldRemark:
+		m.ResetRemark()
+		return nil
+	case bidaccountrelation.FieldBindAt:
+		m.ResetBindAt()
+		return nil
+	}
+	return fmt.Errorf("unknown BidAccountRelation field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *BidAccountRelationMutation) AddedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.account != nil {
+		edges = append(edges, bidaccountrelation.EdgeAccount)
+	}
+	if m.ca_certificate != nil {
+		edges = append(edges, bidaccountrelation.EdgeCaCertificate)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *BidAccountRelationMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case bidaccountrelation.EdgeAccount:
+		if id := m.account; id != nil {
+			return []ent.Value{*id}
+		}
+	case bidaccountrelation.EdgeCaCertificate:
+		if id := m.ca_certificate; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *BidAccountRelationMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 2)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *BidAccountRelationMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *BidAccountRelationMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.clearedaccount {
+		edges = append(edges, bidaccountrelation.EdgeAccount)
+	}
+	if m.clearedca_certificate {
+		edges = append(edges, bidaccountrelation.EdgeCaCertificate)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *BidAccountRelationMutation) EdgeCleared(name string) bool {
+	switch name {
+	case bidaccountrelation.EdgeAccount:
+		return m.clearedaccount
+	case bidaccountrelation.EdgeCaCertificate:
+		return m.clearedca_certificate
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *BidAccountRelationMutation) ClearEdge(name string) error {
+	switch name {
+	case bidaccountrelation.EdgeAccount:
+		m.ClearAccount()
+		return nil
+	case bidaccountrelation.EdgeCaCertificate:
+		m.ClearCaCertificate()
+		return nil
+	}
+	return fmt.Errorf("unknown BidAccountRelation unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *BidAccountRelationMutation) ResetEdge(name string) error {
+	switch name {
+	case bidaccountrelation.EdgeAccount:
+		m.ResetAccount()
+		return nil
+	case bidaccountrelation.EdgeCaCertificate:
+		m.ResetCaCertificate()
+		return nil
+	}
+	return fmt.Errorf("unknown BidAccountRelation edge %s", name)
+}
 
 // BidApplyMutation represents an operation that mutates the BidApply nodes in the graph.
 type BidApplyMutation struct {
@@ -1565,6 +2196,1069 @@ func (m *BidApplyMutation) ResetEdge(name string) error {
 		return nil
 	}
 	return fmt.Errorf("unknown BidApply edge %s", name)
+}
+
+// BidCACertificateMutation represents an operation that mutates the BidCACertificate nodes in the graph.
+type BidCACertificateMutation struct {
+	config
+	op                       Op
+	typ                      string
+	id                       *string
+	code                     *string
+	name                     *string
+	expiry_time              *time.Time
+	password                 *string
+	remark                   *string
+	primary                  *bool
+	last_renewal_at          *time.Time
+	created_at               *time.Time
+	created_by               *string
+	updated_at               *time.Time
+	updated_by               *string
+	clearedFields            map[string]struct{}
+	account_relations        map[int]struct{}
+	removedaccount_relations map[int]struct{}
+	clearedaccount_relations bool
+	done                     bool
+	oldValue                 func(context.Context) (*BidCACertificate, error)
+	predicates               []predicate.BidCACertificate
+}
+
+var _ ent.Mutation = (*BidCACertificateMutation)(nil)
+
+// bidcacertificateOption allows management of the mutation configuration using functional options.
+type bidcacertificateOption func(*BidCACertificateMutation)
+
+// newBidCACertificateMutation creates new mutation for the BidCACertificate entity.
+func newBidCACertificateMutation(c config, op Op, opts ...bidcacertificateOption) *BidCACertificateMutation {
+	m := &BidCACertificateMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeBidCACertificate,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withBidCACertificateID sets the ID field of the mutation.
+func withBidCACertificateID(id string) bidcacertificateOption {
+	return func(m *BidCACertificateMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *BidCACertificate
+		)
+		m.oldValue = func(ctx context.Context) (*BidCACertificate, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().BidCACertificate.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withBidCACertificate sets the old BidCACertificate of the mutation.
+func withBidCACertificate(node *BidCACertificate) bidcacertificateOption {
+	return func(m *BidCACertificateMutation) {
+		m.oldValue = func(context.Context) (*BidCACertificate, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m BidCACertificateMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m BidCACertificateMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of BidCACertificate entities.
+func (m *BidCACertificateMutation) SetID(id string) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *BidCACertificateMutation) ID() (id string, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *BidCACertificateMutation) IDs(ctx context.Context) ([]string, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []string{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().BidCACertificate.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCode sets the "code" field.
+func (m *BidCACertificateMutation) SetCode(s string) {
+	m.code = &s
+}
+
+// Code returns the value of the "code" field in the mutation.
+func (m *BidCACertificateMutation) Code() (r string, exists bool) {
+	v := m.code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCode returns the old "code" field's value of the BidCACertificate entity.
+// If the BidCACertificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidCACertificateMutation) OldCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCode: %w", err)
+	}
+	return oldValue.Code, nil
+}
+
+// ResetCode resets all changes to the "code" field.
+func (m *BidCACertificateMutation) ResetCode() {
+	m.code = nil
+}
+
+// SetName sets the "name" field.
+func (m *BidCACertificateMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *BidCACertificateMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the BidCACertificate entity.
+// If the BidCACertificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidCACertificateMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *BidCACertificateMutation) ResetName() {
+	m.name = nil
+}
+
+// SetExpiryTime sets the "expiry_time" field.
+func (m *BidCACertificateMutation) SetExpiryTime(t time.Time) {
+	m.expiry_time = &t
+}
+
+// ExpiryTime returns the value of the "expiry_time" field in the mutation.
+func (m *BidCACertificateMutation) ExpiryTime() (r time.Time, exists bool) {
+	v := m.expiry_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldExpiryTime returns the old "expiry_time" field's value of the BidCACertificate entity.
+// If the BidCACertificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidCACertificateMutation) OldExpiryTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldExpiryTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldExpiryTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldExpiryTime: %w", err)
+	}
+	return oldValue.ExpiryTime, nil
+}
+
+// ResetExpiryTime resets all changes to the "expiry_time" field.
+func (m *BidCACertificateMutation) ResetExpiryTime() {
+	m.expiry_time = nil
+}
+
+// SetPassword sets the "password" field.
+func (m *BidCACertificateMutation) SetPassword(s string) {
+	m.password = &s
+}
+
+// Password returns the value of the "password" field in the mutation.
+func (m *BidCACertificateMutation) Password() (r string, exists bool) {
+	v := m.password
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPassword returns the old "password" field's value of the BidCACertificate entity.
+// If the BidCACertificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidCACertificateMutation) OldPassword(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPassword is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPassword requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPassword: %w", err)
+	}
+	return oldValue.Password, nil
+}
+
+// ClearPassword clears the value of the "password" field.
+func (m *BidCACertificateMutation) ClearPassword() {
+	m.password = nil
+	m.clearedFields[bidcacertificate.FieldPassword] = struct{}{}
+}
+
+// PasswordCleared returns if the "password" field was cleared in this mutation.
+func (m *BidCACertificateMutation) PasswordCleared() bool {
+	_, ok := m.clearedFields[bidcacertificate.FieldPassword]
+	return ok
+}
+
+// ResetPassword resets all changes to the "password" field.
+func (m *BidCACertificateMutation) ResetPassword() {
+	m.password = nil
+	delete(m.clearedFields, bidcacertificate.FieldPassword)
+}
+
+// SetRemark sets the "remark" field.
+func (m *BidCACertificateMutation) SetRemark(s string) {
+	m.remark = &s
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *BidCACertificateMutation) Remark() (r string, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the BidCACertificate entity.
+// If the BidCACertificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidCACertificateMutation) OldRemark(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *BidCACertificateMutation) ClearRemark() {
+	m.remark = nil
+	m.clearedFields[bidcacertificate.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *BidCACertificateMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[bidcacertificate.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *BidCACertificateMutation) ResetRemark() {
+	m.remark = nil
+	delete(m.clearedFields, bidcacertificate.FieldRemark)
+}
+
+// SetPrimary sets the "primary" field.
+func (m *BidCACertificateMutation) SetPrimary(b bool) {
+	m.primary = &b
+}
+
+// Primary returns the value of the "primary" field in the mutation.
+func (m *BidCACertificateMutation) Primary() (r bool, exists bool) {
+	v := m.primary
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPrimary returns the old "primary" field's value of the BidCACertificate entity.
+// If the BidCACertificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidCACertificateMutation) OldPrimary(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPrimary is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPrimary requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPrimary: %w", err)
+	}
+	return oldValue.Primary, nil
+}
+
+// ResetPrimary resets all changes to the "primary" field.
+func (m *BidCACertificateMutation) ResetPrimary() {
+	m.primary = nil
+}
+
+// SetLastRenewalAt sets the "last_renewal_at" field.
+func (m *BidCACertificateMutation) SetLastRenewalAt(t time.Time) {
+	m.last_renewal_at = &t
+}
+
+// LastRenewalAt returns the value of the "last_renewal_at" field in the mutation.
+func (m *BidCACertificateMutation) LastRenewalAt() (r time.Time, exists bool) {
+	v := m.last_renewal_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLastRenewalAt returns the old "last_renewal_at" field's value of the BidCACertificate entity.
+// If the BidCACertificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidCACertificateMutation) OldLastRenewalAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLastRenewalAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLastRenewalAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLastRenewalAt: %w", err)
+	}
+	return oldValue.LastRenewalAt, nil
+}
+
+// ClearLastRenewalAt clears the value of the "last_renewal_at" field.
+func (m *BidCACertificateMutation) ClearLastRenewalAt() {
+	m.last_renewal_at = nil
+	m.clearedFields[bidcacertificate.FieldLastRenewalAt] = struct{}{}
+}
+
+// LastRenewalAtCleared returns if the "last_renewal_at" field was cleared in this mutation.
+func (m *BidCACertificateMutation) LastRenewalAtCleared() bool {
+	_, ok := m.clearedFields[bidcacertificate.FieldLastRenewalAt]
+	return ok
+}
+
+// ResetLastRenewalAt resets all changes to the "last_renewal_at" field.
+func (m *BidCACertificateMutation) ResetLastRenewalAt() {
+	m.last_renewal_at = nil
+	delete(m.clearedFields, bidcacertificate.FieldLastRenewalAt)
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *BidCACertificateMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *BidCACertificateMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the BidCACertificate entity.
+// If the BidCACertificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidCACertificateMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *BidCACertificateMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (m *BidCACertificateMutation) SetCreatedBy(s string) {
+	m.created_by = &s
+}
+
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *BidCACertificateMutation) CreatedBy() (r string, exists bool) {
+	v := m.created_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedBy returns the old "created_by" field's value of the BidCACertificate entity.
+// If the BidCACertificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidCACertificateMutation) OldCreatedBy(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
+	}
+	return oldValue.CreatedBy, nil
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *BidCACertificateMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.clearedFields[bidcacertificate.FieldCreatedBy] = struct{}{}
+}
+
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *BidCACertificateMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[bidcacertificate.FieldCreatedBy]
+	return ok
+}
+
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *BidCACertificateMutation) ResetCreatedBy() {
+	m.created_by = nil
+	delete(m.clearedFields, bidcacertificate.FieldCreatedBy)
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *BidCACertificateMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *BidCACertificateMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the BidCACertificate entity.
+// If the BidCACertificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidCACertificateMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *BidCACertificateMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (m *BidCACertificateMutation) SetUpdatedBy(s string) {
+	m.updated_by = &s
+}
+
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *BidCACertificateMutation) UpdatedBy() (r string, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedBy returns the old "updated_by" field's value of the BidCACertificate entity.
+// If the BidCACertificate object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidCACertificateMutation) OldUpdatedBy(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
+	}
+	return oldValue.UpdatedBy, nil
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *BidCACertificateMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.clearedFields[bidcacertificate.FieldUpdatedBy] = struct{}{}
+}
+
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *BidCACertificateMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[bidcacertificate.FieldUpdatedBy]
+	return ok
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *BidCACertificateMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	delete(m.clearedFields, bidcacertificate.FieldUpdatedBy)
+}
+
+// AddAccountRelationIDs adds the "account_relations" edge to the BidAccountRelation entity by ids.
+func (m *BidCACertificateMutation) AddAccountRelationIDs(ids ...int) {
+	if m.account_relations == nil {
+		m.account_relations = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.account_relations[ids[i]] = struct{}{}
+	}
+}
+
+// ClearAccountRelations clears the "account_relations" edge to the BidAccountRelation entity.
+func (m *BidCACertificateMutation) ClearAccountRelations() {
+	m.clearedaccount_relations = true
+}
+
+// AccountRelationsCleared reports if the "account_relations" edge to the BidAccountRelation entity was cleared.
+func (m *BidCACertificateMutation) AccountRelationsCleared() bool {
+	return m.clearedaccount_relations
+}
+
+// RemoveAccountRelationIDs removes the "account_relations" edge to the BidAccountRelation entity by IDs.
+func (m *BidCACertificateMutation) RemoveAccountRelationIDs(ids ...int) {
+	if m.removedaccount_relations == nil {
+		m.removedaccount_relations = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.account_relations, ids[i])
+		m.removedaccount_relations[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedAccountRelations returns the removed IDs of the "account_relations" edge to the BidAccountRelation entity.
+func (m *BidCACertificateMutation) RemovedAccountRelationsIDs() (ids []int) {
+	for id := range m.removedaccount_relations {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// AccountRelationsIDs returns the "account_relations" edge IDs in the mutation.
+func (m *BidCACertificateMutation) AccountRelationsIDs() (ids []int) {
+	for id := range m.account_relations {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetAccountRelations resets all changes to the "account_relations" edge.
+func (m *BidCACertificateMutation) ResetAccountRelations() {
+	m.account_relations = nil
+	m.clearedaccount_relations = false
+	m.removedaccount_relations = nil
+}
+
+// Where appends a list predicates to the BidCACertificateMutation builder.
+func (m *BidCACertificateMutation) Where(ps ...predicate.BidCACertificate) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the BidCACertificateMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *BidCACertificateMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.BidCACertificate, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *BidCACertificateMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *BidCACertificateMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (BidCACertificate).
+func (m *BidCACertificateMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *BidCACertificateMutation) Fields() []string {
+	fields := make([]string, 0, 11)
+	if m.code != nil {
+		fields = append(fields, bidcacertificate.FieldCode)
+	}
+	if m.name != nil {
+		fields = append(fields, bidcacertificate.FieldName)
+	}
+	if m.expiry_time != nil {
+		fields = append(fields, bidcacertificate.FieldExpiryTime)
+	}
+	if m.password != nil {
+		fields = append(fields, bidcacertificate.FieldPassword)
+	}
+	if m.remark != nil {
+		fields = append(fields, bidcacertificate.FieldRemark)
+	}
+	if m.primary != nil {
+		fields = append(fields, bidcacertificate.FieldPrimary)
+	}
+	if m.last_renewal_at != nil {
+		fields = append(fields, bidcacertificate.FieldLastRenewalAt)
+	}
+	if m.created_at != nil {
+		fields = append(fields, bidcacertificate.FieldCreatedAt)
+	}
+	if m.created_by != nil {
+		fields = append(fields, bidcacertificate.FieldCreatedBy)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, bidcacertificate.FieldUpdatedAt)
+	}
+	if m.updated_by != nil {
+		fields = append(fields, bidcacertificate.FieldUpdatedBy)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *BidCACertificateMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case bidcacertificate.FieldCode:
+		return m.Code()
+	case bidcacertificate.FieldName:
+		return m.Name()
+	case bidcacertificate.FieldExpiryTime:
+		return m.ExpiryTime()
+	case bidcacertificate.FieldPassword:
+		return m.Password()
+	case bidcacertificate.FieldRemark:
+		return m.Remark()
+	case bidcacertificate.FieldPrimary:
+		return m.Primary()
+	case bidcacertificate.FieldLastRenewalAt:
+		return m.LastRenewalAt()
+	case bidcacertificate.FieldCreatedAt:
+		return m.CreatedAt()
+	case bidcacertificate.FieldCreatedBy:
+		return m.CreatedBy()
+	case bidcacertificate.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case bidcacertificate.FieldUpdatedBy:
+		return m.UpdatedBy()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *BidCACertificateMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case bidcacertificate.FieldCode:
+		return m.OldCode(ctx)
+	case bidcacertificate.FieldName:
+		return m.OldName(ctx)
+	case bidcacertificate.FieldExpiryTime:
+		return m.OldExpiryTime(ctx)
+	case bidcacertificate.FieldPassword:
+		return m.OldPassword(ctx)
+	case bidcacertificate.FieldRemark:
+		return m.OldRemark(ctx)
+	case bidcacertificate.FieldPrimary:
+		return m.OldPrimary(ctx)
+	case bidcacertificate.FieldLastRenewalAt:
+		return m.OldLastRenewalAt(ctx)
+	case bidcacertificate.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case bidcacertificate.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case bidcacertificate.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case bidcacertificate.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
+	}
+	return nil, fmt.Errorf("unknown BidCACertificate field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *BidCACertificateMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case bidcacertificate.FieldCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCode(v)
+		return nil
+	case bidcacertificate.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case bidcacertificate.FieldExpiryTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetExpiryTime(v)
+		return nil
+	case bidcacertificate.FieldPassword:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPassword(v)
+		return nil
+	case bidcacertificate.FieldRemark:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
+		return nil
+	case bidcacertificate.FieldPrimary:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPrimary(v)
+		return nil
+	case bidcacertificate.FieldLastRenewalAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLastRenewalAt(v)
+		return nil
+	case bidcacertificate.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case bidcacertificate.FieldCreatedBy:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedBy(v)
+		return nil
+	case bidcacertificate.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case bidcacertificate.FieldUpdatedBy:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedBy(v)
+		return nil
+	}
+	return fmt.Errorf("unknown BidCACertificate field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *BidCACertificateMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *BidCACertificateMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *BidCACertificateMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown BidCACertificate numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *BidCACertificateMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(bidcacertificate.FieldPassword) {
+		fields = append(fields, bidcacertificate.FieldPassword)
+	}
+	if m.FieldCleared(bidcacertificate.FieldRemark) {
+		fields = append(fields, bidcacertificate.FieldRemark)
+	}
+	if m.FieldCleared(bidcacertificate.FieldLastRenewalAt) {
+		fields = append(fields, bidcacertificate.FieldLastRenewalAt)
+	}
+	if m.FieldCleared(bidcacertificate.FieldCreatedBy) {
+		fields = append(fields, bidcacertificate.FieldCreatedBy)
+	}
+	if m.FieldCleared(bidcacertificate.FieldUpdatedBy) {
+		fields = append(fields, bidcacertificate.FieldUpdatedBy)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *BidCACertificateMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *BidCACertificateMutation) ClearField(name string) error {
+	switch name {
+	case bidcacertificate.FieldPassword:
+		m.ClearPassword()
+		return nil
+	case bidcacertificate.FieldRemark:
+		m.ClearRemark()
+		return nil
+	case bidcacertificate.FieldLastRenewalAt:
+		m.ClearLastRenewalAt()
+		return nil
+	case bidcacertificate.FieldCreatedBy:
+		m.ClearCreatedBy()
+		return nil
+	case bidcacertificate.FieldUpdatedBy:
+		m.ClearUpdatedBy()
+		return nil
+	}
+	return fmt.Errorf("unknown BidCACertificate nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *BidCACertificateMutation) ResetField(name string) error {
+	switch name {
+	case bidcacertificate.FieldCode:
+		m.ResetCode()
+		return nil
+	case bidcacertificate.FieldName:
+		m.ResetName()
+		return nil
+	case bidcacertificate.FieldExpiryTime:
+		m.ResetExpiryTime()
+		return nil
+	case bidcacertificate.FieldPassword:
+		m.ResetPassword()
+		return nil
+	case bidcacertificate.FieldRemark:
+		m.ResetRemark()
+		return nil
+	case bidcacertificate.FieldPrimary:
+		m.ResetPrimary()
+		return nil
+	case bidcacertificate.FieldLastRenewalAt:
+		m.ResetLastRenewalAt()
+		return nil
+	case bidcacertificate.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case bidcacertificate.FieldCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case bidcacertificate.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case bidcacertificate.FieldUpdatedBy:
+		m.ResetUpdatedBy()
+		return nil
+	}
+	return fmt.Errorf("unknown BidCACertificate field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *BidCACertificateMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.account_relations != nil {
+		edges = append(edges, bidcacertificate.EdgeAccountRelations)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *BidCACertificateMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case bidcacertificate.EdgeAccountRelations:
+		ids := make([]ent.Value, 0, len(m.account_relations))
+		for id := range m.account_relations {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *BidCACertificateMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.removedaccount_relations != nil {
+		edges = append(edges, bidcacertificate.EdgeAccountRelations)
+	}
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *BidCACertificateMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case bidcacertificate.EdgeAccountRelations:
+		ids := make([]ent.Value, 0, len(m.removedaccount_relations))
+		for id := range m.removedaccount_relations {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *BidCACertificateMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.clearedaccount_relations {
+		edges = append(edges, bidcacertificate.EdgeAccountRelations)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *BidCACertificateMutation) EdgeCleared(name string) bool {
+	switch name {
+	case bidcacertificate.EdgeAccountRelations:
+		return m.clearedaccount_relations
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *BidCACertificateMutation) ClearEdge(name string) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown BidCACertificate unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *BidCACertificateMutation) ResetEdge(name string) error {
+	switch name {
+	case bidcacertificate.EdgeAccountRelations:
+		m.ResetAccountRelations()
+		return nil
+	}
+	return fmt.Errorf("unknown BidCACertificate edge %s", name)
 }
 
 // BidExpenseMutation represents an operation that mutates the BidExpense nodes in the graph.
@@ -5573,6 +7267,1369 @@ func (m *BidInfoMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown BidInfo edge %s", name)
 }
 
+// BidMemberAccountMutation represents an operation that mutates the BidMemberAccount nodes in the graph.
+type BidMemberAccountMutation struct {
+	config
+	op                  Op
+	typ                 string
+	id                  *string
+	owner_code          *string
+	owner_name          *string
+	username            *string
+	password            *string
+	register_person     *string
+	register_mobile     *string
+	primary_ca_id       *string
+	account_status      *bidmemberaccount.AccountStatus
+	abandon_reason      *string
+	remark              *string
+	created_at          *time.Time
+	created_by          *string
+	updated_at          *time.Time
+	updated_by          *string
+	clearedFields       map[string]struct{}
+	website             *string
+	clearedwebsite      bool
+	ca_relations        map[int]struct{}
+	removedca_relations map[int]struct{}
+	clearedca_relations bool
+	done                bool
+	oldValue            func(context.Context) (*BidMemberAccount, error)
+	predicates          []predicate.BidMemberAccount
+}
+
+var _ ent.Mutation = (*BidMemberAccountMutation)(nil)
+
+// bidmemberaccountOption allows management of the mutation configuration using functional options.
+type bidmemberaccountOption func(*BidMemberAccountMutation)
+
+// newBidMemberAccountMutation creates new mutation for the BidMemberAccount entity.
+func newBidMemberAccountMutation(c config, op Op, opts ...bidmemberaccountOption) *BidMemberAccountMutation {
+	m := &BidMemberAccountMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeBidMemberAccount,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withBidMemberAccountID sets the ID field of the mutation.
+func withBidMemberAccountID(id string) bidmemberaccountOption {
+	return func(m *BidMemberAccountMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *BidMemberAccount
+		)
+		m.oldValue = func(ctx context.Context) (*BidMemberAccount, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().BidMemberAccount.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withBidMemberAccount sets the old BidMemberAccount of the mutation.
+func withBidMemberAccount(node *BidMemberAccount) bidmemberaccountOption {
+	return func(m *BidMemberAccountMutation) {
+		m.oldValue = func(context.Context) (*BidMemberAccount, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m BidMemberAccountMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m BidMemberAccountMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of BidMemberAccount entities.
+func (m *BidMemberAccountMutation) SetID(id string) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *BidMemberAccountMutation) ID() (id string, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *BidMemberAccountMutation) IDs(ctx context.Context) ([]string, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []string{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().BidMemberAccount.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetWebsiteID sets the "website_id" field.
+func (m *BidMemberAccountMutation) SetWebsiteID(s string) {
+	m.website = &s
+}
+
+// WebsiteID returns the value of the "website_id" field in the mutation.
+func (m *BidMemberAccountMutation) WebsiteID() (r string, exists bool) {
+	v := m.website
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldWebsiteID returns the old "website_id" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldWebsiteID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldWebsiteID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldWebsiteID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldWebsiteID: %w", err)
+	}
+	return oldValue.WebsiteID, nil
+}
+
+// ResetWebsiteID resets all changes to the "website_id" field.
+func (m *BidMemberAccountMutation) ResetWebsiteID() {
+	m.website = nil
+}
+
+// SetOwnerCode sets the "owner_code" field.
+func (m *BidMemberAccountMutation) SetOwnerCode(s string) {
+	m.owner_code = &s
+}
+
+// OwnerCode returns the value of the "owner_code" field in the mutation.
+func (m *BidMemberAccountMutation) OwnerCode() (r string, exists bool) {
+	v := m.owner_code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOwnerCode returns the old "owner_code" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldOwnerCode(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOwnerCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOwnerCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOwnerCode: %w", err)
+	}
+	return oldValue.OwnerCode, nil
+}
+
+// ResetOwnerCode resets all changes to the "owner_code" field.
+func (m *BidMemberAccountMutation) ResetOwnerCode() {
+	m.owner_code = nil
+}
+
+// SetOwnerName sets the "owner_name" field.
+func (m *BidMemberAccountMutation) SetOwnerName(s string) {
+	m.owner_name = &s
+}
+
+// OwnerName returns the value of the "owner_name" field in the mutation.
+func (m *BidMemberAccountMutation) OwnerName() (r string, exists bool) {
+	v := m.owner_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOwnerName returns the old "owner_name" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldOwnerName(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOwnerName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOwnerName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOwnerName: %w", err)
+	}
+	return oldValue.OwnerName, nil
+}
+
+// ResetOwnerName resets all changes to the "owner_name" field.
+func (m *BidMemberAccountMutation) ResetOwnerName() {
+	m.owner_name = nil
+}
+
+// SetUsername sets the "username" field.
+func (m *BidMemberAccountMutation) SetUsername(s string) {
+	m.username = &s
+}
+
+// Username returns the value of the "username" field in the mutation.
+func (m *BidMemberAccountMutation) Username() (r string, exists bool) {
+	v := m.username
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUsername returns the old "username" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldUsername(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUsername is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUsername requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUsername: %w", err)
+	}
+	return oldValue.Username, nil
+}
+
+// ResetUsername resets all changes to the "username" field.
+func (m *BidMemberAccountMutation) ResetUsername() {
+	m.username = nil
+}
+
+// SetPassword sets the "password" field.
+func (m *BidMemberAccountMutation) SetPassword(s string) {
+	m.password = &s
+}
+
+// Password returns the value of the "password" field in the mutation.
+func (m *BidMemberAccountMutation) Password() (r string, exists bool) {
+	v := m.password
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPassword returns the old "password" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldPassword(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPassword is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPassword requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPassword: %w", err)
+	}
+	return oldValue.Password, nil
+}
+
+// ClearPassword clears the value of the "password" field.
+func (m *BidMemberAccountMutation) ClearPassword() {
+	m.password = nil
+	m.clearedFields[bidmemberaccount.FieldPassword] = struct{}{}
+}
+
+// PasswordCleared returns if the "password" field was cleared in this mutation.
+func (m *BidMemberAccountMutation) PasswordCleared() bool {
+	_, ok := m.clearedFields[bidmemberaccount.FieldPassword]
+	return ok
+}
+
+// ResetPassword resets all changes to the "password" field.
+func (m *BidMemberAccountMutation) ResetPassword() {
+	m.password = nil
+	delete(m.clearedFields, bidmemberaccount.FieldPassword)
+}
+
+// SetRegisterPerson sets the "register_person" field.
+func (m *BidMemberAccountMutation) SetRegisterPerson(s string) {
+	m.register_person = &s
+}
+
+// RegisterPerson returns the value of the "register_person" field in the mutation.
+func (m *BidMemberAccountMutation) RegisterPerson() (r string, exists bool) {
+	v := m.register_person
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRegisterPerson returns the old "register_person" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldRegisterPerson(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRegisterPerson is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRegisterPerson requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRegisterPerson: %w", err)
+	}
+	return oldValue.RegisterPerson, nil
+}
+
+// ClearRegisterPerson clears the value of the "register_person" field.
+func (m *BidMemberAccountMutation) ClearRegisterPerson() {
+	m.register_person = nil
+	m.clearedFields[bidmemberaccount.FieldRegisterPerson] = struct{}{}
+}
+
+// RegisterPersonCleared returns if the "register_person" field was cleared in this mutation.
+func (m *BidMemberAccountMutation) RegisterPersonCleared() bool {
+	_, ok := m.clearedFields[bidmemberaccount.FieldRegisterPerson]
+	return ok
+}
+
+// ResetRegisterPerson resets all changes to the "register_person" field.
+func (m *BidMemberAccountMutation) ResetRegisterPerson() {
+	m.register_person = nil
+	delete(m.clearedFields, bidmemberaccount.FieldRegisterPerson)
+}
+
+// SetRegisterMobile sets the "register_mobile" field.
+func (m *BidMemberAccountMutation) SetRegisterMobile(s string) {
+	m.register_mobile = &s
+}
+
+// RegisterMobile returns the value of the "register_mobile" field in the mutation.
+func (m *BidMemberAccountMutation) RegisterMobile() (r string, exists bool) {
+	v := m.register_mobile
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRegisterMobile returns the old "register_mobile" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldRegisterMobile(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRegisterMobile is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRegisterMobile requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRegisterMobile: %w", err)
+	}
+	return oldValue.RegisterMobile, nil
+}
+
+// ClearRegisterMobile clears the value of the "register_mobile" field.
+func (m *BidMemberAccountMutation) ClearRegisterMobile() {
+	m.register_mobile = nil
+	m.clearedFields[bidmemberaccount.FieldRegisterMobile] = struct{}{}
+}
+
+// RegisterMobileCleared returns if the "register_mobile" field was cleared in this mutation.
+func (m *BidMemberAccountMutation) RegisterMobileCleared() bool {
+	_, ok := m.clearedFields[bidmemberaccount.FieldRegisterMobile]
+	return ok
+}
+
+// ResetRegisterMobile resets all changes to the "register_mobile" field.
+func (m *BidMemberAccountMutation) ResetRegisterMobile() {
+	m.register_mobile = nil
+	delete(m.clearedFields, bidmemberaccount.FieldRegisterMobile)
+}
+
+// SetPrimaryCaID sets the "primary_ca_id" field.
+func (m *BidMemberAccountMutation) SetPrimaryCaID(s string) {
+	m.primary_ca_id = &s
+}
+
+// PrimaryCaID returns the value of the "primary_ca_id" field in the mutation.
+func (m *BidMemberAccountMutation) PrimaryCaID() (r string, exists bool) {
+	v := m.primary_ca_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPrimaryCaID returns the old "primary_ca_id" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldPrimaryCaID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPrimaryCaID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPrimaryCaID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPrimaryCaID: %w", err)
+	}
+	return oldValue.PrimaryCaID, nil
+}
+
+// ResetPrimaryCaID resets all changes to the "primary_ca_id" field.
+func (m *BidMemberAccountMutation) ResetPrimaryCaID() {
+	m.primary_ca_id = nil
+}
+
+// SetAccountStatus sets the "account_status" field.
+func (m *BidMemberAccountMutation) SetAccountStatus(bs bidmemberaccount.AccountStatus) {
+	m.account_status = &bs
+}
+
+// AccountStatus returns the value of the "account_status" field in the mutation.
+func (m *BidMemberAccountMutation) AccountStatus() (r bidmemberaccount.AccountStatus, exists bool) {
+	v := m.account_status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAccountStatus returns the old "account_status" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldAccountStatus(ctx context.Context) (v bidmemberaccount.AccountStatus, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAccountStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAccountStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAccountStatus: %w", err)
+	}
+	return oldValue.AccountStatus, nil
+}
+
+// ResetAccountStatus resets all changes to the "account_status" field.
+func (m *BidMemberAccountMutation) ResetAccountStatus() {
+	m.account_status = nil
+}
+
+// SetAbandonReason sets the "abandon_reason" field.
+func (m *BidMemberAccountMutation) SetAbandonReason(s string) {
+	m.abandon_reason = &s
+}
+
+// AbandonReason returns the value of the "abandon_reason" field in the mutation.
+func (m *BidMemberAccountMutation) AbandonReason() (r string, exists bool) {
+	v := m.abandon_reason
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAbandonReason returns the old "abandon_reason" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldAbandonReason(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAbandonReason is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAbandonReason requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAbandonReason: %w", err)
+	}
+	return oldValue.AbandonReason, nil
+}
+
+// ClearAbandonReason clears the value of the "abandon_reason" field.
+func (m *BidMemberAccountMutation) ClearAbandonReason() {
+	m.abandon_reason = nil
+	m.clearedFields[bidmemberaccount.FieldAbandonReason] = struct{}{}
+}
+
+// AbandonReasonCleared returns if the "abandon_reason" field was cleared in this mutation.
+func (m *BidMemberAccountMutation) AbandonReasonCleared() bool {
+	_, ok := m.clearedFields[bidmemberaccount.FieldAbandonReason]
+	return ok
+}
+
+// ResetAbandonReason resets all changes to the "abandon_reason" field.
+func (m *BidMemberAccountMutation) ResetAbandonReason() {
+	m.abandon_reason = nil
+	delete(m.clearedFields, bidmemberaccount.FieldAbandonReason)
+}
+
+// SetRemark sets the "remark" field.
+func (m *BidMemberAccountMutation) SetRemark(s string) {
+	m.remark = &s
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *BidMemberAccountMutation) Remark() (r string, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldRemark(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *BidMemberAccountMutation) ClearRemark() {
+	m.remark = nil
+	m.clearedFields[bidmemberaccount.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *BidMemberAccountMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[bidmemberaccount.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *BidMemberAccountMutation) ResetRemark() {
+	m.remark = nil
+	delete(m.clearedFields, bidmemberaccount.FieldRemark)
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *BidMemberAccountMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *BidMemberAccountMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *BidMemberAccountMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (m *BidMemberAccountMutation) SetCreatedBy(s string) {
+	m.created_by = &s
+}
+
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *BidMemberAccountMutation) CreatedBy() (r string, exists bool) {
+	v := m.created_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedBy returns the old "created_by" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldCreatedBy(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
+	}
+	return oldValue.CreatedBy, nil
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *BidMemberAccountMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.clearedFields[bidmemberaccount.FieldCreatedBy] = struct{}{}
+}
+
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *BidMemberAccountMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[bidmemberaccount.FieldCreatedBy]
+	return ok
+}
+
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *BidMemberAccountMutation) ResetCreatedBy() {
+	m.created_by = nil
+	delete(m.clearedFields, bidmemberaccount.FieldCreatedBy)
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *BidMemberAccountMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *BidMemberAccountMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *BidMemberAccountMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (m *BidMemberAccountMutation) SetUpdatedBy(s string) {
+	m.updated_by = &s
+}
+
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *BidMemberAccountMutation) UpdatedBy() (r string, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedBy returns the old "updated_by" field's value of the BidMemberAccount entity.
+// If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidMemberAccountMutation) OldUpdatedBy(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
+	}
+	return oldValue.UpdatedBy, nil
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *BidMemberAccountMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.clearedFields[bidmemberaccount.FieldUpdatedBy] = struct{}{}
+}
+
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *BidMemberAccountMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[bidmemberaccount.FieldUpdatedBy]
+	return ok
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *BidMemberAccountMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	delete(m.clearedFields, bidmemberaccount.FieldUpdatedBy)
+}
+
+// ClearWebsite clears the "website" edge to the BidWebSite entity.
+func (m *BidMemberAccountMutation) ClearWebsite() {
+	m.clearedwebsite = true
+	m.clearedFields[bidmemberaccount.FieldWebsiteID] = struct{}{}
+}
+
+// WebsiteCleared reports if the "website" edge to the BidWebSite entity was cleared.
+func (m *BidMemberAccountMutation) WebsiteCleared() bool {
+	return m.clearedwebsite
+}
+
+// WebsiteIDs returns the "website" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// WebsiteID instead. It exists only for internal usage by the builders.
+func (m *BidMemberAccountMutation) WebsiteIDs() (ids []string) {
+	if id := m.website; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetWebsite resets all changes to the "website" edge.
+func (m *BidMemberAccountMutation) ResetWebsite() {
+	m.website = nil
+	m.clearedwebsite = false
+}
+
+// AddCaRelationIDs adds the "ca_relations" edge to the BidAccountRelation entity by ids.
+func (m *BidMemberAccountMutation) AddCaRelationIDs(ids ...int) {
+	if m.ca_relations == nil {
+		m.ca_relations = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.ca_relations[ids[i]] = struct{}{}
+	}
+}
+
+// ClearCaRelations clears the "ca_relations" edge to the BidAccountRelation entity.
+func (m *BidMemberAccountMutation) ClearCaRelations() {
+	m.clearedca_relations = true
+}
+
+// CaRelationsCleared reports if the "ca_relations" edge to the BidAccountRelation entity was cleared.
+func (m *BidMemberAccountMutation) CaRelationsCleared() bool {
+	return m.clearedca_relations
+}
+
+// RemoveCaRelationIDs removes the "ca_relations" edge to the BidAccountRelation entity by IDs.
+func (m *BidMemberAccountMutation) RemoveCaRelationIDs(ids ...int) {
+	if m.removedca_relations == nil {
+		m.removedca_relations = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.ca_relations, ids[i])
+		m.removedca_relations[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedCaRelations returns the removed IDs of the "ca_relations" edge to the BidAccountRelation entity.
+func (m *BidMemberAccountMutation) RemovedCaRelationsIDs() (ids []int) {
+	for id := range m.removedca_relations {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// CaRelationsIDs returns the "ca_relations" edge IDs in the mutation.
+func (m *BidMemberAccountMutation) CaRelationsIDs() (ids []int) {
+	for id := range m.ca_relations {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetCaRelations resets all changes to the "ca_relations" edge.
+func (m *BidMemberAccountMutation) ResetCaRelations() {
+	m.ca_relations = nil
+	m.clearedca_relations = false
+	m.removedca_relations = nil
+}
+
+// Where appends a list predicates to the BidMemberAccountMutation builder.
+func (m *BidMemberAccountMutation) Where(ps ...predicate.BidMemberAccount) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the BidMemberAccountMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *BidMemberAccountMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.BidMemberAccount, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *BidMemberAccountMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *BidMemberAccountMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (BidMemberAccount).
+func (m *BidMemberAccountMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *BidMemberAccountMutation) Fields() []string {
+	fields := make([]string, 0, 15)
+	if m.website != nil {
+		fields = append(fields, bidmemberaccount.FieldWebsiteID)
+	}
+	if m.owner_code != nil {
+		fields = append(fields, bidmemberaccount.FieldOwnerCode)
+	}
+	if m.owner_name != nil {
+		fields = append(fields, bidmemberaccount.FieldOwnerName)
+	}
+	if m.username != nil {
+		fields = append(fields, bidmemberaccount.FieldUsername)
+	}
+	if m.password != nil {
+		fields = append(fields, bidmemberaccount.FieldPassword)
+	}
+	if m.register_person != nil {
+		fields = append(fields, bidmemberaccount.FieldRegisterPerson)
+	}
+	if m.register_mobile != nil {
+		fields = append(fields, bidmemberaccount.FieldRegisterMobile)
+	}
+	if m.primary_ca_id != nil {
+		fields = append(fields, bidmemberaccount.FieldPrimaryCaID)
+	}
+	if m.account_status != nil {
+		fields = append(fields, bidmemberaccount.FieldAccountStatus)
+	}
+	if m.abandon_reason != nil {
+		fields = append(fields, bidmemberaccount.FieldAbandonReason)
+	}
+	if m.remark != nil {
+		fields = append(fields, bidmemberaccount.FieldRemark)
+	}
+	if m.created_at != nil {
+		fields = append(fields, bidmemberaccount.FieldCreatedAt)
+	}
+	if m.created_by != nil {
+		fields = append(fields, bidmemberaccount.FieldCreatedBy)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, bidmemberaccount.FieldUpdatedAt)
+	}
+	if m.updated_by != nil {
+		fields = append(fields, bidmemberaccount.FieldUpdatedBy)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *BidMemberAccountMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case bidmemberaccount.FieldWebsiteID:
+		return m.WebsiteID()
+	case bidmemberaccount.FieldOwnerCode:
+		return m.OwnerCode()
+	case bidmemberaccount.FieldOwnerName:
+		return m.OwnerName()
+	case bidmemberaccount.FieldUsername:
+		return m.Username()
+	case bidmemberaccount.FieldPassword:
+		return m.Password()
+	case bidmemberaccount.FieldRegisterPerson:
+		return m.RegisterPerson()
+	case bidmemberaccount.FieldRegisterMobile:
+		return m.RegisterMobile()
+	case bidmemberaccount.FieldPrimaryCaID:
+		return m.PrimaryCaID()
+	case bidmemberaccount.FieldAccountStatus:
+		return m.AccountStatus()
+	case bidmemberaccount.FieldAbandonReason:
+		return m.AbandonReason()
+	case bidmemberaccount.FieldRemark:
+		return m.Remark()
+	case bidmemberaccount.FieldCreatedAt:
+		return m.CreatedAt()
+	case bidmemberaccount.FieldCreatedBy:
+		return m.CreatedBy()
+	case bidmemberaccount.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case bidmemberaccount.FieldUpdatedBy:
+		return m.UpdatedBy()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *BidMemberAccountMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case bidmemberaccount.FieldWebsiteID:
+		return m.OldWebsiteID(ctx)
+	case bidmemberaccount.FieldOwnerCode:
+		return m.OldOwnerCode(ctx)
+	case bidmemberaccount.FieldOwnerName:
+		return m.OldOwnerName(ctx)
+	case bidmemberaccount.FieldUsername:
+		return m.OldUsername(ctx)
+	case bidmemberaccount.FieldPassword:
+		return m.OldPassword(ctx)
+	case bidmemberaccount.FieldRegisterPerson:
+		return m.OldRegisterPerson(ctx)
+	case bidmemberaccount.FieldRegisterMobile:
+		return m.OldRegisterMobile(ctx)
+	case bidmemberaccount.FieldPrimaryCaID:
+		return m.OldPrimaryCaID(ctx)
+	case bidmemberaccount.FieldAccountStatus:
+		return m.OldAccountStatus(ctx)
+	case bidmemberaccount.FieldAbandonReason:
+		return m.OldAbandonReason(ctx)
+	case bidmemberaccount.FieldRemark:
+		return m.OldRemark(ctx)
+	case bidmemberaccount.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case bidmemberaccount.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case bidmemberaccount.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case bidmemberaccount.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
+	}
+	return nil, fmt.Errorf("unknown BidMemberAccount field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *BidMemberAccountMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case bidmemberaccount.FieldWebsiteID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetWebsiteID(v)
+		return nil
+	case bidmemberaccount.FieldOwnerCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOwnerCode(v)
+		return nil
+	case bidmemberaccount.FieldOwnerName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOwnerName(v)
+		return nil
+	case bidmemberaccount.FieldUsername:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUsername(v)
+		return nil
+	case bidmemberaccount.FieldPassword:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPassword(v)
+		return nil
+	case bidmemberaccount.FieldRegisterPerson:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRegisterPerson(v)
+		return nil
+	case bidmemberaccount.FieldRegisterMobile:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRegisterMobile(v)
+		return nil
+	case bidmemberaccount.FieldPrimaryCaID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPrimaryCaID(v)
+		return nil
+	case bidmemberaccount.FieldAccountStatus:
+		v, ok := value.(bidmemberaccount.AccountStatus)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAccountStatus(v)
+		return nil
+	case bidmemberaccount.FieldAbandonReason:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAbandonReason(v)
+		return nil
+	case bidmemberaccount.FieldRemark:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
+		return nil
+	case bidmemberaccount.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case bidmemberaccount.FieldCreatedBy:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedBy(v)
+		return nil
+	case bidmemberaccount.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case bidmemberaccount.FieldUpdatedBy:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedBy(v)
+		return nil
+	}
+	return fmt.Errorf("unknown BidMemberAccount field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *BidMemberAccountMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *BidMemberAccountMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *BidMemberAccountMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown BidMemberAccount numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *BidMemberAccountMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(bidmemberaccount.FieldPassword) {
+		fields = append(fields, bidmemberaccount.FieldPassword)
+	}
+	if m.FieldCleared(bidmemberaccount.FieldRegisterPerson) {
+		fields = append(fields, bidmemberaccount.FieldRegisterPerson)
+	}
+	if m.FieldCleared(bidmemberaccount.FieldRegisterMobile) {
+		fields = append(fields, bidmemberaccount.FieldRegisterMobile)
+	}
+	if m.FieldCleared(bidmemberaccount.FieldAbandonReason) {
+		fields = append(fields, bidmemberaccount.FieldAbandonReason)
+	}
+	if m.FieldCleared(bidmemberaccount.FieldRemark) {
+		fields = append(fields, bidmemberaccount.FieldRemark)
+	}
+	if m.FieldCleared(bidmemberaccount.FieldCreatedBy) {
+		fields = append(fields, bidmemberaccount.FieldCreatedBy)
+	}
+	if m.FieldCleared(bidmemberaccount.FieldUpdatedBy) {
+		fields = append(fields, bidmemberaccount.FieldUpdatedBy)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *BidMemberAccountMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *BidMemberAccountMutation) ClearField(name string) error {
+	switch name {
+	case bidmemberaccount.FieldPassword:
+		m.ClearPassword()
+		return nil
+	case bidmemberaccount.FieldRegisterPerson:
+		m.ClearRegisterPerson()
+		return nil
+	case bidmemberaccount.FieldRegisterMobile:
+		m.ClearRegisterMobile()
+		return nil
+	case bidmemberaccount.FieldAbandonReason:
+		m.ClearAbandonReason()
+		return nil
+	case bidmemberaccount.FieldRemark:
+		m.ClearRemark()
+		return nil
+	case bidmemberaccount.FieldCreatedBy:
+		m.ClearCreatedBy()
+		return nil
+	case bidmemberaccount.FieldUpdatedBy:
+		m.ClearUpdatedBy()
+		return nil
+	}
+	return fmt.Errorf("unknown BidMemberAccount nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *BidMemberAccountMutation) ResetField(name string) error {
+	switch name {
+	case bidmemberaccount.FieldWebsiteID:
+		m.ResetWebsiteID()
+		return nil
+	case bidmemberaccount.FieldOwnerCode:
+		m.ResetOwnerCode()
+		return nil
+	case bidmemberaccount.FieldOwnerName:
+		m.ResetOwnerName()
+		return nil
+	case bidmemberaccount.FieldUsername:
+		m.ResetUsername()
+		return nil
+	case bidmemberaccount.FieldPassword:
+		m.ResetPassword()
+		return nil
+	case bidmemberaccount.FieldRegisterPerson:
+		m.ResetRegisterPerson()
+		return nil
+	case bidmemberaccount.FieldRegisterMobile:
+		m.ResetRegisterMobile()
+		return nil
+	case bidmemberaccount.FieldPrimaryCaID:
+		m.ResetPrimaryCaID()
+		return nil
+	case bidmemberaccount.FieldAccountStatus:
+		m.ResetAccountStatus()
+		return nil
+	case bidmemberaccount.FieldAbandonReason:
+		m.ResetAbandonReason()
+		return nil
+	case bidmemberaccount.FieldRemark:
+		m.ResetRemark()
+		return nil
+	case bidmemberaccount.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case bidmemberaccount.FieldCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case bidmemberaccount.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case bidmemberaccount.FieldUpdatedBy:
+		m.ResetUpdatedBy()
+		return nil
+	}
+	return fmt.Errorf("unknown BidMemberAccount field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *BidMemberAccountMutation) AddedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.website != nil {
+		edges = append(edges, bidmemberaccount.EdgeWebsite)
+	}
+	if m.ca_relations != nil {
+		edges = append(edges, bidmemberaccount.EdgeCaRelations)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *BidMemberAccountMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case bidmemberaccount.EdgeWebsite:
+		if id := m.website; id != nil {
+			return []ent.Value{*id}
+		}
+	case bidmemberaccount.EdgeCaRelations:
+		ids := make([]ent.Value, 0, len(m.ca_relations))
+		for id := range m.ca_relations {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *BidMemberAccountMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.removedca_relations != nil {
+		edges = append(edges, bidmemberaccount.EdgeCaRelations)
+	}
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *BidMemberAccountMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case bidmemberaccount.EdgeCaRelations:
+		ids := make([]ent.Value, 0, len(m.removedca_relations))
+		for id := range m.removedca_relations {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *BidMemberAccountMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 2)
+	if m.clearedwebsite {
+		edges = append(edges, bidmemberaccount.EdgeWebsite)
+	}
+	if m.clearedca_relations {
+		edges = append(edges, bidmemberaccount.EdgeCaRelations)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *BidMemberAccountMutation) EdgeCleared(name string) bool {
+	switch name {
+	case bidmemberaccount.EdgeWebsite:
+		return m.clearedwebsite
+	case bidmemberaccount.EdgeCaRelations:
+		return m.clearedca_relations
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *BidMemberAccountMutation) ClearEdge(name string) error {
+	switch name {
+	case bidmemberaccount.EdgeWebsite:
+		m.ClearWebsite()
+		return nil
+	}
+	return fmt.Errorf("unknown BidMemberAccount unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *BidMemberAccountMutation) ResetEdge(name string) error {
+	switch name {
+	case bidmemberaccount.EdgeWebsite:
+		m.ResetWebsite()
+		return nil
+	case bidmemberaccount.EdgeCaRelations:
+		m.ResetCaRelations()
+		return nil
+	}
+	return fmt.Errorf("unknown BidMemberAccount edge %s", name)
+}
+
 // BidProjectMutation represents an operation that mutates the BidProject nodes in the graph.
 type BidProjectMutation struct {
 	config
@@ -6895,6 +9952,996 @@ func (m *BidProjectMutation) ResetEdge(name string) error {
 		return nil
 	}
 	return fmt.Errorf("unknown BidProject edge %s", name)
+}
+
+// BidWebSiteMutation represents an operation that mutates the BidWebSite nodes in the graph.
+type BidWebSiteMutation struct {
+	config
+	op                     Op
+	typ                    string
+	id                     *string
+	province               *string
+	city                   *string
+	name                   *string
+	url                    *string
+	active                 *bool
+	remark                 *string
+	created_at             *time.Time
+	created_by             *string
+	updated_at             *time.Time
+	updated_by             *string
+	clearedFields          map[string]struct{}
+	member_accounts        map[string]struct{}
+	removedmember_accounts map[string]struct{}
+	clearedmember_accounts bool
+	done                   bool
+	oldValue               func(context.Context) (*BidWebSite, error)
+	predicates             []predicate.BidWebSite
+}
+
+var _ ent.Mutation = (*BidWebSiteMutation)(nil)
+
+// bidwebsiteOption allows management of the mutation configuration using functional options.
+type bidwebsiteOption func(*BidWebSiteMutation)
+
+// newBidWebSiteMutation creates new mutation for the BidWebSite entity.
+func newBidWebSiteMutation(c config, op Op, opts ...bidwebsiteOption) *BidWebSiteMutation {
+	m := &BidWebSiteMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeBidWebSite,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withBidWebSiteID sets the ID field of the mutation.
+func withBidWebSiteID(id string) bidwebsiteOption {
+	return func(m *BidWebSiteMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *BidWebSite
+		)
+		m.oldValue = func(ctx context.Context) (*BidWebSite, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().BidWebSite.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withBidWebSite sets the old BidWebSite of the mutation.
+func withBidWebSite(node *BidWebSite) bidwebsiteOption {
+	return func(m *BidWebSiteMutation) {
+		m.oldValue = func(context.Context) (*BidWebSite, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m BidWebSiteMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m BidWebSiteMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of BidWebSite entities.
+func (m *BidWebSiteMutation) SetID(id string) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *BidWebSiteMutation) ID() (id string, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *BidWebSiteMutation) IDs(ctx context.Context) ([]string, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []string{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().BidWebSite.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetProvince sets the "province" field.
+func (m *BidWebSiteMutation) SetProvince(s string) {
+	m.province = &s
+}
+
+// Province returns the value of the "province" field in the mutation.
+func (m *BidWebSiteMutation) Province() (r string, exists bool) {
+	v := m.province
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldProvince returns the old "province" field's value of the BidWebSite entity.
+// If the BidWebSite object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidWebSiteMutation) OldProvince(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldProvince is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldProvince requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldProvince: %w", err)
+	}
+	return oldValue.Province, nil
+}
+
+// ResetProvince resets all changes to the "province" field.
+func (m *BidWebSiteMutation) ResetProvince() {
+	m.province = nil
+}
+
+// SetCity sets the "city" field.
+func (m *BidWebSiteMutation) SetCity(s string) {
+	m.city = &s
+}
+
+// City returns the value of the "city" field in the mutation.
+func (m *BidWebSiteMutation) City() (r string, exists bool) {
+	v := m.city
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCity returns the old "city" field's value of the BidWebSite entity.
+// If the BidWebSite object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidWebSiteMutation) OldCity(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCity is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCity requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCity: %w", err)
+	}
+	return oldValue.City, nil
+}
+
+// ClearCity clears the value of the "city" field.
+func (m *BidWebSiteMutation) ClearCity() {
+	m.city = nil
+	m.clearedFields[bidwebsite.FieldCity] = struct{}{}
+}
+
+// CityCleared returns if the "city" field was cleared in this mutation.
+func (m *BidWebSiteMutation) CityCleared() bool {
+	_, ok := m.clearedFields[bidwebsite.FieldCity]
+	return ok
+}
+
+// ResetCity resets all changes to the "city" field.
+func (m *BidWebSiteMutation) ResetCity() {
+	m.city = nil
+	delete(m.clearedFields, bidwebsite.FieldCity)
+}
+
+// SetName sets the "name" field.
+func (m *BidWebSiteMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *BidWebSiteMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the BidWebSite entity.
+// If the BidWebSite object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidWebSiteMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *BidWebSiteMutation) ResetName() {
+	m.name = nil
+}
+
+// SetURL sets the "url" field.
+func (m *BidWebSiteMutation) SetURL(s string) {
+	m.url = &s
+}
+
+// URL returns the value of the "url" field in the mutation.
+func (m *BidWebSiteMutation) URL() (r string, exists bool) {
+	v := m.url
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldURL returns the old "url" field's value of the BidWebSite entity.
+// If the BidWebSite object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidWebSiteMutation) OldURL(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldURL is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldURL requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldURL: %w", err)
+	}
+	return oldValue.URL, nil
+}
+
+// ResetURL resets all changes to the "url" field.
+func (m *BidWebSiteMutation) ResetURL() {
+	m.url = nil
+}
+
+// SetActive sets the "active" field.
+func (m *BidWebSiteMutation) SetActive(b bool) {
+	m.active = &b
+}
+
+// Active returns the value of the "active" field in the mutation.
+func (m *BidWebSiteMutation) Active() (r bool, exists bool) {
+	v := m.active
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldActive returns the old "active" field's value of the BidWebSite entity.
+// If the BidWebSite object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidWebSiteMutation) OldActive(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldActive is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldActive requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldActive: %w", err)
+	}
+	return oldValue.Active, nil
+}
+
+// ResetActive resets all changes to the "active" field.
+func (m *BidWebSiteMutation) ResetActive() {
+	m.active = nil
+}
+
+// SetRemark sets the "remark" field.
+func (m *BidWebSiteMutation) SetRemark(s string) {
+	m.remark = &s
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *BidWebSiteMutation) Remark() (r string, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the BidWebSite entity.
+// If the BidWebSite object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidWebSiteMutation) OldRemark(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *BidWebSiteMutation) ClearRemark() {
+	m.remark = nil
+	m.clearedFields[bidwebsite.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *BidWebSiteMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[bidwebsite.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *BidWebSiteMutation) ResetRemark() {
+	m.remark = nil
+	delete(m.clearedFields, bidwebsite.FieldRemark)
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *BidWebSiteMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *BidWebSiteMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the BidWebSite entity.
+// If the BidWebSite object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidWebSiteMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *BidWebSiteMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (m *BidWebSiteMutation) SetCreatedBy(s string) {
+	m.created_by = &s
+}
+
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *BidWebSiteMutation) CreatedBy() (r string, exists bool) {
+	v := m.created_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedBy returns the old "created_by" field's value of the BidWebSite entity.
+// If the BidWebSite object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidWebSiteMutation) OldCreatedBy(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
+	}
+	return oldValue.CreatedBy, nil
+}
+
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *BidWebSiteMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.clearedFields[bidwebsite.FieldCreatedBy] = struct{}{}
+}
+
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *BidWebSiteMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[bidwebsite.FieldCreatedBy]
+	return ok
+}
+
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *BidWebSiteMutation) ResetCreatedBy() {
+	m.created_by = nil
+	delete(m.clearedFields, bidwebsite.FieldCreatedBy)
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *BidWebSiteMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *BidWebSiteMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the BidWebSite entity.
+// If the BidWebSite object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidWebSiteMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *BidWebSiteMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (m *BidWebSiteMutation) SetUpdatedBy(s string) {
+	m.updated_by = &s
+}
+
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *BidWebSiteMutation) UpdatedBy() (r string, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedBy returns the old "updated_by" field's value of the BidWebSite entity.
+// If the BidWebSite object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidWebSiteMutation) OldUpdatedBy(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
+	}
+	return oldValue.UpdatedBy, nil
+}
+
+// ClearUpdatedBy clears the value of the "updated_by" field.
+func (m *BidWebSiteMutation) ClearUpdatedBy() {
+	m.updated_by = nil
+	m.clearedFields[bidwebsite.FieldUpdatedBy] = struct{}{}
+}
+
+// UpdatedByCleared returns if the "updated_by" field was cleared in this mutation.
+func (m *BidWebSiteMutation) UpdatedByCleared() bool {
+	_, ok := m.clearedFields[bidwebsite.FieldUpdatedBy]
+	return ok
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *BidWebSiteMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	delete(m.clearedFields, bidwebsite.FieldUpdatedBy)
+}
+
+// AddMemberAccountIDs adds the "member_accounts" edge to the BidMemberAccount entity by ids.
+func (m *BidWebSiteMutation) AddMemberAccountIDs(ids ...string) {
+	if m.member_accounts == nil {
+		m.member_accounts = make(map[string]struct{})
+	}
+	for i := range ids {
+		m.member_accounts[ids[i]] = struct{}{}
+	}
+}
+
+// ClearMemberAccounts clears the "member_accounts" edge to the BidMemberAccount entity.
+func (m *BidWebSiteMutation) ClearMemberAccounts() {
+	m.clearedmember_accounts = true
+}
+
+// MemberAccountsCleared reports if the "member_accounts" edge to the BidMemberAccount entity was cleared.
+func (m *BidWebSiteMutation) MemberAccountsCleared() bool {
+	return m.clearedmember_accounts
+}
+
+// RemoveMemberAccountIDs removes the "member_accounts" edge to the BidMemberAccount entity by IDs.
+func (m *BidWebSiteMutation) RemoveMemberAccountIDs(ids ...string) {
+	if m.removedmember_accounts == nil {
+		m.removedmember_accounts = make(map[string]struct{})
+	}
+	for i := range ids {
+		delete(m.member_accounts, ids[i])
+		m.removedmember_accounts[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedMemberAccounts returns the removed IDs of the "member_accounts" edge to the BidMemberAccount entity.
+func (m *BidWebSiteMutation) RemovedMemberAccountsIDs() (ids []string) {
+	for id := range m.removedmember_accounts {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// MemberAccountsIDs returns the "member_accounts" edge IDs in the mutation.
+func (m *BidWebSiteMutation) MemberAccountsIDs() (ids []string) {
+	for id := range m.member_accounts {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetMemberAccounts resets all changes to the "member_accounts" edge.
+func (m *BidWebSiteMutation) ResetMemberAccounts() {
+	m.member_accounts = nil
+	m.clearedmember_accounts = false
+	m.removedmember_accounts = nil
+}
+
+// Where appends a list predicates to the BidWebSiteMutation builder.
+func (m *BidWebSiteMutation) Where(ps ...predicate.BidWebSite) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the BidWebSiteMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *BidWebSiteMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.BidWebSite, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *BidWebSiteMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *BidWebSiteMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (BidWebSite).
+func (m *BidWebSiteMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *BidWebSiteMutation) Fields() []string {
+	fields := make([]string, 0, 10)
+	if m.province != nil {
+		fields = append(fields, bidwebsite.FieldProvince)
+	}
+	if m.city != nil {
+		fields = append(fields, bidwebsite.FieldCity)
+	}
+	if m.name != nil {
+		fields = append(fields, bidwebsite.FieldName)
+	}
+	if m.url != nil {
+		fields = append(fields, bidwebsite.FieldURL)
+	}
+	if m.active != nil {
+		fields = append(fields, bidwebsite.FieldActive)
+	}
+	if m.remark != nil {
+		fields = append(fields, bidwebsite.FieldRemark)
+	}
+	if m.created_at != nil {
+		fields = append(fields, bidwebsite.FieldCreatedAt)
+	}
+	if m.created_by != nil {
+		fields = append(fields, bidwebsite.FieldCreatedBy)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, bidwebsite.FieldUpdatedAt)
+	}
+	if m.updated_by != nil {
+		fields = append(fields, bidwebsite.FieldUpdatedBy)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *BidWebSiteMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case bidwebsite.FieldProvince:
+		return m.Province()
+	case bidwebsite.FieldCity:
+		return m.City()
+	case bidwebsite.FieldName:
+		return m.Name()
+	case bidwebsite.FieldURL:
+		return m.URL()
+	case bidwebsite.FieldActive:
+		return m.Active()
+	case bidwebsite.FieldRemark:
+		return m.Remark()
+	case bidwebsite.FieldCreatedAt:
+		return m.CreatedAt()
+	case bidwebsite.FieldCreatedBy:
+		return m.CreatedBy()
+	case bidwebsite.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case bidwebsite.FieldUpdatedBy:
+		return m.UpdatedBy()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *BidWebSiteMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case bidwebsite.FieldProvince:
+		return m.OldProvince(ctx)
+	case bidwebsite.FieldCity:
+		return m.OldCity(ctx)
+	case bidwebsite.FieldName:
+		return m.OldName(ctx)
+	case bidwebsite.FieldURL:
+		return m.OldURL(ctx)
+	case bidwebsite.FieldActive:
+		return m.OldActive(ctx)
+	case bidwebsite.FieldRemark:
+		return m.OldRemark(ctx)
+	case bidwebsite.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case bidwebsite.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case bidwebsite.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case bidwebsite.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
+	}
+	return nil, fmt.Errorf("unknown BidWebSite field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *BidWebSiteMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case bidwebsite.FieldProvince:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetProvince(v)
+		return nil
+	case bidwebsite.FieldCity:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCity(v)
+		return nil
+	case bidwebsite.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
+		return nil
+	case bidwebsite.FieldURL:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetURL(v)
+		return nil
+	case bidwebsite.FieldActive:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetActive(v)
+		return nil
+	case bidwebsite.FieldRemark:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
+		return nil
+	case bidwebsite.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case bidwebsite.FieldCreatedBy:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedBy(v)
+		return nil
+	case bidwebsite.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case bidwebsite.FieldUpdatedBy:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedBy(v)
+		return nil
+	}
+	return fmt.Errorf("unknown BidWebSite field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *BidWebSiteMutation) AddedFields() []string {
+	return nil
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *BidWebSiteMutation) AddedField(name string) (ent.Value, bool) {
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *BidWebSiteMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown BidWebSite numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *BidWebSiteMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(bidwebsite.FieldCity) {
+		fields = append(fields, bidwebsite.FieldCity)
+	}
+	if m.FieldCleared(bidwebsite.FieldRemark) {
+		fields = append(fields, bidwebsite.FieldRemark)
+	}
+	if m.FieldCleared(bidwebsite.FieldCreatedBy) {
+		fields = append(fields, bidwebsite.FieldCreatedBy)
+	}
+	if m.FieldCleared(bidwebsite.FieldUpdatedBy) {
+		fields = append(fields, bidwebsite.FieldUpdatedBy)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *BidWebSiteMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *BidWebSiteMutation) ClearField(name string) error {
+	switch name {
+	case bidwebsite.FieldCity:
+		m.ClearCity()
+		return nil
+	case bidwebsite.FieldRemark:
+		m.ClearRemark()
+		return nil
+	case bidwebsite.FieldCreatedBy:
+		m.ClearCreatedBy()
+		return nil
+	case bidwebsite.FieldUpdatedBy:
+		m.ClearUpdatedBy()
+		return nil
+	}
+	return fmt.Errorf("unknown BidWebSite nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *BidWebSiteMutation) ResetField(name string) error {
+	switch name {
+	case bidwebsite.FieldProvince:
+		m.ResetProvince()
+		return nil
+	case bidwebsite.FieldCity:
+		m.ResetCity()
+		return nil
+	case bidwebsite.FieldName:
+		m.ResetName()
+		return nil
+	case bidwebsite.FieldURL:
+		m.ResetURL()
+		return nil
+	case bidwebsite.FieldActive:
+		m.ResetActive()
+		return nil
+	case bidwebsite.FieldRemark:
+		m.ResetRemark()
+		return nil
+	case bidwebsite.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case bidwebsite.FieldCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case bidwebsite.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case bidwebsite.FieldUpdatedBy:
+		m.ResetUpdatedBy()
+		return nil
+	}
+	return fmt.Errorf("unknown BidWebSite field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *BidWebSiteMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.member_accounts != nil {
+		edges = append(edges, bidwebsite.EdgeMemberAccounts)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *BidWebSiteMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case bidwebsite.EdgeMemberAccounts:
+		ids := make([]ent.Value, 0, len(m.member_accounts))
+		for id := range m.member_accounts {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *BidWebSiteMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.removedmember_accounts != nil {
+		edges = append(edges, bidwebsite.EdgeMemberAccounts)
+	}
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *BidWebSiteMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case bidwebsite.EdgeMemberAccounts:
+		ids := make([]ent.Value, 0, len(m.removedmember_accounts))
+		for id := range m.removedmember_accounts {
+			ids = append(ids, id)
+		}
+		return ids
+	}
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *BidWebSiteMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.clearedmember_accounts {
+		edges = append(edges, bidwebsite.EdgeMemberAccounts)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *BidWebSiteMutation) EdgeCleared(name string) bool {
+	switch name {
+	case bidwebsite.EdgeMemberAccounts:
+		return m.clearedmember_accounts
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *BidWebSiteMutation) ClearEdge(name string) error {
+	switch name {
+	}
+	return fmt.Errorf("unknown BidWebSite unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *BidWebSiteMutation) ResetEdge(name string) error {
+	switch name {
+	case bidwebsite.EdgeMemberAccounts:
+		m.ResetMemberAccounts()
+		return nil
+	}
+	return fmt.Errorf("unknown BidWebSite edge %s", name)
 }
 
 // TaskLogMutation represents an operation that mutates the TaskLog nodes in the graph.

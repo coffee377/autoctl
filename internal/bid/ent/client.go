@@ -11,10 +11,14 @@ import (
 
 	"cds/bid/ent/migrate"
 
+	"cds/bid/ent/bidaccountrelation"
 	"cds/bid/ent/bidapply"
+	"cds/bid/ent/bidcacertificate"
 	"cds/bid/ent/bidexpense"
 	"cds/bid/ent/bidinfo"
+	"cds/bid/ent/bidmemberaccount"
 	"cds/bid/ent/bidproject"
+	"cds/bid/ent/bidwebsite"
 	"cds/bid/ent/tasklog"
 
 	"entgo.io/ent"
@@ -28,14 +32,22 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
+	// BidAccountRelation is the client for interacting with the BidAccountRelation builders.
+	BidAccountRelation *BidAccountRelationClient
 	// BidApply is the client for interacting with the BidApply builders.
 	BidApply *BidApplyClient
+	// BidCACertificate is the client for interacting with the BidCACertificate builders.
+	BidCACertificate *BidCACertificateClient
 	// BidExpense is the client for interacting with the BidExpense builders.
 	BidExpense *BidExpenseClient
 	// BidInfo is the client for interacting with the BidInfo builders.
 	BidInfo *BidInfoClient
+	// BidMemberAccount is the client for interacting with the BidMemberAccount builders.
+	BidMemberAccount *BidMemberAccountClient
 	// BidProject is the client for interacting with the BidProject builders.
 	BidProject *BidProjectClient
+	// BidWebSite is the client for interacting with the BidWebSite builders.
+	BidWebSite *BidWebSiteClient
 	// TaskLog is the client for interacting with the TaskLog builders.
 	TaskLog *TaskLogClient
 }
@@ -49,10 +61,14 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
+	c.BidAccountRelation = NewBidAccountRelationClient(c.config)
 	c.BidApply = NewBidApplyClient(c.config)
+	c.BidCACertificate = NewBidCACertificateClient(c.config)
 	c.BidExpense = NewBidExpenseClient(c.config)
 	c.BidInfo = NewBidInfoClient(c.config)
+	c.BidMemberAccount = NewBidMemberAccountClient(c.config)
 	c.BidProject = NewBidProjectClient(c.config)
+	c.BidWebSite = NewBidWebSiteClient(c.config)
 	c.TaskLog = NewTaskLogClient(c.config)
 }
 
@@ -144,13 +160,17 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:        ctx,
-		config:     cfg,
-		BidApply:   NewBidApplyClient(cfg),
-		BidExpense: NewBidExpenseClient(cfg),
-		BidInfo:    NewBidInfoClient(cfg),
-		BidProject: NewBidProjectClient(cfg),
-		TaskLog:    NewTaskLogClient(cfg),
+		ctx:                ctx,
+		config:             cfg,
+		BidAccountRelation: NewBidAccountRelationClient(cfg),
+		BidApply:           NewBidApplyClient(cfg),
+		BidCACertificate:   NewBidCACertificateClient(cfg),
+		BidExpense:         NewBidExpenseClient(cfg),
+		BidInfo:            NewBidInfoClient(cfg),
+		BidMemberAccount:   NewBidMemberAccountClient(cfg),
+		BidProject:         NewBidProjectClient(cfg),
+		BidWebSite:         NewBidWebSiteClient(cfg),
+		TaskLog:            NewTaskLogClient(cfg),
 	}, nil
 }
 
@@ -168,20 +188,24 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:        ctx,
-		config:     cfg,
-		BidApply:   NewBidApplyClient(cfg),
-		BidExpense: NewBidExpenseClient(cfg),
-		BidInfo:    NewBidInfoClient(cfg),
-		BidProject: NewBidProjectClient(cfg),
-		TaskLog:    NewTaskLogClient(cfg),
+		ctx:                ctx,
+		config:             cfg,
+		BidAccountRelation: NewBidAccountRelationClient(cfg),
+		BidApply:           NewBidApplyClient(cfg),
+		BidCACertificate:   NewBidCACertificateClient(cfg),
+		BidExpense:         NewBidExpenseClient(cfg),
+		BidInfo:            NewBidInfoClient(cfg),
+		BidMemberAccount:   NewBidMemberAccountClient(cfg),
+		BidProject:         NewBidProjectClient(cfg),
+		BidWebSite:         NewBidWebSiteClient(cfg),
+		TaskLog:            NewTaskLogClient(cfg),
 	}, nil
 }
 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		BidApply.
+//		BidAccountRelation.
 //		Query().
 //		Count(ctx)
 func (c *Client) Debug() *Client {
@@ -203,38 +227,213 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.BidApply.Use(hooks...)
-	c.BidExpense.Use(hooks...)
-	c.BidInfo.Use(hooks...)
-	c.BidProject.Use(hooks...)
-	c.TaskLog.Use(hooks...)
+	for _, n := range []interface{ Use(...Hook) }{
+		c.BidAccountRelation, c.BidApply, c.BidCACertificate, c.BidExpense, c.BidInfo,
+		c.BidMemberAccount, c.BidProject, c.BidWebSite, c.TaskLog,
+	} {
+		n.Use(hooks...)
+	}
 }
 
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
-	c.BidApply.Intercept(interceptors...)
-	c.BidExpense.Intercept(interceptors...)
-	c.BidInfo.Intercept(interceptors...)
-	c.BidProject.Intercept(interceptors...)
-	c.TaskLog.Intercept(interceptors...)
+	for _, n := range []interface{ Intercept(...Interceptor) }{
+		c.BidAccountRelation, c.BidApply, c.BidCACertificate, c.BidExpense, c.BidInfo,
+		c.BidMemberAccount, c.BidProject, c.BidWebSite, c.TaskLog,
+	} {
+		n.Intercept(interceptors...)
+	}
 }
 
 // Mutate implements the ent.Mutator interface.
 func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
+	case *BidAccountRelationMutation:
+		return c.BidAccountRelation.mutate(ctx, m)
 	case *BidApplyMutation:
 		return c.BidApply.mutate(ctx, m)
+	case *BidCACertificateMutation:
+		return c.BidCACertificate.mutate(ctx, m)
 	case *BidExpenseMutation:
 		return c.BidExpense.mutate(ctx, m)
 	case *BidInfoMutation:
 		return c.BidInfo.mutate(ctx, m)
+	case *BidMemberAccountMutation:
+		return c.BidMemberAccount.mutate(ctx, m)
 	case *BidProjectMutation:
 		return c.BidProject.mutate(ctx, m)
+	case *BidWebSiteMutation:
+		return c.BidWebSite.mutate(ctx, m)
 	case *TaskLogMutation:
 		return c.TaskLog.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("ent: unknown mutation type %T", m)
+	}
+}
+
+// BidAccountRelationClient is a client for the BidAccountRelation schema.
+type BidAccountRelationClient struct {
+	config
+}
+
+// NewBidAccountRelationClient returns a client for the BidAccountRelation from the given config.
+func NewBidAccountRelationClient(c config) *BidAccountRelationClient {
+	return &BidAccountRelationClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `bidaccountrelation.Hooks(f(g(h())))`.
+func (c *BidAccountRelationClient) Use(hooks ...Hook) {
+	c.hooks.BidAccountRelation = append(c.hooks.BidAccountRelation, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `bidaccountrelation.Intercept(f(g(h())))`.
+func (c *BidAccountRelationClient) Intercept(interceptors ...Interceptor) {
+	c.inters.BidAccountRelation = append(c.inters.BidAccountRelation, interceptors...)
+}
+
+// Create returns a builder for creating a BidAccountRelation entity.
+func (c *BidAccountRelationClient) Create() *BidAccountRelationCreate {
+	mutation := newBidAccountRelationMutation(c.config, OpCreate)
+	return &BidAccountRelationCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of BidAccountRelation entities.
+func (c *BidAccountRelationClient) CreateBulk(builders ...*BidAccountRelationCreate) *BidAccountRelationCreateBulk {
+	return &BidAccountRelationCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *BidAccountRelationClient) MapCreateBulk(slice any, setFunc func(*BidAccountRelationCreate, int)) *BidAccountRelationCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &BidAccountRelationCreateBulk{err: fmt.Errorf("calling to BidAccountRelationClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*BidAccountRelationCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &BidAccountRelationCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for BidAccountRelation.
+func (c *BidAccountRelationClient) Update() *BidAccountRelationUpdate {
+	mutation := newBidAccountRelationMutation(c.config, OpUpdate)
+	return &BidAccountRelationUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *BidAccountRelationClient) UpdateOne(_m *BidAccountRelation) *BidAccountRelationUpdateOne {
+	mutation := newBidAccountRelationMutation(c.config, OpUpdateOne, withBidAccountRelation(_m))
+	return &BidAccountRelationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *BidAccountRelationClient) UpdateOneID(id int) *BidAccountRelationUpdateOne {
+	mutation := newBidAccountRelationMutation(c.config, OpUpdateOne, withBidAccountRelationID(id))
+	return &BidAccountRelationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for BidAccountRelation.
+func (c *BidAccountRelationClient) Delete() *BidAccountRelationDelete {
+	mutation := newBidAccountRelationMutation(c.config, OpDelete)
+	return &BidAccountRelationDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *BidAccountRelationClient) DeleteOne(_m *BidAccountRelation) *BidAccountRelationDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *BidAccountRelationClient) DeleteOneID(id int) *BidAccountRelationDeleteOne {
+	builder := c.Delete().Where(bidaccountrelation.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &BidAccountRelationDeleteOne{builder}
+}
+
+// Query returns a query builder for BidAccountRelation.
+func (c *BidAccountRelationClient) Query() *BidAccountRelationQuery {
+	return &BidAccountRelationQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeBidAccountRelation},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a BidAccountRelation entity by its id.
+func (c *BidAccountRelationClient) Get(ctx context.Context, id int) (*BidAccountRelation, error) {
+	return c.Query().Where(bidaccountrelation.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *BidAccountRelationClient) GetX(ctx context.Context, id int) *BidAccountRelation {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryAccount queries the account edge of a BidAccountRelation.
+func (c *BidAccountRelationClient) QueryAccount(_m *BidAccountRelation) *BidMemberAccountQuery {
+	query := (&BidMemberAccountClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(bidaccountrelation.Table, bidaccountrelation.FieldID, id),
+			sqlgraph.To(bidmemberaccount.Table, bidmemberaccount.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, bidaccountrelation.AccountTable, bidaccountrelation.AccountColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCaCertificate queries the ca_certificate edge of a BidAccountRelation.
+func (c *BidAccountRelationClient) QueryCaCertificate(_m *BidAccountRelation) *BidCACertificateQuery {
+	query := (&BidCACertificateClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(bidaccountrelation.Table, bidaccountrelation.FieldID, id),
+			sqlgraph.To(bidcacertificate.Table, bidcacertificate.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, bidaccountrelation.CaCertificateTable, bidaccountrelation.CaCertificateColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *BidAccountRelationClient) Hooks() []Hook {
+	return c.hooks.BidAccountRelation
+}
+
+// Interceptors returns the client interceptors.
+func (c *BidAccountRelationClient) Interceptors() []Interceptor {
+	return c.inters.BidAccountRelation
+}
+
+func (c *BidAccountRelationClient) mutate(ctx context.Context, m *BidAccountRelationMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&BidAccountRelationCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&BidAccountRelationUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&BidAccountRelationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&BidAccountRelationDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown BidAccountRelation mutation op: %q", m.Op())
 	}
 }
 
@@ -384,6 +583,155 @@ func (c *BidApplyClient) mutate(ctx context.Context, m *BidApplyMutation) (Value
 		return (&BidApplyDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown BidApply mutation op: %q", m.Op())
+	}
+}
+
+// BidCACertificateClient is a client for the BidCACertificate schema.
+type BidCACertificateClient struct {
+	config
+}
+
+// NewBidCACertificateClient returns a client for the BidCACertificate from the given config.
+func NewBidCACertificateClient(c config) *BidCACertificateClient {
+	return &BidCACertificateClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `bidcacertificate.Hooks(f(g(h())))`.
+func (c *BidCACertificateClient) Use(hooks ...Hook) {
+	c.hooks.BidCACertificate = append(c.hooks.BidCACertificate, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `bidcacertificate.Intercept(f(g(h())))`.
+func (c *BidCACertificateClient) Intercept(interceptors ...Interceptor) {
+	c.inters.BidCACertificate = append(c.inters.BidCACertificate, interceptors...)
+}
+
+// Create returns a builder for creating a BidCACertificate entity.
+func (c *BidCACertificateClient) Create() *BidCACertificateCreate {
+	mutation := newBidCACertificateMutation(c.config, OpCreate)
+	return &BidCACertificateCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of BidCACertificate entities.
+func (c *BidCACertificateClient) CreateBulk(builders ...*BidCACertificateCreate) *BidCACertificateCreateBulk {
+	return &BidCACertificateCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *BidCACertificateClient) MapCreateBulk(slice any, setFunc func(*BidCACertificateCreate, int)) *BidCACertificateCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &BidCACertificateCreateBulk{err: fmt.Errorf("calling to BidCACertificateClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*BidCACertificateCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &BidCACertificateCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for BidCACertificate.
+func (c *BidCACertificateClient) Update() *BidCACertificateUpdate {
+	mutation := newBidCACertificateMutation(c.config, OpUpdate)
+	return &BidCACertificateUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *BidCACertificateClient) UpdateOne(_m *BidCACertificate) *BidCACertificateUpdateOne {
+	mutation := newBidCACertificateMutation(c.config, OpUpdateOne, withBidCACertificate(_m))
+	return &BidCACertificateUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *BidCACertificateClient) UpdateOneID(id string) *BidCACertificateUpdateOne {
+	mutation := newBidCACertificateMutation(c.config, OpUpdateOne, withBidCACertificateID(id))
+	return &BidCACertificateUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for BidCACertificate.
+func (c *BidCACertificateClient) Delete() *BidCACertificateDelete {
+	mutation := newBidCACertificateMutation(c.config, OpDelete)
+	return &BidCACertificateDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *BidCACertificateClient) DeleteOne(_m *BidCACertificate) *BidCACertificateDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *BidCACertificateClient) DeleteOneID(id string) *BidCACertificateDeleteOne {
+	builder := c.Delete().Where(bidcacertificate.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &BidCACertificateDeleteOne{builder}
+}
+
+// Query returns a query builder for BidCACertificate.
+func (c *BidCACertificateClient) Query() *BidCACertificateQuery {
+	return &BidCACertificateQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeBidCACertificate},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a BidCACertificate entity by its id.
+func (c *BidCACertificateClient) Get(ctx context.Context, id string) (*BidCACertificate, error) {
+	return c.Query().Where(bidcacertificate.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *BidCACertificateClient) GetX(ctx context.Context, id string) *BidCACertificate {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryAccountRelations queries the account_relations edge of a BidCACertificate.
+func (c *BidCACertificateClient) QueryAccountRelations(_m *BidCACertificate) *BidAccountRelationQuery {
+	query := (&BidAccountRelationClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(bidcacertificate.Table, bidcacertificate.FieldID, id),
+			sqlgraph.To(bidaccountrelation.Table, bidaccountrelation.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, bidcacertificate.AccountRelationsTable, bidcacertificate.AccountRelationsColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *BidCACertificateClient) Hooks() []Hook {
+	return c.hooks.BidCACertificate
+}
+
+// Interceptors returns the client interceptors.
+func (c *BidCACertificateClient) Interceptors() []Interceptor {
+	return c.inters.BidCACertificate
+}
+
+func (c *BidCACertificateClient) mutate(ctx context.Context, m *BidCACertificateMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&BidCACertificateCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&BidCACertificateUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&BidCACertificateUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&BidCACertificateDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown BidCACertificate mutation op: %q", m.Op())
 	}
 }
 
@@ -685,6 +1033,171 @@ func (c *BidInfoClient) mutate(ctx context.Context, m *BidInfoMutation) (Value, 
 	}
 }
 
+// BidMemberAccountClient is a client for the BidMemberAccount schema.
+type BidMemberAccountClient struct {
+	config
+}
+
+// NewBidMemberAccountClient returns a client for the BidMemberAccount from the given config.
+func NewBidMemberAccountClient(c config) *BidMemberAccountClient {
+	return &BidMemberAccountClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `bidmemberaccount.Hooks(f(g(h())))`.
+func (c *BidMemberAccountClient) Use(hooks ...Hook) {
+	c.hooks.BidMemberAccount = append(c.hooks.BidMemberAccount, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `bidmemberaccount.Intercept(f(g(h())))`.
+func (c *BidMemberAccountClient) Intercept(interceptors ...Interceptor) {
+	c.inters.BidMemberAccount = append(c.inters.BidMemberAccount, interceptors...)
+}
+
+// Create returns a builder for creating a BidMemberAccount entity.
+func (c *BidMemberAccountClient) Create() *BidMemberAccountCreate {
+	mutation := newBidMemberAccountMutation(c.config, OpCreate)
+	return &BidMemberAccountCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of BidMemberAccount entities.
+func (c *BidMemberAccountClient) CreateBulk(builders ...*BidMemberAccountCreate) *BidMemberAccountCreateBulk {
+	return &BidMemberAccountCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *BidMemberAccountClient) MapCreateBulk(slice any, setFunc func(*BidMemberAccountCreate, int)) *BidMemberAccountCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &BidMemberAccountCreateBulk{err: fmt.Errorf("calling to BidMemberAccountClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*BidMemberAccountCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &BidMemberAccountCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for BidMemberAccount.
+func (c *BidMemberAccountClient) Update() *BidMemberAccountUpdate {
+	mutation := newBidMemberAccountMutation(c.config, OpUpdate)
+	return &BidMemberAccountUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *BidMemberAccountClient) UpdateOne(_m *BidMemberAccount) *BidMemberAccountUpdateOne {
+	mutation := newBidMemberAccountMutation(c.config, OpUpdateOne, withBidMemberAccount(_m))
+	return &BidMemberAccountUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *BidMemberAccountClient) UpdateOneID(id string) *BidMemberAccountUpdateOne {
+	mutation := newBidMemberAccountMutation(c.config, OpUpdateOne, withBidMemberAccountID(id))
+	return &BidMemberAccountUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for BidMemberAccount.
+func (c *BidMemberAccountClient) Delete() *BidMemberAccountDelete {
+	mutation := newBidMemberAccountMutation(c.config, OpDelete)
+	return &BidMemberAccountDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *BidMemberAccountClient) DeleteOne(_m *BidMemberAccount) *BidMemberAccountDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *BidMemberAccountClient) DeleteOneID(id string) *BidMemberAccountDeleteOne {
+	builder := c.Delete().Where(bidmemberaccount.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &BidMemberAccountDeleteOne{builder}
+}
+
+// Query returns a query builder for BidMemberAccount.
+func (c *BidMemberAccountClient) Query() *BidMemberAccountQuery {
+	return &BidMemberAccountQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeBidMemberAccount},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a BidMemberAccount entity by its id.
+func (c *BidMemberAccountClient) Get(ctx context.Context, id string) (*BidMemberAccount, error) {
+	return c.Query().Where(bidmemberaccount.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *BidMemberAccountClient) GetX(ctx context.Context, id string) *BidMemberAccount {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryWebsite queries the website edge of a BidMemberAccount.
+func (c *BidMemberAccountClient) QueryWebsite(_m *BidMemberAccount) *BidWebSiteQuery {
+	query := (&BidWebSiteClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(bidmemberaccount.Table, bidmemberaccount.FieldID, id),
+			sqlgraph.To(bidwebsite.Table, bidwebsite.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, bidmemberaccount.WebsiteTable, bidmemberaccount.WebsiteColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCaRelations queries the ca_relations edge of a BidMemberAccount.
+func (c *BidMemberAccountClient) QueryCaRelations(_m *BidMemberAccount) *BidAccountRelationQuery {
+	query := (&BidAccountRelationClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(bidmemberaccount.Table, bidmemberaccount.FieldID, id),
+			sqlgraph.To(bidaccountrelation.Table, bidaccountrelation.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, bidmemberaccount.CaRelationsTable, bidmemberaccount.CaRelationsColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *BidMemberAccountClient) Hooks() []Hook {
+	return c.hooks.BidMemberAccount
+}
+
+// Interceptors returns the client interceptors.
+func (c *BidMemberAccountClient) Interceptors() []Interceptor {
+	return c.inters.BidMemberAccount
+}
+
+func (c *BidMemberAccountClient) mutate(ctx context.Context, m *BidMemberAccountMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&BidMemberAccountCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&BidMemberAccountUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&BidMemberAccountUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&BidMemberAccountDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown BidMemberAccount mutation op: %q", m.Op())
+	}
+}
+
 // BidProjectClient is a client for the BidProject schema.
 type BidProjectClient struct {
 	config
@@ -866,6 +1379,155 @@ func (c *BidProjectClient) mutate(ctx context.Context, m *BidProjectMutation) (V
 	}
 }
 
+// BidWebSiteClient is a client for the BidWebSite schema.
+type BidWebSiteClient struct {
+	config
+}
+
+// NewBidWebSiteClient returns a client for the BidWebSite from the given config.
+func NewBidWebSiteClient(c config) *BidWebSiteClient {
+	return &BidWebSiteClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `bidwebsite.Hooks(f(g(h())))`.
+func (c *BidWebSiteClient) Use(hooks ...Hook) {
+	c.hooks.BidWebSite = append(c.hooks.BidWebSite, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `bidwebsite.Intercept(f(g(h())))`.
+func (c *BidWebSiteClient) Intercept(interceptors ...Interceptor) {
+	c.inters.BidWebSite = append(c.inters.BidWebSite, interceptors...)
+}
+
+// Create returns a builder for creating a BidWebSite entity.
+func (c *BidWebSiteClient) Create() *BidWebSiteCreate {
+	mutation := newBidWebSiteMutation(c.config, OpCreate)
+	return &BidWebSiteCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of BidWebSite entities.
+func (c *BidWebSiteClient) CreateBulk(builders ...*BidWebSiteCreate) *BidWebSiteCreateBulk {
+	return &BidWebSiteCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *BidWebSiteClient) MapCreateBulk(slice any, setFunc func(*BidWebSiteCreate, int)) *BidWebSiteCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &BidWebSiteCreateBulk{err: fmt.Errorf("calling to BidWebSiteClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*BidWebSiteCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &BidWebSiteCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for BidWebSite.
+func (c *BidWebSiteClient) Update() *BidWebSiteUpdate {
+	mutation := newBidWebSiteMutation(c.config, OpUpdate)
+	return &BidWebSiteUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *BidWebSiteClient) UpdateOne(_m *BidWebSite) *BidWebSiteUpdateOne {
+	mutation := newBidWebSiteMutation(c.config, OpUpdateOne, withBidWebSite(_m))
+	return &BidWebSiteUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *BidWebSiteClient) UpdateOneID(id string) *BidWebSiteUpdateOne {
+	mutation := newBidWebSiteMutation(c.config, OpUpdateOne, withBidWebSiteID(id))
+	return &BidWebSiteUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for BidWebSite.
+func (c *BidWebSiteClient) Delete() *BidWebSiteDelete {
+	mutation := newBidWebSiteMutation(c.config, OpDelete)
+	return &BidWebSiteDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *BidWebSiteClient) DeleteOne(_m *BidWebSite) *BidWebSiteDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *BidWebSiteClient) DeleteOneID(id string) *BidWebSiteDeleteOne {
+	builder := c.Delete().Where(bidwebsite.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &BidWebSiteDeleteOne{builder}
+}
+
+// Query returns a query builder for BidWebSite.
+func (c *BidWebSiteClient) Query() *BidWebSiteQuery {
+	return &BidWebSiteQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeBidWebSite},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a BidWebSite entity by its id.
+func (c *BidWebSiteClient) Get(ctx context.Context, id string) (*BidWebSite, error) {
+	return c.Query().Where(bidwebsite.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *BidWebSiteClient) GetX(ctx context.Context, id string) *BidWebSite {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryMemberAccounts queries the member_accounts edge of a BidWebSite.
+func (c *BidWebSiteClient) QueryMemberAccounts(_m *BidWebSite) *BidMemberAccountQuery {
+	query := (&BidMemberAccountClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(bidwebsite.Table, bidwebsite.FieldID, id),
+			sqlgraph.To(bidmemberaccount.Table, bidmemberaccount.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, bidwebsite.MemberAccountsTable, bidwebsite.MemberAccountsColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *BidWebSiteClient) Hooks() []Hook {
+	return c.hooks.BidWebSite
+}
+
+// Interceptors returns the client interceptors.
+func (c *BidWebSiteClient) Interceptors() []Interceptor {
+	return c.inters.BidWebSite
+}
+
+func (c *BidWebSiteClient) mutate(ctx context.Context, m *BidWebSiteMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&BidWebSiteCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&BidWebSiteUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&BidWebSiteUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&BidWebSiteDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown BidWebSite mutation op: %q", m.Op())
+	}
+}
+
 // TaskLogClient is a client for the TaskLog schema.
 type TaskLogClient struct {
 	config
@@ -1002,9 +1664,11 @@ func (c *TaskLogClient) mutate(ctx context.Context, m *TaskLogMutation) (Value, 
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		BidApply, BidExpense, BidInfo, BidProject, TaskLog []ent.Hook
+		BidAccountRelation, BidApply, BidCACertificate, BidExpense, BidInfo,
+		BidMemberAccount, BidProject, BidWebSite, TaskLog []ent.Hook
 	}
 	inters struct {
-		BidApply, BidExpense, BidInfo, BidProject, TaskLog []ent.Interceptor
+		BidAccountRelation, BidApply, BidCACertificate, BidExpense, BidInfo,
+		BidMemberAccount, BidProject, BidWebSite, TaskLog []ent.Interceptor
 	}
 )

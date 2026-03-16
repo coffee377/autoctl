@@ -9,6 +9,52 @@ import (
 )
 
 var (
+	// BidAccountCaRelColumns holds the columns for the "bid_account_ca_rel" table.
+	BidAccountCaRelColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "remark", Type: field.TypeString, Nullable: true, Comment: "关联备注"},
+		{Name: "bind_at", Type: field.TypeTime},
+		{Name: "ca_id", Type: field.TypeString, Size: 32, Comment: "CA证书ID"},
+		{Name: "account_id", Type: field.TypeString, Size: 32, Comment: "会员账号ID"},
+	}
+	// BidAccountCaRelTable holds the schema information for the "bid_account_ca_rel" table.
+	BidAccountCaRelTable = &schema.Table{
+		Name:       "bid_account_ca_rel",
+		Comment:    "账号证书关联关系",
+		Columns:    BidAccountCaRelColumns,
+		PrimaryKey: []*schema.Column{BidAccountCaRelColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "fk_ca_id",
+				Columns:    []*schema.Column{BidAccountCaRelColumns[3]},
+				RefColumns: []*schema.Column{BidCaCertificateColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "fk_account_id",
+				Columns:    []*schema.Column{BidAccountCaRelColumns[4]},
+				RefColumns: []*schema.Column{BidMemberAccountColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "uk_account_id_ca_id",
+				Unique:  true,
+				Columns: []*schema.Column{BidAccountCaRelColumns[4], BidAccountCaRelColumns[3]},
+			},
+			{
+				Name:    "idx_account_id",
+				Unique:  false,
+				Columns: []*schema.Column{BidAccountCaRelColumns[4]},
+			},
+			{
+				Name:    "idx_ca_id",
+				Unique:  false,
+				Columns: []*schema.Column{BidAccountCaRelColumns[3]},
+			},
+		},
+	}
 	// BidApplyColumns holds the columns for the "bid_apply" table.
 	BidApplyColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeString, Size: 32, Comment: "投标申请 ID"},
@@ -50,6 +96,40 @@ var (
 				Name:    "idx_approval_status",
 				Unique:  false,
 				Columns: []*schema.Column{BidApplyColumns[12]},
+			},
+		},
+	}
+	// BidCaCertificateColumns holds the columns for the "bid_ca_certificate" table.
+	BidCaCertificateColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Size: 32},
+		{Name: "code", Type: field.TypeString, Comment: "CA证书编码"},
+		{Name: "name", Type: field.TypeString, Comment: "CA证书名称"},
+		{Name: "expiry_time", Type: field.TypeTime, Comment: "过期时间"},
+		{Name: "password", Type: field.TypeString, Nullable: true, Comment: "CA证书密码"},
+		{Name: "remark", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "备注"},
+		{Name: "primary", Type: field.TypeBool, Comment: "是否为主证书", Default: false},
+		{Name: "last_renewal_at", Type: field.TypeTime, Nullable: true, Comment: "最后续费时间"},
+		{Name: "created_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "created_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "updated_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "更新人"},
+	}
+	// BidCaCertificateTable holds the schema information for the "bid_ca_certificate" table.
+	BidCaCertificateTable = &schema.Table{
+		Name:       "bid_ca_certificate",
+		Comment:    "CA 证书",
+		Columns:    BidCaCertificateColumns,
+		PrimaryKey: []*schema.Column{BidCaCertificateColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "idx_code",
+				Unique:  false,
+				Columns: []*schema.Column{BidCaCertificateColumns[1]},
+			},
+			{
+				Name:    "idx_name",
+				Unique:  false,
+				Columns: []*schema.Column{BidCaCertificateColumns[2]},
 			},
 		},
 	}
@@ -165,6 +245,47 @@ var (
 			},
 		},
 	}
+	// BidMemberAccountColumns holds the columns for the "bid_member_account" table.
+	BidMemberAccountColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Size: 32},
+		{Name: "owner_code", Type: field.TypeString, Size: 32, Comment: "归属主体编码"},
+		{Name: "owner_name", Type: field.TypeString, Size: 32, Comment: "归属主体名称"},
+		{Name: "username", Type: field.TypeString, Comment: "账号"},
+		{Name: "password", Type: field.TypeString, Nullable: true, Comment: "密码"},
+		{Name: "register_person", Type: field.TypeString, Nullable: true, Comment: "注册人员"},
+		{Name: "register_mobile", Type: field.TypeString, Nullable: true, Comment: " 注册手机号"},
+		{Name: "primary_ca_id", Type: field.TypeString, Size: 32, Comment: "主证书"},
+		{Name: "account_status", Type: field.TypeEnum, Comment: "账号状态: active-正常/inactive-未激活/abandoned-废弃/suspended-暂停", Enums: []string{"active", "inactive", "abandoned", "suspended"}, Default: "active"},
+		{Name: "abandon_reason", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "废弃原因"},
+		{Name: "remark", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "备注"},
+		{Name: "created_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "created_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "updated_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "更新人"},
+		{Name: "website_id", Type: field.TypeString, Size: 32, Comment: "归属网站"},
+	}
+	// BidMemberAccountTable holds the schema information for the "bid_member_account" table.
+	BidMemberAccountTable = &schema.Table{
+		Name:       "bid_member_account",
+		Comment:    "会员账号",
+		Columns:    BidMemberAccountColumns,
+		PrimaryKey: []*schema.Column{BidMemberAccountColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "fk_website_id",
+				Columns:    []*schema.Column{BidMemberAccountColumns[15]},
+				RefColumns: []*schema.Column{BidWebSiteColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "idx_website_id",
+				Unique:  false,
+				Columns: []*schema.Column{BidMemberAccountColumns[15]},
+			},
+		},
+	}
 	// BidProjectColumns holds the columns for the "bid_project" table.
 	BidProjectColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeString, Unique: true, Size: 32, Comment: "项目 ID"},
@@ -202,6 +323,39 @@ var (
 			},
 		},
 	}
+	// BidWebSiteColumns holds the columns for the "bid_web_site" table.
+	BidWebSiteColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeString, Size: 32},
+		{Name: "province", Type: field.TypeString, Size: 8, Comment: "省份"},
+		{Name: "city", Type: field.TypeString, Nullable: true, Size: 8, Comment: "地市"},
+		{Name: "name", Type: field.TypeString, Size: 32, Comment: "网站名称"},
+		{Name: "url", Type: field.TypeString, Size: 2147483647, Comment: "网站地址"},
+		{Name: "active", Type: field.TypeBool, Comment: "是否启用", Default: true},
+		{Name: "remark", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "备注"},
+		{Name: "created_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "created_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
+		{Name: "updated_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "更新人"},
+	}
+	// BidWebSiteTable holds the schema information for the "bid_web_site" table.
+	BidWebSiteTable = &schema.Table{
+		Name:       "bid_web_site",
+		Comment:    "网站信息",
+		Columns:    BidWebSiteColumns,
+		PrimaryKey: []*schema.Column{BidWebSiteColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "idx_province_city",
+				Unique:  false,
+				Columns: []*schema.Column{BidWebSiteColumns[1], BidWebSiteColumns[2]},
+			},
+			{
+				Name:    "idx_name",
+				Unique:  false,
+				Columns: []*schema.Column{BidWebSiteColumns[3]},
+			},
+		},
+	}
 	// SysTaskLogColumns holds the columns for the "sys_task_log" table.
 	SysTaskLogColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -233,19 +387,33 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		BidAccountCaRelTable,
 		BidApplyTable,
+		BidCaCertificateTable,
 		BidExpenseTable,
 		BidInfoTable,
+		BidMemberAccountTable,
 		BidProjectTable,
+		BidWebSiteTable,
 		SysTaskLogTable,
 	}
 )
 
 func init() {
+	BidAccountCaRelTable.ForeignKeys[0].RefTable = BidCaCertificateTable
+	BidAccountCaRelTable.ForeignKeys[1].RefTable = BidMemberAccountTable
+	BidAccountCaRelTable.Annotation = &entsql.Annotation{
+		Table:          "bid_account_ca_rel",
+		IncrementStart: func(i int) *int { return &i }(34359738368),
+	}
 	BidApplyTable.ForeignKeys[0].RefTable = BidProjectTable
 	BidApplyTable.Annotation = &entsql.Annotation{
 		Table:          "bid_apply",
 		IncrementStart: func(i int) *int { return &i }(0),
+	}
+	BidCaCertificateTable.Annotation = &entsql.Annotation{
+		Table:          "bid_ca_certificate",
+		IncrementStart: func(i int) *int { return &i }(21474836480),
 	}
 	BidExpenseTable.ForeignKeys[0].RefTable = BidProjectTable
 	BidExpenseTable.Annotation = &entsql.Annotation{
@@ -257,9 +425,18 @@ func init() {
 		Table:          "bid_info",
 		IncrementStart: func(i int) *int { return &i }(8589934592),
 	}
+	BidMemberAccountTable.ForeignKeys[0].RefTable = BidWebSiteTable
+	BidMemberAccountTable.Annotation = &entsql.Annotation{
+		Table:          "bid_member_account",
+		IncrementStart: func(i int) *int { return &i }(25769803776),
+	}
 	BidProjectTable.Annotation = &entsql.Annotation{
 		Table:          "bid_project",
 		IncrementStart: func(i int) *int { return &i }(12884901888),
+	}
+	BidWebSiteTable.Annotation = &entsql.Annotation{
+		Table:          "bid_web_site",
+		IncrementStart: func(i int) *int { return &i }(30064771072),
 	}
 	SysTaskLogTable.Annotation = &entsql.Annotation{
 		Table:          "sys_task_log",
