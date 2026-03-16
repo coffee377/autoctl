@@ -94,6 +94,14 @@ func (_c *BidMemberAccountCreate) SetPrimaryCaID(v string) *BidMemberAccountCrea
 	return _c
 }
 
+// SetNillablePrimaryCaID sets the "primary_ca_id" field if the given value is not nil.
+func (_c *BidMemberAccountCreate) SetNillablePrimaryCaID(v *string) *BidMemberAccountCreate {
+	if v != nil {
+		_c.SetPrimaryCaID(*v)
+	}
+	return _c
+}
+
 // SetAccountStatus sets the "account_status" field.
 func (_c *BidMemberAccountCreate) SetAccountStatus(v bidmemberaccount.AccountStatus) *BidMemberAccountCreate {
 	_c.mutation.SetAccountStatus(v)
@@ -313,9 +321,6 @@ func (_c *BidMemberAccountCreate) check() error {
 			return &ValidationError{Name: "username", err: fmt.Errorf(`ent: validator failed for field "BidMemberAccount.username": %w`, err)}
 		}
 	}
-	if _, ok := _c.mutation.PrimaryCaID(); !ok {
-		return &ValidationError{Name: "primary_ca_id", err: errors.New(`ent: missing required field "BidMemberAccount.primary_ca_id"`)}
-	}
 	if v, ok := _c.mutation.PrimaryCaID(); ok {
 		if err := bidmemberaccount.PrimaryCaIDValidator(v); err != nil {
 			return &ValidationError{Name: "primary_ca_id", err: fmt.Errorf(`ent: validator failed for field "BidMemberAccount.primary_ca_id": %w`, err)}
@@ -414,7 +419,7 @@ func (_c *BidMemberAccountCreate) createSpec() (*BidMemberAccount, *sqlgraph.Cre
 	}
 	if value, ok := _c.mutation.PrimaryCaID(); ok {
 		_spec.SetField(bidmemberaccount.FieldPrimaryCaID, field.TypeString, value)
-		_node.PrimaryCaID = value
+		_node.PrimaryCaID = &value
 	}
 	if value, ok := _c.mutation.AccountStatus(); ok {
 		_spec.SetField(bidmemberaccount.FieldAccountStatus, field.TypeEnum, value)

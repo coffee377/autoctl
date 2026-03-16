@@ -675,6 +675,16 @@ func PrimaryCaIDHasSuffix(v string) predicate.BidMemberAccount {
 	return predicate.BidMemberAccount(sql.FieldHasSuffix(FieldPrimaryCaID, v))
 }
 
+// PrimaryCaIDIsNil applies the IsNil predicate on the "primary_ca_id" field.
+func PrimaryCaIDIsNil() predicate.BidMemberAccount {
+	return predicate.BidMemberAccount(sql.FieldIsNull(FieldPrimaryCaID))
+}
+
+// PrimaryCaIDNotNil applies the NotNil predicate on the "primary_ca_id" field.
+func PrimaryCaIDNotNil() predicate.BidMemberAccount {
+	return predicate.BidMemberAccount(sql.FieldNotNull(FieldPrimaryCaID))
+}
+
 // PrimaryCaIDEqualFold applies the EqualFold predicate on the "primary_ca_id" field.
 func PrimaryCaIDEqualFold(v string) predicate.BidMemberAccount {
 	return predicate.BidMemberAccount(sql.FieldEqualFold(FieldPrimaryCaID, v))

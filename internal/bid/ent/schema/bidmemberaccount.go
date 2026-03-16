@@ -28,7 +28,7 @@ func (BidMemberAccount) Fields() []ent.Field {
 		field.String("register_person").Optional().Comment("注册人员"),
 		field.String("register_mobile").Optional().Comment(" 注册手机号"),
 
-		field.String("primary_ca_id").Comment("主证书").MaxRuneLen(32),
+		field.String("primary_ca_id").Comment("主证书 ID").MaxRuneLen(32).Optional().Nillable(),
 
 		field.Enum("account_status").
 			Values("active", "inactive", "abandoned", "suspended").

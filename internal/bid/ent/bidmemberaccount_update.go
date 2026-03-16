@@ -161,6 +161,12 @@ func (_u *BidMemberAccountUpdate) SetNillablePrimaryCaID(v *string) *BidMemberAc
 	return _u
 }
 
+// ClearPrimaryCaID clears the value of the "primary_ca_id" field.
+func (_u *BidMemberAccountUpdate) ClearPrimaryCaID() *BidMemberAccountUpdate {
+	_u.mutation.ClearPrimaryCaID()
+	return _u
+}
+
 // SetAccountStatus sets the "account_status" field.
 func (_u *BidMemberAccountUpdate) SetAccountStatus(v bidmemberaccount.AccountStatus) *BidMemberAccountUpdate {
 	_u.mutation.SetAccountStatus(v)
@@ -459,6 +465,9 @@ func (_u *BidMemberAccountUpdate) sqlSave(ctx context.Context) (_node int, err e
 	if value, ok := _u.mutation.PrimaryCaID(); ok {
 		_spec.SetField(bidmemberaccount.FieldPrimaryCaID, field.TypeString, value)
 	}
+	if _u.mutation.PrimaryCaIDCleared() {
+		_spec.ClearField(bidmemberaccount.FieldPrimaryCaID, field.TypeString)
+	}
 	if value, ok := _u.mutation.AccountStatus(); ok {
 		_spec.SetField(bidmemberaccount.FieldAccountStatus, field.TypeEnum, value)
 	}
@@ -715,6 +724,12 @@ func (_u *BidMemberAccountUpdateOne) SetNillablePrimaryCaID(v *string) *BidMembe
 	if v != nil {
 		_u.SetPrimaryCaID(*v)
 	}
+	return _u
+}
+
+// ClearPrimaryCaID clears the value of the "primary_ca_id" field.
+func (_u *BidMemberAccountUpdateOne) ClearPrimaryCaID() *BidMemberAccountUpdateOne {
+	_u.mutation.ClearPrimaryCaID()
 	return _u
 }
 
@@ -1045,6 +1060,9 @@ func (_u *BidMemberAccountUpdateOne) sqlSave(ctx context.Context) (_node *BidMem
 	}
 	if value, ok := _u.mutation.PrimaryCaID(); ok {
 		_spec.SetField(bidmemberaccount.FieldPrimaryCaID, field.TypeString, value)
+	}
+	if _u.mutation.PrimaryCaIDCleared() {
+		_spec.ClearField(bidmemberaccount.FieldPrimaryCaID, field.TypeString)
 	}
 	if value, ok := _u.mutation.AccountStatus(); ok {
 		_spec.SetField(bidmemberaccount.FieldAccountStatus, field.TypeEnum, value)

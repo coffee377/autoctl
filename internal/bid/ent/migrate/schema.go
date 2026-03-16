@@ -254,7 +254,7 @@ var (
 		{Name: "password", Type: field.TypeString, Nullable: true, Comment: "密码"},
 		{Name: "register_person", Type: field.TypeString, Nullable: true, Comment: "注册人员"},
 		{Name: "register_mobile", Type: field.TypeString, Nullable: true, Comment: " 注册手机号"},
-		{Name: "primary_ca_id", Type: field.TypeString, Size: 32, Comment: "主证书"},
+		{Name: "primary_ca_id", Type: field.TypeString, Nullable: true, Size: 32, Comment: "主证书 ID"},
 		{Name: "account_status", Type: field.TypeEnum, Comment: "账号状态: active-正常/inactive-未激活/abandoned-废弃/suspended-暂停", Enums: []string{"active", "inactive", "abandoned", "suspended"}, Default: "active"},
 		{Name: "abandon_reason", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "废弃原因"},
 		{Name: "remark", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "备注"},

@@ -32,8 +32,8 @@ type BidMemberAccount struct {
 	RegisterPerson string `json:"register_person,omitempty"`
 	//  注册手机号
 	RegisterMobile string `json:"register_mobile,omitempty"`
-	// 主证书
-	PrimaryCaID string `json:"primary_ca_id,omitempty"`
+	// 主证书 ID
+	PrimaryCaID *string `json:"primary_ca_id,omitempty"`
 	// 账号状态: active-正常/inactive-未激活/abandoned-废弃/suspended-暂停
 	AccountStatus bidmemberaccount.AccountStatus `json:"account_status,omitempty"`
 	// 废弃原因
@@ -163,7 +163,8 @@ func (_m *BidMemberAccount) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field primary_ca_id", values[i])
 			} else if value.Valid {
-				_m.PrimaryCaID = value.String
+				_m.PrimaryCaID = new(string)
+				*_m.PrimaryCaID = value.String
 			}
 		case bidmemberaccount.FieldAccountStatus:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -279,8 +280,10 @@ func (_m *BidMemberAccount) String() string {
 	builder.WriteString("register_mobile=")
 	builder.WriteString(_m.RegisterMobile)
 	builder.WriteString(", ")
-	builder.WriteString("primary_ca_id=")
-	builder.WriteString(_m.PrimaryCaID)
+	if v := _m.PrimaryCaID; v != nil {
+		builder.WriteString("primary_ca_id=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
 	builder.WriteString("account_status=")
 	builder.WriteString(fmt.Sprintf("%v", _m.AccountStatus))

@@ -7710,7 +7710,7 @@ func (m *BidMemberAccountMutation) PrimaryCaID() (r string, exists bool) {
 // OldPrimaryCaID returns the old "primary_ca_id" field's value of the BidMemberAccount entity.
 // If the BidMemberAccount object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *BidMemberAccountMutation) OldPrimaryCaID(ctx context.Context) (v string, err error) {
+func (m *BidMemberAccountMutation) OldPrimaryCaID(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldPrimaryCaID is only allowed on UpdateOne operations")
 	}
@@ -7724,9 +7724,22 @@ func (m *BidMemberAccountMutation) OldPrimaryCaID(ctx context.Context) (v string
 	return oldValue.PrimaryCaID, nil
 }
 
+// ClearPrimaryCaID clears the value of the "primary_ca_id" field.
+func (m *BidMemberAccountMutation) ClearPrimaryCaID() {
+	m.primary_ca_id = nil
+	m.clearedFields[bidmemberaccount.FieldPrimaryCaID] = struct{}{}
+}
+
+// PrimaryCaIDCleared returns if the "primary_ca_id" field was cleared in this mutation.
+func (m *BidMemberAccountMutation) PrimaryCaIDCleared() bool {
+	_, ok := m.clearedFields[bidmemberaccount.FieldPrimaryCaID]
+	return ok
+}
+
 // ResetPrimaryCaID resets all changes to the "primary_ca_id" field.
 func (m *BidMemberAccountMutation) ResetPrimaryCaID() {
 	m.primary_ca_id = nil
+	delete(m.clearedFields, bidmemberaccount.FieldPrimaryCaID)
 }
 
 // SetAccountStatus sets the "account_status" field.
@@ -8424,6 +8437,9 @@ func (m *BidMemberAccountMutation) ClearedFields() []string {
 	if m.FieldCleared(bidmemberaccount.FieldRegisterMobile) {
 		fields = append(fields, bidmemberaccount.FieldRegisterMobile)
 	}
+	if m.FieldCleared(bidmemberaccount.FieldPrimaryCaID) {
+		fields = append(fields, bidmemberaccount.FieldPrimaryCaID)
+	}
 	if m.FieldCleared(bidmemberaccount.FieldAbandonReason) {
 		fields = append(fields, bidmemberaccount.FieldAbandonReason)
 	}
@@ -8458,6 +8474,9 @@ func (m *BidMemberAccountMutation) ClearField(name string) error {
 		return nil
 	case bidmemberaccount.FieldRegisterMobile:
 		m.ClearRegisterMobile()
+		return nil
+	case bidmemberaccount.FieldPrimaryCaID:
+		m.ClearPrimaryCaID()
 		return nil
 	case bidmemberaccount.FieldAbandonReason:
 		m.ClearAbandonReason()
