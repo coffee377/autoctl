@@ -107,7 +107,6 @@ var (
 		{Name: "expiry_time", Type: field.TypeTime, Comment: "过期时间"},
 		{Name: "password", Type: field.TypeString, Nullable: true, Comment: "CA证书密码"},
 		{Name: "remark", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "备注"},
-		{Name: "primary", Type: field.TypeBool, Comment: "是否为主证书", Default: false},
 		{Name: "last_renewal_at", Type: field.TypeTime, Nullable: true, Comment: "最后续费时间"},
 		{Name: "created_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
 		{Name: "created_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},

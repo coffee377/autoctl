@@ -24,8 +24,6 @@ const (
 	FieldPassword = "password"
 	// FieldRemark holds the string denoting the remark field in the database.
 	FieldRemark = "remark"
-	// FieldPrimary holds the string denoting the primary field in the database.
-	FieldPrimary = "primary"
 	// FieldLastRenewalAt holds the string denoting the last_renewal_at field in the database.
 	FieldLastRenewalAt = "last_renewal_at"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
@@ -57,7 +55,6 @@ var Columns = []string{
 	FieldExpiryTime,
 	FieldPassword,
 	FieldRemark,
-	FieldPrimary,
 	FieldLastRenewalAt,
 	FieldCreatedAt,
 	FieldCreatedBy,
@@ -80,8 +77,6 @@ var (
 	CodeValidator func(string) error
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
-	// DefaultPrimary holds the default value on creation for the "primary" field.
-	DefaultPrimary bool
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
 	// CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
@@ -129,11 +124,6 @@ func ByPassword(opts ...sql.OrderTermOption) OrderOption {
 // ByRemark orders the results by the remark field.
 func ByRemark(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRemark, opts...).ToFunc()
-}
-
-// ByPrimary orders the results by the primary field.
-func ByPrimary(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPrimary, opts...).ToFunc()
 }
 
 // ByLastRenewalAt orders the results by the last_renewal_at field.

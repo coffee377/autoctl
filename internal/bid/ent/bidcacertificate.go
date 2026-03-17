@@ -27,8 +27,6 @@ type BidCACertificate struct {
 	Password string `json:"-"`
 	// 备注
 	Remark string `json:"remark,omitempty"`
-	// 是否为主证书
-	Primary bool `json:"primary,omitempty"`
 	// 最后续费时间
 	LastRenewalAt time.Time `json:"last_renewal_at,omitempty"`
 	// 创建时间
@@ -68,8 +66,6 @@ func (*BidCACertificate) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case bidcacertificate.FieldPrimary:
-			values[i] = new(sql.NullBool)
 		case bidcacertificate.FieldID, bidcacertificate.FieldCode, bidcacertificate.FieldName, bidcacertificate.FieldPassword, bidcacertificate.FieldRemark, bidcacertificate.FieldCreatedBy, bidcacertificate.FieldUpdatedBy:
 			values[i] = new(sql.NullString)
 		case bidcacertificate.FieldExpiryTime, bidcacertificate.FieldLastRenewalAt, bidcacertificate.FieldCreatedAt, bidcacertificate.FieldUpdatedAt:
@@ -124,12 +120,6 @@ func (_m *BidCACertificate) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field remark", values[i])
 			} else if value.Valid {
 				_m.Remark = value.String
-			}
-		case bidcacertificate.FieldPrimary:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field primary", values[i])
-			} else if value.Valid {
-				_m.Primary = value.Bool
 			}
 		case bidcacertificate.FieldLastRenewalAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -217,9 +207,6 @@ func (_m *BidCACertificate) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("remark=")
 	builder.WriteString(_m.Remark)
-	builder.WriteString(", ")
-	builder.WriteString("primary=")
-	builder.WriteString(fmt.Sprintf("%v", _m.Primary))
 	builder.WriteString(", ")
 	builder.WriteString("last_renewal_at=")
 	builder.WriteString(_m.LastRenewalAt.Format(time.ANSIC))

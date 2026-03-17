@@ -112,20 +112,6 @@ func (_u *BidCACertificateUpdate) ClearRemark() *BidCACertificateUpdate {
 	return _u
 }
 
-// SetPrimary sets the "primary" field.
-func (_u *BidCACertificateUpdate) SetPrimary(v bool) *BidCACertificateUpdate {
-	_u.mutation.SetPrimary(v)
-	return _u
-}
-
-// SetNillablePrimary sets the "primary" field if the given value is not nil.
-func (_u *BidCACertificateUpdate) SetNillablePrimary(v *bool) *BidCACertificateUpdate {
-	if v != nil {
-		_u.SetPrimary(*v)
-	}
-	return _u
-}
-
 // SetLastRenewalAt sets the "last_renewal_at" field.
 func (_u *BidCACertificateUpdate) SetLastRenewalAt(v time.Time) *BidCACertificateUpdate {
 	_u.mutation.SetLastRenewalAt(v)
@@ -347,9 +333,6 @@ func (_u *BidCACertificateUpdate) sqlSave(ctx context.Context) (_node int, err e
 	if _u.mutation.RemarkCleared() {
 		_spec.ClearField(bidcacertificate.FieldRemark, field.TypeString)
 	}
-	if value, ok := _u.mutation.Primary(); ok {
-		_spec.SetField(bidcacertificate.FieldPrimary, field.TypeBool, value)
-	}
 	if value, ok := _u.mutation.LastRenewalAt(); ok {
 		_spec.SetField(bidcacertificate.FieldLastRenewalAt, field.TypeTime, value)
 	}
@@ -520,20 +503,6 @@ func (_u *BidCACertificateUpdateOne) SetNillableRemark(v *string) *BidCACertific
 // ClearRemark clears the value of the "remark" field.
 func (_u *BidCACertificateUpdateOne) ClearRemark() *BidCACertificateUpdateOne {
 	_u.mutation.ClearRemark()
-	return _u
-}
-
-// SetPrimary sets the "primary" field.
-func (_u *BidCACertificateUpdateOne) SetPrimary(v bool) *BidCACertificateUpdateOne {
-	_u.mutation.SetPrimary(v)
-	return _u
-}
-
-// SetNillablePrimary sets the "primary" field if the given value is not nil.
-func (_u *BidCACertificateUpdateOne) SetNillablePrimary(v *bool) *BidCACertificateUpdateOne {
-	if v != nil {
-		_u.SetPrimary(*v)
-	}
 	return _u
 }
 
@@ -787,9 +756,6 @@ func (_u *BidCACertificateUpdateOne) sqlSave(ctx context.Context) (_node *BidCAC
 	}
 	if _u.mutation.RemarkCleared() {
 		_spec.ClearField(bidcacertificate.FieldRemark, field.TypeString)
-	}
-	if value, ok := _u.mutation.Primary(); ok {
-		_spec.SetField(bidcacertificate.FieldPrimary, field.TypeBool, value)
 	}
 	if value, ok := _u.mutation.LastRenewalAt(); ok {
 		_spec.SetField(bidcacertificate.FieldLastRenewalAt, field.TypeTime, value)

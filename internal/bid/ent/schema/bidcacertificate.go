@@ -24,7 +24,6 @@ func (BidCACertificate) Fields() []ent.Field {
 		field.Time("expiry_time").Comment("过期时间"),
 		field.String("password").Sensitive().Optional().Comment("CA证书密码"),
 		field.Text("remark").Optional().Comment("备注"),
-		field.Bool("primary").Default(false).Comment("是否为主证书"),
 		field.Time("last_renewal_at").Optional().Comment("最后续费时间"),
 	}
 }

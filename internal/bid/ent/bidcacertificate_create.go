@@ -67,20 +67,6 @@ func (_c *BidCACertificateCreate) SetNillableRemark(v *string) *BidCACertificate
 	return _c
 }
 
-// SetPrimary sets the "primary" field.
-func (_c *BidCACertificateCreate) SetPrimary(v bool) *BidCACertificateCreate {
-	_c.mutation.SetPrimary(v)
-	return _c
-}
-
-// SetNillablePrimary sets the "primary" field if the given value is not nil.
-func (_c *BidCACertificateCreate) SetNillablePrimary(v *bool) *BidCACertificateCreate {
-	if v != nil {
-		_c.SetPrimary(*v)
-	}
-	return _c
-}
-
 // SetLastRenewalAt sets the "last_renewal_at" field.
 func (_c *BidCACertificateCreate) SetLastRenewalAt(v time.Time) *BidCACertificateCreate {
 	_c.mutation.SetLastRenewalAt(v)
@@ -215,10 +201,6 @@ func (_c *BidCACertificateCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (_c *BidCACertificateCreate) defaults() {
-	if _, ok := _c.mutation.Primary(); !ok {
-		v := bidcacertificate.DefaultPrimary
-		_c.mutation.SetPrimary(v)
-	}
 	if _, ok := _c.mutation.CreatedAt(); !ok {
 		v := bidcacertificate.DefaultCreatedAt()
 		_c.mutation.SetCreatedAt(v)
@@ -253,9 +235,6 @@ func (_c *BidCACertificateCreate) check() error {
 	}
 	if _, ok := _c.mutation.ExpiryTime(); !ok {
 		return &ValidationError{Name: "expiry_time", err: errors.New(`ent: missing required field "BidCACertificate.expiry_time"`)}
-	}
-	if _, ok := _c.mutation.Primary(); !ok {
-		return &ValidationError{Name: "primary", err: errors.New(`ent: missing required field "BidCACertificate.primary"`)}
 	}
 	if _, ok := _c.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "BidCACertificate.created_at"`)}
@@ -332,10 +311,6 @@ func (_c *BidCACertificateCreate) createSpec() (*BidCACertificate, *sqlgraph.Cre
 	if value, ok := _c.mutation.Remark(); ok {
 		_spec.SetField(bidcacertificate.FieldRemark, field.TypeString, value)
 		_node.Remark = value
-	}
-	if value, ok := _c.mutation.Primary(); ok {
-		_spec.SetField(bidcacertificate.FieldPrimary, field.TypeBool, value)
-		_node.Primary = value
 	}
 	if value, ok := _c.mutation.LastRenewalAt(); ok {
 		_spec.SetField(bidcacertificate.FieldLastRenewalAt, field.TypeTime, value)

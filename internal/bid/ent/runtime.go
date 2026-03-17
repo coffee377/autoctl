@@ -106,10 +106,6 @@ func init() {
 	bidcacertificateDescName := bidcacertificateFields[2].Descriptor()
 	// bidcacertificate.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	bidcacertificate.NameValidator = bidcacertificateDescName.Validators[0].(func(string) error)
-	// bidcacertificateDescPrimary is the schema descriptor for primary field.
-	bidcacertificateDescPrimary := bidcacertificateFields[6].Descriptor()
-	// bidcacertificate.DefaultPrimary holds the default value on creation for the primary field.
-	bidcacertificate.DefaultPrimary = bidcacertificateDescPrimary.Default.(bool)
 	// bidcacertificateDescCreatedAt is the schema descriptor for created_at field.
 	bidcacertificateDescCreatedAt := bidcacertificateMixinFields0[0].Descriptor()
 	// bidcacertificate.DefaultCreatedAt holds the default value on creation for the created_at field.

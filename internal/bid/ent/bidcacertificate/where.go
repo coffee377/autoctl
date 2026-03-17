@@ -90,11 +90,6 @@ func Remark(v string) predicate.BidCACertificate {
 	return predicate.BidCACertificate(sql.FieldEQ(FieldRemark, v))
 }
 
-// Primary applies equality check predicate on the "primary" field. It's identical to PrimaryEQ.
-func Primary(v bool) predicate.BidCACertificate {
-	return predicate.BidCACertificate(sql.FieldEQ(FieldPrimary, v))
-}
-
 // LastRenewalAt applies equality check predicate on the "last_renewal_at" field. It's identical to LastRenewalAtEQ.
 func LastRenewalAt(v time.Time) predicate.BidCACertificate {
 	return predicate.BidCACertificate(sql.FieldEQ(FieldLastRenewalAt, v))
@@ -438,16 +433,6 @@ func RemarkEqualFold(v string) predicate.BidCACertificate {
 // RemarkContainsFold applies the ContainsFold predicate on the "remark" field.
 func RemarkContainsFold(v string) predicate.BidCACertificate {
 	return predicate.BidCACertificate(sql.FieldContainsFold(FieldRemark, v))
-}
-
-// PrimaryEQ applies the EQ predicate on the "primary" field.
-func PrimaryEQ(v bool) predicate.BidCACertificate {
-	return predicate.BidCACertificate(sql.FieldEQ(FieldPrimary, v))
-}
-
-// PrimaryNEQ applies the NEQ predicate on the "primary" field.
-func PrimaryNEQ(v bool) predicate.BidCACertificate {
-	return predicate.BidCACertificate(sql.FieldNEQ(FieldPrimary, v))
 }
 
 // LastRenewalAtEQ applies the EQ predicate on the "last_renewal_at" field.
