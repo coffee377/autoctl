@@ -2,6 +2,7 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
@@ -19,12 +20,16 @@ type BidCACertificate struct {
 func (BidCACertificate) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("id").MaxRuneLen(32).Default(uuid.New().String()),
-		field.String("code").Comment("CA证书编码").NotEmpty(),
-		field.String("name").Comment("CA证书名称").NotEmpty(),
-		field.Time("expiry_time").Comment("过期时间"),
+		field.String("code").Comment("CA证书编码").NotEmpty().MaxRuneLen(24),
+		field.String("name").Comment("CA证书名称").NotEmpty().MaxRuneLen(32),
+		field.Time("expiry_time").Comment("过期时间").SchemaType(map[string]string{
+			dialect.MySQL: "datetime",
+		}),
 		field.String("password").Sensitive().Optional().Comment("CA证书密码"),
 		field.Text("remark").Optional().Comment("备注"),
-		field.Time("last_renewal_at").Optional().Comment("最后续费时间"),
+		field.Time("last_renewal_at").Optional().Comment("最后续费时间").SchemaType(map[string]string{
+			dialect.MySQL: "datetime(3)",
+		}),
 	}
 }
 

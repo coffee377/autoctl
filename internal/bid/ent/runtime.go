@@ -101,11 +101,39 @@ func init() {
 	// bidcacertificateDescCode is the schema descriptor for code field.
 	bidcacertificateDescCode := bidcacertificateFields[1].Descriptor()
 	// bidcacertificate.CodeValidator is a validator for the "code" field. It is called by the builders before save.
-	bidcacertificate.CodeValidator = bidcacertificateDescCode.Validators[0].(func(string) error)
+	bidcacertificate.CodeValidator = func() func(string) error {
+		validators := bidcacertificateDescCode.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(code string) error {
+			for _, fn := range fns {
+				if err := fn(code); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// bidcacertificateDescName is the schema descriptor for name field.
 	bidcacertificateDescName := bidcacertificateFields[2].Descriptor()
 	// bidcacertificate.NameValidator is a validator for the "name" field. It is called by the builders before save.
-	bidcacertificate.NameValidator = bidcacertificateDescName.Validators[0].(func(string) error)
+	bidcacertificate.NameValidator = func() func(string) error {
+		validators := bidcacertificateDescName.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(name string) error {
+			for _, fn := range fns {
+				if err := fn(name); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// bidcacertificateDescCreatedAt is the schema descriptor for created_at field.
 	bidcacertificateDescCreatedAt := bidcacertificateMixinFields0[0].Descriptor()
 	// bidcacertificate.DefaultCreatedAt holds the default value on creation for the created_at field.
@@ -328,7 +356,33 @@ func init() {
 	// bidmemberaccountDescUsername is the schema descriptor for username field.
 	bidmemberaccountDescUsername := bidmemberaccountFields[4].Descriptor()
 	// bidmemberaccount.UsernameValidator is a validator for the "username" field. It is called by the builders before save.
-	bidmemberaccount.UsernameValidator = bidmemberaccountDescUsername.Validators[0].(func(string) error)
+	bidmemberaccount.UsernameValidator = func() func(string) error {
+		validators := bidmemberaccountDescUsername.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(username string) error {
+			for _, fn := range fns {
+				if err := fn(username); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// bidmemberaccountDescPassword is the schema descriptor for password field.
+	bidmemberaccountDescPassword := bidmemberaccountFields[5].Descriptor()
+	// bidmemberaccount.PasswordValidator is a validator for the "password" field. It is called by the builders before save.
+	bidmemberaccount.PasswordValidator = bidmemberaccountDescPassword.Validators[0].(func(string) error)
+	// bidmemberaccountDescRegisterPerson is the schema descriptor for register_person field.
+	bidmemberaccountDescRegisterPerson := bidmemberaccountFields[6].Descriptor()
+	// bidmemberaccount.RegisterPersonValidator is a validator for the "register_person" field. It is called by the builders before save.
+	bidmemberaccount.RegisterPersonValidator = bidmemberaccountDescRegisterPerson.Validators[0].(func(string) error)
+	// bidmemberaccountDescRegisterMobile is the schema descriptor for register_mobile field.
+	bidmemberaccountDescRegisterMobile := bidmemberaccountFields[7].Descriptor()
+	// bidmemberaccount.RegisterMobileValidator is a validator for the "register_mobile" field. It is called by the builders before save.
+	bidmemberaccount.RegisterMobileValidator = bidmemberaccountDescRegisterMobile.Validators[0].(func(string) error)
 	// bidmemberaccountDescPrimaryCaID is the schema descriptor for primary_ca_id field.
 	bidmemberaccountDescPrimaryCaID := bidmemberaccountFields[8].Descriptor()
 	// bidmemberaccount.PrimaryCaIDValidator is a validator for the "primary_ca_id" field. It is called by the builders before save.

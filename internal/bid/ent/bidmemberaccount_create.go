@@ -321,6 +321,21 @@ func (_c *BidMemberAccountCreate) check() error {
 			return &ValidationError{Name: "username", err: fmt.Errorf(`ent: validator failed for field "BidMemberAccount.username": %w`, err)}
 		}
 	}
+	if v, ok := _c.mutation.Password(); ok {
+		if err := bidmemberaccount.PasswordValidator(v); err != nil {
+			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "BidMemberAccount.password": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.RegisterPerson(); ok {
+		if err := bidmemberaccount.RegisterPersonValidator(v); err != nil {
+			return &ValidationError{Name: "register_person", err: fmt.Errorf(`ent: validator failed for field "BidMemberAccount.register_person": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.RegisterMobile(); ok {
+		if err := bidmemberaccount.RegisterMobileValidator(v); err != nil {
+			return &ValidationError{Name: "register_mobile", err: fmt.Errorf(`ent: validator failed for field "BidMemberAccount.register_mobile": %w`, err)}
+		}
+	}
 	if v, ok := _c.mutation.PrimaryCaID(); ok {
 		if err := bidmemberaccount.PrimaryCaIDValidator(v); err != nil {
 			return &ValidationError{Name: "primary_ca_id", err: fmt.Errorf(`ent: validator failed for field "BidMemberAccount.primary_ca_id": %w`, err)}

@@ -22,11 +22,11 @@ func (BidMemberAccount) Fields() []ent.Field {
 		field.String("website_id").Comment("归属网站").MaxRuneLen(32),
 		field.String("owner_code").Comment("归属主体编码").Nillable().MaxRuneLen(32),
 		field.String("owner_name").Comment("归属主体名称").Nillable().MaxRuneLen(32),
-		field.String("username").Comment("账号").NotEmpty(),
-		field.String("password").Sensitive().Optional().Comment("密码"),
+		field.String("username").Comment("账号").NotEmpty().MaxRuneLen(32),
+		field.String("password").Sensitive().Optional().Comment("密码").MaxRuneLen(32),
 
-		field.String("register_person").Optional().Comment("注册人员"),
-		field.String("register_mobile").Optional().Comment(" 注册手机号"),
+		field.String("register_person").Optional().Comment("注册人员").MaxRuneLen(16),
+		field.String("register_mobile").Optional().Comment(" 注册手机号").MaxRuneLen(16),
 
 		field.String("primary_ca_id").Comment("主证书 ID").MaxRuneLen(32).Optional().Nillable(),
 
