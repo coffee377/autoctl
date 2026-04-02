@@ -3241,6 +3241,7 @@ type BidExpenseMutation struct {
 	pay_time                  *time.Time
 	approval_status           *string
 	_done                     *bool
+	deleted                   *bool
 	created_at                *time.Time
 	created_by                *string
 	updated_at                *time.Time
@@ -4483,6 +4484,42 @@ func (m *BidExpenseMutation) ResetDone() {
 	m._done = nil
 }
 
+// SetDeleted sets the "deleted" field.
+func (m *BidExpenseMutation) SetDeleted(b bool) {
+	m.deleted = &b
+}
+
+// Deleted returns the value of the "deleted" field in the mutation.
+func (m *BidExpenseMutation) Deleted() (r bool, exists bool) {
+	v := m.deleted
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleted returns the old "deleted" field's value of the BidExpense entity.
+// If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidExpenseMutation) OldDeleted(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeleted is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeleted requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleted: %w", err)
+	}
+	return oldValue.Deleted, nil
+}
+
+// ResetDeleted resets all changes to the "deleted" field.
+func (m *BidExpenseMutation) ResetDeleted() {
+	m.deleted = nil
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (m *BidExpenseMutation) SetCreatedAt(t time.Time) {
 	m.created_at = &t
@@ -4714,7 +4751,7 @@ func (m *BidExpenseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *BidExpenseMutation) Fields() []string {
-	fields := make([]string, 0, 30)
+	fields := make([]string, 0, 31)
 	if m.business_id != nil {
 		fields = append(fields, bidexpense.FieldBusinessID)
 	}
@@ -4793,6 +4830,9 @@ func (m *BidExpenseMutation) Fields() []string {
 	if m._done != nil {
 		fields = append(fields, bidexpense.FieldDone)
 	}
+	if m.deleted != nil {
+		fields = append(fields, bidexpense.FieldDeleted)
+	}
 	if m.created_at != nil {
 		fields = append(fields, bidexpense.FieldCreatedAt)
 	}
@@ -4865,6 +4905,8 @@ func (m *BidExpenseMutation) Field(name string) (ent.Value, bool) {
 		return m.ApprovalStatus()
 	case bidexpense.FieldDone:
 		return m.Done()
+	case bidexpense.FieldDeleted:
+		return m.Deleted()
 	case bidexpense.FieldCreatedAt:
 		return m.CreatedAt()
 	case bidexpense.FieldCreatedBy:
@@ -4934,6 +4976,8 @@ func (m *BidExpenseMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldApprovalStatus(ctx)
 	case bidexpense.FieldDone:
 		return m.OldDone(ctx)
+	case bidexpense.FieldDeleted:
+		return m.OldDeleted(ctx)
 	case bidexpense.FieldCreatedAt:
 		return m.OldCreatedAt(ctx)
 	case bidexpense.FieldCreatedBy:
@@ -5132,6 +5176,13 @@ func (m *BidExpenseMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDone(v)
+		return nil
+	case bidexpense.FieldDeleted:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleted(v)
 		return nil
 	case bidexpense.FieldCreatedAt:
 		v, ok := value.(time.Time)
@@ -5401,6 +5452,9 @@ func (m *BidExpenseMutation) ResetField(name string) error {
 		return nil
 	case bidexpense.FieldDone:
 		m.ResetDone()
+		return nil
+	case bidexpense.FieldDeleted:
+		m.ResetDeleted()
 		return nil
 	case bidexpense.FieldCreatedAt:
 		m.ResetCreatedAt()

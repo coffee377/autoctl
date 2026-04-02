@@ -71,6 +71,8 @@ type BidExpense struct {
 	ApprovalStatus string `json:"approval_status,omitempty"`
 	// 审批流程是否已结束
 	Done bool `json:"done,omitempty"`
+	// 是否逻辑删除
+	Deleted bool `json:"deleted,omitempty"`
 	// 创建时间
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// 创建人
@@ -110,7 +112,7 @@ func (*BidExpense) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case bidexpense.FieldRefunded, bidexpense.FieldDone:
+		case bidexpense.FieldRefunded, bidexpense.FieldDone, bidexpense.FieldDeleted:
 			values[i] = new(sql.NullBool)
 		case bidexpense.FieldGuaranteeDenomination, bidexpense.FieldPayRatio, bidexpense.FieldPayAmount:
 			values[i] = new(sql.NullFloat64)
@@ -305,6 +307,12 @@ func (_m *BidExpense) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.Done = value.Bool
 			}
+		case bidexpense.FieldDeleted:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field deleted", values[i])
+			} else if value.Valid {
+				_m.Deleted = value.Bool
+			}
 		case bidexpense.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
@@ -469,6 +477,9 @@ func (_m *BidExpense) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("done=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Done))
+	builder.WriteString(", ")
+	builder.WriteString("deleted=")
+	builder.WriteString(fmt.Sprintf("%v", _m.Deleted))
 	builder.WriteString(", ")
 	builder.WriteString("created_at=")
 	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))

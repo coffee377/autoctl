@@ -67,6 +67,8 @@ const (
 	FieldApprovalStatus = "approval_status"
 	// FieldDone holds the string denoting the done field in the database.
 	FieldDone = "done"
+	// FieldDeleted holds the string denoting the deleted field in the database.
+	FieldDeleted = "deleted"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
 	// FieldCreatedBy holds the string denoting the created_by field in the database.
@@ -117,6 +119,7 @@ var Columns = []string{
 	FieldPayTime,
 	FieldApprovalStatus,
 	FieldDone,
+	FieldDeleted,
 	FieldCreatedAt,
 	FieldCreatedBy,
 	FieldUpdatedAt,
@@ -172,6 +175,8 @@ var (
 	TransferInstructionsValidator func(string) error
 	// DefaultDone holds the default value on creation for the "done" field.
 	DefaultDone bool
+	// DefaultDeleted holds the default value on creation for the "deleted" field.
+	DefaultDeleted bool
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
 	// CreatedByValidator is a validator for the "created_by" field. It is called by the builders before save.
@@ -356,6 +361,11 @@ func ByApprovalStatus(opts ...sql.OrderTermOption) OrderOption {
 // ByDone orders the results by the done field.
 func ByDone(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDone, opts...).ToFunc()
+}
+
+// ByDeleted orders the results by the deleted field.
+func ByDeleted(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDeleted, opts...).ToFunc()
 }
 
 // ByCreatedAt orders the results by the created_at field.

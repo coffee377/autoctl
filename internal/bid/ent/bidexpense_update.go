@@ -475,6 +475,20 @@ func (_u *BidExpenseUpdate) SetNillableDone(v *bool) *BidExpenseUpdate {
 	return _u
 }
 
+// SetDeleted sets the "deleted" field.
+func (_u *BidExpenseUpdate) SetDeleted(v bool) *BidExpenseUpdate {
+	_u.mutation.SetDeleted(v)
+	return _u
+}
+
+// SetNillableDeleted sets the "deleted" field if the given value is not nil.
+func (_u *BidExpenseUpdate) SetNillableDeleted(v *bool) *BidExpenseUpdate {
+	if v != nil {
+		_u.SetDeleted(*v)
+	}
+	return _u
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (_u *BidExpenseUpdate) SetCreatedAt(v time.Time) *BidExpenseUpdate {
 	_u.mutation.SetCreatedAt(v)
@@ -805,6 +819,9 @@ func (_u *BidExpenseUpdate) sqlSave(ctx context.Context) (_node int, err error) 
 	}
 	if value, ok := _u.mutation.Done(); ok {
 		_spec.SetField(bidexpense.FieldDone, field.TypeBool, value)
+	}
+	if value, ok := _u.mutation.Deleted(); ok {
+		_spec.SetField(bidexpense.FieldDeleted, field.TypeBool, value)
 	}
 	if value, ok := _u.mutation.CreatedAt(); ok {
 		_spec.SetField(bidexpense.FieldCreatedAt, field.TypeTime, value)
@@ -1320,6 +1337,20 @@ func (_u *BidExpenseUpdateOne) SetNillableDone(v *bool) *BidExpenseUpdateOne {
 	return _u
 }
 
+// SetDeleted sets the "deleted" field.
+func (_u *BidExpenseUpdateOne) SetDeleted(v bool) *BidExpenseUpdateOne {
+	_u.mutation.SetDeleted(v)
+	return _u
+}
+
+// SetNillableDeleted sets the "deleted" field if the given value is not nil.
+func (_u *BidExpenseUpdateOne) SetNillableDeleted(v *bool) *BidExpenseUpdateOne {
+	if v != nil {
+		_u.SetDeleted(*v)
+	}
+	return _u
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (_u *BidExpenseUpdateOne) SetCreatedAt(v time.Time) *BidExpenseUpdateOne {
 	_u.mutation.SetCreatedAt(v)
@@ -1680,6 +1711,9 @@ func (_u *BidExpenseUpdateOne) sqlSave(ctx context.Context) (_node *BidExpense, 
 	}
 	if value, ok := _u.mutation.Done(); ok {
 		_spec.SetField(bidexpense.FieldDone, field.TypeBool, value)
+	}
+	if value, ok := _u.mutation.Deleted(); ok {
+		_spec.SetField(bidexpense.FieldDeleted, field.TypeBool, value)
 	}
 	if value, ok := _u.mutation.CreatedAt(); ok {
 		_spec.SetField(bidexpense.FieldCreatedAt, field.TypeTime, value)

@@ -190,6 +190,11 @@ func Done(v bool) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldDone, v))
 }
 
+// Deleted applies equality check predicate on the "deleted" field. It's identical to DeletedEQ.
+func Deleted(v bool) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldDeleted, v))
+}
+
 // CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldCreatedAt, v))
@@ -1693,6 +1698,16 @@ func DoneEQ(v bool) predicate.BidExpense {
 // DoneNEQ applies the NEQ predicate on the "done" field.
 func DoneNEQ(v bool) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldNEQ(FieldDone, v))
+}
+
+// DeletedEQ applies the EQ predicate on the "deleted" field.
+func DeletedEQ(v bool) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldDeleted, v))
+}
+
+// DeletedNEQ applies the NEQ predicate on the "deleted" field.
+func DeletedNEQ(v bool) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNEQ(FieldDeleted, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.

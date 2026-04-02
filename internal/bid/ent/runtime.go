@@ -239,6 +239,10 @@ func init() {
 	bidexpenseDescDone := bidexpenseFields[26].Descriptor()
 	// bidexpense.DefaultDone holds the default value on creation for the done field.
 	bidexpense.DefaultDone = bidexpenseDescDone.Default.(bool)
+	// bidexpenseDescDeleted is the schema descriptor for deleted field.
+	bidexpenseDescDeleted := bidexpenseFields[27].Descriptor()
+	// bidexpense.DefaultDeleted holds the default value on creation for the deleted field.
+	bidexpense.DefaultDeleted = bidexpenseDescDeleted.Default.(bool)
 	// bidexpenseDescCreatedAt is the schema descriptor for created_at field.
 	bidexpenseDescCreatedAt := bidexpenseMixinFields0[0].Descriptor()
 	// bidexpense.DefaultCreatedAt holds the default value on creation for the created_at field.

@@ -305,6 +305,20 @@ func (_c *BidExpenseCreate) SetNillableDone(v *bool) *BidExpenseCreate {
 	return _c
 }
 
+// SetDeleted sets the "deleted" field.
+func (_c *BidExpenseCreate) SetDeleted(v bool) *BidExpenseCreate {
+	_c.mutation.SetDeleted(v)
+	return _c
+}
+
+// SetNillableDeleted sets the "deleted" field if the given value is not nil.
+func (_c *BidExpenseCreate) SetNillableDeleted(v *bool) *BidExpenseCreate {
+	if v != nil {
+		_c.SetDeleted(*v)
+	}
+	return _c
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (_c *BidExpenseCreate) SetCreatedAt(v time.Time) *BidExpenseCreate {
 	_c.mutation.SetCreatedAt(v)
@@ -430,6 +444,10 @@ func (_c *BidExpenseCreate) defaults() {
 	if _, ok := _c.mutation.Done(); !ok {
 		v := bidexpense.DefaultDone
 		_c.mutation.SetDone(v)
+	}
+	if _, ok := _c.mutation.Deleted(); !ok {
+		v := bidexpense.DefaultDeleted
+		_c.mutation.SetDeleted(v)
 	}
 	if _, ok := _c.mutation.CreatedAt(); !ok {
 		v := bidexpense.DefaultCreatedAt()
@@ -565,6 +583,9 @@ func (_c *BidExpenseCreate) check() error {
 	}
 	if _, ok := _c.mutation.Done(); !ok {
 		return &ValidationError{Name: "done", err: errors.New(`ent: missing required field "BidExpense.done"`)}
+	}
+	if _, ok := _c.mutation.Deleted(); !ok {
+		return &ValidationError{Name: "deleted", err: errors.New(`ent: missing required field "BidExpense.deleted"`)}
 	}
 	if _, ok := _c.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "BidExpense.created_at"`)}
@@ -721,6 +742,10 @@ func (_c *BidExpenseCreate) createSpec() (*BidExpense, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.Done(); ok {
 		_spec.SetField(bidexpense.FieldDone, field.TypeBool, value)
 		_node.Done = value
+	}
+	if value, ok := _c.mutation.Deleted(); ok {
+		_spec.SetField(bidexpense.FieldDeleted, field.TypeBool, value)
+		_node.Deleted = value
 	}
 	if value, ok := _c.mutation.CreatedAt(); ok {
 		_spec.SetField(bidexpense.FieldCreatedAt, field.TypeTime, value)

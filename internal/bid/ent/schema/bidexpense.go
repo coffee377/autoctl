@@ -76,6 +76,7 @@ func (BidExpense) Fields() []ent.Field {
 			}),
 		field.String("approval_status").Comment("费用审批状态"),
 		field.Bool("done").Comment("审批流程是否已结束").Default(false),
+		field.Bool("deleted").Comment("是否逻辑删除").Default(false),
 	}
 }
 
