@@ -46,7 +46,7 @@ func (BidCACertificate) Edges() []ent.Edge {
 // Indexes of the BidCACertificate.
 func (BidCACertificate) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("code").StorageKey("idx_code"),
+		index.Fields("code").Unique().StorageKey("uk_code"),
 		index.Fields("name").StorageKey("idx_name"),
 	}
 }

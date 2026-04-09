@@ -121,8 +121,8 @@ var (
 		PrimaryKey: []*schema.Column{BidCaCertificateColumns[0]},
 		Indexes: []*schema.Index{
 			{
-				Name:    "idx_code",
-				Unique:  false,
+				Name:    "uk_code",
+				Unique:  true,
 				Columns: []*schema.Column{BidCaCertificateColumns[1]},
 			},
 			{
