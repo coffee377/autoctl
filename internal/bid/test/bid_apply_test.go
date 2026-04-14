@@ -15,7 +15,7 @@ import (
 func TestApplyBatch(t *testing.T) {
 	approval, err := oa.New(app.New("a57e9681-79cb-4242-96df-952be2dc3af7", app.WithRedis()))
 	assert.Nil(t, err)
-	ids, err := approval.GetProcessInstanceIds(oa.BidApplyProcessCode, "2026-03-01", "", nil)
+	ids, err := approval.GetProcessInstanceIds(oa.BidApplyProcessCode, "2026-04-01", "", nil)
 	assert.Nil(t, err)
 
 	client, ok := ds.Mysql()
@@ -46,7 +46,7 @@ func TestApply(t *testing.T) {
 	assert.Equal(t, true, ok)
 
 	ctx := context.Background()
-	id := "WuaVoI30TnmDXnEKdYLdNQ07201741157155"
+	id := "GMCRvGS4Q4ySIr0c2ZJmrQ07201776067769"
 	res, err := approval.GetProcessInstance(id)
 	assert.Nil(t, err)
 
