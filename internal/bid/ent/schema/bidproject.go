@@ -19,7 +19,7 @@ func (BidProject) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("id").Unique().Comment("项目 ID").MaxLen(32),
 		field.String("code").Comment("项目编码").MaxRuneLen(64).Default(""),
-		field.String("name").Comment("项目名称").MaxRuneLen(64),
+		field.String("name").Comment("项目名称").MaxRuneLen(255),
 		field.Enum("type").Comment("项目类型 S:软件 H:硬件 I:软硬件集成 OM:运维服务 UP:其他").
 			Values("S", "H", "I", "OM", "UP").Default("UP"),
 		field.String("department_code").Comment("所属部门编码").MaxRuneLen(64).Default(""),
