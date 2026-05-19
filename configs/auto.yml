@@ -1,22 +1,23 @@
-
 # redis 配置
 redis:
   host: 127.0.0.1
   port: 6379
   password: redis!@@&
+  db: 0
 
+# token 配置
+token:
+#  默认令牌生成账号
+  account: coffee377
+#  令牌过期时间
+#  expire: 168h # 7×24h
+# 是否固定会话 ID
+#  session-fixed: false
+
+# mysql 数据配置
 mysql:
   host: 127.0.0.1
   port: 3306
   username: root
   password: root
   database: test
-
-#storage:
-#  database:
-#    driver: mysql
-#    source: root:root@tcp(127.0.0.1:3306)/test
-#  redis:
-#    addr: 127.0.0.1:6379
-#    read_timeout: 0.2s
-#    write_timeout: 0.2s

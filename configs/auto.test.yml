@@ -1,7 +1,11 @@
-
 # redis 配置
 redis:
   host: 10.1.83.26
   port: 6379
   password: jqkj5350**)!
   db: 5
+
+# token 配置
+token:
+  account: coffee377
+  expire: 168h # 7 days

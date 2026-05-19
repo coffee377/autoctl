@@ -145,6 +145,10 @@ func WithFixSession() SessionOptions {
 
 func WithExpire(duration time.Duration) SessionOptions {
 	return func(session *jqSession) {
-		session.Expire = duration
+		if duration > 0 {
+			session.Expire = duration
+		} else {
+			session.Expire = time.Minute * 5
+		}
 	}
 }

@@ -10,9 +10,13 @@ import (
 
 func TestJwt(t *testing.T) {
 	redisOptions := redis.Options{
-		Addr:     "localhost:6379", // Redis 服务器地址
-		Password: "redis!@@&",      // Redis 服务器密码
-		DB:       0,                // Redis 数据库索引
+		//Addr:     "localhost:6379", // Redis 服务器地址
+		//Password: "redis!@@&",      // Redis 服务器密码
+		//DB:       0,                // Redis 数据库索引
+
+		Addr:     "192.168.44.82:6379",
+		Password: "jqkj5350**)",
+		DB:       5,
 	}
 	jwtGenerator := NewJWTGenerator(WithJinQi(), WithRedis(redisOptions))
 	session := NewJinQiSession(WithAccount("coffee377"), WithFixSession(), WithExpire(time.Hour*24*7))
