@@ -9,3 +9,4 @@ redis:
 token:
   account: coffee377
   expire: 168h # 7 days
+  session-fixed: true

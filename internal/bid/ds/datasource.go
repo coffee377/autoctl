@@ -129,7 +129,7 @@ func initClients() error {
 	cacheMu.Lock()
 	defer cacheMu.Unlock()
 
-	mysql := dsTest.mysql
+	mysql := dsProd.mysql
 	// 创建 Ent Client
 	client, err := ent.Open(mysql.typ, mysql.DSN())
 	if err != nil {
