@@ -49,3 +49,6 @@ webhook:
 event:
 	mc event add cds-test/download arn:minio:sqs::file_download:webhook --event put --suffix .xlsx
 	#mc event rm local/download arn:minio:sqs::primary:webhook --event put,delete --suffix .xlsx
+
+install:
+	go install ./cmd/autoctl
