@@ -41,6 +41,7 @@ func (l *Loader) Load(v *viper.Viper) (*Config, error) {
 	v.AddConfigPath("./configs")
 	v.AddConfigPath("./conf")
 	v.AddConfigPath(".")
+	v.AddConfigPath("$HOME/.autoctl")
 
 	_ = v.ReadInConfig() // 忽略不存在的情况
 
