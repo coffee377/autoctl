@@ -489,6 +489,26 @@ func (_u *BidExpenseUpdate) SetNillableDeleted(v *bool) *BidExpenseUpdate {
 	return _u
 }
 
+// SetRemark sets the "remark" field.
+func (_u *BidExpenseUpdate) SetRemark(v string) *BidExpenseUpdate {
+	_u.mutation.SetRemark(v)
+	return _u
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (_u *BidExpenseUpdate) SetNillableRemark(v *string) *BidExpenseUpdate {
+	if v != nil {
+		_u.SetRemark(*v)
+	}
+	return _u
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (_u *BidExpenseUpdate) ClearRemark() *BidExpenseUpdate {
+	_u.mutation.ClearRemark()
+	return _u
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (_u *BidExpenseUpdate) SetCreatedAt(v time.Time) *BidExpenseUpdate {
 	_u.mutation.SetCreatedAt(v)
@@ -822,6 +842,12 @@ func (_u *BidExpenseUpdate) sqlSave(ctx context.Context) (_node int, err error) 
 	}
 	if value, ok := _u.mutation.Deleted(); ok {
 		_spec.SetField(bidexpense.FieldDeleted, field.TypeBool, value)
+	}
+	if value, ok := _u.mutation.Remark(); ok {
+		_spec.SetField(bidexpense.FieldRemark, field.TypeString, value)
+	}
+	if _u.mutation.RemarkCleared() {
+		_spec.ClearField(bidexpense.FieldRemark, field.TypeString)
 	}
 	if value, ok := _u.mutation.CreatedAt(); ok {
 		_spec.SetField(bidexpense.FieldCreatedAt, field.TypeTime, value)
@@ -1351,6 +1377,26 @@ func (_u *BidExpenseUpdateOne) SetNillableDeleted(v *bool) *BidExpenseUpdateOne 
 	return _u
 }
 
+// SetRemark sets the "remark" field.
+func (_u *BidExpenseUpdateOne) SetRemark(v string) *BidExpenseUpdateOne {
+	_u.mutation.SetRemark(v)
+	return _u
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (_u *BidExpenseUpdateOne) SetNillableRemark(v *string) *BidExpenseUpdateOne {
+	if v != nil {
+		_u.SetRemark(*v)
+	}
+	return _u
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (_u *BidExpenseUpdateOne) ClearRemark() *BidExpenseUpdateOne {
+	_u.mutation.ClearRemark()
+	return _u
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (_u *BidExpenseUpdateOne) SetCreatedAt(v time.Time) *BidExpenseUpdateOne {
 	_u.mutation.SetCreatedAt(v)
@@ -1714,6 +1760,12 @@ func (_u *BidExpenseUpdateOne) sqlSave(ctx context.Context) (_node *BidExpense, 
 	}
 	if value, ok := _u.mutation.Deleted(); ok {
 		_spec.SetField(bidexpense.FieldDeleted, field.TypeBool, value)
+	}
+	if value, ok := _u.mutation.Remark(); ok {
+		_spec.SetField(bidexpense.FieldRemark, field.TypeString, value)
+	}
+	if _u.mutation.RemarkCleared() {
+		_spec.ClearField(bidexpense.FieldRemark, field.TypeString)
 	}
 	if value, ok := _u.mutation.CreatedAt(); ok {
 		_spec.SetField(bidexpense.FieldCreatedAt, field.TypeTime, value)

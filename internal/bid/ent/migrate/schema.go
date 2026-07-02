@@ -161,6 +161,7 @@ var (
 		{Name: "approval_status", Type: field.TypeString, Comment: "费用审批状态"},
 		{Name: "done", Type: field.TypeBool, Comment: "审批流程是否已结束", Default: false},
 		{Name: "deleted", Type: field.TypeBool, Comment: "是否逻辑删除", Default: false},
+		{Name: "remark", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "备注"},
 		{Name: "created_at", Type: field.TypeTime, Comment: "创建时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
 		{Name: "created_by", Type: field.TypeString, Nullable: true, Size: 32, Comment: "创建人"},
 		{Name: "updated_at", Type: field.TypeTime, Comment: "更新时间", SchemaType: map[string]string{"mysql": "datetime(3)"}},
@@ -176,7 +177,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "fk_pid_02",
-				Columns:    []*schema.Column{BidExpenseColumns[31]},
+				Columns:    []*schema.Column{BidExpenseColumns[32]},
 				RefColumns: []*schema.Column{BidProjectColumns[0]},
 				OnDelete:   schema.Cascade,
 			},

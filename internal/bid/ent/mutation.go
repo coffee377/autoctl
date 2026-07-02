@@ -3242,6 +3242,7 @@ type BidExpenseMutation struct {
 	approval_status           *string
 	_done                     *bool
 	deleted                   *bool
+	remark                    *string
 	created_at                *time.Time
 	created_by                *string
 	updated_at                *time.Time
@@ -4520,6 +4521,55 @@ func (m *BidExpenseMutation) ResetDeleted() {
 	m.deleted = nil
 }
 
+// SetRemark sets the "remark" field.
+func (m *BidExpenseMutation) SetRemark(s string) {
+	m.remark = &s
+}
+
+// Remark returns the value of the "remark" field in the mutation.
+func (m *BidExpenseMutation) Remark() (r string, exists bool) {
+	v := m.remark
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRemark returns the old "remark" field's value of the BidExpense entity.
+// If the BidExpense object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidExpenseMutation) OldRemark(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRemark is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRemark requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRemark: %w", err)
+	}
+	return oldValue.Remark, nil
+}
+
+// ClearRemark clears the value of the "remark" field.
+func (m *BidExpenseMutation) ClearRemark() {
+	m.remark = nil
+	m.clearedFields[bidexpense.FieldRemark] = struct{}{}
+}
+
+// RemarkCleared returns if the "remark" field was cleared in this mutation.
+func (m *BidExpenseMutation) RemarkCleared() bool {
+	_, ok := m.clearedFields[bidexpense.FieldRemark]
+	return ok
+}
+
+// ResetRemark resets all changes to the "remark" field.
+func (m *BidExpenseMutation) ResetRemark() {
+	m.remark = nil
+	delete(m.clearedFields, bidexpense.FieldRemark)
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (m *BidExpenseMutation) SetCreatedAt(t time.Time) {
 	m.created_at = &t
@@ -4751,7 +4801,7 @@ func (m *BidExpenseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *BidExpenseMutation) Fields() []string {
-	fields := make([]string, 0, 31)
+	fields := make([]string, 0, 32)
 	if m.business_id != nil {
 		fields = append(fields, bidexpense.FieldBusinessID)
 	}
@@ -4833,6 +4883,9 @@ func (m *BidExpenseMutation) Fields() []string {
 	if m.deleted != nil {
 		fields = append(fields, bidexpense.FieldDeleted)
 	}
+	if m.remark != nil {
+		fields = append(fields, bidexpense.FieldRemark)
+	}
 	if m.created_at != nil {
 		fields = append(fields, bidexpense.FieldCreatedAt)
 	}
@@ -4907,6 +4960,8 @@ func (m *BidExpenseMutation) Field(name string) (ent.Value, bool) {
 		return m.Done()
 	case bidexpense.FieldDeleted:
 		return m.Deleted()
+	case bidexpense.FieldRemark:
+		return m.Remark()
 	case bidexpense.FieldCreatedAt:
 		return m.CreatedAt()
 	case bidexpense.FieldCreatedBy:
@@ -4978,6 +5033,8 @@ func (m *BidExpenseMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldDone(ctx)
 	case bidexpense.FieldDeleted:
 		return m.OldDeleted(ctx)
+	case bidexpense.FieldRemark:
+		return m.OldRemark(ctx)
 	case bidexpense.FieldCreatedAt:
 		return m.OldCreatedAt(ctx)
 	case bidexpense.FieldCreatedBy:
@@ -5184,6 +5241,13 @@ func (m *BidExpenseMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDeleted(v)
 		return nil
+	case bidexpense.FieldRemark:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRemark(v)
+		return nil
 	case bidexpense.FieldCreatedAt:
 		v, ok := value.(time.Time)
 		if !ok {
@@ -5311,6 +5375,9 @@ func (m *BidExpenseMutation) ClearedFields() []string {
 	if m.FieldCleared(bidexpense.FieldPayTime) {
 		fields = append(fields, bidexpense.FieldPayTime)
 	}
+	if m.FieldCleared(bidexpense.FieldRemark) {
+		fields = append(fields, bidexpense.FieldRemark)
+	}
 	if m.FieldCleared(bidexpense.FieldCreatedBy) {
 		fields = append(fields, bidexpense.FieldCreatedBy)
 	}
@@ -5360,6 +5427,9 @@ func (m *BidExpenseMutation) ClearField(name string) error {
 		return nil
 	case bidexpense.FieldPayTime:
 		m.ClearPayTime()
+		return nil
+	case bidexpense.FieldRemark:
+		m.ClearRemark()
 		return nil
 	case bidexpense.FieldCreatedBy:
 		m.ClearCreatedBy()
@@ -5455,6 +5525,9 @@ func (m *BidExpenseMutation) ResetField(name string) error {
 		return nil
 	case bidexpense.FieldDeleted:
 		m.ResetDeleted()
+		return nil
+	case bidexpense.FieldRemark:
+		m.ResetRemark()
 		return nil
 	case bidexpense.FieldCreatedAt:
 		m.ResetCreatedAt()

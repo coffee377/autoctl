@@ -319,6 +319,20 @@ func (_c *BidExpenseCreate) SetNillableDeleted(v *bool) *BidExpenseCreate {
 	return _c
 }
 
+// SetRemark sets the "remark" field.
+func (_c *BidExpenseCreate) SetRemark(v string) *BidExpenseCreate {
+	_c.mutation.SetRemark(v)
+	return _c
+}
+
+// SetNillableRemark sets the "remark" field if the given value is not nil.
+func (_c *BidExpenseCreate) SetNillableRemark(v *string) *BidExpenseCreate {
+	if v != nil {
+		_c.SetRemark(*v)
+	}
+	return _c
+}
+
 // SetCreatedAt sets the "created_at" field.
 func (_c *BidExpenseCreate) SetCreatedAt(v time.Time) *BidExpenseCreate {
 	_c.mutation.SetCreatedAt(v)
@@ -746,6 +760,10 @@ func (_c *BidExpenseCreate) createSpec() (*BidExpense, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.Deleted(); ok {
 		_spec.SetField(bidexpense.FieldDeleted, field.TypeBool, value)
 		_node.Deleted = value
+	}
+	if value, ok := _c.mutation.Remark(); ok {
+		_spec.SetField(bidexpense.FieldRemark, field.TypeString, value)
+		_node.Remark = &value
 	}
 	if value, ok := _c.mutation.CreatedAt(); ok {
 		_spec.SetField(bidexpense.FieldCreatedAt, field.TypeTime, value)

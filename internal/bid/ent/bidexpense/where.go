@@ -195,6 +195,11 @@ func Deleted(v bool) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldDeleted, v))
 }
 
+// Remark applies equality check predicate on the "remark" field. It's identical to RemarkEQ.
+func Remark(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldRemark, v))
+}
+
 // CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
 func CreatedAt(v time.Time) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldEQ(FieldCreatedAt, v))
@@ -1708,6 +1713,81 @@ func DeletedEQ(v bool) predicate.BidExpense {
 // DeletedNEQ applies the NEQ predicate on the "deleted" field.
 func DeletedNEQ(v bool) predicate.BidExpense {
 	return predicate.BidExpense(sql.FieldNEQ(FieldDeleted, v))
+}
+
+// RemarkEQ applies the EQ predicate on the "remark" field.
+func RemarkEQ(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEQ(FieldRemark, v))
+}
+
+// RemarkNEQ applies the NEQ predicate on the "remark" field.
+func RemarkNEQ(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNEQ(FieldRemark, v))
+}
+
+// RemarkIn applies the In predicate on the "remark" field.
+func RemarkIn(vs ...string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIn(FieldRemark, vs...))
+}
+
+// RemarkNotIn applies the NotIn predicate on the "remark" field.
+func RemarkNotIn(vs ...string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotIn(FieldRemark, vs...))
+}
+
+// RemarkGT applies the GT predicate on the "remark" field.
+func RemarkGT(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGT(FieldRemark, v))
+}
+
+// RemarkGTE applies the GTE predicate on the "remark" field.
+func RemarkGTE(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldGTE(FieldRemark, v))
+}
+
+// RemarkLT applies the LT predicate on the "remark" field.
+func RemarkLT(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLT(FieldRemark, v))
+}
+
+// RemarkLTE applies the LTE predicate on the "remark" field.
+func RemarkLTE(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldLTE(FieldRemark, v))
+}
+
+// RemarkContains applies the Contains predicate on the "remark" field.
+func RemarkContains(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldContains(FieldRemark, v))
+}
+
+// RemarkHasPrefix applies the HasPrefix predicate on the "remark" field.
+func RemarkHasPrefix(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldHasPrefix(FieldRemark, v))
+}
+
+// RemarkHasSuffix applies the HasSuffix predicate on the "remark" field.
+func RemarkHasSuffix(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldHasSuffix(FieldRemark, v))
+}
+
+// RemarkIsNil applies the IsNil predicate on the "remark" field.
+func RemarkIsNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldIsNull(FieldRemark))
+}
+
+// RemarkNotNil applies the NotNil predicate on the "remark" field.
+func RemarkNotNil() predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldNotNull(FieldRemark))
+}
+
+// RemarkEqualFold applies the EqualFold predicate on the "remark" field.
+func RemarkEqualFold(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldEqualFold(FieldRemark, v))
+}
+
+// RemarkContainsFold applies the ContainsFold predicate on the "remark" field.
+func RemarkContainsFold(v string) predicate.BidExpense {
+	return predicate.BidExpense(sql.FieldContainsFold(FieldRemark, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.

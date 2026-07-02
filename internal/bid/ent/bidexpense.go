@@ -73,6 +73,8 @@ type BidExpense struct {
 	Done bool `json:"done,omitempty"`
 	// 是否逻辑删除
 	Deleted bool `json:"deleted,omitempty"`
+	// 备注
+	Remark *string `json:"remark,omitempty"`
 	// 创建时间
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// 创建人
@@ -116,7 +118,7 @@ func (*BidExpense) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case bidexpense.FieldGuaranteeDenomination, bidexpense.FieldPayRatio, bidexpense.FieldPayAmount:
 			values[i] = new(sql.NullFloat64)
-		case bidexpense.FieldID, bidexpense.FieldBusinessID, bidexpense.FieldInstanceID, bidexpense.FieldBillNo, bidexpense.FieldProjectID, bidexpense.FieldProjectName, bidexpense.FieldProjectCode, bidexpense.FieldBizRepName, bidexpense.FieldPurchaser, bidexpense.FieldFeeTypeV1, bidexpense.FieldFeeType, bidexpense.FieldPayReason, bidexpense.FieldPayMethod, bidexpense.FieldPayeeBank, bidexpense.FieldPayeeName, bidexpense.FieldPayeeAccount, bidexpense.FieldTransferInstructions, bidexpense.FieldPayRemark, bidexpense.FieldApprovalStatus, bidexpense.FieldCreatedBy, bidexpense.FieldUpdatedBy:
+		case bidexpense.FieldID, bidexpense.FieldBusinessID, bidexpense.FieldInstanceID, bidexpense.FieldBillNo, bidexpense.FieldProjectID, bidexpense.FieldProjectName, bidexpense.FieldProjectCode, bidexpense.FieldBizRepName, bidexpense.FieldPurchaser, bidexpense.FieldFeeTypeV1, bidexpense.FieldFeeType, bidexpense.FieldPayReason, bidexpense.FieldPayMethod, bidexpense.FieldPayeeBank, bidexpense.FieldPayeeName, bidexpense.FieldPayeeAccount, bidexpense.FieldTransferInstructions, bidexpense.FieldPayRemark, bidexpense.FieldApprovalStatus, bidexpense.FieldRemark, bidexpense.FieldCreatedBy, bidexpense.FieldUpdatedBy:
 			values[i] = new(sql.NullString)
 		case bidexpense.FieldGuaranteeDeadline, bidexpense.FieldPlanPayTime, bidexpense.FieldPayTime, bidexpense.FieldCreatedAt, bidexpense.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -313,6 +315,13 @@ func (_m *BidExpense) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.Deleted = value.Bool
 			}
+		case bidexpense.FieldRemark:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field remark", values[i])
+			} else if value.Valid {
+				_m.Remark = new(string)
+				*_m.Remark = value.String
+			}
 		case bidexpense.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
@@ -480,6 +489,11 @@ func (_m *BidExpense) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("deleted=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Deleted))
+	builder.WriteString(", ")
+	if v := _m.Remark; v != nil {
+		builder.WriteString("remark=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
 	builder.WriteString("created_at=")
 	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
