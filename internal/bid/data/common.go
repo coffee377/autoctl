@@ -12,6 +12,7 @@ import (
 type DingTalkWorkflowData struct {
 	InstanceId  string     // 审批实例 ID
 	BusinessId  string     // 审批编号
+	BizAction   string     // 业务类型，如 MODIFY
 	CreateBy    string     // 创建人工号
 	CreatorName string     // 创建人的名字
 	CreateAt    *time.Time // 创建时间
@@ -129,6 +130,7 @@ func (receiver *DingTalkWorkflowData) Extract(instId string, res *dingtalkworkfl
 	}
 	receiver.InstanceId = instId
 	receiver.BusinessId = *res.BusinessId
+	receiver.BizAction = *res.BizAction
 	// 审批发起人
 	if receiver.creatorHook != nil {
 		// 审批发起人钉钉 UserId
