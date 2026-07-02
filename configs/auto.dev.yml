@@ -9,15 +9,7 @@ redis:
 token:
 #  默认令牌生成账号
   account: coffee377
-#  令牌过期时间
-  expire: 5m
+#  令牌过期时间(7×24h)
+  expire: 168h
 # 是否固定会话 ID
-  session-fixed: false
-
-# mysql 数据配置
-mysql:
-  host: 127.0.0.1
-  port: 3306
-  username: root
-  password: root
-  database: test
+  session-fixed: true
