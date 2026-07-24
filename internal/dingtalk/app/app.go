@@ -177,12 +177,20 @@ func (a *application) GetAccessToken() string {
 	config := new(openapi.Config)
 	config.SetProtocol("https")
 	config.SetRegionId("central")
-	client, _ := oauth21.NewClient(config)
+	client, err := oauth21.NewClient(config)
+	if err != nil {
+		slog.Error("failed to create oauth2.1 client", slog.String("error", err.Error()))
+		return ""
+	}
 
 	request := new(oauth21.GetAccessTokenRequest)
 	request.SetAppKey(a.clientId)
 	request.SetAppSecret(a.clientSecret)
-	response, _ := client.GetAccessToken(request)
+	response, err := client.GetAccessToken(request)
+	if err != nil {
+		slog.Error("failed to get access token", slog.String("error", err.Error()))
+		return ""
+	}
 	accessToken := response.Body.AccessToken
 
 	if a.cacheAfterTokenHook != nil {
