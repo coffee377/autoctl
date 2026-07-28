@@ -29,10 +29,10 @@ type FieldMapper struct {
 }
 
 // ValueConverter 类型转换接口：将表单字符串值转换为目标类型
-type ValueConverter func(raw string, pointer bool) (interface{}, error)
+type ValueConverter func(raw string, pointer bool) (any, error)
 
 // StringConverter 字符串转换器（默认，直接trim空格）
-func StringConverter(raw string, pointer bool) (interface{}, error) {
+func StringConverter(raw string, pointer bool) (any, error) {
 	trim := strings.Trim(raw, " ")
 	if pointer {
 		return &trim, nil
@@ -42,7 +42,7 @@ func StringConverter(raw string, pointer bool) (interface{}, error) {
 
 // DateConverter 时间转换器（支持"2006-01-02"格式，返回*time.Time）
 func DateConverter(layout string, loc *time.Location) ValueConverter {
-	return func(raw string, pointer bool) (interface{}, error) {
+	return func(raw string, pointer bool) (any, error) {
 		raw = strings.Trim(raw, " ")
 		if raw == "" {
 			return nil, nil // 空值返回nil（适配指针类型）
@@ -59,7 +59,7 @@ func DateConverter(layout string, loc *time.Location) ValueConverter {
 }
 
 func DateConverters(layouts []string, loc *time.Location) ValueConverter {
-	return func(raw string, pointer bool) (interface{}, error) {
+	return func(raw string, pointer bool) (any, error) {
 		raw = strings.Trim(raw, " ")
 		if raw == "" {
 			return nil, nil // 空值返回nil（适配指针类型）
@@ -79,7 +79,7 @@ func DateConverters(layouts []string, loc *time.Location) ValueConverter {
 }
 
 // Float64Converter 浮点数转换器（返回float64）
-func Float64Converter(raw string, pointer bool) (interface{}, error) {
+func Float64Converter(raw string, pointer bool) (any, error) {
 	raw = strings.Trim(raw, " ")
 	if raw == "" {
 		r := 0.0
@@ -102,11 +102,11 @@ func Float64Converter(raw string, pointer bool) (interface{}, error) {
 // res：钉钉返回的数据
 // mappers：字段映射规则
 // entity：目标实体指针（必须是指针类型，否则无法赋值）
-func MapFormToEntity(res *dingtalkworkflow10.GetProcessInstanceResponseBodyResult, mappers []FieldMapper, entity interface{}) error {
+func MapFormToEntity(res *dingtalkworkflow10.GetProcessInstanceResponseBodyResult, mappers []FieldMapper, entity any) error {
 	components := res.FormComponentValues
 	// 检查实体是否为指针
 	entityVal := reflect.ValueOf(entity)
-	if entityVal.Kind() != reflect.Ptr || entityVal.IsNil() {
+	if entityVal.Kind() != reflect.Pointer || entityVal.IsNil() {
 		return errors.New("entity must be a non-nil pointer")
 	}
 	// 获取实体的实际类型（解引用指针）

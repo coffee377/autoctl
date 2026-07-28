@@ -16,6 +16,9 @@ func TestGetBidApplyFormSchema(t *testing.T) {
 	for i, item := range schema1.SchemaContent.Items {
 		buf.Reset()
 		props := item.Props
+		if props.Label == nil || *props.Label == "" {
+			continue
+		}
 		pointer := true
 		if props.Required != nil && *props.Required {
 			pointer = false
