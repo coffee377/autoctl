@@ -43,6 +43,10 @@ type BidApply struct {
 	BudgetAmount float64 `json:"budget_amount,omitempty"`
 	// 备注说明;如资质要求、技术难点、事项说明等
 	Remark *string `json:"remark,omitempty"`
+	// 报名情况 RP:待报名 RO:报名中 RF:报名失败 RS:报名成功
+	RegistrationStatus *bidapply.RegistrationStatus `json:"registration_status,omitempty"`
+	// 报名失败描述
+	RegistrationFailureDesc *string `json:"registration_failure_desc,omitempty"`
 	// 投标报名相关附件
 	Attachments []schema.Attachment `json:"attachments,omitempty"`
 	// 审批状态
@@ -94,7 +98,7 @@ func (*BidApply) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case bidapply.FieldBudgetAmount:
 			values[i] = new(sql.NullFloat64)
-		case bidapply.FieldID, bidapply.FieldBusinessID, bidapply.FieldInstanceID, bidapply.FieldProjectID, bidapply.FieldPurchaserName, bidapply.FieldBidType, bidapply.FieldAgencyName, bidapply.FieldAgencyContact, bidapply.FieldNoticeURL, bidapply.FieldRemark, bidapply.FieldApprovalStatus, bidapply.FieldCreatedBy, bidapply.FieldUpdatedBy:
+		case bidapply.FieldID, bidapply.FieldBusinessID, bidapply.FieldInstanceID, bidapply.FieldProjectID, bidapply.FieldPurchaserName, bidapply.FieldBidType, bidapply.FieldAgencyName, bidapply.FieldAgencyContact, bidapply.FieldNoticeURL, bidapply.FieldRemark, bidapply.FieldRegistrationStatus, bidapply.FieldRegistrationFailureDesc, bidapply.FieldApprovalStatus, bidapply.FieldCreatedBy, bidapply.FieldUpdatedBy:
 			values[i] = new(sql.NullString)
 		case bidapply.FieldOpeningDate, bidapply.FieldCreatedAt, bidapply.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -190,6 +194,20 @@ func (_m *BidApply) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.Remark = new(string)
 				*_m.Remark = value.String
+			}
+		case bidapply.FieldRegistrationStatus:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field registration_status", values[i])
+			} else if value.Valid {
+				_m.RegistrationStatus = new(bidapply.RegistrationStatus)
+				*_m.RegistrationStatus = bidapply.RegistrationStatus(value.String)
+			}
+		case bidapply.FieldRegistrationFailureDesc:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field registration_failure_desc", values[i])
+			} else if value.Valid {
+				_m.RegistrationFailureDesc = new(string)
+				*_m.RegistrationFailureDesc = value.String
 			}
 		case bidapply.FieldAttachments:
 			if value, ok := values[i].(*[]byte); !ok {
@@ -320,6 +338,16 @@ func (_m *BidApply) String() string {
 	builder.WriteString(", ")
 	if v := _m.Remark; v != nil {
 		builder.WriteString("remark=")
+		builder.WriteString(*v)
+	}
+	builder.WriteString(", ")
+	if v := _m.RegistrationStatus; v != nil {
+		builder.WriteString("registration_status=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
+	builder.WriteString(", ")
+	if v := _m.RegistrationFailureDesc; v != nil {
+		builder.WriteString("registration_failure_desc=")
 		builder.WriteString(*v)
 	}
 	builder.WriteString(", ")

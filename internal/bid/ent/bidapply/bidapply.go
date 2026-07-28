@@ -37,6 +37,10 @@ const (
 	FieldBudgetAmount = "budget_amount"
 	// FieldRemark holds the string denoting the remark field in the database.
 	FieldRemark = "remark"
+	// FieldRegistrationStatus holds the string denoting the registration_status field in the database.
+	FieldRegistrationStatus = "registration_status"
+	// FieldRegistrationFailureDesc holds the string denoting the registration_failure_desc field in the database.
+	FieldRegistrationFailureDesc = "registration_failure_desc"
 	// FieldAttachments holds the string denoting the attachments field in the database.
 	FieldAttachments = "attachments"
 	// FieldApprovalStatus holds the string denoting the approval_status field in the database.
@@ -78,6 +82,8 @@ var Columns = []string{
 	FieldNoticeURL,
 	FieldBudgetAmount,
 	FieldRemark,
+	FieldRegistrationStatus,
+	FieldRegistrationFailureDesc,
 	FieldAttachments,
 	FieldApprovalStatus,
 	FieldDone,
@@ -164,6 +170,31 @@ func BidTypeValidator(bt BidType) error {
 	}
 }
 
+// RegistrationStatus defines the type for the "registration_status" enum field.
+type RegistrationStatus string
+
+// RegistrationStatus values.
+const (
+	RegistrationStatusRP RegistrationStatus = "RP"
+	RegistrationStatusRO RegistrationStatus = "RO"
+	RegistrationStatusRF RegistrationStatus = "RF"
+	RegistrationStatusRS RegistrationStatus = "RS"
+)
+
+func (rs RegistrationStatus) String() string {
+	return string(rs)
+}
+
+// RegistrationStatusValidator is a validator for the "registration_status" field enum values. It is called by the builders before save.
+func RegistrationStatusValidator(rs RegistrationStatus) error {
+	switch rs {
+	case RegistrationStatusRP, RegistrationStatusRO, RegistrationStatusRF, RegistrationStatusRS:
+		return nil
+	default:
+		return fmt.Errorf("bidapply: invalid enum value for registration_status field: %q", rs)
+	}
+}
+
 // OrderOption defines the ordering options for the BidApply queries.
 type OrderOption func(*sql.Selector)
 
@@ -225,6 +256,16 @@ func ByBudgetAmount(opts ...sql.OrderTermOption) OrderOption {
 // ByRemark orders the results by the remark field.
 func ByRemark(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldRemark, opts...).ToFunc()
+}
+
+// ByRegistrationStatus orders the results by the registration_status field.
+func ByRegistrationStatus(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRegistrationStatus, opts...).ToFunc()
+}
+
+// ByRegistrationFailureDesc orders the results by the registration_failure_desc field.
+func ByRegistrationFailureDesc(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldRegistrationFailureDesc, opts...).ToFunc()
 }
 
 // ByApprovalStatus orders the results by the approval_status field.

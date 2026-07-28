@@ -670,34 +670,36 @@ func (m *BidAccountRelationMutation) ResetEdge(name string) error {
 // BidApplyMutation represents an operation that mutates the BidApply nodes in the graph.
 type BidApplyMutation struct {
 	config
-	op                Op
-	typ               string
-	id                *string
-	business_id       *string
-	instance_id       *string
-	purchaser_name    *string
-	bid_type          *bidapply.BidType
-	agency_name       *string
-	agency_contact    *string
-	opening_date      *time.Time
-	notice_url        *string
-	budget_amount     *float64
-	addbudget_amount  *float64
-	remark            *string
-	attachments       *[]schema.Attachment
-	appendattachments []schema.Attachment
-	approval_status   *string
-	_done             *bool
-	created_at        *time.Time
-	created_by        *string
-	updated_at        *time.Time
-	updated_by        *string
-	clearedFields     map[string]struct{}
-	project           *string
-	clearedproject    bool
-	done              bool
-	oldValue          func(context.Context) (*BidApply, error)
-	predicates        []predicate.BidApply
+	op                        Op
+	typ                       string
+	id                        *string
+	business_id               *string
+	instance_id               *string
+	purchaser_name            *string
+	bid_type                  *bidapply.BidType
+	agency_name               *string
+	agency_contact            *string
+	opening_date              *time.Time
+	notice_url                *string
+	budget_amount             *float64
+	addbudget_amount          *float64
+	remark                    *string
+	registration_status       *bidapply.RegistrationStatus
+	registration_failure_desc *string
+	attachments               *[]schema.Attachment
+	appendattachments         []schema.Attachment
+	approval_status           *string
+	_done                     *bool
+	created_at                *time.Time
+	created_by                *string
+	updated_at                *time.Time
+	updated_by                *string
+	clearedFields             map[string]struct{}
+	project                   *string
+	clearedproject            bool
+	done                      bool
+	oldValue                  func(context.Context) (*BidApply, error)
+	predicates                []predicate.BidApply
 }
 
 var _ ent.Mutation = (*BidApplyMutation)(nil)
@@ -1298,6 +1300,104 @@ func (m *BidApplyMutation) ResetRemark() {
 	delete(m.clearedFields, bidapply.FieldRemark)
 }
 
+// SetRegistrationStatus sets the "registration_status" field.
+func (m *BidApplyMutation) SetRegistrationStatus(bs bidapply.RegistrationStatus) {
+	m.registration_status = &bs
+}
+
+// RegistrationStatus returns the value of the "registration_status" field in the mutation.
+func (m *BidApplyMutation) RegistrationStatus() (r bidapply.RegistrationStatus, exists bool) {
+	v := m.registration_status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRegistrationStatus returns the old "registration_status" field's value of the BidApply entity.
+// If the BidApply object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidApplyMutation) OldRegistrationStatus(ctx context.Context) (v *bidapply.RegistrationStatus, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRegistrationStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRegistrationStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRegistrationStatus: %w", err)
+	}
+	return oldValue.RegistrationStatus, nil
+}
+
+// ClearRegistrationStatus clears the value of the "registration_status" field.
+func (m *BidApplyMutation) ClearRegistrationStatus() {
+	m.registration_status = nil
+	m.clearedFields[bidapply.FieldRegistrationStatus] = struct{}{}
+}
+
+// RegistrationStatusCleared returns if the "registration_status" field was cleared in this mutation.
+func (m *BidApplyMutation) RegistrationStatusCleared() bool {
+	_, ok := m.clearedFields[bidapply.FieldRegistrationStatus]
+	return ok
+}
+
+// ResetRegistrationStatus resets all changes to the "registration_status" field.
+func (m *BidApplyMutation) ResetRegistrationStatus() {
+	m.registration_status = nil
+	delete(m.clearedFields, bidapply.FieldRegistrationStatus)
+}
+
+// SetRegistrationFailureDesc sets the "registration_failure_desc" field.
+func (m *BidApplyMutation) SetRegistrationFailureDesc(s string) {
+	m.registration_failure_desc = &s
+}
+
+// RegistrationFailureDesc returns the value of the "registration_failure_desc" field in the mutation.
+func (m *BidApplyMutation) RegistrationFailureDesc() (r string, exists bool) {
+	v := m.registration_failure_desc
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRegistrationFailureDesc returns the old "registration_failure_desc" field's value of the BidApply entity.
+// If the BidApply object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BidApplyMutation) OldRegistrationFailureDesc(ctx context.Context) (v *string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldRegistrationFailureDesc is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldRegistrationFailureDesc requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRegistrationFailureDesc: %w", err)
+	}
+	return oldValue.RegistrationFailureDesc, nil
+}
+
+// ClearRegistrationFailureDesc clears the value of the "registration_failure_desc" field.
+func (m *BidApplyMutation) ClearRegistrationFailureDesc() {
+	m.registration_failure_desc = nil
+	m.clearedFields[bidapply.FieldRegistrationFailureDesc] = struct{}{}
+}
+
+// RegistrationFailureDescCleared returns if the "registration_failure_desc" field was cleared in this mutation.
+func (m *BidApplyMutation) RegistrationFailureDescCleared() bool {
+	_, ok := m.clearedFields[bidapply.FieldRegistrationFailureDesc]
+	return ok
+}
+
+// ResetRegistrationFailureDesc resets all changes to the "registration_failure_desc" field.
+func (m *BidApplyMutation) ResetRegistrationFailureDesc() {
+	m.registration_failure_desc = nil
+	delete(m.clearedFields, bidapply.FieldRegistrationFailureDesc)
+}
+
 // SetAttachments sets the "attachments" field.
 func (m *BidApplyMutation) SetAttachments(s []schema.Attachment) {
 	m.attachments = &s
@@ -1666,7 +1766,7 @@ func (m *BidApplyMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *BidApplyMutation) Fields() []string {
-	fields := make([]string, 0, 18)
+	fields := make([]string, 0, 20)
 	if m.business_id != nil {
 		fields = append(fields, bidapply.FieldBusinessID)
 	}
@@ -1699,6 +1799,12 @@ func (m *BidApplyMutation) Fields() []string {
 	}
 	if m.remark != nil {
 		fields = append(fields, bidapply.FieldRemark)
+	}
+	if m.registration_status != nil {
+		fields = append(fields, bidapply.FieldRegistrationStatus)
+	}
+	if m.registration_failure_desc != nil {
+		fields = append(fields, bidapply.FieldRegistrationFailureDesc)
 	}
 	if m.attachments != nil {
 		fields = append(fields, bidapply.FieldAttachments)
@@ -1751,6 +1857,10 @@ func (m *BidApplyMutation) Field(name string) (ent.Value, bool) {
 		return m.BudgetAmount()
 	case bidapply.FieldRemark:
 		return m.Remark()
+	case bidapply.FieldRegistrationStatus:
+		return m.RegistrationStatus()
+	case bidapply.FieldRegistrationFailureDesc:
+		return m.RegistrationFailureDesc()
 	case bidapply.FieldAttachments:
 		return m.Attachments()
 	case bidapply.FieldApprovalStatus:
@@ -1796,6 +1906,10 @@ func (m *BidApplyMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldBudgetAmount(ctx)
 	case bidapply.FieldRemark:
 		return m.OldRemark(ctx)
+	case bidapply.FieldRegistrationStatus:
+		return m.OldRegistrationStatus(ctx)
+	case bidapply.FieldRegistrationFailureDesc:
+		return m.OldRegistrationFailureDesc(ctx)
 	case bidapply.FieldAttachments:
 		return m.OldAttachments(ctx)
 	case bidapply.FieldApprovalStatus:
@@ -1895,6 +2009,20 @@ func (m *BidApplyMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetRemark(v)
+		return nil
+	case bidapply.FieldRegistrationStatus:
+		v, ok := value.(bidapply.RegistrationStatus)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRegistrationStatus(v)
+		return nil
+	case bidapply.FieldRegistrationFailureDesc:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRegistrationFailureDesc(v)
 		return nil
 	case bidapply.FieldAttachments:
 		v, ok := value.([]schema.Attachment)
@@ -2008,6 +2136,12 @@ func (m *BidApplyMutation) ClearedFields() []string {
 	if m.FieldCleared(bidapply.FieldRemark) {
 		fields = append(fields, bidapply.FieldRemark)
 	}
+	if m.FieldCleared(bidapply.FieldRegistrationStatus) {
+		fields = append(fields, bidapply.FieldRegistrationStatus)
+	}
+	if m.FieldCleared(bidapply.FieldRegistrationFailureDesc) {
+		fields = append(fields, bidapply.FieldRegistrationFailureDesc)
+	}
 	if m.FieldCleared(bidapply.FieldAttachments) {
 		fields = append(fields, bidapply.FieldAttachments)
 	}
@@ -2048,6 +2182,12 @@ func (m *BidApplyMutation) ClearField(name string) error {
 		return nil
 	case bidapply.FieldRemark:
 		m.ClearRemark()
+		return nil
+	case bidapply.FieldRegistrationStatus:
+		m.ClearRegistrationStatus()
+		return nil
+	case bidapply.FieldRegistrationFailureDesc:
+		m.ClearRegistrationFailureDesc()
 		return nil
 	case bidapply.FieldAttachments:
 		m.ClearAttachments()
@@ -2098,6 +2238,12 @@ func (m *BidApplyMutation) ResetField(name string) error {
 		return nil
 	case bidapply.FieldRemark:
 		m.ResetRemark()
+		return nil
+	case bidapply.FieldRegistrationStatus:
+		m.ResetRegistrationStatus()
+		return nil
+	case bidapply.FieldRegistrationFailureDesc:
+		m.ResetRegistrationFailureDesc()
 		return nil
 	case bidapply.FieldAttachments:
 		m.ResetAttachments()

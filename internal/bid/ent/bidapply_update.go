@@ -229,6 +229,46 @@ func (_u *BidApplyUpdate) ClearRemark() *BidApplyUpdate {
 	return _u
 }
 
+// SetRegistrationStatus sets the "registration_status" field.
+func (_u *BidApplyUpdate) SetRegistrationStatus(v bidapply.RegistrationStatus) *BidApplyUpdate {
+	_u.mutation.SetRegistrationStatus(v)
+	return _u
+}
+
+// SetNillableRegistrationStatus sets the "registration_status" field if the given value is not nil.
+func (_u *BidApplyUpdate) SetNillableRegistrationStatus(v *bidapply.RegistrationStatus) *BidApplyUpdate {
+	if v != nil {
+		_u.SetRegistrationStatus(*v)
+	}
+	return _u
+}
+
+// ClearRegistrationStatus clears the value of the "registration_status" field.
+func (_u *BidApplyUpdate) ClearRegistrationStatus() *BidApplyUpdate {
+	_u.mutation.ClearRegistrationStatus()
+	return _u
+}
+
+// SetRegistrationFailureDesc sets the "registration_failure_desc" field.
+func (_u *BidApplyUpdate) SetRegistrationFailureDesc(v string) *BidApplyUpdate {
+	_u.mutation.SetRegistrationFailureDesc(v)
+	return _u
+}
+
+// SetNillableRegistrationFailureDesc sets the "registration_failure_desc" field if the given value is not nil.
+func (_u *BidApplyUpdate) SetNillableRegistrationFailureDesc(v *string) *BidApplyUpdate {
+	if v != nil {
+		_u.SetRegistrationFailureDesc(*v)
+	}
+	return _u
+}
+
+// ClearRegistrationFailureDesc clears the value of the "registration_failure_desc" field.
+func (_u *BidApplyUpdate) ClearRegistrationFailureDesc() *BidApplyUpdate {
+	_u.mutation.ClearRegistrationFailureDesc()
+	return _u
+}
+
 // SetAttachments sets the "attachments" field.
 func (_u *BidApplyUpdate) SetAttachments(v []schema.Attachment) *BidApplyUpdate {
 	_u.mutation.SetAttachments(v)
@@ -424,6 +464,11 @@ func (_u *BidApplyUpdate) check() error {
 			return &ValidationError{Name: "agency_contact", err: fmt.Errorf(`ent: validator failed for field "BidApply.agency_contact": %w`, err)}
 		}
 	}
+	if v, ok := _u.mutation.RegistrationStatus(); ok {
+		if err := bidapply.RegistrationStatusValidator(v); err != nil {
+			return &ValidationError{Name: "registration_status", err: fmt.Errorf(`ent: validator failed for field "BidApply.registration_status": %w`, err)}
+		}
+	}
 	if v, ok := _u.mutation.CreatedBy(); ok {
 		if err := bidapply.CreatedByValidator(v); err != nil {
 			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "BidApply.created_by": %w`, err)}
@@ -508,6 +553,18 @@ func (_u *BidApplyUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	}
 	if _u.mutation.RemarkCleared() {
 		_spec.ClearField(bidapply.FieldRemark, field.TypeString)
+	}
+	if value, ok := _u.mutation.RegistrationStatus(); ok {
+		_spec.SetField(bidapply.FieldRegistrationStatus, field.TypeEnum, value)
+	}
+	if _u.mutation.RegistrationStatusCleared() {
+		_spec.ClearField(bidapply.FieldRegistrationStatus, field.TypeEnum)
+	}
+	if value, ok := _u.mutation.RegistrationFailureDesc(); ok {
+		_spec.SetField(bidapply.FieldRegistrationFailureDesc, field.TypeString, value)
+	}
+	if _u.mutation.RegistrationFailureDescCleared() {
+		_spec.ClearField(bidapply.FieldRegistrationFailureDesc, field.TypeString)
 	}
 	if value, ok := _u.mutation.Attachments(); ok {
 		_spec.SetField(bidapply.FieldAttachments, field.TypeJSON, value)
@@ -792,6 +849,46 @@ func (_u *BidApplyUpdateOne) ClearRemark() *BidApplyUpdateOne {
 	return _u
 }
 
+// SetRegistrationStatus sets the "registration_status" field.
+func (_u *BidApplyUpdateOne) SetRegistrationStatus(v bidapply.RegistrationStatus) *BidApplyUpdateOne {
+	_u.mutation.SetRegistrationStatus(v)
+	return _u
+}
+
+// SetNillableRegistrationStatus sets the "registration_status" field if the given value is not nil.
+func (_u *BidApplyUpdateOne) SetNillableRegistrationStatus(v *bidapply.RegistrationStatus) *BidApplyUpdateOne {
+	if v != nil {
+		_u.SetRegistrationStatus(*v)
+	}
+	return _u
+}
+
+// ClearRegistrationStatus clears the value of the "registration_status" field.
+func (_u *BidApplyUpdateOne) ClearRegistrationStatus() *BidApplyUpdateOne {
+	_u.mutation.ClearRegistrationStatus()
+	return _u
+}
+
+// SetRegistrationFailureDesc sets the "registration_failure_desc" field.
+func (_u *BidApplyUpdateOne) SetRegistrationFailureDesc(v string) *BidApplyUpdateOne {
+	_u.mutation.SetRegistrationFailureDesc(v)
+	return _u
+}
+
+// SetNillableRegistrationFailureDesc sets the "registration_failure_desc" field if the given value is not nil.
+func (_u *BidApplyUpdateOne) SetNillableRegistrationFailureDesc(v *string) *BidApplyUpdateOne {
+	if v != nil {
+		_u.SetRegistrationFailureDesc(*v)
+	}
+	return _u
+}
+
+// ClearRegistrationFailureDesc clears the value of the "registration_failure_desc" field.
+func (_u *BidApplyUpdateOne) ClearRegistrationFailureDesc() *BidApplyUpdateOne {
+	_u.mutation.ClearRegistrationFailureDesc()
+	return _u
+}
+
 // SetAttachments sets the "attachments" field.
 func (_u *BidApplyUpdateOne) SetAttachments(v []schema.Attachment) *BidApplyUpdateOne {
 	_u.mutation.SetAttachments(v)
@@ -1000,6 +1097,11 @@ func (_u *BidApplyUpdateOne) check() error {
 			return &ValidationError{Name: "agency_contact", err: fmt.Errorf(`ent: validator failed for field "BidApply.agency_contact": %w`, err)}
 		}
 	}
+	if v, ok := _u.mutation.RegistrationStatus(); ok {
+		if err := bidapply.RegistrationStatusValidator(v); err != nil {
+			return &ValidationError{Name: "registration_status", err: fmt.Errorf(`ent: validator failed for field "BidApply.registration_status": %w`, err)}
+		}
+	}
 	if v, ok := _u.mutation.CreatedBy(); ok {
 		if err := bidapply.CreatedByValidator(v); err != nil {
 			return &ValidationError{Name: "created_by", err: fmt.Errorf(`ent: validator failed for field "BidApply.created_by": %w`, err)}
@@ -1101,6 +1203,18 @@ func (_u *BidApplyUpdateOne) sqlSave(ctx context.Context) (_node *BidApply, err 
 	}
 	if _u.mutation.RemarkCleared() {
 		_spec.ClearField(bidapply.FieldRemark, field.TypeString)
+	}
+	if value, ok := _u.mutation.RegistrationStatus(); ok {
+		_spec.SetField(bidapply.FieldRegistrationStatus, field.TypeEnum, value)
+	}
+	if _u.mutation.RegistrationStatusCleared() {
+		_spec.ClearField(bidapply.FieldRegistrationStatus, field.TypeEnum)
+	}
+	if value, ok := _u.mutation.RegistrationFailureDesc(); ok {
+		_spec.SetField(bidapply.FieldRegistrationFailureDesc, field.TypeString, value)
+	}
+	if _u.mutation.RegistrationFailureDescCleared() {
+		_spec.ClearField(bidapply.FieldRegistrationFailureDesc, field.TypeString)
 	}
 	if value, ok := _u.mutation.Attachments(); ok {
 		_spec.SetField(bidapply.FieldAttachments, field.TypeJSON, value)

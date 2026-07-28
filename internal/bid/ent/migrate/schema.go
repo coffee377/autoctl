@@ -68,6 +68,8 @@ var (
 		{Name: "notice_url", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "招标公告网址"},
 		{Name: "budget_amount", Type: field.TypeFloat64, Comment: "预算金额（元）", Default: 0, SchemaType: map[string]string{"mysql": "decimal(16,2)"}},
 		{Name: "remark", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "备注说明;如资质要求、技术难点、事项说明等"},
+		{Name: "registration_status", Type: field.TypeEnum, Nullable: true, Comment: "报名情况 RP:待报名 RO:报名中 RF:报名失败 RS:报名成功", Enums: []string{"RP", "RO", "RF", "RS"}},
+		{Name: "registration_failure_desc", Type: field.TypeString, Nullable: true, Size: 2147483647, Comment: "报名失败描述"},
 		{Name: "attachments", Type: field.TypeJSON, Nullable: true, Comment: "投标报名相关附件"},
 		{Name: "approval_status", Type: field.TypeString, Comment: "审批状态"},
 		{Name: "done", Type: field.TypeBool, Comment: "审批流程是否已结束", Default: false},
@@ -86,7 +88,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "fk_pid_01",
-				Columns:    []*schema.Column{BidApplyColumns[18]},
+				Columns:    []*schema.Column{BidApplyColumns[20]},
 				RefColumns: []*schema.Column{BidProjectColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
@@ -95,7 +97,7 @@ var (
 			{
 				Name:    "idx_approval_status",
 				Unique:  false,
-				Columns: []*schema.Column{BidApplyColumns[12]},
+				Columns: []*schema.Column{BidApplyColumns[14]},
 			},
 		},
 	}

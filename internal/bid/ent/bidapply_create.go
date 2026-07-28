@@ -152,6 +152,34 @@ func (_c *BidApplyCreate) SetNillableRemark(v *string) *BidApplyCreate {
 	return _c
 }
 
+// SetRegistrationStatus sets the "registration_status" field.
+func (_c *BidApplyCreate) SetRegistrationStatus(v bidapply.RegistrationStatus) *BidApplyCreate {
+	_c.mutation.SetRegistrationStatus(v)
+	return _c
+}
+
+// SetNillableRegistrationStatus sets the "registration_status" field if the given value is not nil.
+func (_c *BidApplyCreate) SetNillableRegistrationStatus(v *bidapply.RegistrationStatus) *BidApplyCreate {
+	if v != nil {
+		_c.SetRegistrationStatus(*v)
+	}
+	return _c
+}
+
+// SetRegistrationFailureDesc sets the "registration_failure_desc" field.
+func (_c *BidApplyCreate) SetRegistrationFailureDesc(v string) *BidApplyCreate {
+	_c.mutation.SetRegistrationFailureDesc(v)
+	return _c
+}
+
+// SetNillableRegistrationFailureDesc sets the "registration_failure_desc" field if the given value is not nil.
+func (_c *BidApplyCreate) SetNillableRegistrationFailureDesc(v *string) *BidApplyCreate {
+	if v != nil {
+		_c.SetRegistrationFailureDesc(*v)
+	}
+	return _c
+}
+
 // SetAttachments sets the "attachments" field.
 func (_c *BidApplyCreate) SetAttachments(v []schema.Attachment) *BidApplyCreate {
 	_c.mutation.SetAttachments(v)
@@ -354,6 +382,11 @@ func (_c *BidApplyCreate) check() error {
 	if _, ok := _c.mutation.BudgetAmount(); !ok {
 		return &ValidationError{Name: "budget_amount", err: errors.New(`ent: missing required field "BidApply.budget_amount"`)}
 	}
+	if v, ok := _c.mutation.RegistrationStatus(); ok {
+		if err := bidapply.RegistrationStatusValidator(v); err != nil {
+			return &ValidationError{Name: "registration_status", err: fmt.Errorf(`ent: validator failed for field "BidApply.registration_status": %w`, err)}
+		}
+	}
 	if _, ok := _c.mutation.ApprovalStatus(); !ok {
 		return &ValidationError{Name: "approval_status", err: errors.New(`ent: missing required field "BidApply.approval_status"`)}
 	}
@@ -458,6 +491,14 @@ func (_c *BidApplyCreate) createSpec() (*BidApply, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.Remark(); ok {
 		_spec.SetField(bidapply.FieldRemark, field.TypeString, value)
 		_node.Remark = &value
+	}
+	if value, ok := _c.mutation.RegistrationStatus(); ok {
+		_spec.SetField(bidapply.FieldRegistrationStatus, field.TypeEnum, value)
+		_node.RegistrationStatus = &value
+	}
+	if value, ok := _c.mutation.RegistrationFailureDesc(); ok {
+		_spec.SetField(bidapply.FieldRegistrationFailureDesc, field.TypeString, value)
+		_node.RegistrationFailureDesc = &value
 	}
 	if value, ok := _c.mutation.Attachments(); ok {
 		_spec.SetField(bidapply.FieldAttachments, field.TypeJSON, value)

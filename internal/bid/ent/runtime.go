@@ -68,7 +68,7 @@ func init() {
 	// bidapply.DefaultBudgetAmount holds the default value on creation for the budget_amount field.
 	bidapply.DefaultBudgetAmount = bidapplyDescBudgetAmount.Default.(float64)
 	// bidapplyDescDone is the schema descriptor for done field.
-	bidapplyDescDone := bidapplyFields[14].Descriptor()
+	bidapplyDescDone := bidapplyFields[16].Descriptor()
 	// bidapply.DefaultDone holds the default value on creation for the done field.
 	bidapply.DefaultDone = bidapplyDescDone.Default.(bool)
 	// bidapplyDescCreatedAt is the schema descriptor for created_at field.

@@ -41,6 +41,10 @@ func (BidApply) Fields() []ent.Field {
 		),
 
 		field.Text("remark").Comment("备注说明;如资质要求、技术难点、事项说明等").Optional().Nillable(),
+
+		field.Enum("registration_status").Comment("报名情况 RP:待报名 RO:报名中 RF:报名失败 RS:报名成功").
+			Values("RP", "RO", "RF", "RS").Optional().Nillable(),
+		field.Text("registration_failure_desc").Comment("报名失败描述").Optional().Nillable(),
 		field.JSON("attachments", []Attachment{}).Comment("投标报名相关附件").Optional(),
 
 		field.String("approval_status").Comment("审批状态"),

@@ -115,6 +115,11 @@ func Remark(v string) predicate.BidApply {
 	return predicate.BidApply(sql.FieldEQ(FieldRemark, v))
 }
 
+// RegistrationFailureDesc applies equality check predicate on the "registration_failure_desc" field. It's identical to RegistrationFailureDescEQ.
+func RegistrationFailureDesc(v string) predicate.BidApply {
+	return predicate.BidApply(sql.FieldEQ(FieldRegistrationFailureDesc, v))
+}
+
 // ApprovalStatus applies equality check predicate on the "approval_status" field. It's identical to ApprovalStatusEQ.
 func ApprovalStatus(v string) predicate.BidApply {
 	return predicate.BidApply(sql.FieldEQ(FieldApprovalStatus, v))
@@ -823,6 +828,111 @@ func RemarkEqualFold(v string) predicate.BidApply {
 // RemarkContainsFold applies the ContainsFold predicate on the "remark" field.
 func RemarkContainsFold(v string) predicate.BidApply {
 	return predicate.BidApply(sql.FieldContainsFold(FieldRemark, v))
+}
+
+// RegistrationStatusEQ applies the EQ predicate on the "registration_status" field.
+func RegistrationStatusEQ(v RegistrationStatus) predicate.BidApply {
+	return predicate.BidApply(sql.FieldEQ(FieldRegistrationStatus, v))
+}
+
+// RegistrationStatusNEQ applies the NEQ predicate on the "registration_status" field.
+func RegistrationStatusNEQ(v RegistrationStatus) predicate.BidApply {
+	return predicate.BidApply(sql.FieldNEQ(FieldRegistrationStatus, v))
+}
+
+// RegistrationStatusIn applies the In predicate on the "registration_status" field.
+func RegistrationStatusIn(vs ...RegistrationStatus) predicate.BidApply {
+	return predicate.BidApply(sql.FieldIn(FieldRegistrationStatus, vs...))
+}
+
+// RegistrationStatusNotIn applies the NotIn predicate on the "registration_status" field.
+func RegistrationStatusNotIn(vs ...RegistrationStatus) predicate.BidApply {
+	return predicate.BidApply(sql.FieldNotIn(FieldRegistrationStatus, vs...))
+}
+
+// RegistrationStatusIsNil applies the IsNil predicate on the "registration_status" field.
+func RegistrationStatusIsNil() predicate.BidApply {
+	return predicate.BidApply(sql.FieldIsNull(FieldRegistrationStatus))
+}
+
+// RegistrationStatusNotNil applies the NotNil predicate on the "registration_status" field.
+func RegistrationStatusNotNil() predicate.BidApply {
+	return predicate.BidApply(sql.FieldNotNull(FieldRegistrationStatus))
+}
+
+// RegistrationFailureDescEQ applies the EQ predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescEQ(v string) predicate.BidApply {
+	return predicate.BidApply(sql.FieldEQ(FieldRegistrationFailureDesc, v))
+}
+
+// RegistrationFailureDescNEQ applies the NEQ predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescNEQ(v string) predicate.BidApply {
+	return predicate.BidApply(sql.FieldNEQ(FieldRegistrationFailureDesc, v))
+}
+
+// RegistrationFailureDescIn applies the In predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescIn(vs ...string) predicate.BidApply {
+	return predicate.BidApply(sql.FieldIn(FieldRegistrationFailureDesc, vs...))
+}
+
+// RegistrationFailureDescNotIn applies the NotIn predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescNotIn(vs ...string) predicate.BidApply {
+	return predicate.BidApply(sql.FieldNotIn(FieldRegistrationFailureDesc, vs...))
+}
+
+// RegistrationFailureDescGT applies the GT predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescGT(v string) predicate.BidApply {
+	return predicate.BidApply(sql.FieldGT(FieldRegistrationFailureDesc, v))
+}
+
+// RegistrationFailureDescGTE applies the GTE predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescGTE(v string) predicate.BidApply {
+	return predicate.BidApply(sql.FieldGTE(FieldRegistrationFailureDesc, v))
+}
+
+// RegistrationFailureDescLT applies the LT predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescLT(v string) predicate.BidApply {
+	return predicate.BidApply(sql.FieldLT(FieldRegistrationFailureDesc, v))
+}
+
+// RegistrationFailureDescLTE applies the LTE predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescLTE(v string) predicate.BidApply {
+	return predicate.BidApply(sql.FieldLTE(FieldRegistrationFailureDesc, v))
+}
+
+// RegistrationFailureDescContains applies the Contains predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescContains(v string) predicate.BidApply {
+	return predicate.BidApply(sql.FieldContains(FieldRegistrationFailureDesc, v))
+}
+
+// RegistrationFailureDescHasPrefix applies the HasPrefix predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescHasPrefix(v string) predicate.BidApply {
+	return predicate.BidApply(sql.FieldHasPrefix(FieldRegistrationFailureDesc, v))
+}
+
+// RegistrationFailureDescHasSuffix applies the HasSuffix predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescHasSuffix(v string) predicate.BidApply {
+	return predicate.BidApply(sql.FieldHasSuffix(FieldRegistrationFailureDesc, v))
+}
+
+// RegistrationFailureDescIsNil applies the IsNil predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescIsNil() predicate.BidApply {
+	return predicate.BidApply(sql.FieldIsNull(FieldRegistrationFailureDesc))
+}
+
+// RegistrationFailureDescNotNil applies the NotNil predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescNotNil() predicate.BidApply {
+	return predicate.BidApply(sql.FieldNotNull(FieldRegistrationFailureDesc))
+}
+
+// RegistrationFailureDescEqualFold applies the EqualFold predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescEqualFold(v string) predicate.BidApply {
+	return predicate.BidApply(sql.FieldEqualFold(FieldRegistrationFailureDesc, v))
+}
+
+// RegistrationFailureDescContainsFold applies the ContainsFold predicate on the "registration_failure_desc" field.
+func RegistrationFailureDescContainsFold(v string) predicate.BidApply {
+	return predicate.BidApply(sql.FieldContainsFold(FieldRegistrationFailureDesc, v))
 }
 
 // AttachmentsIsNil applies the IsNil predicate on the "attachments" field.
