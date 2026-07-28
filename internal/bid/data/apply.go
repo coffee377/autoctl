@@ -41,7 +41,10 @@ type BidApplyForm struct {
 	Remark         *string    // v1 备注说明
 
 	BidRegistrationHandler string // v1 投标报名办理人
-	Attachments            string // v1 投标报名附件
+
+	RegistrationStatus             *string // 报名情况
+	RegistrationFailureDescription *string // 报名失败描述
+	Attachments                    string  // v1 投标报名附件
 
 }
 
@@ -73,6 +76,11 @@ func NewBidApply(instId string, res *dingtalkworkflow10.GetProcessInstanceRespon
 	// 处理招标类型编码
 	if code, ok := apply.ExtraDictCode(apply.BidType); ok {
 		apply.BidType = &code
+	}
+
+	// 处理报名情况
+	if code, ok := apply.ExtraDictCode(apply.RegistrationStatus); ok {
+		apply.RegistrationStatus = &code
 	}
 
 	return apply, nil
@@ -139,6 +147,8 @@ func (af *BidApplyForm) getApplyMappers() []oa.FieldMapper {
 		{ComponentId: "TextField_1P4X7NQK70W00", FieldName: "NoticeUrl", Converter: oa.StringConverter, Pointer: true},
 		{ComponentId: "TextareaField_1EP1SOW22D1C0", FieldName: "Remark", Converter: oa.StringConverter, Pointer: true},
 		{ComponentId: "InnerContactField_1ER3G5MU4HR40", FieldName: "BidRegistrationHandler", Converter: oa.StringConverter},
+		{ComponentId: "DDSelectField_1HU5KVZF2I8ZK", FieldName: "RegistrationStatus", Converter: oa.StringConverter},
+		{ComponentId: "TextareaField_23E79IQXSR30G", FieldName: "RegistrationFailureDescription", Converter: oa.StringConverter},
 		{ComponentId: "DDAttachment_I8PPSWWCCDC0", FieldName: "Attachments", Converter: oa.StringConverter},
 	}
 }
@@ -163,7 +173,7 @@ func (af *BidApplyForm) createProject(ctx context.Context, tx *ent.Tx) (*ent.Bid
 	create := tx.BidProject.Create()
 	create.SetID(af.ProjectID)
 
-	if af.ProjectCode == nil {
+	if af.ProjectCode == nil || *af.ProjectCode == "" {
 		create.SetCode("/")
 	} else {
 		create.SetNillableCode(af.ProjectCode)
