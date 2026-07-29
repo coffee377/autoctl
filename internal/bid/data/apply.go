@@ -78,9 +78,37 @@ func NewBidApply(instId string, res *dingtalkworkflow10.GetProcessInstanceRespon
 		apply.BidType = &code
 	}
 
-	// 处理报名情况
-	if code, ok := apply.ExtraDictCode(apply.RegistrationStatus); ok {
-		apply.RegistrationStatus = &code
+	// 报名情况数据更新
+	mt, err := time.Parse("2006-01-02T15:04Z", "2026-07-28T14:26Z")
+	if err != nil {
+		return nil, err
+	}
+	if apply.CreateAt.After(mt) {
+		// 报名情况有值，直接提取更新
+		if code, ok := apply.ExtraDictCode(apply.RegistrationStatus); ok {
+			apply.RegistrationStatus = &code
+			return apply, nil
+		}
+
+		// 审批流程在投标报名节点时，更新为报名中
+		var activityId string
+		for _, record := range apply.res.OperationRecords {
+			if record.ShowName != nil && *record.ShowName == "投标报名" {
+				activityId = *record.ActivityId
+				break
+			}
+		}
+		task, ok := Last(apply.res.Tasks)
+		if ok && task.ActivityId != nil && *task.ActivityId == activityId {
+			s := "RO"
+			apply.RegistrationStatus = &s
+			return apply, nil
+		}
+
+		// 否则，就是待报名
+		s := "RP"
+		apply.RegistrationStatus = &s
+
 	}
 
 	return apply, nil
@@ -277,6 +305,9 @@ func (af *BidApplyForm) createApply(ctx context.Context, tx *ent.Tx) (*ent.BidAp
 	create.SetBudgetAmount(af.BudgetAmount)
 	create.SetNillableRemark(af.Remark)
 
+	create.SetNillableRegistrationStatus(af.RegistrationStatus)
+	create.SetNillableRegistrationFailureDesc(af.RegistrationFailureDescription)
+
 	var attachments []schema.Attachment
 	if af.Attachments != "" {
 		_ = json.Unmarshal([]byte(af.Attachments), &attachments)
@@ -307,6 +338,9 @@ func (af *BidApplyForm) updateApply(ctx context.Context, tx *ent.Tx) (*ent.BidAp
 
 	update.SetApprovalStatus(af.ApprovalStatus)
 	update.SetDone(af.Done)
+
+	update.SetNillableRegistrationStatus(af.RegistrationStatus)
+	update.SetNillableRegistrationFailureDesc(af.RegistrationFailureDescription)
 
 	if af.UpdateAt != nil {
 		update.SetUpdatedAt(*af.UpdateAt)
