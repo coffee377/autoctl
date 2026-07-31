@@ -305,7 +305,8 @@ func (af *BidApplyForm) createApply(ctx context.Context, tx *ent.Tx) (*ent.BidAp
 	create.SetBudgetAmount(af.BudgetAmount)
 	create.SetNillableRemark(af.Remark)
 
-	create.SetNillableRegistrationStatus(af.RegistrationStatus)
+	status := (*bidapply.RegistrationStatus)(af.RegistrationStatus)
+	create.SetNillableRegistrationStatus(status)
 	create.SetNillableRegistrationFailureDesc(af.RegistrationFailureDescription)
 
 	var attachments []schema.Attachment
@@ -339,7 +340,8 @@ func (af *BidApplyForm) updateApply(ctx context.Context, tx *ent.Tx) (*ent.BidAp
 	update.SetApprovalStatus(af.ApprovalStatus)
 	update.SetDone(af.Done)
 
-	update.SetNillableRegistrationStatus(af.RegistrationStatus)
+	status := (*bidapply.RegistrationStatus)(af.RegistrationStatus)
+	update.SetNillableRegistrationStatus(status)
 	update.SetNillableRegistrationFailureDesc(af.RegistrationFailureDescription)
 
 	if af.UpdateAt != nil {
