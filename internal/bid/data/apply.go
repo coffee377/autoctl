@@ -90,14 +90,8 @@ func NewBidApply(instId string, res *dingtalkworkflow10.GetProcessInstanceRespon
 			return apply, nil
 		}
 
-		// 审批流程在投标报名节点时，更新为报名中
-		var activityId string
-		for _, record := range apply.res.OperationRecords {
-			if record.ShowName != nil && *record.ShowName == "投标报名" {
-				activityId = *record.ActivityId
-				break
-			}
-		}
+		// 审批流程在“投标报名”节点时，更新为报名中
+		var activityId = "28e9_383f"
 		task, ok := Last(apply.res.Tasks)
 		if ok && task.ActivityId != nil && *task.ActivityId == activityId {
 			s := "RO"
@@ -175,8 +169,8 @@ func (af *BidApplyForm) getApplyMappers() []oa.FieldMapper {
 		{ComponentId: "TextField_1P4X7NQK70W00", FieldName: "NoticeUrl", Converter: oa.StringConverter, Pointer: true},
 		{ComponentId: "TextareaField_1EP1SOW22D1C0", FieldName: "Remark", Converter: oa.StringConverter, Pointer: true},
 		{ComponentId: "InnerContactField_1ER3G5MU4HR40", FieldName: "BidRegistrationHandler", Converter: oa.StringConverter},
-		{ComponentId: "DDSelectField_1HU5KVZF2I8ZK", FieldName: "RegistrationStatus", Converter: oa.StringConverter},
-		{ComponentId: "TextareaField_23E79IQXSR30G", FieldName: "RegistrationFailureDescription", Converter: oa.StringConverter},
+		{ComponentId: "DDSelectField_1HU5KVZF2I8ZK", FieldName: "RegistrationStatus", Converter: oa.StringConverter, Pointer: true},
+		{ComponentId: "TextareaField_23E79IQXSR30G", FieldName: "RegistrationFailureDescription", Converter: oa.StringConverter, Pointer: true},
 		{ComponentId: "DDAttachment_I8PPSWWCCDC0", FieldName: "Attachments", Converter: oa.StringConverter},
 	}
 }

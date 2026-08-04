@@ -25,7 +25,7 @@ type FieldMapper struct {
 	Converter   ValueConverter // 类型转换函数（将字符串转为字段类型）
 	ExtValue    bool
 	Version     string // 表单版本
-	Pointer     bool
+	Pointer     bool   // 指针类型，可为空
 }
 
 // ValueConverter 类型转换接口：将表单字符串值转换为目标类型
@@ -34,7 +34,9 @@ type ValueConverter func(raw string, pointer bool) (any, error)
 // StringConverter 字符串转换器（默认，直接trim空格）
 func StringConverter(raw string, pointer bool) (any, error) {
 	trim := strings.Trim(raw, " ")
-	if pointer {
+	if pointer && trim == "" {
+		return nil, nil
+	} else if pointer {
 		return &trim, nil
 	}
 	return trim, nil
